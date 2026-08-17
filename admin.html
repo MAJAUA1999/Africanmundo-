@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel — AfricanMundo</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><div class="top">🌍 AfricanMundo <span>Painel de Administração</span></div></header>
+<main class="admin-wrap">
+  <div id="loginBox" class="panel">
+    <h1>Entrar no painel</h1>
+    <p>Este é um protótipo local. A autenticação real será configurada quando publicarmos o site.</p>
+    <input id="user" placeholder="Utilizador">
+    <input id="pass" type="password" placeholder="Senha">
+    <button class="btn" onclick="login()">Entrar</button>
+    <small>Demo: utilizador <b>admin</b> / senha <b>admin123</b></small>
+  </div>
+
+  <div id="dashboard" class="panel hidden">
+    <div class="section-title"><h1>Painel AfricanMundo</h1><button onclick="logout()">Sair</button></div>
+    <div class="admin-grid">
+      <div>
+        <h2>Publicar notícia</h2>
+        <input id="title" placeholder="Título da notícia">
+        <select id="category">
+          <option>Notícias</option><option>Futebol</option><option>Moçambique</option>
+          <option>África</option><option>Negócios</option><option>Entretenimento</option><option>Desporto</option>
+        </select>
+        <textarea id="body" placeholder="Texto da notícia"></textarea>
+        <button class="btn" onclick="publish()">Publicar</button>
+      </div>
+      <div>
+        <h2>Notícias publicadas</h2>
+        <div id="posts"></div>
+      </div>
+    </div>
+    <p><a href="index.html">← Ver site público</a></p>
+  </div>
+</main>
+<script src="admin.js"></script>
+</body>
+</html>
