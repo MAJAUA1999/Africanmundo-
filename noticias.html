@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notícias - AfricanMundo</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    header {
+      background: #101313;
+      color: white;
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 36px;
+    }
+
+    header h1 span {
+      color: #4caf20;
+    }
+
+    header p {
+      margin-top: 8px;
+      color: #ddd;
+    }
+
+    nav {
+      background: #181c1a;
+      padding: 15px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 8px 12px;
+      display: inline-block;
+      font-size: 17px;
+    }
+
+    nav a:hover {
+      color: #55c52b;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    .titulo {
+      font-size: 30px;
+      margin-bottom: 25px;
+      border-left: 6px solid #4caf20;
+      padding-left: 12px;
+    }
+
+    .noticias {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+    }
+
+    .imagem {
+      height: 170px;
+      background: linear-gradient(135deg, #174d27, #55c52b);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 50px;
+    }
+
+    .conteudo {
+      padding: 18px;
+    }
+
+    .categoria {
+      color: #4caf20;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .card h2 {
+      font-size: 21px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    .botao {
+      display: inline-block;
+      background: #4caf20;
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    footer {
+      margin-top: 40px;
+      background: #101313;
+      color: white;
+      text-align: center;
+      padding: 25px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <h1>African<span>Mundo</span></h1>
+    <p>A informação que liga África ao mundo</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Início</a>
+    <a href="noticias.html">Notícias</a>
+    <a href="#">Futebol</a>
+    <a href="#">África</a>
+    <a href="#">Moçambique</a>
+    <a href="#">Negócios</a>
+  </nav>
+
+  <main class="container">
+
+    <h2 class="titulo">Últimas Notícias</h2>
+
+    <section class="noticias">
+
+      <article class="card">
+        <div class="imagem">📰</div>
+        <div class="conteudo">
+          <div class="categoria">MOÇAMBIQUE</div>
+          <h2>Principais acontecimentos de Moçambique</h2>
+          <p>Confira as principais notícias e acontecimentos do país.</p>
+          <a class="botao" href="#">Ler mais</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="imagem">⚽</div>
+        <div class="conteudo">
+          <div class="categoria">FUTEBOL</div>
+          <h2>Últimas notícias do futebol africano</h2>
+          <p>Resultados, jogos, transferências e tudo sobre futebol.</p>
+          <a class="botao" href="#">Ler mais</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="imagem">🌍</div>
+        <div class="conteudo">
+          <div class="categoria">ÁFRICA</div>
+          <h2>O que acontece no continente africano</h2>
+          <p>Informação e acontecimentos dos países africanos.</p>
+          <a class="botao" href="#">Ler mais</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="imagem">💼</div>
+        <div class="conteudo">
+          <div class="categoria">NEGÓCIOS</div>
+          <h2>Economia e oportunidades</h2>
+          <p>Notícias sobre negócios, economia e oportunidades.</p>
+          <a class="botao" href="#">Ler mais</a>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© 2026 AfricanMundo — A informação que liga África ao mundo</p>
+  </footer>
+
+</body>
+</html>
