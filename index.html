@@ -8,101 +8,127 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Supabase -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
 
 <header>
-  <div class="top">🌍 AfricanMundo</div>
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
 </header>
 
 <main>
 
   <!-- NOTÍCIAS -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>🌍 Notícias</h2>
-      <span>Ver todas</span>
+      <a href="noticias.html">Ver todas</a>
     </div>
+
     <div id="noticias" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- FUTEBOL -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>⚽ Futebol</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="futebol" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- MOÇAMBIQUE -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>🇲🇿 Moçambique</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="mocambique" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- ÁFRICA -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>🌍 África</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="africa" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- NEGÓCIOS -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>💼 Negócios</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="negocios" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- ENTRETENIMENTO -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>🎬 Entretenimento</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="entretenimento" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
   <!-- DESPORTO -->
   <section class="news-section">
+
     <div class="section-title">
       <h2>🏆 Desporto</h2>
       <span>Ver todos</span>
     </div>
+
     <div id="desporto" class="news-grid">
       <p>Carregando...</p>
     </div>
+
   </section>
 
 </main>
 
+
 <script>
-/* ================================
-   SUPABASE
-================================ */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -117,121 +143,86 @@ const supabaseClient =
   );
 
 
-/* ================================
-   SEGURANÇA
-================================ */
-
 function esc(valor) {
-  return String(valor ?? "").replace(/[&<>"']/g, function (m) {
-    return {
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    }[m];
-  });
-}
 
+  return String(valor || "").replace(
+    /[&<>"']/g,
+    function(m) {
 
-/* ================================
-   PEGAR VALOR DAS COLUNAS
-================================ */
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
 
-function pegarTitulo(noticia) {
-  return (
-    noticia.titulo ??
-    noticia.title ??
-    noticia.nome ??
-    "Sem título"
+    }
   );
+
 }
 
-function pegarTexto(noticia) {
-  return (
-    noticia.texto ??
-    noticia.body ??
-    noticia.conteudo ??
-    noticia.content ??
-    ""
-  );
-}
-
-function pegarCategoria(noticia) {
-  return (
-    noticia.categoria ??
-    noticia.category ??
-    noticia.cat ??
-    "Notícias"
-  );
-}
-
-function pegarImagem(noticia) {
-  return (
-    noticia.imagem ??
-    noticia.image ??
-    noticia.imagem_url ??
-    noticia.image_url ??
-    ""
-  );
-}
-
-
-/* ================================
-   NORMALIZAR CATEGORIA
-================================ */
 
 function normalizarCategoria(valor) {
+
   return String(valor || "noticias")
     .toLowerCase()
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .trim();
+
 }
 
 
-/* ================================
-   CARTÃO
-================================ */
-
 function criarNoticia(noticia) {
-
-  const titulo = pegarTitulo(noticia);
-  const texto = pegarTexto(noticia);
-  const categoria = pegarCategoria(noticia);
-  const imagem = pegarImagem(noticia);
 
   return `
     <article class="news">
 
       <div class="thumb">
-        ${
-          imagem
-            ? `<img src="${esc(imagem)}"
-                    alt="${esc(titulo)}"
-                    style="width:100%;height:100%;object-fit:cover;">`
-            : "🌍"
-        }
+        🌍
       </div>
 
-      <small>${esc(categoria)}</small>
+      <small>
+        ${esc(noticia.categoria || "Notícias")}
+      </small>
 
-      <h3>${esc(titulo)}</h3>
+      <h3>
+        ${esc(noticia.titulo || "Sem título")}
+      </h3>
 
-      <p>${esc(texto)}</p>
+      <p>
+        ${esc(noticia.texto || "")}
+      </p>
 
     </article>
   `;
+
 }
 
 
-/* ================================
-   CARREGAR NOTÍCIAS
-================================ */
-
 async function carregarNoticias() {
 
-  const secoes = [
+  const { data, error } =
+    await supabaseClient
+      .from("noticias")
+      .select("*")
+      .order("id", { ascending: false });
+
+
+  if (error) {
+
+    console.error("Erro Supabase:", error);
+
+    document.getElementById("noticias").innerHTML =
+      "<p>Não foi possível carregar as notícias.</p>";
+
+    return;
+
+  }
+
+
+  const categorias = [
     "noticias",
     "futebol",
     "mocambique",
@@ -241,170 +232,97 @@ async function carregarNoticias() {
     "desporto"
   ];
 
-  try {
 
-    /* Mostrar carregando */
+  categorias.forEach(function(id) {
 
-    secoes.forEach(function(id) {
-      const elemento = document.getElementById(id);
+    const elemento =
+      document.getElementById(id);
 
-      if (elemento) {
-        elemento.innerHTML = "<p>Carregando...</p>";
-      }
-    });
-
-
-    /* Buscar diretamente do Supabase */
-
-    const resultado = await supabaseClient
-      .from("noticias")
-      .select("*");
-
-
-    const data = resultado.data;
-    const error = resultado.error;
-
-
-    /* Verificar erro */
-
-    if (error) {
-
-      console.error("ERRO SUPABASE:", error);
-
-      document.getElementById("noticias").innerHTML =
-        "<p>Não foi possível carregar as notícias.</p>";
-
-      return;
+    if (elemento) {
+      elemento.innerHTML = "";
     }
 
-
-    /* Limpar */
-
-    secoes.forEach(function(id) {
-
-      const elemento = document.getElementById(id);
-
-      if (elemento) {
-        elemento.innerHTML = "";
-      }
-
-    });
+  });
 
 
-    /* Nenhuma notícia */
-
-    if (!data || data.length === 0) {
-
-      document.getElementById("noticias").innerHTML =
-        "<p>Ainda não existem notícias publicadas.</p>";
-
-      return;
-    }
-
-
-    /* Ordenar pelo ID quando existir */
-
-    data.sort(function(a, b) {
-
-      const idA = Number(a.id || 0);
-      const idB = Number(b.id || 0);
-
-      return idB - idA;
-
-    });
-
-
-    /* Distribuir */
-
-    data.forEach(function(noticia) {
-
-      const categoria =
-        normalizarCategoria(
-          pegarCategoria(noticia)
-        );
-
-      let destino = "noticias";
-
-
-      if (categoria === "futebol") {
-        destino = "futebol";
-      }
-
-      else if (categoria === "mocambique") {
-        destino = "mocambique";
-      }
-
-      else if (categoria === "africa") {
-        destino = "africa";
-      }
-
-      else if (categoria === "negocios") {
-        destino = "negocios";
-      }
-
-      else if (categoria === "entretenimento") {
-        destino = "entretenimento";
-      }
-
-      else if (categoria === "desporto") {
-        destino = "desporto";
-      }
-
-
-      const elemento =
-        document.getElementById(destino);
-
-
-      if (elemento) {
-
-        elemento.insertAdjacentHTML(
-          "beforeend",
-          criarNoticia(noticia)
-        );
-
-      }
-
-    });
-
-
-    /* Mostrar mensagem nas categorias vazias */
-
-    secoes.forEach(function(id) {
-
-      const elemento =
-        document.getElementById(id);
-
-      if (
-        elemento &&
-        !elemento.innerHTML.trim()
-      ) {
-
-        elemento.innerHTML =
-          "<p>Nenhuma notícia publicada nesta categoria.</p>";
-
-      }
-
-    });
-
-  }
-
-  catch (erro) {
-
-    console.error(
-      "Erro inesperado:",
-      erro
-    );
+  if (!data || data.length === 0) {
 
     document.getElementById("noticias").innerHTML =
-      "<p>Não foi possível carregar as notícias.</p>";
+      "<p>Ainda não existem notícias publicadas.</p>";
+
+    return;
+
   }
+
+
+  data.forEach(function(noticia) {
+
+    const categoria =
+      normalizarCategoria(noticia.categoria);
+
+    let destino = "noticias";
+
+
+    if (categoria === "futebol") {
+      destino = "futebol";
+    }
+
+    else if (categoria === "mocambique") {
+      destino = "mocambique";
+    }
+
+    else if (categoria === "africa") {
+      destino = "africa";
+    }
+
+    else if (categoria === "negocios") {
+      destino = "negocios";
+    }
+
+    else if (categoria === "entretenimento") {
+      destino = "entretenimento";
+    }
+
+    else if (categoria === "desporto") {
+      destino = "desporto";
+    }
+
+
+    const elemento =
+      document.getElementById(destino);
+
+
+    if (elemento) {
+
+      elemento.insertAdjacentHTML(
+        "beforeend",
+        criarNoticia(noticia)
+      );
+
+    }
+
+  });
+
+
+  categorias.forEach(function(id) {
+
+    const elemento =
+      document.getElementById(id);
+
+    if (
+      elemento &&
+      !elemento.innerHTML.trim()
+    ) {
+
+      elemento.innerHTML =
+        "<p>Nenhuma notícia publicada nesta categoria.</p>";
+
+    }
+
+  });
 
 }
 
-
-/* ================================
-   INICIAR
-================================ */
 
 carregarNoticias();
 
