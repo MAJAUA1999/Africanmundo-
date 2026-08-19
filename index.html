@@ -1,77 +1,400 @@
 <!doctype html>
 <html lang="pt">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AfricanMundo — A informação que liga África ao mundo</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>AfricanMundo</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
+
 <header>
-  <div class="top">🌍 AfricanMundo <span>Maputo, Moçambique</span></div>
-  <div class="brand">
-    <div class="logo">African<span>Mundo</span></div>
-    <div class="tag">A informação que liga África ao mundo</div>
+  <div class="top">
+    🌍 AfricanMundo
   </div>
-  <nav>
-    <a class="active" href="#">Início</a>
-    <a href="#noticias">Notícias</a>
-    <a href="#futebol">Futebol</a>
-    <a href="#africa">África</a>
-    <a href="#mocambique">Moçambique</a>
-    <a href="#negocios">Negócios</a>
-    <a href="#entretenimento">Entretenimento</a>
-    <a href="#desporto">Desporto</a>
-    <a class="admin" href="admin.html">Administração</a>
-  </nav>
 </header>
 
 <main>
-<section class="hero">
-  <div>
-    <span class="badge">DESTAQUE</span>
-    <h1>AfricanMundo: informação que liga África ao mundo</h1>
-    <p>Notícias, futebol, negócios, cultura e acontecimentos de Moçambique e de todo o continente africano.</p>
-    <a class="btn" href="#noticias">Ver notícias</a>
-  </div>
-</section>
 
-<section id="noticias" class="section">
-  <div class="section-title"><h2>Últimas notícias</h2><span>Ver todas</span></div>
-  <div id="newsGrid" class="grid"></div>
-</section>
+  <!-- NOTÍCIAS -->
+  <section class="news-section">
 
-<section id="futebol" class="section two">
-  <div>
-    <div class="section-title"><h2>⚽ Futebol</h2><span>Ver todos</span></div>
-    <article class="feature">
-      <div class="photo">⚽</div>
-      <h3>Futebol africano em destaque</h3>
-      <p>Acompanhe notícias, resultados, análises e grandes competições do continente.</p>
-    </article>
-  </div>
-  <aside class="matches">
-    <h2>Jogos de hoje</h2>
-    <div>13:00 &nbsp; Equipa A <b>×</b> Equipa B</div>
-    <div>16:00 &nbsp; Equipa C <b>×</b> Equipa D</div>
-    <div>19:00 &nbsp; Equipa E <b>×</b> Equipa F</div>
-  </aside>
-</section>
+    <div class="section-title">
+      <h2>🌍 Notícias</h2>
+      <span>Ver todas</span>
+    </div>
 
-<section id="africa" class="cards">
-  <div><h2>🌍 África</h2><p>Notícias e acontecimentos dos países africanos.</p></div>
-  <div id="mocambique"><h2>🇲🇿 Moçambique</h2><p>Informação local, economia, sociedade e desporto.</p></div>
-  <div id="negocios"><h2>💼 Negócios</h2><p>Empresas, tecnologia, investimentos e oportunidades.</p></div>
-  <div id="entretenimento"><h2>🎭 Entretenimento</h2><p>Música, cinema, cultura e personalidades.</p></div>
-  <div id="desporto"><h2>🏆 Desporto</h2><p>As principais modalidades e competições.</p></div>
-</section>
+    <div id="noticias" class="news-grid">
+      <p>Carregando notícias...</p>
+    </div>
+
+  </section>
+
+
+  <!-- FUTEBOL -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>⚽ Futebol</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="futebol" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
+
+  <!-- MOÇAMBIQUE -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>🇲🇿 Moçambique</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="mocambique" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
+
+  <!-- ÁFRICA -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>🌍 África</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="africa" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
+
+  <!-- NEGÓCIOS -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>💼 Negócios</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="negocios" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
+
+  <!-- ENTRETENIMENTO -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>🎬 Entretenimento</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="entretenimento" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
+
+  <!-- DESPORTO -->
+  <section class="news-section">
+
+    <div class="section-title">
+      <h2>🏆 Desporto</h2>
+      <span>Ver todos</span>
+    </div>
+
+    <div id="desporto" class="news-grid">
+      <p>Carregando...</p>
+    </div>
+
+  </section>
+
 </main>
 
-<footer>
-  <div class="logo">African<span>Mundo</span></div>
-  <p>A informação que liga África ao mundo.</p>
-  <p>© 2026 AfricanMundo. Todos os direitos reservados.</p>
-</footer>
-<script src="app.js"></script>
+
+<script>
+
+/* =========================================
+   CONFIGURAÇÃO SUPABASE
+========================================= */
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================
+   ESCAPAR TEXTO
+========================================= */
+
+function esc(text) {
+
+  return String(text || "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   CRIAR CARTÃO DA NOTÍCIA
+========================================= */
+
+function criarNoticia(noticia) {
+
+  return `
+    <article class="post-item">
+
+      <div class="post-image">
+        ${
+          noticia.imagem
+          ? `<img src="${esc(noticia.imagem)}" alt="${esc(noticia.titulo)}">`
+          : `🌍`
+        }
+      </div>
+
+      <div class="post-content">
+
+        <small>
+          ${esc(noticia.categoria || "Notícias")}
+        </small>
+
+        <h3>
+          ${esc(noticia.titulo)}
+        </h3>
+
+        <p>
+          ${esc(noticia.texto)}
+        </p>
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================
+   CARREGAR NOTÍCIAS
+========================================= */
+
+async function carregarNoticias() {
+
+  const { data, error } = await supabaseClient
+    .from("noticias")
+    .select("*")
+    .order("id", { ascending: false });
+
+
+  if (error) {
+
+    console.error("Erro Supabase:", error);
+
+    document.getElementById("noticias").innerHTML =
+      "<p>Não foi possível carregar as notícias.</p>";
+
+    return;
+
+  }
+
+
+  console.log("Notícias recebidas:", data);
+
+
+  /* Limpar as categorias */
+
+  document.getElementById("noticias").innerHTML = "";
+  document.getElementById("futebol").innerHTML = "";
+  document.getElementById("mocambique").innerHTML = "";
+  document.getElementById("africa").innerHTML = "";
+  document.getElementById("negocios").innerHTML = "";
+  document.getElementById("entretenimento").innerHTML = "";
+  document.getElementById("desporto").innerHTML = "";
+
+
+  if (!data || data.length === 0) {
+
+    document.getElementById("noticias").innerHTML =
+      "<p>Ainda não existem notícias publicadas.</p>";
+
+    return;
+
+  }
+
+
+  /* =========================================
+     DISTRIBUIR NOTÍCIAS POR CATEGORIA
+  ========================================= */
+
+  data.forEach(function(noticia) {
+
+    const categoria =
+      String(noticia.categoria || "Notícias")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+
+    const html = criarNoticia(noticia);
+
+
+    /* Notícias */
+
+    if (categoria === "noticias") {
+
+      document.getElementById("noticias")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Futebol */
+
+    else if (categoria === "futebol") {
+
+      document.getElementById("futebol")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Moçambique */
+
+    else if (categoria === "mocambique") {
+
+      document.getElementById("mocambique")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* África */
+
+    else if (categoria === "africa") {
+
+      document.getElementById("africa")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Negócios */
+
+    else if (categoria === "negocios") {
+
+      document.getElementById("negocios")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Entretenimento */
+
+    else if (categoria === "entretenimento") {
+
+      document.getElementById("entretenimento")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Desporto */
+
+    else if (categoria === "desporto") {
+
+      document.getElementById("desporto")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+
+    /* Caso tenha outra categoria */
+
+    else {
+
+      document.getElementById("noticias")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+  });
+
+
+  /* =========================================
+     MENSAGEM QUANDO UMA CATEGORIA ESTÁ VAZIA
+  ========================================= */
+
+  const categorias = [
+    "noticias",
+    "futebol",
+    "mocambique",
+    "africa",
+    "negocios",
+    "entretenimento",
+    "desporto"
+  ];
+
+
+  categorias.forEach(function(id) {
+
+    const elemento = document.getElementById(id);
+
+    if (!elemento.innerHTML.trim()) {
+
+      elemento.innerHTML =
+        "<p>Nenhuma notícia publicada nesta categoria.</p>";
+
+    }
+
+  });
+
+}
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+carregarNoticias();
+
+</script>
+
 </body>
 </html>
