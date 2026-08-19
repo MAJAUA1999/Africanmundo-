@@ -1,4 +1,4 @@
- <!doctypehtml>
+<!doctype html>
 <html lang="pt">
 <head>
   <meta charset="utf-8">
@@ -29,13 +29,12 @@
     </div>
 
     <div id="newsGrid" class="news-grid">
-      <p>Carregando notícias...</p>
+      <p>🔄 A carregar notícias do AfricanMundo...</p>
     </div>
 
   </section>
 
 </main>
-
 
 <script>
 
@@ -77,68 +76,75 @@ async function carregarNoticias() {
   const grid =
     document.getElementById("newsGrid");
 
+  try {
 
-  const { data, error } =
-    await supabaseClient
-      .from("noticias")
-      .select("*")
-      .order("id", { ascending: false });
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", { ascending: false });
 
 
-  if (error) {
+    if (error) {
 
-    console.error(error);
+      console.error("Erro Supabase:", error);
+
+      grid.innerHTML =
+        "<p>❌ Não foi possível carregar as notícias.</p>";
+
+      return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+      grid.innerHTML =
+        "<p>Ainda não existem notícias publicadas.</p>";
+
+      return;
+    }
+
 
     grid.innerHTML =
-      "<p>Não foi possível carregar as notícias.</p>";
+      data.map(function(noticia) {
 
-    return;
-  }
+        return `
+          <article class="news">
 
+            <div class="thumb">
+              🌍
+            </div>
 
-  if (!data || data.length === 0) {
+            <small>
+              ${esc(noticia.categoria || "Notícias")}
+            </small>
+
+            <h3>
+              ${esc(noticia.titulo || "Sem título")}
+            </h3>
+
+            <p>
+              ${esc(noticia.texto || "")}
+            </p>
+
+          </article>
+        `;
+
+      }).join("");
+
+  } catch (erro) {
+
+    console.error("Erro:", erro);
 
     grid.innerHTML =
-      "<p>Ainda não existem notícias publicadas.</p>";
+      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
 
-    return;
   }
-
-
-  grid.innerHTML =
-    data.map(function(noticia) {
-
-      return `
-        <article class="news">
-
-          <div class="thumb">
-            🌍
-          </div>
-
-          <small>
-            ${esc(noticia.categoria || "Notícias")}
-          </small>
-
-          <h3>
-            ${esc(noticia.titulo || "Sem título")}
-          </h3>
-
-          <p>
-            ${esc(noticia.texto || "")}
-          </p>
-
-        </article>
-      `;
-
-    }).join("");
 
 }
 
 
-c
-  <div id="newsGrid" class="news-grid">
-  <p>🔄 A carregar notícias do AfricanMundo...</p>
-</div>
+carregarNoticias();
 
 </script>
 
