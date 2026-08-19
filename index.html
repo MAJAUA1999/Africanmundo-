@@ -21,24 +21,18 @@
 
 <main>
 
-  <!-- NOTÍCIAS -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>🌍 Notícias</h2>
-      <a href="noticias.html">Ver todas</a>
+      <span>Ver todas</span>
     </div>
 
     <div id="noticias" class="news-grid">
-      <p>Carregando...</p>
+      <p>Carregando notícias...</p>
     </div>
-
   </section>
 
-
-  <!-- FUTEBOL -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>⚽ Futebol</h2>
       <span>Ver todos</span>
@@ -47,13 +41,9 @@
     <div id="futebol" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
-
-  <!-- MOÇAMBIQUE -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>🇲🇿 Moçambique</h2>
       <span>Ver todos</span>
@@ -62,13 +52,9 @@
     <div id="mocambique" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
-
-  <!-- ÁFRICA -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>🌍 África</h2>
       <span>Ver todos</span>
@@ -77,13 +63,9 @@
     <div id="africa" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
-
-  <!-- NEGÓCIOS -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>💼 Negócios</h2>
       <span>Ver todos</span>
@@ -92,13 +74,9 @@
     <div id="negocios" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
-
-  <!-- ENTRETENIMENTO -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>🎬 Entretenimento</h2>
       <span>Ver todos</span>
@@ -107,13 +85,9 @@
     <div id="entretenimento" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
-
-  <!-- DESPORTO -->
   <section class="news-section">
-
     <div class="section-title">
       <h2>🏆 Desporto</h2>
       <span>Ver todos</span>
@@ -122,11 +96,9 @@
     <div id="desporto" class="news-grid">
       <p>Carregando...</p>
     </div>
-
   </section>
 
 </main>
-
 
 <script>
 
@@ -143,9 +115,9 @@ const supabaseClient =
   );
 
 
-function esc(valor) {
+function esc(text) {
 
-  return String(valor || "").replace(
+  return String(text || "").replace(
     /[&<>"']/g,
     function(m) {
 
@@ -163,37 +135,30 @@ function esc(valor) {
 }
 
 
-function normalizarCategoria(valor) {
-
-  return String(valor || "noticias")
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
-
-}
-
-
 function criarNoticia(noticia) {
 
   return `
-    <article class="news">
+    <article class="post-item">
 
-      <div class="thumb">
+      <div class="post-image">
         🌍
       </div>
 
-      <small>
-        ${esc(noticia.categoria || "Notícias")}
-      </small>
+      <div class="post-content">
 
-      <h3>
-        ${esc(noticia.titulo || "Sem título")}
-      </h3>
+        <small>
+          ${esc(noticia.categoria || "Notícias")}
+        </small>
 
-      <p>
-        ${esc(noticia.texto || "")}
-      </p>
+        <h3>
+          ${esc(noticia.titulo)}
+        </h3>
+
+        <p>
+          ${esc(noticia.texto)}
+        </p>
+
+      </div>
 
     </article>
   `;
@@ -203,11 +168,10 @@ function criarNoticia(noticia) {
 
 async function carregarNoticias() {
 
-  const { data, error } =
-    await supabaseClient
-      .from("noticias")
-      .select("*")
-      .order("id", { ascending: false });
+  const { data, error } = await supabaseClient
+    .from("noticias")
+    .select("*")
+    .order("id", { ascending: false });
 
 
   if (error) {
@@ -220,6 +184,96 @@ async function carregarNoticias() {
     return;
 
   }
+
+
+  document.getElementById("noticias").innerHTML = "";
+  document.getElementById("futebol").innerHTML = "";
+  document.getElementById("mocambique").innerHTML = "";
+  document.getElementById("africa").innerHTML = "";
+  document.getElementById("negocios").innerHTML = "";
+  document.getElementById("entretenimento").innerHTML = "";
+  document.getElementById("desporto").innerHTML = "";
+
+
+  if (!data || data.length === 0) {
+
+    document.getElementById("noticias").innerHTML =
+      "<p>Ainda não existem notícias publicadas.</p>";
+
+    return;
+
+  }
+
+
+  data.forEach(function(noticia) {
+
+    const categoria =
+      String(noticia.categoria || "Notícias")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "");
+
+
+    const html = criarNoticia(noticia);
+
+
+    if (categoria === "noticias") {
+
+      document.getElementById("noticias")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "futebol") {
+
+      document.getElementById("futebol")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "mocambique") {
+
+      document.getElementById("mocambique")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "africa") {
+
+      document.getElementById("africa")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "negocios") {
+
+      document.getElementById("negocios")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "entretenimento") {
+
+      document.getElementById("entretenimento")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else if (categoria === "desporto") {
+
+      document.getElementById("desporto")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+    else {
+
+      document.getElementById("noticias")
+        .insertAdjacentHTML("beforeend", html);
+
+    }
+
+  });
 
 
   const categorias = [
@@ -238,81 +292,7 @@ async function carregarNoticias() {
     const elemento =
       document.getElementById(id);
 
-    if (elemento) {
-      elemento.innerHTML = "";
-    }
-
-  });
-
-
-  if (!data || data.length === 0) {
-
-    document.getElementById("noticias").innerHTML =
-      "<p>Ainda não existem notícias publicadas.</p>";
-
-    return;
-
-  }
-
-
-  data.forEach(function(noticia) {
-
-    const categoria =
-      normalizarCategoria(noticia.categoria);
-
-    let destino = "noticias";
-
-
-    if (categoria === "futebol") {
-      destino = "futebol";
-    }
-
-    else if (categoria === "mocambique") {
-      destino = "mocambique";
-    }
-
-    else if (categoria === "africa") {
-      destino = "africa";
-    }
-
-    else if (categoria === "negocios") {
-      destino = "negocios";
-    }
-
-    else if (categoria === "entretenimento") {
-      destino = "entretenimento";
-    }
-
-    else if (categoria === "desporto") {
-      destino = "desporto";
-    }
-
-
-    const elemento =
-      document.getElementById(destino);
-
-
-    if (elemento) {
-
-      elemento.insertAdjacentHTML(
-        "beforeend",
-        criarNoticia(noticia)
-      );
-
-    }
-
-  });
-
-
-  categorias.forEach(function(id) {
-
-    const elemento =
-      document.getElementById(id);
-
-    if (
-      elemento &&
-      !elemento.innerHTML.trim()
-    ) {
+    if (!elemento.innerHTML.trim()) {
 
       elemento.innerHTML =
         "<p>Nenhuma notícia publicada nesta categoria.</p>";
