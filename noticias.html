@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Notícias — AfricanMundo</title>
+  <title>Todas as notícias — AfricanMundo</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -77,6 +77,7 @@ async function carregarNoticias() {
   const grid =
     document.getElementById("newsGrid");
 
+
   const { data, error } =
     await supabaseClient
       .from("noticias")
@@ -104,31 +105,32 @@ async function carregarNoticias() {
   }
 
 
-  grid.innerHTML = data.map(function(noticia) {
+  grid.innerHTML =
+    data.map(function(noticia) {
 
-    return `
-      <article class="news">
+      return `
+        <article class="news">
 
-        <div class="thumb">
-          🌍
-        </div>
+          <div class="thumb">
+            🌍
+          </div>
 
-        <small>
-          ${esc(noticia.categoria || "Notícias")}
-        </small>
+          <small>
+            ${esc(noticia.categoria || "Notícias")}
+          </small>
 
-        <h3>
-          ${esc(noticia.titulo || "Sem título")}
-        </h3>
+          <h3>
+            ${esc(noticia.titulo || "Sem título")}
+          </h3>
 
-        <p>
-          ${esc(noticia.texto || "")}
-        </p>
+          <p>
+            ${esc(noticia.texto || "")}
+          </p>
 
-      </article>
-    `;
+        </article>
+      `;
 
-  }).join("");
+    }).join("");
 
 }
 
