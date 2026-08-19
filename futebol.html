@@ -50,11 +50,13 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
+
 function esc(valor) {
 
   return String(valor || "").replace(
     /[&<>"']/g,
     function(m) {
+
       return {
         "&": "&amp;",
         "<": "&lt;",
@@ -62,10 +64,12 @@ function esc(valor) {
         '"': "&quot;",
         "'": "&#039;"
       }[m];
+
     }
   );
 
 }
+
 
 async function carregarFutebol() {
 
@@ -74,12 +78,17 @@ async function carregarFutebol() {
 
   try {
 
+    /*
+      Buscamos todas as notícias.
+      Depois filtramos Futebol no navegador.
+    */
+
     const { data, error } =
       await supabaseClient
         .from("noticias")
         .select("*")
-        .eq("categoria", "Futebol")
         .order("id", { ascending: false });
+
 
     if (error) {
 
@@ -91,7 +100,23 @@ async function carregarFutebol() {
       return;
     }
 
-    if (!data || data.length === 0) {
+
+    const noticiasFutebol =
+      (data || []).filter(function(noticia) {
+
+        const categoria =
+          String(noticia.categoria || "")
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .trim();
+
+        return categoria === "futebol";
+
+      });
+
+
+    if (noticiasFutebol.length === 0) {
 
       grid.innerHTML =
         "<p>⚽ Ainda não existem notícias de Futebol publicadas.</p>";
@@ -99,8 +124,9 @@ async function carregarFutebol() {
       return;
     }
 
+
     grid.innerHTML =
-      data.map(function(noticia) {
+      noticiasFutebol.map(function(noticia) {
 
         return `
           <article class="news">
@@ -126,6 +152,7 @@ async function carregarFutebol() {
 
       }).join("");
 
+
   } catch (erro) {
 
     console.error("Erro:", erro);
@@ -136,6 +163,7 @@ async function carregarFutebol() {
   }
 
 }
+
 
 carregarFutebol();
 
