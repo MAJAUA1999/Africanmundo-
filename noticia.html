@@ -17,48 +17,74 @@
 
   <style>
 
-    .article {
-      max-width: 850px;
+    .article-page {
+      max-width: 900px;
       margin: 0 auto;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 16px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .article {
       background: #fff;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.10);
     }
 
     .article-image {
       width: 100%;
-      max-height: 450px;
+      height: 420px;
       object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 20px;
+      display: block;
+    }
+
+    .article-content {
+      padding: 28px;
     }
 
     .article-category {
-      display: block;
-      font-weight: 700;
-      margin-bottom: 10px;
+      display: inline-block;
+      margin-bottom: 12px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
     }
 
-    .article h1 {
-      font-size: 32px;
-      line-height: 1.25;
-      margin: 0 0 18px;
+    .article-title {
+      margin: 0 0 20px;
+      font-size: 36px;
+      line-height: 1.2;
     }
 
     .article-text {
-      font-size: 18px;
-      line-height: 1.8;
+      font-size: 19px;
+      line-height: 1.85;
       white-space: pre-wrap;
     }
 
-    .back {
+    .share-button {
       display: inline-block;
-      margin-bottom: 20px;
-      text-decoration: none;
-      font-weight: 600;
+      margin-top: 25px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
+    .loading,
     .error-box {
       background: #fff;
       border-radius: 12px;
@@ -67,16 +93,21 @@
 
     @media (max-width: 600px) {
 
-      .article {
-        padding: 15px;
+      .article-image {
+        height: 240px;
       }
 
-      .article h1 {
-        font-size: 26px;
+      .article-content {
+        padding: 18px;
+      }
+
+      .article-title {
+        font-size: 27px;
       }
 
       .article-text {
         font-size: 17px;
+        line-height: 1.75;
       }
 
     }
@@ -98,10 +129,10 @@
 
 <main>
 
-  <section class="news-section">
+  <section class="news-section article-page">
 
     <a
-      class="back"
+      class="back-button"
       href="javascript:history.back()"
     >
       ← Voltar
@@ -110,9 +141,9 @@
 
     <div id="article">
 
-      <p>
+      <div class="loading">
         🔄 A carregar notícia...
-      </p>
+      </div>
 
     </div>
 
@@ -188,11 +219,6 @@ async function carregarNoticia() {
 
   try {
 
-    /*
-      Usamos exatamente a mesma consulta
-      que já funciona na página Futebol.
-    */
-
     const { data, error } =
       await supabaseClient
         .from("noticias")
@@ -208,18 +234,13 @@ async function carregarNoticia() {
 
       article.innerHTML = `
         <div class="error-box">
-          ❌ Não foi possível acessar as notícias.
+          ❌ Não foi possível carregar esta notícia.
         </div>
       `;
 
       return;
     }
 
-
-    /*
-      Procurar a notícia pelo ID
-      depois que todos os registros foram carregados.
-    */
 
     const noticia =
       (data || []).find(
@@ -235,14 +256,7 @@ async function carregarNoticia() {
 
       article.innerHTML = `
         <div class="error-box">
-
           ❌ Notícia não encontrada.
-
-          <br><br>
-
-          ID procurado:
-          <strong>${esc(id)}</strong>
-
         </div>
       `;
 
@@ -278,39 +292,48 @@ async function carregarNoticia() {
         }
 
 
-        <span class="article-category">
+        <div class="article-content">
 
-          🏷️ ${esc(
-            noticia.categoria ||
-            "Notícias"
-          )}
-
-        </span>
-
-
-        <h1>
-
-          ${esc(
-            noticia.titulo ||
-            "Sem título"
-          )}
-
-        </h1>
+          <span class="article-category">
+            🏷️ ${esc(
+              noticia.categoria ||
+              "Notícias"
+            )}
+          </span>
 
 
-        <div class="article-text">
+          <h1 class="article-title">
 
-          ${esc(
-            noticia.texto ||
-            ""
-          )}
+            ${esc(
+              noticia.titulo ||
+              "Sem título"
+            )}
+
+          </h1>
+
+
+          <div class="article-text">
+
+            ${esc(
+              noticia.texto ||
+              ""
+            )}
+
+          </div>
+
+
+          <button
+            class="share-button"
+            onclick="partilharNoticia()"
+          >
+            📤 Partilhar notícia
+          </button>
 
         </div>
 
       </article>
 
     `;
-
 
   } catch (erro) {
 
@@ -321,11 +344,67 @@ async function carregarNoticia() {
 
     article.innerHTML = `
       <div class="error-box">
-
         ❌ Ocorreu um erro ao carregar a notícia.
-
       </div>
     `;
+
+  }
+
+}
+
+
+async function partilharNoticia() {
+
+  const url =
+    window.location.href;
+
+
+  const titulo =
+    document.querySelector(
+      ".article-title"
+    )?.innerText ||
+    "AfricanMundo";
+
+
+  if (
+    navigator.share
+  ) {
+
+    try {
+
+      await navigator.share({
+        title: titulo,
+        text: "Confira esta notícia no AfricanMundo.",
+        url: url
+      });
+
+    } catch (erro) {
+
+      console.log(
+        "Partilha cancelada."
+      );
+
+    }
+
+  } else {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+      alert(
+        "🔗 Link da notícia copiado!"
+      );
+
+    } catch (erro) {
+
+      alert(
+        "Copie o endereço desta página para partilhar."
+      );
+
+    }
 
   }
 
