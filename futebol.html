@@ -87,15 +87,14 @@ async function carregarNoticias() {
 
     if (error) {
 
-      console.error("Erro Supabase:", error);
+  console.error("ERRO SUPABASE:", error);
 
-      grid.innerHTML =
-        "<p>❌ Não foi possível carregar as notícias.</p>";
+  grid.innerHTML =
+    "<p>❌ ERRO SUPABASE:</p>" +
+    "<p>" + esc(error.message) + "</p>";
 
-      return;
-    }
-
-
+  return;
+      
     if (!data || data.length === 0) {
 
       grid.innerHTML =
