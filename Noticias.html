@@ -1,74 +1,350 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Notícias - AfricanMundo</title>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1"
+>
+
+<title>Notícias — AfricanMundo</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
-body{font-family:Arial;margin:0;background:#f4f4f4;color:#222}
-header{background:#101511;color:white;padding:25px;text-align:center}
-header span{color:#45c226}
-nav{background:#18201b;padding:15px;text-align:center}
-nav a{color:white;text-decoration:none;margin:8px}
-main{max-width:1000px;margin:auto;padding:25px}
-h2{border-left:5px solid #45c226;padding-left:10px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px}
-.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 8px #ccc}
-.card h3{color:#174d27}
-.btn{background:#45c226;color:white;padding:10px;text-decoration:none;border-radius:5px}
-footer{background:#101511;color:white;text-align:center;padding:25px;margin-top:30px}
+
+.news-page {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.news-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,.10);
+}
+
+.news-card-image {
+  width: 100%;
+  max-height: 350px;
+  object-fit: cover;
+  display: block;
+}
+
+.news-card-content {
+  padding: 20px;
+}
+
+.news-category {
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.news-date {
+  display: block;
+  margin-top: 6px;
+  color: #777;
+  font-size: 13px;
+}
+
+.news-card h2 {
+  margin: 12px 0;
+  font-size: 27px;
+}
+
+.news-card p {
+  line-height: 1.7;
+}
+
+.read-more {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 11px 16px;
+  background: #111;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.loading,
+.error {
+  background: #fff;
+  padding: 20px;
+  border-radius: 10px;
+}
+
 </style>
+
 </head>
+
+
 <body>
 
 <header>
-<h1>African<span>Mundo</span></h1>
-<p>A informação que liga África ao mundo</p>
+
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
+
 </header>
 
-<nav>
-<a href="index.html">Início</a>
-<a href="noticias.html">Notícias</a>
-<a href="#">Futebol</a>
-<a href="#">África</a>
-<a href="#">Moçambique</a>
-</nav>
 
 <main>
-<h2>Últimas Notícias</h2>
 
-<div class="grid">
+<section class="news-section news-page">
 
-<div class="card">
-<h3>🇲🇿 Moçambique</h3>
-<p>Principais notícias e acontecimentos de Moçambique.</p>
-<a class="btn" href="#">Ler mais</a>
-</div>
+  <div class="section-title">
 
-<div class="card">
-<h3>🌍 África</h3>
-<p>As principais notícias do continente africano.</p>
-<a class="btn" href="#">Ler mais</a>
-</div>
+    <h1>📰 Últimas Notícias</h1>
 
-<div class="card">
-<h3>⚽ Futebol</h3>
-<p>Jogos, resultados e notícias do futebol africano.</p>
-<a class="btn" href="#">Ler mais</a>
-</div>
+    <a href="index.html">
+      ← Voltar
+    </a>
 
-<div class="card">
-<h3>💼 Negócios</h3>
-<p>Economia, empresas e oportunidades em África.</p>
-<a class="btn" href="#">Ler mais</a>
-</div>
+  </div>
 
-</div>
+
+  <div id="newsList">
+
+    <div class="loading">
+      🔄 A carregar notícias...
+    </div>
+
+  </div>
+
+</section>
+
 </main>
 
-<footer>
-<p>© 2026 AfricanMundo</p>
-</footer>
+
+<script>
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+function esc(valor) {
+
+  return String(valor || "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+function formatarData(data) {
+
+  if (!data) return "";
+
+  const d = new Date(data);
+
+  if (isNaN(d.getTime())) return "";
+
+  return d.toLocaleDateString(
+    "pt-PT",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+async function carregarNoticias() {
+
+  const lista =
+    document.getElementById("newsList");
+
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Erro Supabase:",
+        error
+      );
+
+      lista.innerHTML = `
+        <div class="error">
+          ❌ Não foi possível carregar as notícias.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+      lista.innerHTML = `
+        <div class="error">
+          📰 Ainda não existem notícias publicadas.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    lista.innerHTML = data.map(
+      function(noticia) {
+
+        const imagem =
+          String(
+            noticia.Imagem || ""
+          ).trim();
+
+
+        const dataPublicacao =
+          formatarData(
+            noticia.data_publicacao
+          );
+
+
+        return `
+
+          <article class="news-card">
+
+            ${
+              imagem
+              ? `
+                <img
+                  class="news-card-image"
+                  src="${esc(imagem)}"
+                  alt="${esc(
+                    noticia.titulo ||
+                    "Notícia AfricanMundo"
+                  )}"
+                >
+              `
+              : ""
+            }
+
+
+            <div class="news-card-content">
+
+              <span class="news-category">
+                🏷️ ${esc(
+                  noticia.categoria ||
+                  "Notícias"
+                )}
+              </span>
+
+
+              ${
+                dataPublicacao
+                ? `
+                  <span class="news-date">
+                    📅 ${esc(
+                      dataPublicacao
+                    )}
+                  </span>
+                `
+                : ""
+              }
+
+
+              <h2>
+                ${esc(
+                  noticia.titulo ||
+                  "Sem título"
+                )}
+              </h2>
+
+
+              <p>
+                ${esc(
+                  noticia.texto ||
+                  ""
+                )}
+              </p>
+
+
+              <a
+                class="read-more"
+                href="noticia.html?id=${encodeURIComponent(
+                  noticia.id
+                )}"
+              >
+                📖 Ler notícia completa →
+              </a>
+
+            </div>
+
+          </article>
+
+        `;
+
+      }
+    ).join("");
+
+
+  } catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+    lista.innerHTML = `
+      <div class="error">
+        ❌ Ocorreu um erro ao carregar as notícias.
+      </div>
+    `;
+
+  }
+
+}
+
+
+carregarNoticias();
+
+</script>
 
 </body>
 </html>
