@@ -29,7 +29,7 @@
     </div>
 
     <div id="newsGrid" class="news-grid">
-      <p>🔄 A carregar notícias de Futebol...</p>
+      <p>🔄 A testar ligação ao banco de dados...</p>
     </div>
 
   </section>
@@ -44,69 +44,49 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+const grid =
+  document.getElementById("newsGrid");
 
 
-function esc(valor) {
-
-  return String(valor || "").replace(
-    /[&<>"']/g,
-    function(m) {
-
-      return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
-      }[m];
-
-    }
-  );
-
-}
-
-
-async function carregarNoticias() {
-
-  const grid =
-    document.getElementById("newsGrid");
+async function testarSupabase() {
 
   try {
 
-    const { data, error } =
-      await supabaseClient
+    const resultado =
+      await window.supabase
+        .createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        )
         .from("noticias")
-        .select("*")
-        .order("id", { ascending: false });
+        .select("*");
+
+    const data = resultado.data;
+    const error = resultado.error;
 
 
     if (error) {
 
-  console.error("ERRO SUPABASE:", error);
-
-  grid.innerHTML =
-    "<p>❌ ERRO SUPABASE:</p>" +
-    "<p>" + esc(error.message) + "</p>";
-
-  return;
-      
-    if (!data || data.length === 0) {
-
       grid.innerHTML =
-        "<p>Ainda não existem notícias publicadas.</p>";
+        "<p>❌ Erro ao consultar Supabase:</p>" +
+        "<p>" + error.message + "</p>";
+
+      console.error(error);
 
       return;
     }
 
 
-    /* FILTRAR SOMENTE FUTEBOL */
+    if (!data || data.length === 0) {
 
-    const noticiasFutebol =
+      grid.innerHTML =
+        "<p>⚽ A ligação funciona, mas não existem notícias.</p>";
+
+      return;
+    }
+
+
+    const futebol =
       data.filter(function(noticia) {
 
         return String(noticia.categoria || "")
@@ -116,36 +96,28 @@ async function carregarNoticias() {
       });
 
 
-    if (noticiasFutebol.length === 0) {
+    if (futebol.length === 0) {
 
       grid.innerHTML =
-        "<p>⚽ Ainda não existem notícias de Futebol publicadas.</p>";
+        "<p>⚽ A ligação funciona, mas nenhuma notícia tem a categoria Futebol.</p>";
 
       return;
     }
 
 
     grid.innerHTML =
-      noticiasFutebol.map(function(noticia) {
+      futebol.map(function(noticia) {
 
         return `
           <article class="news">
 
-            <div class="thumb">
-              ⚽
-            </div>
+            <div class="thumb">⚽</div>
 
-            <small>
-              ${esc(noticia.categoria || "Futebol")}
-            </small>
+            <small>Futebol</small>
 
-            <h3>
-              ${esc(noticia.titulo || "Sem título")}
-            </h3>
+            <h3>${noticia.titulo || "Sem título"}</h3>
 
-            <p>
-              ${esc(noticia.texto || "")}
-            </p>
+            <p>${noticia.texto || ""}</p>
 
           </article>
         `;
@@ -155,17 +127,19 @@ async function carregarNoticias() {
 
   } catch (erro) {
 
-    console.error("Erro:", erro);
-
     grid.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
+      "<p>❌ Erro:</p><p>" +
+      erro.message +
+      "</p>";
+
+    console.error(erro);
 
   }
 
 }
 
 
-carregarNoticias();
+testarSupabase();
 
 </script>
 
