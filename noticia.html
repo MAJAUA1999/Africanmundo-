@@ -29,8 +29,8 @@
     }
 
     .article-category {
-      font-weight: 700;
       display: block;
+      font-weight: 700;
       margin-bottom: 10px;
     }
 
@@ -51,6 +51,12 @@
       margin-bottom: 20px;
       text-decoration: none;
       font-weight: 600;
+    }
+
+    .error-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
     }
 
     @media (max-width: 600px) {
@@ -144,8 +150,11 @@ async function carregarNoticia() {
 
   if (!id) {
 
-    article.innerHTML =
-      "<p>❌ Nenhuma notícia foi selecionada.</p>";
+    article.innerHTML = `
+      <div class="error-box">
+        ❌ Nenhuma notícia foi selecionada.
+      </div>
+    `;
 
     return;
   }
@@ -157,8 +166,7 @@ async function carregarNoticia() {
       await supabaseClient
         .from("noticias")
         .select("*")
-        .eq("id", id)
-        .single();
+        .eq("id", id);
 
 
     if (error) {
@@ -168,24 +176,40 @@ async function carregarNoticia() {
         error
       );
 
-      article.innerHTML =
-        "<p>❌ Não foi possível carregar esta notícia.</p>";
+      article.innerHTML = `
+        <div class="error-box">
+          ❌ Erro ao consultar a notícia.
+          <br><br>
+          Verifique o acesso à tabela <strong>noticias</strong>.
+        </div>
+      `;
 
       return;
     }
 
 
-    if (!data) {
+    if (!data || data.length === 0) {
 
-      article.innerHTML =
-        "<p>❌ Notícia não encontrada.</p>";
+      article.innerHTML = `
+        <div class="error-box">
+          ❌ Notícia não encontrada.
+          <br><br>
+          ID procurado: <strong>${esc(id)}</strong>
+        </div>
+      `;
 
       return;
     }
+
+
+    const noticia =
+      data[0];
 
 
     const imagem =
-      String(data.Imagem || "").trim();
+      String(
+        noticia.Imagem || ""
+      ).trim();
 
 
     article.innerHTML = `
@@ -200,7 +224,7 @@ async function carregarNoticia() {
               class="article-image"
               src="${esc(imagem)}"
               alt="${esc(
-                data.titulo ||
+                noticia.titulo ||
                 "Notícia AfricanMundo"
               )}"
             >
@@ -212,7 +236,7 @@ async function carregarNoticia() {
 
         <span class="article-category">
           🏷️ ${esc(
-            data.categoria ||
+            noticia.categoria ||
             "Notícias"
           )}
         </span>
@@ -220,7 +244,7 @@ async function carregarNoticia() {
 
         <h1>
           ${esc(
-            data.titulo ||
+            noticia.titulo ||
             "Sem título"
           )}
         </h1>
@@ -228,7 +252,7 @@ async function carregarNoticia() {
 
         <div class="article-text">
           ${esc(
-            data.texto ||
+            noticia.texto ||
             ""
           )}
         </div>
@@ -245,8 +269,11 @@ async function carregarNoticia() {
       erro
     );
 
-    article.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar a notícia.</p>";
+    article.innerHTML = `
+      <div class="error-box">
+        ❌ Ocorreu um erro ao carregar a notícia.
+      </div>
+    `;
 
   }
 
