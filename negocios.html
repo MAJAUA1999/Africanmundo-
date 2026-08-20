@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Negócios — AfricanMundo</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+<header>
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
+</header>
+
+<main>
+
+  <section class="news-section">
+
+    <div class="section-title">
+      <h1>💼 Negócios</h1>
+      <a href="index.html">← Voltar</a>
+    </div>
+
+    <div id="newsGrid" class="news-grid">
+      <p>🔄 A carregar notícias de Negócios...</p>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const grid =
+  document.getElementById("newsGrid");
+
+
+async function carregarNoticias() {
+
+  try {
+
+    const resultado =
+      await window.supabase
+        .createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        )
+        .from("noticias")
+        .select("*");
+
+    const data = resultado.data;
+    const error = resultado.error;
+
+
+    if (error) {
+
+      grid.innerHTML =
+        "<p>❌ Erro ao carregar notícias.</p>";
+
+      console.error(error);
+
+      return;
+    }
+
+
+    const negocios =
+      (data || []).filter(function(noticia) {
+
+        return String(noticia.categoria || "")
+          .trim()
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "") === "negocios";
+
+      });
+
+
+    if (negocios.length === 0) {
+
+      grid.innerHTML =
+        "<p>💼 Ainda não existem notícias de Negócios publicadas.</p>";
+
+      return;
+    }
+
+
+    grid.innerHTML =
+      negocios.map(function(noticia) {
+
+        return `
+          <article class="news">
+
+            <div class="thumb">
+              💼
+            </div>
+
+            <small>
+              ${noticia.categoria || "Negócios"}
+            </small>
+
+            <h3>
+              ${noticia.titulo || "Sem título"}
+            </h3>
+
+            <p>
+              ${noticia.texto || ""}
+            </p>
+
+          </article>
+        `;
+
+      }).join("");
+
+
+  } catch (erro) {
+
+    grid.innerHTML =
+      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
+
+    console.error(erro);
+
+  }
+
+}
+
+
+carregarNoticias();
+
+</script>
+
+</body>
+</html>
