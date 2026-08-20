@@ -44,48 +44,78 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-const grid =
-  document.getElementById("newsGrid");
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+function esc(valor) {
+
+  return String(valor || "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
 
 
 async function carregarNoticias() {
 
+  const grid =
+    document.getElementById("newsGrid");
+
+
   try {
 
-    const resultado =
-      await window.supabase
-        .createClient(
-          SUPABASE_URL,
-          SUPABASE_KEY
-        )
+    const { data, error } =
+      await supabaseClient
         .from("noticias")
         .select("*");
-
-    const data = resultado.data;
-    const error = resultado.error;
 
 
     if (error) {
 
-      grid.innerHTML =
-        "<p>❌ Erro ao carregar notícias.</p>";
+      console.error(
+        "Erro Supabase:",
+        error
+      );
 
-      console.error(error);
+      grid.innerHTML =
+        "<p>❌ Não foi possível carregar as notícias.</p>";
 
       return;
     }
 
 
     const futebol =
-      (data || []).filter(function(noticia) {
+      (data || []).filter(
+        function(noticia) {
 
-        return String(noticia.categoria || "")
+          return String(
+            noticia.categoria || ""
+          )
           .trim()
           .toLowerCase()
           .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "") === "futebol";
+          .replace(
+            /[\u0300-\u036f]/g,
+            ""
+          ) === "futebol";
 
-      });
+        }
+      );
 
 
     if (futebol.length === 0) {
@@ -98,39 +128,87 @@ async function carregarNoticias() {
 
 
     grid.innerHTML =
-      futebol.map(function(noticia) {
+      futebol.map(
+        function(noticia) {
 
-        return `
-          <article class="news">
+          const imagem =
+            String(noticia.Imagem || "").trim();
 
-            <div class="thumb">
-              ⚽
-            </div>
 
-            <small>
-              ${noticia.categoria || "Futebol"}
-            </small>
+          return `
 
-            <h3>
-              ${noticia.titulo || "Sem título"}
-            </h3>
+            <article class="news">
 
-            <p>
-              ${noticia.texto || ""}
-            </p>
+              <div class="thumb">
 
-          </article>
-        `;
+                ${
+                  imagem
 
-      }).join("");
+                  ? `
+                    <img
+                      src="${esc(imagem)}"
+                      alt="${esc(
+                        noticia.titulo ||
+                        "Notícia de Futebol"
+                      )}"
+                      style="
+                        width:100%;
+                        height:180px;
+                        object-fit:cover;
+                        border-radius:10px;
+                        display:block;
+                      "
+                    >
+                  `
+
+                  : `
+                    ⚽
+                  `
+                }
+
+              </div>
+
+
+              <small>
+                ${esc(
+                  noticia.categoria ||
+                  "Futebol"
+                )}
+              </small>
+
+
+              <h3>
+                ${esc(
+                  noticia.titulo ||
+                  "Sem título"
+                )}
+              </h3>
+
+
+              <p>
+                ${esc(
+                  noticia.texto ||
+                  ""
+                )}
+              </p>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
 
 
   } catch (erro) {
 
+    console.error(
+      "Erro:",
+      erro
+    );
+
     grid.innerHTML =
       "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
-
-    console.error(erro);
 
   }
 
