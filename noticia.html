@@ -53,10 +53,17 @@
 
     .article-category {
       display: inline-block;
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       font-size: 14px;
       font-weight: 800;
       text-transform: uppercase;
+    }
+
+    .article-date {
+      display: block;
+      margin-bottom: 16px;
+      color: #666;
+      font-size: 14px;
     }
 
     .article-title {
@@ -138,7 +145,6 @@
       ← Voltar
     </a>
 
-
     <div id="article">
 
       <div class="loading">
@@ -183,6 +189,31 @@ function esc(valor) {
         "'": "&#039;"
       }[m];
 
+    }
+  );
+
+}
+
+
+function formatarData(data) {
+
+  if (!data) {
+    return "";
+  }
+
+  const dataObj =
+    new Date(data);
+
+  if (isNaN(dataObj.getTime())) {
+    return "";
+  }
+
+  return dataObj.toLocaleDateString(
+    "pt-PT",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
     }
   );
 
@@ -270,6 +301,12 @@ async function carregarNoticia() {
       ).trim();
 
 
+    const dataPublicacao =
+      formatarData(
+        noticia.data_publicacao
+      );
+
+
     article.innerHTML = `
 
       <article class="article">
@@ -300,6 +337,21 @@ async function carregarNoticia() {
               "Notícias"
             )}
           </span>
+
+
+          ${
+            dataPublicacao
+
+            ? `
+              <span class="article-date">
+                📅 Publicado em ${esc(
+                  dataPublicacao
+                )}
+              </span>
+            `
+
+            : ""
+          }
 
 
           <h1 class="article-title">
@@ -366,15 +418,14 @@ async function partilharNoticia() {
     "AfricanMundo";
 
 
-  if (
-    navigator.share
-  ) {
+  if (navigator.share) {
 
     try {
 
       await navigator.share({
         title: titulo,
-        text: "Confira esta notícia no AfricanMundo.",
+        text:
+          "Confira esta notícia no AfricanMundo.",
         url: url
       });
 
@@ -416,4 +467,4 @@ carregarNoticia();
 </script>
 
 </body>
-  </html>
+</html>
