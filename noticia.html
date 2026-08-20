@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Notícia — AfricanMundo</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .article {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+    }
+
+    .article-image {
+      width: 100%;
+      max-height: 450px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    .article-category {
+      font-weight: 700;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .article h1 {
+      font-size: 32px;
+      line-height: 1.25;
+      margin: 0 0 18px;
+    }
+
+    .article-text {
+      font-size: 18px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .back {
+      display: inline-block;
+      margin-bottom: 20px;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    @media (max-width: 600px) {
+      .article {
+        padding: 15px;
+      }
+
+      .article h1 {
+        font-size: 26px;
+      }
+
+      .article-text {
+        font-size: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
+</header>
+
+<main>
+
+  <section class="news-section">
+
+    <a class="back" href="javascript:history.back()">
+      ← Voltar
+    </a>
+
+    <div id="article">
+      <p>🔄 A carregar notícia...</p>
+    </div>
+
+  </section>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+function esc(valor) {
+
+  return String(valor || "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+async function carregarNoticia() {
+
+  const article =
+    document.getElementById("article");
+
+  const parametros =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  const id =
+    parametros.get("id");
+
+
+  if (!id) {
+
+    article.innerHTML =
+      "<p>❌ Nenhuma notícia foi selecionada.</p>";
+
+    return;
+  }
+
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+      console.error(
+        "Erro Supabase:",
+        error
+      );
+
+      article.innerHTML =
+        "<p>❌ Não foi possível carregar esta notícia.</p>";
+
+      return;
+    }
+
+
+    if (!data) {
+
+      article.innerHTML =
+        "<p>❌ Notícia não encontrada.</p>";
+
+      return;
+    }
+
+
+    const imagem =
+      String(data.Imagem || "").trim();
+
+
+    article.innerHTML = `
+
+      <article class="article">
+
+        ${
+          imagem
+
+          ? `
+            <img
+              class="article-image"
+              src="${esc(imagem)}"
+              alt="${esc(
+                data.titulo ||
+                "Notícia AfricanMundo"
+              )}"
+            >
+          `
+
+          : ""
+        }
+
+
+        <span class="article-category">
+          🏷️ ${esc(
+            data.categoria ||
+            "Notícias"
+          )}
+        </span>
+
+
+        <h1>
+          ${esc(
+            data.titulo ||
+            "Sem título"
+          )}
+        </h1>
+
+
+        <div class="article-text">
+          ${esc(
+            data.texto ||
+            ""
+          )}
+        </div>
+
+      </article>
+
+    `;
+
+
+  } catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+    article.innerHTML =
+      "<p>❌ Ocorreu um erro ao carregar a notícia.</p>";
+
+  }
+
+}
+
+
+carregarNoticia();
+
+</script>
+
+</body>
+</html>
