@@ -1,8 +1,13 @@
 <!doctype html>
 <html lang="pt">
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>Notícia — AfricanMundo</title>
 
@@ -11,6 +16,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     .article {
       max-width: 850px;
       margin: 0 auto;
@@ -60,6 +66,7 @@
     }
 
     @media (max-width: 600px) {
+
       .article {
         padding: 15px;
       }
@@ -71,41 +78,58 @@
       .article-text {
         font-size: 17px;
       }
+
     }
+
   </style>
+
 </head>
 
 <body>
 
 <header>
+
   <div class="top">
     🌍 AfricanMundo
   </div>
+
 </header>
+
 
 <main>
 
   <section class="news-section">
 
-    <a class="back" href="javascript:history.back()">
+    <a
+      class="back"
+      href="javascript:history.back()"
+    >
       ← Voltar
     </a>
 
+
     <div id="article">
-      <p>🔄 A carregar notícia...</p>
+
+      <p>
+        🔄 A carregar notícia...
+      </p>
+
     </div>
 
   </section>
 
 </main>
 
+
 <script>
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -139,10 +163,12 @@ async function carregarNoticia() {
   const article =
     document.getElementById("article");
 
+
   const parametros =
     new URLSearchParams(
       window.location.search
     );
+
 
   const id =
     parametros.get("id");
@@ -162,11 +188,15 @@ async function carregarNoticia() {
 
   try {
 
+    /*
+      Usamos exatamente a mesma consulta
+      que já funciona na página Futebol.
+    */
+
     const { data, error } =
       await supabaseClient
         .from("noticias")
-        .select("*")
-        .eq("id", id);
+        .select("*");
 
 
     if (error) {
@@ -178,9 +208,7 @@ async function carregarNoticia() {
 
       article.innerHTML = `
         <div class="error-box">
-          ❌ Erro ao consultar a notícia.
-          <br><br>
-          Verifique o acesso à tabela <strong>noticias</strong>.
+          ❌ Não foi possível acessar as notícias.
         </div>
       `;
 
@@ -188,22 +216,38 @@ async function carregarNoticia() {
     }
 
 
-    if (!data || data.length === 0) {
+    /*
+      Procurar a notícia pelo ID
+      depois que todos os registros foram carregados.
+    */
+
+    const noticia =
+      (data || []).find(
+        function(item) {
+
+          return String(item.id) === String(id);
+
+        }
+      );
+
+
+    if (!noticia) {
 
       article.innerHTML = `
         <div class="error-box">
+
           ❌ Notícia não encontrada.
+
           <br><br>
-          ID procurado: <strong>${esc(id)}</strong>
+
+          ID procurado:
+          <strong>${esc(id)}</strong>
+
         </div>
       `;
 
       return;
     }
-
-
-    const noticia =
-      data[0];
 
 
     const imagem =
@@ -235,26 +279,32 @@ async function carregarNoticia() {
 
 
         <span class="article-category">
+
           🏷️ ${esc(
             noticia.categoria ||
             "Notícias"
           )}
+
         </span>
 
 
         <h1>
+
           ${esc(
             noticia.titulo ||
             "Sem título"
           )}
+
         </h1>
 
 
         <div class="article-text">
+
           ${esc(
             noticia.texto ||
             ""
           )}
+
         </div>
 
       </article>
@@ -271,7 +321,9 @@ async function carregarNoticia() {
 
     article.innerHTML = `
       <div class="error-box">
+
         ❌ Ocorreu um erro ao carregar a notícia.
+
       </div>
     `;
 
@@ -285,4 +337,4 @@ carregarNoticia();
 </script>
 
 </body>
-</html>
+  </html>
