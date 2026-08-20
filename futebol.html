@@ -128,8 +128,90 @@ async function carregarNoticias() {
 
 
     grid.innerHTML =
-      futebol.map(
-        function(noticia) {
+  futebol.map(function(noticia) {
+
+    const imagem =
+      String(noticia.Imagem || "").trim();
+
+    return `
+
+      <article class="news">
+
+        <div class="thumb">
+
+          ${
+            imagem
+
+            ? `
+              <img
+                src="${esc(imagem)}"
+                alt="${esc(
+                  noticia.titulo ||
+                  "Notícia de Futebol"
+                )}"
+                style="
+                  width:100%;
+                  height:180px;
+                  object-fit:cover;
+                  border-radius:10px;
+                  display:block;
+                "
+              >
+            `
+
+            : `
+              ⚽
+            `
+          }
+
+        </div>
+
+
+        <small>
+          ${esc(
+            noticia.categoria ||
+            "Futebol"
+          )}
+        </small>
+
+
+        <h3>
+          ${esc(
+            noticia.titulo ||
+            "Sem título"
+          )}
+        </h3>
+
+
+        <p>
+          ${esc(
+            noticia.texto ||
+            ""
+          )}
+        </p>
+
+
+        <a
+          href="noticia.html?id=${encodeURIComponent(noticia.id)}"
+          style="
+            display:inline-block;
+            margin-top:14px;
+            padding:11px 16px;
+            background:#111;
+            color:#fff;
+            text-decoration:none;
+            border-radius:8px;
+            font-weight:700;
+          "
+        >
+          📖 Ler notícia completa →
+        </a>
+
+      </article>
+
+    `;
+
+  }).join("");
 
           const imagem =
             String(noticia.Imagem || "").trim();
