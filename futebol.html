@@ -29,7 +29,7 @@
     </div>
 
     <div id="newsGrid" class="news-grid">
-      <p>🔄 A carregar notícias...</p>
+      <p>🔄 A carregar notícias de Futebol...</p>
     </div>
 
   </section>
@@ -76,69 +76,92 @@ async function carregarNoticias() {
   const grid =
     document.getElementById("newsGrid");
 
-  const { data, error } =
-    await supabaseClient
-      .from("noticias")
-      .select("*")
-      .order("id", { ascending: false });
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", { ascending: false });
 
 
-  if (error) {
+    if (error) {
 
-    console.error("Erro Supabase:", error);
+      console.error("Erro Supabase:", error);
+
+      grid.innerHTML =
+        "<p>❌ Não foi possível carregar as notícias.</p>";
+
+      return;
+    }
+
+
+    if (!data || data.length === 0) {
+
+      grid.innerHTML =
+        "<p>Ainda não existem notícias publicadas.</p>";
+
+      return;
+    }
+
+
+    /* FILTRAR SOMENTE FUTEBOL */
+
+    const noticiasFutebol =
+      data.filter(function(noticia) {
+
+        return String(noticia.categoria || "")
+          .trim()
+          .toLowerCase() === "futebol";
+
+      });
+
+
+    if (noticiasFutebol.length === 0) {
+
+      grid.innerHTML =
+        "<p>⚽ Ainda não existem notícias de Futebol publicadas.</p>";
+
+      return;
+    }
+
 
     grid.innerHTML =
-      "<p>❌ Não foi possível carregar as notícias.</p>";
+      noticiasFutebol.map(function(noticia) {
 
-    return;
-  }
+        return `
+          <article class="news">
+
+            <div class="thumb">
+              ⚽
+            </div>
+
+            <small>
+              ${esc(noticia.categoria || "Futebol")}
+            </small>
+
+            <h3>
+              ${esc(noticia.titulo || "Sem título")}
+            </h3>
+
+            <p>
+              ${esc(noticia.texto || "")}
+            </p>
+
+          </article>
+        `;
+
+      }).join("");
 
 
-  const futebol =
-    (data || []).filter(function(noticia) {
+  } catch (erro) {
 
-      return String(noticia.categoria || "")
-        .trim()
-        .toLowerCase() === "futebol";
-
-    });
-
-
-  if (futebol.length === 0) {
+    console.error("Erro:", erro);
 
     grid.innerHTML =
-      "<p>⚽ Ainda não existem notícias de Futebol publicadas.</p>";
+      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
 
-    return;
   }
-
-
-  grid.innerHTML =
-    futebol.map(function(noticia) {
-
-      return `
-        <article class="news">
-
-          <div class="thumb">
-            ⚽
-          </div>
-
-          <small>
-            ${esc(noticia.categoria)}
-          </small>
-
-          <h3>
-            ${esc(noticia.titulo)}
-          </h3>
-
-          <p>
-            ${esc(noticia.texto)}
-          </p>
-
-        </article>
-      `;
-
-    }).join("");
 
 }
 
