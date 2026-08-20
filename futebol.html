@@ -9,6 +9,110 @@
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    .page-header {
+      margin-bottom: 25px;
+    }
+
+    .page-header h1 {
+      margin-bottom: 8px;
+    }
+
+    .page-header a {
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .football-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .football-card {
+      background: #fff;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.10);
+      transition: transform 0.2s ease;
+    }
+
+    .football-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .football-image {
+      width: 100%;
+      height: 190px;
+      background: #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 50px;
+    }
+
+    .football-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .football-content {
+      padding: 18px;
+    }
+
+    .football-category {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .football-title {
+      margin: 0 0 10px;
+      font-size: 21px;
+      line-height: 1.25;
+    }
+
+    .football-text {
+      margin: 0 0 12px;
+      line-height: 1.6;
+    }
+
+    .football-date {
+      font-size: 13px;
+      opacity: 0.7;
+    }
+
+    .empty-message {
+      padding: 20px;
+      background: #fff;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 600px) {
+
+      .football-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .football-image {
+        height: 200px;
+      }
+
+      .football-title {
+        font-size: 20px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 <body>
@@ -23,13 +127,22 @@
 
   <section class="news-section">
 
-    <div class="section-title">
+    <div class="page-header">
+
       <h1>⚽ Futebol</h1>
-      <a href="index.html">← Voltar</a>
+
+      <a href="index.html">
+        ← Voltar
+      </a>
+
     </div>
 
-    <div id="newsGrid" class="news-grid">
-      <p>🔄 A testar ligação ao banco de dados...</p>
+    <div id="newsGrid" class="football-grid">
+
+      <p>
+        🔄 A carregar notícias de Futebol...
+      </p>
+
     </div>
 
   </section>
@@ -44,102 +157,226 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-const grid =
-  document.getElementById("newsGrid");
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
 
-async function testarSupabase() {
+function esc(valor) {
+
+  return String(valor || "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+function formatarData(valor) {
+
+  if (!valor) {
+    return "";
+  }
+
+  const data =
+    new Date(valor);
+
+  if (isNaN(data.getTime())) {
+    return "";
+  }
+
+  return data.toLocaleDateString(
+    "pt-PT",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+async function carregarNoticias() {
+
+  const grid =
+    document.getElementById("newsGrid");
+
 
   try {
 
-    const resultado =
-      await window.supabase
-        .createClient(
-          SUPABASE_URL,
-          SUPABASE_KEY
-        )
+    const { data, error } =
+      await supabaseClient
         .from("noticias")
-        .select("*");
-
-    const data = resultado.data;
-    const error = resultado.error;
+        .select("*")
+        .order("id", { ascending: false });
 
 
     if (error) {
 
-      grid.innerHTML =
-        "<p>❌ Erro ao consultar Supabase:</p>" +
-        "<p>" + error.message + "</p>";
-
-      console.error(error);
-
-      return;
-    }
-
-
-    if (!data || data.length === 0) {
+      console.error(
+        "Erro Supabase:",
+        error
+      );
 
       grid.innerHTML =
-        "<p>⚽ A ligação funciona, mas não existem notícias.</p>";
+        `
+          <div class="empty-message">
+            ❌ Não foi possível carregar as notícias.
+          </div>
+        `;
 
       return;
     }
 
 
     const futebol =
-      data.filter(function(noticia) {
+      (data || []).filter(
+        function(noticia) {
 
-        return String(noticia.categoria || "")
+          return String(
+            noticia.categoria || ""
+          )
           .trim()
-          .toLowerCase() === "futebol";
+          .toLowerCase()
+          .normalize("NFD")
+          .replace(
+            /[\u0300-\u036f]/g,
+            ""
+          ) === "futebol";
 
-      });
+        }
+      );
 
 
     if (futebol.length === 0) {
 
       grid.innerHTML =
-        "<p>⚽ A ligação funciona, mas nenhuma notícia tem a categoria Futebol.</p>";
+        `
+          <div class="empty-message">
+            ⚽ Ainda não existem notícias de Futebol publicadas.
+          </div>
+        `;
 
       return;
     }
 
 
     grid.innerHTML =
-      futebol.map(function(noticia) {
+      futebol.map(
+        function(noticia) {
 
-        return `
-          <article class="news">
+          const imagem =
+            noticia.imagem ||
+            noticia.image ||
+            noticia.foto ||
+            "";
 
-            <div class="thumb">⚽</div>
 
-            <small>Futebol</small>
+          const data =
+            noticia.data ||
+            noticia.created_at ||
+            noticia.createdAt ||
+            "";
 
-            <h3>${noticia.titulo || "Sem título"}</h3>
 
-            <p>${noticia.texto || ""}</p>
+          return `
 
-          </article>
-        `;
+            <article class="football-card">
 
-      }).join("");
+              <div class="football-image">
+
+                ${
+                  imagem
+
+                  ? `
+                    <img
+                      src="${esc(imagem)}"
+                      alt="${esc(noticia.titulo || "Notícia de Futebol")}"
+                      loading="lazy"
+                    >
+                  `
+
+                  : `
+                    ⚽
+                  `
+                }
+
+              </div>
+
+
+              <div class="football-content">
+
+                <span class="football-category">
+                  ⚽ ${esc(noticia.categoria || "Futebol")}
+                </span>
+
+
+                <h2 class="football-title">
+                  ${esc(noticia.titulo || "Sem título")}
+                </h2>
+
+
+                <p class="football-text">
+                  ${esc(noticia.texto || "")}
+                </p>
+
+
+                ${
+                  data
+
+                  ? `
+                    <div class="football-date">
+                      📅 ${esc(formatarData(data))}
+                    </div>
+                  `
+
+                  : ""
+                }
+
+              </div>
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
 
 
   } catch (erro) {
 
-    grid.innerHTML =
-      "<p>❌ Erro:</p><p>" +
-      erro.message +
-      "</p>";
+    console.error(
+      "Erro:",
+      erro
+    );
 
-    console.error(erro);
+    grid.innerHTML =
+      `
+        <div class="empty-message">
+          ❌ Ocorreu um erro ao carregar as notícias.
+        </div>
+      `;
 
   }
 
 }
 
 
-testarSupabase();
+carregarNoticias();
 
 </script>
 
