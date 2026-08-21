@@ -1,3 +1,5 @@
+Código completo — "noticia.html"
+
 <!doctype html>
 <html lang="pt">
 <head>
@@ -101,7 +103,7 @@
     @media (max-width: 600px) {
 
       .article-image {
-        max-height: 240px;
+        max-height: 300px;
       }
 
       .article-content {
@@ -123,6 +125,7 @@
 
 </head>
 
+
 <body>
 
 <header>
@@ -132,6 +135,7 @@
   </div>
 
 </header>
+
 
 <main>
 
@@ -156,7 +160,12 @@
 
 </main>
 
+
 <script>
+
+/* ================================
+   SUPABASE
+================================ */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -170,6 +179,10 @@ const supabaseClient =
     SUPABASE_KEY
   );
 
+
+/* ================================
+   SEGURANÇA
+================================ */
 
 function esc(valor) {
 
@@ -191,13 +204,22 @@ function esc(valor) {
 }
 
 
+/* ================================
+   DATA
+================================ */
+
 function formatarData(data) {
 
-  if (!data) return "";
+  if (!data) {
+    return "";
+  }
 
-  const d = new Date(data);
+  const d =
+    new Date(data);
 
-  if (isNaN(d.getTime())) return "";
+  if (isNaN(d.getTime())) {
+    return "";
+  }
 
   return d.toLocaleDateString(
     "pt-PT",
@@ -211,15 +233,28 @@ function formatarData(data) {
 }
 
 
+/* ================================
+   CARREGAR NOTÍCIA
+================================ */
+
 async function carregarNoticia() {
 
   const article =
     document.getElementById("article");
 
+
+  /*
+   * Pegar o ID da URL
+   *
+   * Exemplo:
+   * noticia.html?id=5
+   */
+
   const parametros =
     new URLSearchParams(
       window.location.search
     );
+
 
   const id =
     parametros.get("id");
@@ -231,9 +266,19 @@ async function carregarNoticia() {
   );
 
 
-  if (!id) {
+  /* ================================
+     VERIFICAR ID
+  ================================= */
+
+  if (
+    !id ||
+    id === "null" ||
+    id === "undefined" ||
+    id.trim() === ""
+  ) {
 
     article.innerHTML = `
+
       <div class="error-box">
 
         ❌ Nenhuma notícia foi selecionada.
@@ -241,11 +286,44 @@ async function carregarNoticia() {
         <br><br>
 
         <small>
-          Abra uma notícia através do botão
-          "Ler notícia completa".
+          O endereço desta página não contém um ID válido.
         </small>
 
       </div>
+
+    `;
+
+    return;
+  }
+
+
+  /*
+   * Garantir que o ID é numérico
+   */
+
+  const idNumerico =
+    Number(id);
+
+
+  if (
+    !Number.isInteger(idNumerico) ||
+    idNumerico <= 0
+  ) {
+
+    article.innerHTML = `
+
+      <div class="error-box">
+
+        ❌ ID da notícia inválido.
+
+        <br><br>
+
+        <small>
+          ID recebido: ${esc(id)}
+        </small>
+
+      </div>
+
     `;
 
     return;
@@ -254,19 +332,30 @@ async function carregarNoticia() {
 
   try {
 
-    const { data, error } =
-      await supabaseClient
-        .from("noticias")
-        .select("*")
-        .eq("id", id)
-        .maybeSingle();
+    /* ================================
+       BUSCAR NOTÍCIA
+    ================================= */
+
+    const {
+      data,
+      error
+    } = await supabaseClient
+
+      .from("noticias")
+
+      .select("*")
+
+      .eq(
+        "id",
+        idNumerico
+      )
+
+      .maybeSingle();
 
 
-    console.log(
-      "Notícia encontrada:",
-      data
-    );
-
+    /* ================================
+       ERRO SUPABASE
+    ================================= */
 
     if (error) {
 
@@ -275,7 +364,9 @@ async function carregarNoticia() {
         error
       );
 
+
       article.innerHTML = `
+
         <div class="error-box">
 
           ❌ Não foi possível carregar esta notícia.
@@ -287,15 +378,21 @@ async function carregarNoticia() {
           </small>
 
         </div>
+
       `;
 
       return;
     }
 
 
+    /* ================================
+       NOTÍCIA NÃO ENCONTRADA
+    ================================= */
+
     if (!data) {
 
       article.innerHTML = `
+
         <div class="error-box">
 
           ❌ Notícia não encontrada.
@@ -303,102 +400,132 @@ async function carregarNoticia() {
           <br><br>
 
           <small>
-            ID recebido: ${esc(id)}
+            ID procurado: ${esc(idNumerico)}
           </small>
 
         </div>
+
       `;
 
       return;
     }
 
 
-    const noticia = data;
+    /* ================================
+       DADOS DA NOTÍCIA
+    ================================= */
+
+    const titulo =
+      data.titulo ||
+      data.title ||
+      data.nome ||
+      "Sem título";
+
+
+    const texto =
+      data.texto ||
+      data.body ||
+      data.conteudo ||
+      data.content ||
+      "";
+
+
+    const categoria =
+      data.categoria ||
+      data.category ||
+      data.cat ||
+      "Notícias";
 
 
     const imagem =
       String(
-        noticia.Imagem ||
-        noticia.imagem ||
+        data.imagem ||
+        data.Imagem ||
+        data.image ||
+        data.imagem_url ||
+        data.image_url ||
         ""
       ).trim();
 
 
     const dataPublicacao =
       formatarData(
-        noticia.data_publicacao ||
-        noticia.created_at
+        data.data_publicacao ||
+        data.created_at
       );
 
+
+    /* ================================
+       MOSTRAR NOTÍCIA
+    ================================= */
 
     article.innerHTML = `
 
       <article class="article">
 
+
         ${
           imagem
+
           ? `
+
             <img
               class="article-image"
               src="${esc(imagem)}"
-              alt="${esc(
-                noticia.titulo ||
-                "Notícia AfricanMundo"
-              )}"
-              onerror="this.style.display='none'"
+              alt="${esc(titulo)}"
             >
+
           `
+
           : ""
+
         }
+
 
         <div class="article-content">
 
+
           <span class="article-category">
 
-            🏷️ ${esc(
-              noticia.categoria ||
-              "Notícias"
-            )}
+            🏷️ ${esc(categoria)}
 
           </span>
 
 
           ${
             dataPublicacao
+
             ? `
+
               <span class="article-date">
 
                 📅 Publicado em
                 ${esc(dataPublicacao)}
 
               </span>
+
             `
+
             : ""
+
           }
 
 
           <h1 class="article-title">
 
-            ${esc(
-              noticia.titulo ||
-              "Sem título"
-            )}
+            ${esc(titulo)}
 
           </h1>
 
 
           <div class="article-text">
 
-            ${esc(
-              noticia.texto ||
-              "Esta notícia não possui texto."
-            )}
+            ${esc(texto)}
 
           </div>
 
 
           <button
-            type="button"
             class="share-button"
             onclick="partilharNoticia()"
           >
@@ -407,20 +534,27 @@ async function carregarNoticia() {
 
           </button>
 
+
         </div>
+
 
       </article>
 
     `;
 
-  } catch (erro) {
+  }
+
+
+  catch (erro) {
 
     console.error(
       "Erro:",
       erro
     );
 
+
     article.innerHTML = `
+
       <div class="error-box">
 
         ❌ Ocorreu um erro ao carregar a notícia.
@@ -432,6 +566,7 @@ async function carregarNoticia() {
         </small>
 
       </div>
+
     `;
 
   }
@@ -439,10 +574,15 @@ async function carregarNoticia() {
 }
 
 
+/* ================================
+   PARTILHAR
+================================ */
+
 async function partilharNoticia() {
 
   const url =
     window.location.href;
+
 
   const titulo =
     document.querySelector(
@@ -451,7 +591,9 @@ async function partilharNoticia() {
     "AfricanMundo";
 
 
-  if (navigator.share) {
+  if (
+    navigator.share
+  ) {
 
     try {
 
@@ -466,7 +608,9 @@ async function partilharNoticia() {
 
       });
 
-    } catch (erro) {
+    }
+
+    catch (erro) {
 
       console.log(
         "Partilha cancelada."
@@ -474,34 +618,42 @@ async function partilharNoticia() {
 
     }
 
-    return;
   }
 
+  else {
 
-  try {
+    try {
 
-    await navigator.clipboard.writeText(
-      url
-    );
+      await navigator.clipboard.writeText(
+        url
+      );
 
-    alert(
-      "🔗 Link da notícia copiado!"
-    );
+      alert(
+        "🔗 Link da notícia copiado!"
+      );
 
-  } catch (erro) {
+    }
 
-    alert(
-      "Copie o endereço desta página para partilhar."
-    );
+    catch (erro) {
+
+      alert(
+        "Copie o endereço desta página para partilhar."
+      );
+
+    }
 
   }
 
 }
 
 
+/* ================================
+   INICIAR
+================================ */
+
 carregarNoticia();
 
 </script>
 
 </body>
-  </html>
+</html>
