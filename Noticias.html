@@ -74,6 +74,10 @@
   font-weight: 700;
 }
 
+.read-more:hover {
+  opacity: .85;
+}
+
 .loading,
 .error {
   background: #fff;
@@ -85,7 +89,6 @@
 
 </head>
 
-
 <body>
 
 <header>
@@ -95,7 +98,6 @@
   </div>
 
 </header>
-
 
 <main>
 
@@ -111,7 +113,6 @@
 
   </div>
 
-
   <div id="newsList">
 
     <div class="loading">
@@ -124,16 +125,13 @@
 
 </main>
 
-
 <script>
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -182,11 +180,27 @@ function formatarData(data) {
 }
 
 
+function abrirNoticia(id) {
+
+  if (id === null || id === undefined || id === "") {
+
+    alert("Não foi possível identificar esta notícia.");
+
+    return;
+
+  }
+
+  window.location.href =
+    "noticia.html?id=" +
+    encodeURIComponent(String(id));
+
+}
+
+
 async function carregarNoticias() {
 
   const lista =
     document.getElementById("newsList");
-
 
   try {
 
@@ -305,14 +319,15 @@ async function carregarNoticias() {
               </p>
 
 
-              <a
+              <button
+                type="button"
                 class="read-more"
-                href="noticia.html?id=${encodeURIComponent(
+                onclick="abrirNoticia(${JSON.stringify(
                   noticia.id
-                )}"
+                )})"
               >
                 📖 Ler notícia completa →
-              </a>
+              </button>
 
             </div>
 
