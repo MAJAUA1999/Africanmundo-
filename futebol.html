@@ -240,21 +240,34 @@ async function carregarNoticias() {
             </p>
 
 
-            <a
-              href="noticia.html?id=${encodeURIComponent(noticia.id)}"
-              style="
-                display:inline-block;
-                margin-top:14px;
-                padding:11px 16px;
-                background:#111;
-                color:#fff;
-                text-decoration:none;
-                border-radius:8px;
-                font-weight:700;
-              "
-            >
-              📖 Ler notícia completa →
-            </a>
+            ${
+  noticia.id !== null &&
+  noticia.id !== undefined &&
+  String(noticia.id).trim() !== "" &&
+  String(noticia.id).trim() !== "null"
+  ? `
+    <a
+      href="noticia.html?id=${encodeURIComponent(noticia.id)}"
+      style="
+        display:inline-block;
+        margin-top:14px;
+        padding:11px 16px;
+        background:#111;
+        color:#fff;
+        text-decoration:none;
+        border-radius:8px;
+        font-weight:700;
+      "
+    >
+      📖 Ler notícia completa →
+    </a>
+  `
+  : `
+    <p style="color:#c00;font-weight:700;">
+      ⚠️ Esta notícia não possui um ID válido.
+    </p>
+  `
+            }
 
           </article>
 
