@@ -42,7 +42,7 @@
 
     .article-image {
       width: 100%;
-      height: 420px;
+      max-height: 500px;
       object-fit: cover;
       display: block;
     }
@@ -101,7 +101,7 @@
     @media (max-width: 600px) {
 
       .article-image {
-        height: 240px;
+        max-height: 240px;
       }
 
       .article-content {
@@ -133,7 +133,6 @@
 
 </header>
 
-
 <main>
 
   <section class="news-section article-page">
@@ -157,16 +156,13 @@
 
 </main>
 
-
 <script>
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -177,7 +173,7 @@ const supabaseClient =
 
 function esc(valor) {
 
-  return String(valor || "").replace(
+  return String(valor ?? "").replace(
     /[&<>"']/g,
     function(m) {
 
@@ -197,18 +193,13 @@ function esc(valor) {
 
 function formatarData(data) {
 
-  if (!data) {
-    return "";
-  }
+  if (!data) return "";
 
-  const dataObj =
-    new Date(data);
+  const d = new Date(data);
 
-  if (isNaN(dataObj.getTime())) {
-    return "";
-  }
+  if (isNaN(d.getTime())) return "";
 
-  return dataObj.toLocaleDateString(
+  return d.toLocaleDateString(
     "pt-PT",
     {
       day: "2-digit",
@@ -225,22 +216,35 @@ async function carregarNoticia() {
   const article =
     document.getElementById("article");
 
-
   const parametros =
     new URLSearchParams(
       window.location.search
     );
 
-
   const id =
     parametros.get("id");
+
+
+  console.log(
+    "ID recebido:",
+    id
+  );
 
 
   if (!id) {
 
     article.innerHTML = `
       <div class="error-box">
+
         ❌ Nenhuma notícia foi selecionada.
+
+        <br><br>
+
+        <small>
+          Abra uma notícia através do botão
+          "Ler notícia completa".
+        </small>
+
       </div>
     `;
 
@@ -253,7 +257,15 @@ async function carregarNoticia() {
     const { data, error } =
       await supabaseClient
         .from("noticias")
-        .select("*");
+        .select("*")
+        .eq("id", id)
+        .maybeSingle();
+
+
+    console.log(
+      "Notícia encontrada:",
+      data
+    );
 
 
     if (error) {
@@ -265,7 +277,15 @@ async function carregarNoticia() {
 
       article.innerHTML = `
         <div class="error-box">
+
           ❌ Não foi possível carregar esta notícia.
+
+          <br><br>
+
+          <small>
+            ${esc(error.message)}
+          </small>
+
         </div>
       `;
 
@@ -273,37 +293,41 @@ async function carregarNoticia() {
     }
 
 
-    const noticia =
-      (data || []).find(
-        function(item) {
-
-          return String(item.id) === String(id);
-
-        }
-      );
-
-
-    if (!noticia) {
+    if (!data) {
 
       article.innerHTML = `
         <div class="error-box">
+
           ❌ Notícia não encontrada.
+
+          <br><br>
+
+          <small>
+            ID recebido: ${esc(id)}
+          </small>
+
         </div>
       `;
 
       return;
     }
+
+
+    const noticia = data;
 
 
     const imagem =
       String(
-        noticia.Imagem || ""
+        noticia.Imagem ||
+        noticia.imagem ||
+        ""
       ).trim();
 
 
     const dataPublicacao =
       formatarData(
-        noticia.data_publicacao
+        noticia.data_publicacao ||
+        noticia.created_at
       );
 
 
@@ -313,7 +337,6 @@ async function carregarNoticia() {
 
         ${
           imagem
-
           ? `
             <img
               class="article-image"
@@ -322,34 +345,34 @@ async function carregarNoticia() {
                 noticia.titulo ||
                 "Notícia AfricanMundo"
               )}"
+              onerror="this.style.display='none'"
             >
           `
-
           : ""
         }
-
 
         <div class="article-content">
 
           <span class="article-category">
+
             🏷️ ${esc(
               noticia.categoria ||
               "Notícias"
             )}
+
           </span>
 
 
           ${
             dataPublicacao
-
             ? `
               <span class="article-date">
-                📅 Publicado em ${esc(
-                  dataPublicacao
-                )}
+
+                📅 Publicado em
+                ${esc(dataPublicacao)}
+
               </span>
             `
-
             : ""
           }
 
@@ -368,17 +391,20 @@ async function carregarNoticia() {
 
             ${esc(
               noticia.texto ||
-              ""
+              "Esta notícia não possui texto."
             )}
 
           </div>
 
 
           <button
+            type="button"
             class="share-button"
             onclick="partilharNoticia()"
           >
+
             📤 Partilhar notícia
+
           </button>
 
         </div>
@@ -396,7 +422,15 @@ async function carregarNoticia() {
 
     article.innerHTML = `
       <div class="error-box">
+
         ❌ Ocorreu um erro ao carregar a notícia.
+
+        <br><br>
+
+        <small>
+          ${esc(erro.message)}
+        </small>
+
       </div>
     `;
 
@@ -410,7 +444,6 @@ async function partilharNoticia() {
   const url =
     window.location.href;
 
-
   const titulo =
     document.querySelector(
       ".article-title"
@@ -423,10 +456,14 @@ async function partilharNoticia() {
     try {
 
       await navigator.share({
+
         title: titulo,
+
         text:
           "Confira esta notícia no AfricanMundo.",
+
         url: url
+
       });
 
     } catch (erro) {
@@ -437,25 +474,25 @@ async function partilharNoticia() {
 
     }
 
-  } else {
+    return;
+  }
 
-    try {
 
-      await navigator.clipboard.writeText(
-        url
-      );
+  try {
 
-      alert(
-        "🔗 Link da notícia copiado!"
-      );
+    await navigator.clipboard.writeText(
+      url
+    );
 
-    } catch (erro) {
+    alert(
+      "🔗 Link da notícia copiado!"
+    );
 
-      alert(
-        "Copie o endereço desta página para partilhar."
-      );
+  } catch (erro) {
 
-    }
+    alert(
+      "Copie o endereço desta página para partilhar."
+    );
 
   }
 
@@ -467,4 +504,4 @@ carregarNoticia();
 </script>
 
 </body>
-</html>
+  </html>
