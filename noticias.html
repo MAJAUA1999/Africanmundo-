@@ -1,40 +1,162 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Todas as notícias — AfricanMundo</title>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Notícia — AfricanMundo</title>
 
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    .article-page {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .back-button {
+      display: inline-block;
+      margin-bottom: 20px;
+      padding: 10px 16px;
+      background: #111;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .article {
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.10);
+    }
+
+    .article-image {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .article-content {
+      padding: 28px;
+    }
+
+    .article-category {
+      display: inline-block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .article-date {
+      display: block;
+      margin-bottom: 16px;
+      color: #666;
+      font-size: 14px;
+    }
+
+    .article-title {
+      margin: 0 0 20px;
+      font-size: 36px;
+      line-height: 1.2;
+    }
+
+    .article-text {
+      font-size: 19px;
+      line-height: 1.85;
+      white-space: pre-wrap;
+    }
+
+    .share-button {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 12px 18px;
+      border: 0;
+      border-radius: 8px;
+      background: #111;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .loading,
+    .error-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    @media (max-width: 600px) {
+
+      .article-image {
+        height: 240px;
+      }
+
+      .article-content {
+        padding: 18px;
+      }
+
+      .article-title {
+        font-size: 27px;
+      }
+
+      .article-text {
+        font-size: 17px;
+        line-height: 1.75;
+      }
+
+    }
+
+  </style>
+
 </head>
 
 <body>
 
 <header>
+
   <div class="top">
     🌍 AfricanMundo
   </div>
+
 </header>
+
 
 <main>
 
-  <section class="news-section">
+  <section class="news-section article-page">
 
-    <div class="section-title">
-      <h1>📰 Todas as notícias</h1>
-      <a href="index.html">← Voltar</a>
-    </div>
+    <a
+      class="back-button"
+      href="javascript:history.back()"
+    >
+      ← Voltar
+    </a>
 
-    <div id="newsGrid" class="news-grid">
-      <p>🔄 A carregar notícias do AfricanMundo...</p>
+    <div id="article">
+
+      <div class="loading">
+        🔄 A carregar notícia...
+      </div>
+
     </div>
 
   </section>
 
 </main>
+
 
 <script>
 
@@ -43,6 +165,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -71,10 +194,58 @@ function esc(valor) {
 }
 
 
-async function carregarNoticias() {
+function formatarData(data) {
 
-  const grid =
-    document.getElementById("newsGrid");
+  if (!data) {
+    return "";
+  }
+
+  const dataObj =
+    new Date(data);
+
+  if (isNaN(dataObj.getTime())) {
+    return "";
+  }
+
+  return dataObj.toLocaleDateString(
+    "pt-PT",
+    {
+      day: "2-digit",
+      month: "long",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+async function carregarNoticia() {
+
+  const article =
+    document.getElementById("article");
+
+
+  const parametros =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const id =
+    parametros.get("id");
+
+
+  if (!id) {
+
+    article.innerHTML = `
+      <div class="error-box">
+        ❌ Nenhuma notícia foi selecionada.
+      </div>
+    `;
+
+    return;
+  }
+
 
   try {
 
@@ -82,71 +253,228 @@ async function carregarNoticias() {
       await supabaseClient
         .from("noticias")
         .select("*")
-        .order("id", { ascending: false });
+        .eq("id", id)
+        .maybeSingle();
 
 
     if (error) {
 
-      console.error("Erro Supabase:", error);
+      console.error(
+        "Erro Supabase:",
+        error
+      );
 
-      grid.innerHTML =
-        "<p>❌ Não foi possível carregar as notícias.</p>";
+      article.innerHTML = `
+        <div class="error-box">
+          ❌ Não foi possível carregar esta notícia.
+          <br><br>
+          <small>
+            ${esc(error.message)}
+          </small>
+        </div>
+      `;
 
       return;
     }
 
 
-    if (!data || data.length === 0) {
+    const noticia = data;
 
-      grid.innerHTML =
-        "<p>Ainda não existem notícias publicadas.</p>";
+
+    if (!noticia) {
+
+      article.innerHTML = `
+        <div class="error-box">
+          ❌ Notícia não encontrada.
+          <br><br>
+          <small>
+            ID recebido: ${esc(id)}
+          </small>
+        </div>
+      `;
 
       return;
     }
 
 
-    grid.innerHTML =
-      data.map(function(noticia) {
+    const imagem =
+      String(
+        noticia.Imagem || ""
+      ).trim();
 
-        return `
-          <article class="news">
 
-            <div class="thumb">
-              🌍
-            </div>
+    const dataPublicacao =
+      formatarData(
+        noticia.data_publicacao
+      );
 
-            <small>
-              ${esc(noticia.categoria || "Notícias")}
-            </small>
 
-            <h3>
-              ${esc(noticia.titulo || "Sem título")}
-            </h3>
+    article.innerHTML = `
 
-            <p>
-              ${esc(noticia.texto || "")}
-            </p>
+      <article class="article">
 
-          </article>
-        `;
+        ${
+          imagem
 
-      }).join("");
+          ? `
+            <img
+              class="article-image"
+              src="${esc(imagem)}"
+              alt="${esc(
+                noticia.titulo ||
+                "Notícia AfricanMundo"
+              )}"
+            >
+          `
+
+          : ""
+        }
+
+
+        <div class="article-content">
+
+          <span class="article-category">
+            🏷️ ${esc(
+              noticia.categoria ||
+              "Notícias"
+            )}
+          </span>
+
+
+          ${
+            dataPublicacao
+
+            ? `
+              <span class="article-date">
+                📅 Publicado em ${esc(
+                  dataPublicacao
+                )}
+              </span>
+            `
+
+            : ""
+          }
+
+
+          <h1 class="article-title">
+
+            ${esc(
+              noticia.titulo ||
+              "Sem título"
+            )}
+
+          </h1>
+
+
+          <div class="article-text">
+
+            ${esc(
+              noticia.texto ||
+              ""
+            )}
+
+          </div>
+
+
+          <button
+            class="share-button"
+            onclick="partilharNoticia()"
+          >
+            📤 Partilhar notícia
+          </button>
+
+        </div>
+
+      </article>
+
+    `;
 
   } catch (erro) {
 
-    console.error("Erro:", erro);
+    console.error(
+      "Erro:",
+      erro
+    );
 
-    grid.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
+    article.innerHTML = `
+      <div class="error-box">
+        ❌ Ocorreu um erro ao carregar a notícia.
+        <br><br>
+        <small>
+          ${esc(erro.message)}
+        </small>
+      </div>
+    `;
 
   }
 
 }
 
 
-carregarNoticias();
+async function partilharNoticia() {
+
+  const url =
+    window.location.href;
+
+
+  const titulo =
+    document.querySelector(
+      ".article-title"
+    )?.innerText ||
+    "AfricanMundo";
+
+
+  if (navigator.share) {
+
+    try {
+
+      await navigator.share({
+
+        title: titulo,
+
+        text:
+          "Confira esta notícia no AfricanMundo.",
+
+        url: url
+
+      });
+
+    } catch (erro) {
+
+      console.log(
+        "Partilha cancelada."
+      );
+
+    }
+
+  } else {
+
+    try {
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+      alert(
+        "🔗 Link da notícia copiado!"
+      );
+
+    } catch (erro) {
+
+      alert(
+        "Copie o endereço desta página para partilhar."
+      );
+
+    }
+
+  }
+
+}
+
+
+carregarNoticia();
 
 </script>
 
 </body>
-</html>
+  </html>
