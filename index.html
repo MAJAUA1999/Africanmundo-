@@ -1,124 +1,248 @@
+index.html — AfricanMundo
+
 <!doctype html>
 <html lang="pt">
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <title>AfricanMundo</title>
 
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+
+    .read-more {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #45c226;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: bold;
+    }
+
+    .read-more:hover {
+      opacity: 0.9;
+    }
+
+  </style>
+
 </head>
 
 <body>
 
 <header>
-  <div class="top">🌍 AfricanMundo</div>
+
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
+
 </header>
+
 
 <main>
 
+
   <!-- NOTÍCIAS -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>🌍 Notícias</h2>
-      <a href="noticias.html">Ver todas</a>
+
+      <a href="noticias.html">
+        Ver todas
+      </a>
+
     </div>
 
-    <div id="noticias" class="news-grid">
+    <div
+      id="noticias"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- FUTEBOL -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>⚽ Futebol</h2>
-      <a href="futebol.html">Ver todos</a>
+
+      <a href="futebol.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="futebol" class="news-grid">
+    <div
+      id="futebol"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- MOÇAMBIQUE -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>🇲🇿 Moçambique</h2>
-      <a href="mocambique.html">Ver todos</a>
+
+      <a href="mocambique.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="mocambique" class="news-grid">
+    <div
+      id="mocambique"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- ÁFRICA -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>🌍 África</h2>
-      <a href="africa.html">Ver todos</a>
+
+      <a href="africa.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="africa" class="news-grid">
+    <div
+      id="africa"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- NEGÓCIOS -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>💼 Negócios</h2>
-      <a href="negocios.html">Ver todos</a>
+
+      <a href="negocios.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="negocios" class="news-grid">
+    <div
+      id="negocios"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- ENTRETENIMENTO -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>🎬 Entretenimento</h2>
-      <a href="entretenimento.html">Ver todos</a>
+
+      <a href="entretenimento.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="entretenimento" class="news-grid">
+    <div
+      id="entretenimento"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 
   <!-- DESPORTO -->
+
   <section class="news-section">
+
     <div class="section-title">
+
       <h2>🏆 Desporto</h2>
-      <a href="desporto.html">Ver todos</a>
+
+      <a href="desporto.html">
+        Ver todos
+      </a>
+
     </div>
 
-    <div id="desporto" class="news-grid">
+    <div
+      id="desporto"
+      class="news-grid"
+    >
       <p>Carregando...</p>
     </div>
+
   </section>
+
 
 </main>
 
 
 <script>
 
+
+/* ================================
+   SUPABASE
+================================ */
+
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
+
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
 
 const supabaseClient =
   window.supabase.createClient(
@@ -127,9 +251,16 @@ const supabaseClient =
   );
 
 
+
+/* ================================
+   SEGURANÇA
+================================ */
+
 function esc(valor) {
 
-  return String(valor ?? "").replace(
+  return String(
+    valor ?? ""
+  ).replace(
     /[&<>"']/g,
     function(m) {
 
@@ -147,6 +278,11 @@ function esc(valor) {
 }
 
 
+
+/* ================================
+   PEGAR TÍTULO
+================================ */
+
 function pegarTitulo(noticia) {
 
   return (
@@ -158,6 +294,11 @@ function pegarTitulo(noticia) {
 
 }
 
+
+
+/* ================================
+   PEGAR TEXTO
+================================ */
 
 function pegarTexto(noticia) {
 
@@ -172,6 +313,11 @@ function pegarTexto(noticia) {
 }
 
 
+
+/* ================================
+   PEGAR CATEGORIA
+================================ */
+
 function pegarCategoria(noticia) {
 
   return (
@@ -183,6 +329,11 @@ function pegarCategoria(noticia) {
 
 }
 
+
+
+/* ================================
+   PEGAR IMAGEM
+================================ */
 
 function pegarImagem(noticia) {
 
@@ -198,77 +349,132 @@ function pegarImagem(noticia) {
 }
 
 
+
+/* ================================
+   NORMALIZAR CATEGORIA
+================================ */
+
 function normalizarCategoria(valor) {
 
-  return String(valor || "noticias")
+  return String(
+    valor || "noticias"
+  )
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
     .trim();
 
 }
 
 
-/* =========================
+
+/* ================================
    CRIAR CARTÃO
-========================= */
-Função "criarNoticia()" corrigida
+================================ */
 
 function criarNoticia(noticia) {
 
-  const titulo = pegarTitulo(noticia);
-  const texto = pegarTexto(noticia);
-  const categoria = pegarCategoria(noticia);
-  const imagem = pegarImagem(noticia);
+  const titulo =
+    pegarTitulo(noticia);
 
-  const id = noticia.id;
+  const texto =
+    pegarTexto(noticia);
+
+  const categoria =
+    pegarCategoria(noticia);
+
+  const imagem =
+    pegarImagem(noticia);
+
+
+  const id =
+    noticia.id;
+
+
+  const linkNoticia =
+    id !== null &&
+    id !== undefined &&
+    String(id).trim() !== ""
+
+      ? `noticia.html?id=${encodeURIComponent(id)}`
+
+      : "";
+
 
   return `
+
     <article class="news">
 
       <div class="thumb">
+
         ${
           imagem
-            ? `<img
-                src="${esc(imagem)}"
-                alt="${esc(titulo)}"
-                style="width:100%;height:100%;object-fit:cover;"
-              >`
-            : "🌍"
+
+          ? `
+            <img
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              style="
+                width:100%;
+                height:100%;
+                object-fit:cover;
+              "
+            >
+          `
+
+          : "🌍"
         }
+
       </div>
 
-      <small>${esc(categoria)}</small>
 
-      <h3>${esc(titulo)}</h3>
+      <small>
+        ${esc(categoria)}
+      </small>
 
-      <p>${esc(texto)}</p>
+
+      <h3>
+        ${esc(titulo)}
+      </h3>
+
+
+      <p>
+        ${esc(texto)}
+      </p>
+
 
       ${
-        id !== null &&
-        id !== undefined &&
-        id !== ""
+        linkNoticia
+
         ? `
           <a
-            href="noticia.html?id=${encodeURIComponent(id)}"
+            href="${linkNoticia}"
             class="read-more"
           >
             📖 Ler mais
           </a>
         `
+
         : ""
       }
 
     </article>
+
   `;
+
 }
 
 
-/* =========================
+
+/* ================================
    CARREGAR NOTÍCIAS
-========================= */
+================================ */
 
 async function carregarNoticias() {
+
 
   const secoes = [
 
@@ -285,15 +491,45 @@ async function carregarNoticias() {
 
   try {
 
-    const {
-      data,
-      error
-    } = await supabaseClient
 
-      .from("noticias")
+    /* CARREGANDO */
 
-      .select("*");
+    secoes.forEach(
+      function(id) {
 
+        const elemento =
+          document.getElementById(id);
+
+
+        if (elemento) {
+
+          elemento.innerHTML =
+            "<p>Carregando...</p>";
+
+        }
+
+      }
+    );
+
+
+
+    /* BUSCAR NO SUPABASE */
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*");
+
+
+    const data =
+      resultado.data;
+
+    const error =
+      resultado.error;
+
+
+
+    /* ERRO */
 
     if (error) {
 
@@ -303,10 +539,223 @@ async function carregarNoticias() {
       );
 
 
-      secoes.forEach(function(id) {
+      secoes.forEach(
+        function(id) {
+
+          const elemento =
+            document.getElementById(id);
+
+
+          if (elemento) {
+
+            elemento.innerHTML =
+              "<p>Não foi possível carregar as notícias.</p>";
+
+          }
+
+        }
+      );
+
+
+      return;
+
+    }
+
+
+
+    /* LIMPAR */
+
+    secoes.forEach(
+      function(id) {
 
         const elemento =
           document.getElementById(id);
+
+
+        if (elemento) {
+
+          elemento.innerHTML = "";
+
+        }
+
+      }
+    );
+
+
+
+    /* NENHUMA NOTÍCIA */
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      document
+        .getElementById("noticias")
+        .innerHTML =
+          "<p>Ainda não existem notícias publicadas.</p>";
+
+
+      return;
+
+    }
+
+
+
+    /* ORDENAR PELO ID */
+
+    data.sort(
+      function(a, b) {
+
+        const idA =
+          Number(a.id || 0);
+
+        const idB =
+          Number(b.id || 0);
+
+
+        return idB - idA;
+
+      }
+    );
+
+
+
+    /* DISTRIBUIR */
+
+    data.forEach(
+      function(noticia) {
+
+
+        const categoria =
+          normalizarCategoria(
+            pegarCategoria(noticia)
+          );
+
+
+        let destino =
+          "noticias";
+
+
+
+        if (
+          categoria === "futebol"
+        ) {
+
+          destino =
+            "futebol";
+
+        }
+
+        else if (
+          categoria === "mocambique"
+        ) {
+
+          destino =
+            "mocambique";
+
+        }
+
+        else if (
+          categoria === "africa"
+        ) {
+
+          destino =
+            "africa";
+
+        }
+
+        else if (
+          categoria === "negocios"
+        ) {
+
+          destino =
+            "negocios";
+
+        }
+
+        else if (
+          categoria === "entretenimento"
+        ) {
+
+          destino =
+            "entretenimento";
+
+        }
+
+        else if (
+          categoria === "desporto"
+        ) {
+
+          destino =
+            "desporto";
+
+        }
+
+
+
+        const elemento =
+          document.getElementById(
+            destino
+          );
+
+
+
+        if (elemento) {
+
+          elemento.insertAdjacentHTML(
+            "beforeend",
+            criarNoticia(noticia)
+          );
+
+        }
+
+      }
+    );
+
+
+
+    /* CATEGORIAS VAZIAS */
+
+    secoes.forEach(
+      function(id) {
+
+        const elemento =
+          document.getElementById(id);
+
+
+        if (
+          elemento &&
+          !elemento.innerHTML.trim()
+        ) {
+
+          elemento.innerHTML =
+            "<p>Nenhuma notícia publicada nesta categoria.</p>";
+
+        }
+
+      }
+    );
+
+
+  }
+
+
+  catch (erro) {
+
+
+    console.error(
+      "ERRO INESPERADO:",
+      erro
+    );
+
+
+    secoes.forEach(
+      function(id) {
+
+        const elemento =
+          document.getElementById(id);
+
 
         if (elemento) {
 
@@ -315,162 +764,7 @@ async function carregarNoticias() {
 
         }
 
-      });
-
-      return;
-
-    }
-
-
-    /*
-     * Limpar as categorias
-     */
-
-    secoes.forEach(function(id) {
-
-      const elemento =
-        document.getElementById(id);
-
-      if (elemento) {
-
-        elemento.innerHTML = "";
-
       }
-
-    });
-
-
-    if (!data || data.length === 0) {
-
-      document.getElementById(
-        "noticias"
-      ).innerHTML =
-        "<p>Ainda não existem notícias publicadas.</p>";
-
-      return;
-
-    }
-
-
-    /*
-     * Ordenar pelo ID
-     */
-
-    data.sort(function(a, b) {
-
-      return Number(b.id || 0)
-        - Number(a.id || 0);
-
-    });
-
-
-    /*
-     * Distribuir notícias
-     */
-
-    data.forEach(function(noticia) {
-
-      const categoria =
-        normalizarCategoria(
-          pegarCategoria(noticia)
-        );
-
-
-      let destino =
-        "noticias";
-
-
-      if (categoria === "futebol") {
-
-        destino =
-          "futebol";
-
-      }
-
-      else if (categoria === "mocambique") {
-
-        destino =
-          "mocambique";
-
-      }
-
-      else if (categoria === "africa") {
-
-        destino =
-          "africa";
-
-      }
-
-      else if (categoria === "negocios") {
-
-        destino =
-          "negocios";
-
-      }
-
-      else if (categoria === "entretenimento") {
-
-        destino =
-          "entretenimento";
-
-      }
-
-      else if (categoria === "desporto") {
-
-        destino =
-          "desporto";
-
-      }
-
-
-      const elemento =
-        document.getElementById(
-          destino
-        );
-
-
-      if (elemento) {
-
-        elemento.insertAdjacentHTML(
-          "beforeend",
-          criarNoticia(noticia)
-        );
-
-      }
-
-    });
-
-
-    /*
-     * Mostrar mensagem nas categorias vazias
-     */
-
-    secoes.forEach(function(id) {
-
-      const elemento =
-        document.getElementById(id);
-
-
-      if (
-        elemento &&
-        !elemento.innerHTML.trim()
-      ) {
-
-        elemento.innerHTML =
-          "<p>Nenhuma notícia publicada nesta categoria.</p>";
-
-      }
-
-    });
-
-  }
-
-
-  catch (erro) {
-
-    console.error(
-      "Erro inesperado:",
-      erro
     );
 
   }
@@ -478,7 +772,13 @@ async function carregarNoticias() {
 }
 
 
+
+/* ================================
+   INICIAR
+================================ */
+
 carregarNoticias();
+
 
 </script>
 
