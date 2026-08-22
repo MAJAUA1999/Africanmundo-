@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="pt">
+
+<head>
+
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>AfricanMundo</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+  <div class="top">
+    🌍 AfricanMundo
+  </div>
+
+</header>
+
+
+<main>
+
+  <section class="news-section">
+
+
+    <div class="section-title">
+
+      <h1 id="tituloCategoria">
+        📰 Notícias
+      </h1>
+
+      <a href="index.html">
+        ← Voltar
+      </a>
+
+    </div>
+
+
+    <div
+      id="newsGrid"
+      class="news-grid"
+    >
+
+      <p>🔄 A carregar...</p>
+
+    </div>
+
+
+  </section>
+
+</main>
+
+
+
+<script>
+
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+
+function esc(valor) {
+
+  return String(valor ?? "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+
+function normalizar(valor) {
+
+  return String(valor || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+}
+
+
+
+const parametros =
+  new URLSearchParams(
+    window.location.search
+  );
+
+
+const categoriaURL =
+  normalizar(
+    parametros.get("categoria")
+  );
+
+
+
+const nomes = {
+
+  noticias: "🌍 Notícias",
+
+  futebol: "⚽ Futebol",
+
+  mocambique: "🇲🇿 Moçambique",
+
+  africa: "🌍 África",
+
+  negocios: "💼 Negócios",
+
+  entretenimento: "🎬 Entretenimento",
+
+  desporto: "🏆 Desporto"
+
+};
+
+
+
+const titulo =
+  nomes[categoriaURL] ||
+  "📰 Notícias";
+
+
+document.getElementById(
+  "tituloCategoria"
+).textContent = titulo;
+
+
+
+async function carregarNoticias() {
+
+  const grid =
+    document.getElementById("newsGrid");
+
+
+  try {
+
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
+
+
+    if (error) {
+
+      console.error(error);
+
+      grid.innerHTML =
+        "<p>❌ Não foi possível carregar as notícias.</p>";
+
+      return;
+
+    }
+
+
+    const filtradas =
+      (data || []).filter(
+        function(noticia) {
+
+          const categoria =
+            normalizar(
+              noticia.categoria
+            );
+
+
+          if (categoriaURL === "noticias") {
+
+            return (
+              categoria === "noticias" ||
+              categoria === ""
+            );
+
+          }
+
+
+          return categoria === categoriaURL;
+
+        }
+      );
+
+
+    if (filtradas.length === 0) {
+
+      grid.innerHTML = `
+        <div>
+          <p>
+            📰 Ainda não existem notícias nesta categoria.
+          </p>
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    grid.innerHTML =
+      filtradas.map(
+        function(noticia) {
+
+
+          const titulo =
+            noticia.titulo ||
+            "Sem título";
+
+
+          const texto =
+            noticia.texto ||
+            noticia.descricao ||
+            "";
+
+
+          const categoria =
+            noticia.categoria ||
+            "Notícias";
+
+
+          const imagem =
+            noticia.imagem ||
+            noticia.Imagem ||
+            noticia.imagem_url ||
+            noticia.image_url ||
+            "";
+
+
+          const id =
+            noticia.id;
+
+
+          return `
+
+            <article class="news">
+
+
+              <div class="thumb">
+
+                ${
+                  String(imagem).trim()
+                  ?
+
+                  `
+                    <img
+                      src="${esc(imagem)}"
+                      alt="${esc(titulo)}"
+                      style="
+                        width:100%;
+                        height:180px;
+                        object-fit:cover;
+                        display:block;
+                      "
+                    >
+                  `
+
+                  :
+
+                  `
+                    <div
+                      style="
+                        width:100%;
+                        height:180px;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-size:55px;
+                      "
+                    >
+                      ${
+                        categoriaURL === "futebol"
+                        ? "⚽"
+                        : "🌍"
+                      }
+                    </div>
+                  `
+                }
+
+              </div>
+
+
+              <small>
+                ${esc(categoria)}
+              </small>
+
+
+              <h3>
+                ${esc(titulo)}
+              </h3>
+
+
+              <p>
+                ${esc(texto)}
+              </p>
+
+
+              ${
+                id !== null &&
+                id !== undefined &&
+                String(id).trim() !== "" &&
+                String(id).trim() !== "null" &&
+                String(id).trim() !== "undefined"
+
+                ?
+
+                `
+                  <a
+                    href="noticia.html?id=${encodeURIComponent(id)}"
+                    style="
+                      display:inline-block;
+                      margin-top:12px;
+                      padding:11px 16px;
+                      background:#45c226;
+                      color:#fff;
+                      text-decoration:none;
+                      border-radius:8px;
+                      font-weight:700;
+                    "
+                  >
+                    📖 Ler mais
+                  </a>
+                `
+
+                :
+
+                ""
+
+              }
+
+
+            </article>
+
+          `;
+
+        }
+      ).join("");
+
+
+  }
+
+  catch (erro) {
+
+    console.error(erro);
+
+    grid.innerHTML =
+      "<p>❌ Ocorreu um erro ao carregar.</p>";
+
+  }
+
+}
+
+
+carregarNoticias();
+
+
+</script>
+
+
+</body>
+</html>
