@@ -390,6 +390,144 @@ async function render() {
 
 async function editarNoticia(id) {
 
+  id = Number(id);
+
+  if (!Number.isFinite(id)) {
+    alert("❌ ID da notícia inválido.");
+    return;
+  }
+
+  // Buscar notícia atual
+  const { data: noticia, error: buscarError } =
+    await supabaseClient
+      .from("noticias")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+  if (buscarError) {
+    console.error(buscarError);
+    alert("❌ Erro ao carregar a notícia:\n\n" + buscarError.message);
+    return;
+  }
+
+  if (!noticia) {
+    alert("❌ Notícia não encontrada.");
+    return;
+  }
+
+  // Título
+  const novoTitulo = prompt(
+    "Título da notícia:",
+    noticia.titulo || ""
+  );
+
+  if (novoTitulo === null) return;
+
+  // Texto
+  const novoTexto = prompt(
+    "Texto da notícia:",
+    noticia.texto || ""
+  );
+
+  if (novoTexto === null) return;
+
+  // Categoria
+  const categorias = [
+    "Notícias",
+    "Futebol",
+    "Moçambique",
+    "África",
+    "Negócios",
+    "Entretenimento",
+    "Desporto"
+  ];
+
+  const categoriaAtual =
+    noticia.categoria || "Notícias";
+
+  const novaCategoria = prompt(
+    "Categoria:\n\n" +
+    categorias.join(" | "),
+    categoriaAtual
+  );
+
+  if (novaCategoria === null) return;
+
+  const categoriaFinal =
+    categorias.find(
+      c =>
+        c.toLowerCase() ===
+        novaCategoria.trim().toLowerCase()
+    ) || categoriaAtual;
+
+  // Imagem
+  const imagemAtual =
+    noticia.Imagem ??
+    noticia.imagem ??
+    "";
+
+  const novaImagem = prompt(
+    "URL da imagem (deixe vazio para remover):",
+    imagemAtual
+  );
+
+  if (novaImagem === null) return;
+
+  // Atualizar
+  const { data: atualizado, error: updateError } =
+    await supabaseClient
+      .from("noticias")
+      .update({
+        titulo: novoTitulo.trim(),
+        texto: novoTexto.trim(),
+        categoria: categoriaFinal,
+        Imagem: novaImagem.trim() || null
+      })
+      .eq("id", id)
+      .select("*");
+
+  if (updateError) {
+    console.error("Erro ao editar:", updateError);
+
+    alert(
+      "❌ Erro ao editar:\n\n" +
+      updateError.message
+    );
+
+    return;
+  }
+
+  // Confirmar que uma linha foi realmente alterada
+  if (!atualizado || atualizado.length === 0) {
+
+    alert(
+      "⚠️ A atualização não alterou nenhuma notícia.\n\n" +
+      "O ID " + id +
+      " não foi atualizado no Supabase."
+    );
+
+    console.error(
+      "Nenhuma linha atualizada para o ID:",
+      id
+    );
+
+    return;
+  }
+
+  console.log(
+    "Notícia realmente atualizada:",
+    atualizado[0]
+  );
+
+  // Recarregar painel
+  await render();
+
+  alert(
+    "✅ Notícia atualizada com sucesso!"
+  );
+}
+
   if (
     id === null ||
     id === undefined ||
