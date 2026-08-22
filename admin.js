@@ -129,13 +129,6 @@ async function publish() {
   }
 
 
-  /* =========================================
-     GRAVAR NO SUPABASE
-
-     O ID NÃO É ENVIADO.
-     O SUPABASE DEVE GERAR O ID.
-  ========================================= */
-
   const { data, error } =
     await supabaseClient
       .from("noticias")
@@ -143,14 +136,9 @@ async function publish() {
 
         {
           titulo: title,
-
           categoria: cat,
-
-          Imagem:
-            image || null,
-
+          Imagem: image || null,
           texto: body
-
         }
 
       ])
@@ -180,26 +168,8 @@ async function publish() {
   );
 
 
-  /* =========================================
-     LIMPAR FORMULÁRIO
-  ========================================= */
+  limparFormulario();
 
-  document
-    .getElementById("title")
-    .value = "";
-
-
-  document
-    .getElementById("image")
-    .value = "";
-
-
-  document
-    .getElementById("body")
-    .value = "";
-
-
-  /* Atualizar lista */
 
   await render();
 
@@ -212,7 +182,22 @@ async function publish() {
 
 
 /* =========================================
-   MOSTRAR NOTÍCIAS PUBLICADAS
+   LIMPAR FORMULÁRIO
+========================================= */
+
+function limparFormulario() {
+
+  document.getElementById("title").value = "";
+
+  document.getElementById("image").value = "";
+
+  document.getElementById("body").value = "";
+
+}
+
+
+/* =========================================
+   CARREGAR NOTÍCIAS
 ========================================= */
 
 async function render() {
@@ -273,7 +258,6 @@ async function render() {
     data.map(
       function(p) {
 
-
         const imagem =
           p.imagem ??
           p.Imagem ??
@@ -296,7 +280,6 @@ async function render() {
               imagem
 
               ? `
-
                 <img
                   src="${esc(imagem)}"
                   alt="${esc(p.titulo)}"
@@ -308,7 +291,6 @@ async function render() {
                     display:block;
                   "
                 >
-
               `
 
               : ""
@@ -349,12 +331,305 @@ async function render() {
             </small>
 
 
+            <div
+              style="
+                margin-top:12px;
+                display:flex;
+                gap:8px;
+                flex-wrap:wrap;
+              "
+            >
+
+              <button
+                onclick="editarNoticia(${Number(p.id)})"
+                style="
+                  padding:9px 14px;
+                  border:0;
+                  border-radius:7px;
+                  background:#1976d2;
+                  color:#fff;
+                  font-weight:700;
+                  cursor:pointer;
+                "
+              >
+                ✏️ Editar
+              </button>
+
+
+              <button
+                onclick="excluirNoticia(${Number(p.id)})"
+                style="
+                  padding:9px 14px;
+                  border:0;
+                  border-radius:7px;
+                  background:#d32f2f;
+                  color:#fff;
+                  font-weight:700;
+                  cursor:pointer;
+                "
+              >
+                🗑️ Excluir
+              </button>
+
+            </div>
+
+
           </div>
 
         `;
 
       }
     ).join("");
+
+}
+
+
+/* =========================================
+   EDITAR NOTÍCIA
+========================================= */
+
+async function editarNoticia(id) {
+
+  if (
+    id === null ||
+    id === undefined ||
+    !Number.isFinite(Number(id))
+  ) {
+
+    alert(
+      "❌ ID da notícia inválido."
+    );
+
+    return;
+
+  }
+
+
+  const { data, error } =
+    await supabaseClient
+      .from("noticias")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(error);
+
+    alert(
+      "❌ Não foi possível carregar a notícia."
+    );
+
+    return;
+
+  }
+
+
+  if (!data) {
+
+    alert(
+      "❌ Notícia não encontrada."
+    );
+
+    return;
+
+  }
+
+
+  const novoTitulo =
+    prompt(
+      "Título da notícia:",
+      data.titulo || ""
+    );
+
+
+  if (novoTitulo === null) {
+    return;
+  }
+
+
+  const novoTexto =
+    prompt(
+      "Texto da notícia:",
+      data.texto || ""
+    );
+
+
+  if (novoTexto === null) {
+    return;
+  }
+
+
+  const novasCategorias = [
+    "Notícias",
+    "Futebol",
+    "Moçambique",
+    "África",
+    "Negócios",
+    "Entretenimento",
+    "Desporto"
+  ];
+
+
+  const categoriaAtual =
+    data.categoria || "Notícias";
+
+
+  const novaCategoria =
+    prompt(
+      "Categoria:\n\n" +
+      novasCategorias.join(" | "),
+      categoriaAtual
+    );
+
+
+  if (novaCategoria === null) {
+    return;
+  }
+
+
+  const novaImagem =
+    prompt(
+      "URL da imagem (deixe vazio para remover):",
+      data.Imagem ||
+      data.imagem ||
+      ""
+    );
+
+
+  if (novaImagem === null) {
+    return;
+  }
+
+
+  const categoriaFinal =
+    novasCategorias.find(
+      function(categoria) {
+
+        return categoria.toLowerCase() ===
+          novaCategoria.trim().toLowerCase();
+
+      }
+    ) || categoriaAtual;
+
+
+  const { error: updateError } =
+    await supabaseClient
+      .from("noticias")
+      .update({
+
+        titulo:
+          novoTitulo.trim(),
+
+        texto:
+          novoTexto.trim(),
+
+        categoria:
+          categoriaFinal,
+
+        Imagem:
+          novaImagem.trim() || null
+
+      })
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (updateError) {
+
+    console.error(
+      updateError
+    );
+
+    alert(
+      "❌ Erro ao editar:\n\n" +
+      updateError.message
+    );
+
+    return;
+
+  }
+
+
+  await render();
+
+
+  alert(
+    "✅ Notícia atualizada com sucesso!"
+  );
+
+}
+
+
+/* =========================================
+   EXCLUIR NOTÍCIA
+========================================= */
+
+async function excluirNoticia(id) {
+
+  if (
+    id === null ||
+    id === undefined ||
+    !Number.isFinite(Number(id))
+  ) {
+
+    alert(
+      "❌ ID da notícia inválido."
+    );
+
+    return;
+
+  }
+
+
+  const confirmar =
+    confirm(
+      "⚠️ Tem certeza que deseja excluir esta notícia?\n\n" +
+      "Esta ação não pode ser desfeita."
+    );
+
+
+  if (!confirmar) {
+    return;
+  }
+
+
+  const { error } =
+    await supabaseClient
+      .from("noticias")
+      .delete()
+      .eq(
+        "id",
+        id
+      );
+
+
+  if (error) {
+
+    console.error(
+      "Erro ao excluir:",
+      error
+    );
+
+    alert(
+      "❌ Não foi possível excluir a notícia:\n\n" +
+      error.message
+    );
+
+    return;
+
+  }
+
+
+  await render();
+
+
+  alert(
+    "✅ Notícia excluída com sucesso!"
+  );
 
 }
 
@@ -403,4 +678,4 @@ if (
 
   show();
 
-}
+           }
