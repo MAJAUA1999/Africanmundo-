@@ -22,10 +22,15 @@ const supabaseClient =
 function login() {
 
   const u =
-    document.getElementById("user").value.trim();
+    document
+      .getElementById("user")
+      .value
+      .trim();
 
   const p =
-    document.getElementById("pass").value;
+    document
+      .getElementById("pass")
+      .value;
 
   if (
     u === "admin" &&
@@ -56,13 +61,23 @@ function login() {
 
 function show() {
 
-  document
-    .getElementById("loginBox")
-    .classList.add("hidden");
+  const loginBox =
+    document.getElementById("loginBox");
 
-  document
-    .getElementById("dashboard")
-    .classList.remove("hidden");
+  const dashboard =
+    document.getElementById("dashboard");
+
+  if (loginBox) {
+
+    loginBox.classList.add("hidden");
+
+  }
+
+  if (dashboard) {
+
+    dashboard.classList.remove("hidden");
+
+  }
 
   render();
 
@@ -96,20 +111,17 @@ async function publish() {
       .value
       .trim();
 
-
   const cat =
     document
       .getElementById("category")
       .value
       .trim();
 
-
   const image =
     document
       .getElementById("image")
       .value
       .trim();
-
 
   const body =
     document
@@ -136,9 +148,14 @@ async function publish() {
 
         {
           titulo: title,
+
           categoria: cat,
-          Imagem: image || null,
+
+          Imagem:
+            image || null,
+
           texto: body
+
         }
 
       ])
@@ -187,11 +204,33 @@ async function publish() {
 
 function limparFormulario() {
 
-  document.getElementById("title").value = "";
+  const title =
+    document.getElementById("title");
 
-  document.getElementById("image").value = "";
+  const image =
+    document.getElementById("image");
 
-  document.getElementById("body").value = "";
+  const body =
+    document.getElementById("body");
+
+
+  if (title) {
+
+    title.value = "";
+
+  }
+
+  if (image) {
+
+    image.value = "";
+
+  }
+
+  if (body) {
+
+    body.value = "";
+
+  }
 
 }
 
@@ -204,6 +243,13 @@ async function render() {
 
   const posts =
     document.getElementById("posts");
+
+
+  if (!posts) {
+
+    return;
+
+  }
 
 
   posts.innerHTML =
@@ -255,131 +301,133 @@ async function render() {
 
 
   posts.innerHTML =
-    data.map(
-      function(p) {
+    data
+      .map(
+        function(p) {
 
-        const imagem =
-          p.imagem ??
-          p.Imagem ??
-          "";
-
-
-        return `
-
-          <div
-            class="post-item"
-            style="
-              margin-bottom:20px;
-              padding:15px;
-              border:1px solid #ddd;
-              border-radius:10px;
-            "
-          >
-
-            ${
-              imagem
-
-              ? `
-                <img
-                  src="${esc(imagem)}"
-                  alt="${esc(p.titulo)}"
-                  style="
-                    width:100%;
-                    max-width:500px;
-                    border-radius:10px;
-                    margin-bottom:10px;
-                    display:block;
-                  "
-                >
-              `
-
-              : ""
-
-            }
+          const imagem =
+            p.imagem ??
+            p.Imagem ??
+            "";
 
 
-            <b>
-              ${esc(
-                p.titulo ||
-                "Sem título"
-              )}
-            </b>
-
-
-            <br>
-
-
-            <small>
-              🏷️ ${esc(
-                p.categoria ||
-                "Notícias"
-              )}
-            </small>
-
-
-            <p>
-              ${esc(
-                p.texto ||
-                ""
-              )}
-            </p>
-
-
-            <small>
-              🆔 ID:
-              ${esc(p.id)}
-            </small>
-
+          return `
 
             <div
+              class="post-item"
               style="
-                margin-top:12px;
-                display:flex;
-                gap:8px;
-                flex-wrap:wrap;
+                margin-bottom:20px;
+                padding:15px;
+                border:1px solid #ddd;
+                border-radius:10px;
               "
             >
 
-              <button
-                onclick="editarNoticia(${Number(p.id)})"
-                style="
-                  padding:9px 14px;
-                  border:0;
-                  border-radius:7px;
-                  background:#1976d2;
-                  color:#fff;
-                  font-weight:700;
-                  cursor:pointer;
-                "
-              >
-                ✏️ Editar
-              </button>
+              ${
+                imagem
+
+                ? `
+                  <img
+                    src="${esc(imagem)}"
+                    alt="${esc(p.titulo)}"
+                    style="
+                      width:100%;
+                      max-width:500px;
+                      border-radius:10px;
+                      margin-bottom:10px;
+                      display:block;
+                    "
+                  >
+                `
+
+                : ""
+
+              }
 
 
-              <button
-                onclick="excluirNoticia(${Number(p.id)})"
+              <b>
+                ${esc(
+                  p.titulo ||
+                  "Sem título"
+                )}
+              </b>
+
+
+              <br>
+
+
+              <small>
+                🏷️ ${esc(
+                  p.categoria ||
+                  "Notícias"
+                )}
+              </small>
+
+
+              <p>
+                ${esc(
+                  p.texto ||
+                  ""
+                )}
+              </p>
+
+
+              <small>
+                🆔 ID:
+                ${esc(p.id)}
+              </small>
+
+
+              <div
                 style="
-                  padding:9px 14px;
-                  border:0;
-                  border-radius:7px;
-                  background:#d32f2f;
-                  color:#fff;
-                  font-weight:700;
-                  cursor:pointer;
+                  margin-top:12px;
+                  display:flex;
+                  gap:8px;
+                  flex-wrap:wrap;
                 "
               >
-                🗑️ Excluir
-              </button>
+
+                <button
+                  onclick="editarNoticia(${Number(p.id)})"
+                  style="
+                    padding:9px 14px;
+                    border:0;
+                    border-radius:7px;
+                    background:#1976d2;
+                    color:#fff;
+                    font-weight:700;
+                    cursor:pointer;
+                  "
+                >
+                  ✏️ Editar
+                </button>
+
+
+                <button
+                  onclick="excluirNoticia(${Number(p.id)})"
+                  style="
+                    padding:9px 14px;
+                    border:0;
+                    border-radius:7px;
+                    background:#d32f2f;
+                    color:#fff;
+                    font-weight:700;
+                    cursor:pointer;
+                  "
+                >
+                  🗑️ Excluir
+                </button>
+
+              </div>
+
 
             </div>
 
+          `;
 
-          </div>
-
-        `;
-
-      }
-    ).join("");
+        }
+      )
+      .join("");
 
 }
 
@@ -392,147 +440,8 @@ async function editarNoticia(id) {
 
   id = Number(id);
 
+
   if (!Number.isFinite(id)) {
-    alert("❌ ID da notícia inválido.");
-    return;
-  }
-
-  // Buscar notícia atual
-  const { data: noticia, error: buscarError } =
-    await supabaseClient
-      .from("noticias")
-      .select("*")
-      .eq("id", id)
-      .maybeSingle();
-
-  if (buscarError) {
-    console.error(buscarError);
-    alert("❌ Erro ao carregar a notícia:\n\n" + buscarError.message);
-    return;
-  }
-
-  if (!noticia) {
-    alert("❌ Notícia não encontrada.");
-    return;
-  }
-
-  // Título
-  const novoTitulo = prompt(
-    "Título da notícia:",
-    noticia.titulo || ""
-  );
-
-  if (novoTitulo === null) return;
-
-  // Texto
-  const novoTexto = prompt(
-    "Texto da notícia:",
-    noticia.texto || ""
-  );
-
-  if (novoTexto === null) return;
-
-  // Categoria
-  const categorias = [
-    "Notícias",
-    "Futebol",
-    "Moçambique",
-    "África",
-    "Negócios",
-    "Entretenimento",
-    "Desporto"
-  ];
-
-  const categoriaAtual =
-    noticia.categoria || "Notícias";
-
-  const novaCategoria = prompt(
-    "Categoria:\n\n" +
-    categorias.join(" | "),
-    categoriaAtual
-  );
-
-  if (novaCategoria === null) return;
-
-  const categoriaFinal =
-    categorias.find(
-      c =>
-        c.toLowerCase() ===
-        novaCategoria.trim().toLowerCase()
-    ) || categoriaAtual;
-
-  // Imagem
-  const imagemAtual =
-    noticia.Imagem ??
-    noticia.imagem ??
-    "";
-
-  const novaImagem = prompt(
-    "URL da imagem (deixe vazio para remover):",
-    imagemAtual
-  );
-
-  if (novaImagem === null) return;
-
-  // Atualizar
-  const { data: atualizado, error: updateError } =
-    await supabaseClient
-      .from("noticias")
-      .update({
-        titulo: novoTitulo.trim(),
-        texto: novoTexto.trim(),
-        categoria: categoriaFinal,
-        Imagem: novaImagem.trim() || null
-      })
-      .eq("id", id)
-      .select("*");
-
-  if (updateError) {
-    console.error("Erro ao editar:", updateError);
-
-    alert(
-      "❌ Erro ao editar:\n\n" +
-      updateError.message
-    );
-
-    return;
-  }
-
-  // Confirmar que uma linha foi realmente alterada
-  if (!atualizado || atualizado.length === 0) {
-
-    alert(
-      "⚠️ A atualização não alterou nenhuma notícia.\n\n" +
-      "O ID " + id +
-      " não foi atualizado no Supabase."
-    );
-
-    console.error(
-      "Nenhuma linha atualizada para o ID:",
-      id
-    );
-
-    return;
-  }
-
-  console.log(
-    "Notícia realmente atualizada:",
-    atualizado[0]
-  );
-
-  // Recarregar painel
-  await render();
-
-  alert(
-    "✅ Notícia atualizada com sucesso!"
-  );
-}
-
-  if (
-    id === null ||
-    id === undefined ||
-    !Number.isFinite(Number(id))
-  ) {
 
     alert(
       "❌ ID da notícia inválido."
@@ -543,7 +452,12 @@ async function editarNoticia(id) {
   }
 
 
-  const { data, error } =
+  /* Buscar notícia atual */
+
+  const {
+    data: noticia,
+    error: buscarError
+  } =
     await supabaseClient
       .from("noticias")
       .select("*")
@@ -551,12 +465,16 @@ async function editarNoticia(id) {
       .maybeSingle();
 
 
-  if (error) {
+  if (buscarError) {
 
-    console.error(error);
+    console.error(
+      "Erro ao buscar notícia:",
+      buscarError
+    );
 
     alert(
-      "❌ Não foi possível carregar a notícia."
+      "❌ Erro ao carregar a notícia:\n\n" +
+      buscarError.message
     );
 
     return;
@@ -564,7 +482,7 @@ async function editarNoticia(id) {
   }
 
 
-  if (!data) {
+  if (!noticia) {
 
     alert(
       "❌ Notícia não encontrada."
@@ -575,84 +493,168 @@ async function editarNoticia(id) {
   }
 
 
+  /* =========================================
+     NOVO TÍTULO
+  ========================================= */
+
   const novoTitulo =
     prompt(
       "Título da notícia:",
-      data.titulo || ""
+      noticia.titulo || ""
     );
 
 
   if (novoTitulo === null) {
+
     return;
+
   }
 
+
+  if (!novoTitulo.trim()) {
+
+    alert(
+      "❌ O título não pode ficar vazio."
+    );
+
+    return;
+
+  }
+
+
+  /* =========================================
+     NOVO TEXTO
+  ========================================= */
 
   const novoTexto =
     prompt(
       "Texto da notícia:",
-      data.texto || ""
+      noticia.texto || ""
     );
 
 
   if (novoTexto === null) {
+
     return;
+
   }
 
 
-  const novasCategorias = [
+  if (!novoTexto.trim()) {
+
+    alert(
+      "❌ O texto não pode ficar vazio."
+    );
+
+    return;
+
+  }
+
+
+  /* =========================================
+     NOVA CATEGORIA
+  ========================================= */
+
+  const categorias = [
+
     "Notícias",
+
     "Futebol",
+
     "Moçambique",
+
     "África",
+
     "Negócios",
+
     "Entretenimento",
+
     "Desporto"
+
   ];
 
 
   const categoriaAtual =
-    data.categoria || "Notícias";
+    noticia.categoria ||
+    "Notícias";
 
 
   const novaCategoria =
     prompt(
+
       "Categoria:\n\n" +
-      novasCategorias.join(" | "),
+
+      categorias.join(
+        " | "
+      ),
+
       categoriaAtual
+
     );
 
 
   if (novaCategoria === null) {
+
     return;
+
   }
+
+
+  const categoriaDigitada =
+    novaCategoria
+      .trim();
+
+
+  const categoriaFinal =
+    categorias.find(
+
+      function(categoria) {
+
+        return (
+          categoria.toLowerCase() ===
+          categoriaDigitada.toLowerCase()
+        );
+
+      }
+
+    ) || categoriaAtual;
+
+
+  /* =========================================
+     NOVA IMAGEM
+  ========================================= */
+
+  const imagemAtual =
+    noticia.Imagem ??
+    noticia.imagem ??
+    "";
 
 
   const novaImagem =
     prompt(
+
       "URL da imagem (deixe vazio para remover):",
-      data.Imagem ||
-      data.imagem ||
-      ""
+
+      imagemAtual
+
     );
 
 
   if (novaImagem === null) {
+
     return;
+
   }
 
 
-  const categoriaFinal =
-    novasCategorias.find(
-      function(categoria) {
+  /* =========================================
+     ATUALIZAR NO SUPABASE
+  ========================================= */
 
-        return categoria.toLowerCase() ===
-          novaCategoria.trim().toLowerCase();
-
-      }
-    ) || categoriaAtual;
-
-
-  const { error: updateError } =
+  const {
+    data: atualizado,
+    error: updateError
+  } =
     await supabaseClient
       .from("noticias")
       .update({
@@ -673,12 +675,14 @@ async function editarNoticia(id) {
       .eq(
         "id",
         id
-      );
+      )
+      .select("*");
 
 
   if (updateError) {
 
     console.error(
+      "Erro ao editar:",
       updateError
     );
 
@@ -691,6 +695,49 @@ async function editarNoticia(id) {
 
   }
 
+
+  /* =========================================
+     CONFIRMAR ATUALIZAÇÃO
+  ========================================= */
+
+  if (
+    !atualizado ||
+    atualizado.length === 0
+  ) {
+
+    alert(
+
+      "⚠️ A atualização não alterou nenhuma notícia.\n\n" +
+
+      "O ID " +
+      id +
+      " não foi atualizado no Supabase."
+
+    );
+
+    console.error(
+
+      "Nenhuma linha atualizada para o ID:",
+
+      id
+
+    );
+
+    return;
+
+  }
+
+
+  console.log(
+
+    "Notícia realmente atualizada:",
+
+    atualizado[0]
+
+  );
+
+
+  /* Atualizar painel */
 
   await render();
 
@@ -708,11 +755,10 @@ async function editarNoticia(id) {
 
 async function excluirNoticia(id) {
 
-  if (
-    id === null ||
-    id === undefined ||
-    !Number.isFinite(Number(id))
-  ) {
+  id = Number(id);
+
+
+  if (!Number.isFinite(id)) {
 
     alert(
       "❌ ID da notícia inválido."
@@ -725,13 +771,18 @@ async function excluirNoticia(id) {
 
   const confirmar =
     confirm(
+
       "⚠️ Tem certeza que deseja excluir esta notícia?\n\n" +
+
       "Esta ação não pode ser desfeita."
+
     );
 
 
   if (!confirmar) {
+
     return;
+
   }
 
 
@@ -753,8 +804,11 @@ async function excluirNoticia(id) {
     );
 
     alert(
+
       "❌ Não foi possível excluir a notícia:\n\n" +
+
       error.message
+
     );
 
     return;
@@ -781,24 +835,32 @@ function esc(s) {
   return String(
     s ?? ""
   ).replace(
+
     /[&<>"']/g,
+
     function(m) {
 
       return {
 
-        "&": "&amp;",
+        "&":
+          "&amp;",
 
-        "<": "&lt;",
+        "<":
+          "&lt;",
 
-        ">": "&gt;",
+        ">":
+          "&gt;",
 
-        '"': "&quot;",
+        '"':
+          "&quot;",
 
-        "'": "&#039;"
+        "'":
+          "&#039;"
 
       }[m];
 
     }
+
   );
 
 }
@@ -816,4 +878,4 @@ if (
 
   show();
 
-           }
+     }
