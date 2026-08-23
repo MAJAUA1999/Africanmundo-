@@ -98,6 +98,69 @@
       padding: 20px;
     }
 
+    /* =====================================
+       MAIS NOTÍCIAS
+    ===================================== */
+
+    .related-news {
+      margin-top: 30px;
+    }
+
+    .related-news-title {
+      margin: 0 0 15px;
+      font-size: 22px;
+      border-left: 4px solid #45c226;
+      padding-left: 10px;
+    }
+
+    .related-news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+    }
+
+    .related-card {
+      background: #fff;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid #ddd;
+      text-decoration: none;
+      color: #111;
+    }
+
+    .related-card img,
+    .related-placeholder {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .related-placeholder {
+      background: linear-gradient(135deg, #111, #345b29);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+    }
+
+    .related-content {
+      padding: 12px;
+    }
+
+    .related-category {
+      color: #45a52c;
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .related-card h3 {
+      margin: 6px 0 0;
+      font-size: 16px;
+      line-height: 1.3;
+    }
+
     @media (max-width: 600px) {
 
       .article-image {
@@ -115,6 +178,10 @@
       .article-text {
         font-size: 17px;
         line-height: 1.75;
+      }
+
+      .related-news-grid {
+        grid-template-columns: 1fr;
       }
 
     }
@@ -200,7 +267,7 @@ function esc(valor) {
 
 
 /* =====================================
-   DATA
+   DATA + HORA
 ===================================== */
 
 function formatarData(data) {
@@ -230,6 +297,156 @@ function formatarData(data) {
 
 
 /* =====================================
+   MAIS NOTÍCIAS
+===================================== */
+
+async function carregarMaisNoticias(
+  noticiaAtualId
+) {
+
+  const article =
+    document.getElementById("article");
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .neq("id", noticiaAtualId)
+        .order("id", {
+          ascending: false
+        })
+        .limit(3);
+
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro ao carregar mais notícias:",
+        resultado.error
+      );
+
+      return;
+    }
+
+
+    const noticias =
+      resultado.data || [];
+
+
+    if (noticias.length === 0) {
+      return;
+    }
+
+
+    const cards =
+      noticias.map(function(noticia) {
+
+        const titulo =
+          noticia.titulo ||
+          "Sem título";
+
+
+        const categoria =
+          noticia.categoria ||
+          "Notícias";
+
+
+        const imagem =
+          String(
+            noticia.imagem || ""
+          ).trim();
+
+
+        let imagemHTML = `
+          <div class="related-placeholder">
+            🌍
+          </div>
+        `;
+
+
+        if (imagem !== "") {
+
+          imagemHTML = `
+            <img
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              onerror="
+                this.outerHTML='<div class=&quot;related-placeholder&quot;>🌍</div>'
+              "
+            >
+          `;
+
+        }
+
+
+        return `
+          <a
+            class="related-card"
+            href="noticia.html?id=${encodeURIComponent(noticia.id)}"
+          >
+
+            ${imagemHTML}
+
+            <div class="related-content">
+
+              <div class="related-category">
+                ${esc(categoria)}
+              </div>
+
+              <h3>
+                ${esc(titulo)}
+              </h3>
+
+            </div>
+
+          </a>
+        `;
+
+      }).join("");
+
+
+    const secao =
+      document.createElement("section");
+
+
+    secao.className =
+      "related-news";
+
+
+    secao.innerHTML = `
+
+      <h2 class="related-news-title">
+        📰 Mais notícias
+      </h2>
+
+      <div class="related-news-grid">
+        ${cards}
+      </div>
+
+    `;
+
+
+    article.parentNode.appendChild(
+      secao
+    );
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+  }
+
+}
+
+
+/* =====================================
    CARREGAR NOTÍCIA
 ===================================== */
 
@@ -238,10 +455,6 @@ async function carregarNoticia() {
   const article =
     document.getElementById("article");
 
-
-  /* ===================================
-     PEGAR ID DA URL
-  =================================== */
 
   const url =
     new URL(
@@ -264,10 +477,6 @@ async function carregarNoticia() {
     id
   );
 
-
-  /* ===================================
-     VERIFICAR ID
-  =================================== */
 
   if (!id) {
 
@@ -293,10 +502,6 @@ async function carregarNoticia() {
   }
 
 
-  /* ===================================
-     LIMPAR ID
-  =================================== */
-
   const idLimpo =
     String(id).trim();
 
@@ -319,10 +524,6 @@ async function carregarNoticia() {
 
   try {
 
-    /* =================================
-       BUSCAR NOTÍCIA
-    ================================= */
-
     const resultado =
       await supabaseClient
         .from("noticias")
@@ -344,10 +545,6 @@ async function carregarNoticia() {
       data
     );
 
-
-    /* =================================
-       ERRO
-    ================================= */
 
     if (error) {
 
@@ -376,10 +573,6 @@ async function carregarNoticia() {
       return;
     }
 
-
-    /* =================================
-       NÃO ENCONTROU
-    ================================= */
 
     if (!data) {
 
@@ -441,14 +634,14 @@ async function carregarNoticia() {
       ).trim();
 
 
-   const dataPublicacao =
-  formatarData(
-    data.data
-  ); 
+    const dataPublicacao =
+      formatarData(
+        data.data
+      );
 
 
     /* =================================
-       MOSTRAR
+       MOSTRAR NOTÍCIA
     ================================= */
 
     article.innerHTML = `
@@ -532,6 +725,15 @@ async function carregarNoticia() {
       </article>
 
     `;
+
+
+    /* =================================
+       CARREGAR MAIS NOTÍCIAS
+    ================================= */
+
+    carregarMaisNoticias(
+      idLimpo
+    );
 
   }
 
