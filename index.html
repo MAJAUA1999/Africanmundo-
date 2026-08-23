@@ -1193,5 +1193,598 @@
 /* =========================================
    SUPABASE
 ========================================= */
+<script>
+
+/* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================
+   SEGURANÇA
+========================================= */
+
+function esc(valor) {
+
+  return String(valor ?? "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   NORMALIZAR CATEGORIA
+========================================= */
+
+function normalizarCategoria(valor) {
+
+  return String(valor || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+}
+
+
+/* =========================================
+   IMAGEM
+========================================= */
+
+function obterImagem(noticia) {
+
+  return (
+    noticia.imagem ||
+    noticia.Imagem ||
+    noticia.imagem_url ||
+    noticia.image_url ||
+    ""
+  );
+
+}
+
+
+/* =========================================
+   CARTÃO
+========================================= */
+
+function criarCartao(noticia) {
+
+  const titulo =
+    noticia.titulo ||
+    "Sem título";
+
+  const texto =
+    noticia.texto ||
+    noticia.descricao ||
+    "";
+
+  const categoria =
+    noticia.categoria ||
+    "Notícias";
+
+  const imagem =
+    obterImagem(noticia);
+
+  const id =
+    noticia.id;
+
+  let imagemHTML = `
+    <div class="news-card-placeholder">
+      🌍
+    </div>
+  `;
+
+  if (String(imagem).trim() !== "") {
+
+    imagemHTML = `
+      <img
+        class="news-card-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        onerror="
+          this.outerHTML =
+          '<div class=&quot;news-card-placeholder&quot;>🌍</div>';
+        "
+      >
+    `;
+
+  }
+
+  let botao = "";
+
+  if (
+    id !== null &&
+    id !== undefined &&
+    String(id) !== "" &&
+    String(id) !== "null"
+  ) {
+
+    botao = `
+      <a
+        class="read-more"
+        href="noticia.html?id=${encodeURIComponent(id)}"
+      >
+        📖 Ler mais
+      </a>
+    `;
+
+  }
+
+  return `
+
+    <article class="news-card">
+
+      ${imagemHTML}
+
+      <div class="news-card-content">
+
+        <div class="news-category">
+          ${esc(categoria)}
+        </div>
+
+        <h3>
+          ${esc(titulo)}
+        </h3>
+
+        <p>
+          ${esc(texto)}
+        </p>
+
+        ${botao}
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================
+   DESTAQUE
+========================================= */
+
+function mostrarDestaque(noticia) {
+
+  const elemento =
+    document.getElementById("destaque");
+
+  if (!elemento || !noticia) {
+    return;
+  }
+
+  const titulo =
+    noticia.titulo ||
+    "Sem título";
+
+  const texto =
+    noticia.texto ||
+    noticia.descricao ||
+    "";
+
+  const categoria =
+    noticia.categoria ||
+    "Notícias";
+
+  const imagem =
+    obterImagem(noticia);
+
+  const id =
+    noticia.id;
+
+  let fundo = "";
+
+  if (String(imagem).trim() !== "") {
+
+    fundo = `
+      <img
+        class="hero-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        onerror="this.style.display='none';"
+      >
+    `;
+
+  } else {
+
+    fundo = `
+      <div class="hero-no-image">
+        🌍
+      </div>
+    `;
+
+  }
+
+  elemento.innerHTML = `
+
+    ${fundo}
+
+    <div class="hero-overlay">
+
+      <div class="badge">
+        ${esc(categoria)}
+      </div>
+
+      <h1>
+        ${esc(titulo)}
+      </h1>
+
+      <p>
+        ${esc(texto)}
+      </p>
+
+      <div class="hero-date">
+        AfricanMundo
+      </div>
+
+      ${
+        id !== null &&
+        id !== undefined
+        ? `
+          <a
+            class="read-more"
+            href="noticia.html?id=${encodeURIComponent(id)}"
+          >
+            📖 Ler notícia
+          </a>
+        `
+        : ""
+      }
+
+    </div>
+
+  `;
+
+}
+
+
+/* =========================================
+   ÚLTIMAS NOTÍCIAS
+========================================= */
+
+function mostrarUltimas(noticias) {
+
+  const elemento =
+    document.getElementById("ultimas");
+
+  if (!elemento) {
+    return;
+  }
+
+  if (!noticias || noticias.length === 0) {
+
+    elemento.innerHTML =
+      "<p>📰 Nenhuma notícia publicada.</p>";
+
+    return;
+
+  }
+
+  elemento.innerHTML =
+    noticias
+      .slice(0, 5)
+      .map(function(noticia) {
+
+        const titulo =
+          noticia.titulo ||
+          "Sem título";
+
+        const imagem =
+          obterImagem(noticia);
+
+        const id =
+          noticia.id;
+
+        let imagemHTML = `
+          <div class="latest-placeholder">
+            🌍
+          </div>
+        `;
+
+        if (String(imagem).trim() !== "") {
+
+          imagemHTML = `
+            <img
+              class="latest-image"
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+            >
+          `;
+
+        }
+
+        return `
+
+          <div class="latest-item">
+
+            ${
+              id !== null &&
+              id !== undefined
+              ? `
+                <a
+                  href="noticia.html?id=${encodeURIComponent(id)}"
+                >
+                  ${imagemHTML}
+                </a>
+              `
+              : imagemHTML
+            }
+
+            <div>
+
+              <h3>
+
+                ${
+                  id !== null &&
+                  id !== undefined
+                  ? `
+                    <a
+                      href="noticia.html?id=${encodeURIComponent(id)}"
+                      style="
+                        text-decoration:none;
+                      "
+                    >
+                      ${esc(titulo)}
+                    </a>
+                  `
+                  : esc(titulo)
+                }
+
+              </h3>
+
+              <small>
+                ${esc(noticia.categoria || "Notícias")}
+              </small>
+
+            </div>
+
+          </div>
+
+        `;
+
+      })
+      .join("");
+
+}
+
+
+/* =========================================
+   CARREGAR NOTÍCIAS
+========================================= */
+
+async function carregarNoticias() {
+
+  const secoes = [
+    "futebol",
+    "mocambique",
+    "africa",
+    "negocios",
+    "entretenimento",
+    "desporto"
+  ];
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
+
+    const data =
+      resultado.data;
+
+    const error =
+      resultado.error;
+
+
+    if (error) {
+
+      console.error(
+        "Erro Supabase:",
+        error
+      );
+
+      document.getElementById("ultimas").innerHTML =
+        `
+          <p>
+            ❌ Erro ao carregar notícias.
+            <br><br>
+            <small>
+              ${esc(error.message)}
+            </small>
+          </p>
+        `;
+
+      return;
+
+    }
+
+
+    if (!data || data.length === 0) {
+
+      document.getElementById("ultimas").innerHTML =
+        "<p>📰 Ainda não existem notícias.</p>";
+
+      return;
+
+    }
+
+
+    /* DESTAQUE */
+
+    mostrarDestaque(
+      data[0]
+    );
+
+
+    /* ÚLTIMAS */
+
+    mostrarUltimas(
+      data
+    );
+
+
+    /* LIMPAR CATEGORIAS */
+
+    secoes.forEach(function(id) {
+
+      const elemento =
+        document.getElementById(id);
+
+      if (elemento) {
+
+        elemento.innerHTML = "";
+
+      }
+
+    });
+
+
+    /* DISTRIBUIR */
+
+    data.forEach(function(noticia) {
+
+      const categoria =
+        normalizarCategoria(
+          noticia.categoria
+        );
+
+      let destino = null;
+
+
+      if (categoria === "futebol") {
+
+        destino = "futebol";
+
+      }
+
+      else if (categoria === "mocambique") {
+
+        destino = "mocambique";
+
+      }
+
+      else if (categoria === "africa") {
+
+        destino = "africa";
+
+      }
+
+      else if (categoria === "negocios") {
+
+        destino = "negocios";
+
+      }
+
+      else if (categoria === "entretenimento") {
+
+        destino = "entretenimento";
+
+      }
+
+      else if (categoria === "desporto") {
+
+        destino = "desporto";
+
+      }
+
+
+      if (destino) {
+
+        const elemento =
+          document.getElementById(destino);
+
+        if (elemento) {
+
+          elemento.insertAdjacentHTML(
+            "beforeend",
+            criarCartao(noticia)
+          );
+
+        }
+
+      }
+
+    });
+
+
+    /* CATEGORIAS VAZIAS */
+
+    secoes.forEach(function(id) {
+
+      const elemento =
+        document.getElementById(id);
+
+      if (
+        elemento &&
+        !elemento.innerHTML.trim()
+      ) {
+
+        elemento.innerHTML =
+          "<p>📰 Nenhuma notícia publicada nesta categoria.</p>";
+
+      }
+
+    });
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro geral:",
+      erro
+    );
+
+    document.getElementById("ultimas").innerHTML =
+      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
+
+  }
+
+}
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    carregarNoticias();
+
+  }
+);
+
+</script>
+
