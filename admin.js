@@ -100,6 +100,155 @@ function logout() {
 
 
 /* =========================================
+   PREVISUALIZAR IMAGEM
+========================================= */
+
+const imageFileInput =
+  document.getElementById("imageFile");
+
+if (imageFileInput) {
+
+  imageFileInput.addEventListener(
+    "change",
+    function() {
+
+      const arquivo =
+        this.files &&
+        this.files[0];
+
+      const preview =
+        document.getElementById(
+          "imagePreview"
+        );
+
+      if (!preview) {
+        return;
+      }
+
+      if (!arquivo) {
+
+        preview.innerHTML = "";
+
+        return;
+
+      }
+
+      const url =
+        URL.createObjectURL(
+          arquivo
+        );
+
+      preview.innerHTML = `
+
+        <img
+          src="${url}"
+          alt="Pré-visualização"
+          style="
+            width:100%;
+            max-width:400px;
+            max-height:250px;
+            object-fit:cover;
+            border-radius:10px;
+            display:block;
+          "
+        >
+
+      `;
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   ENVIAR IMAGEM PARA O STORAGE
+========================================= */
+
+async function enviarImagem(arquivo) {
+
+  if (!arquivo) {
+
+    return null;
+
+  }
+
+
+  if (
+    !arquivo.type ||
+    !arquivo.type.startsWith("image/")
+  ) {
+
+    throw new Error(
+      "Escolha um arquivo de imagem."
+    );
+
+  }
+
+
+  const extensao =
+    arquivo.name
+      .split(".")
+      .pop()
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]/g,
+        ""
+      ) || "jpg";
+
+
+  const nomeArquivo =
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2, 10) +
+    "." +
+    extensao;
+
+
+  const caminho =
+    "noticias/" +
+    nomeArquivo;
+
+
+  const resultado =
+    await supabaseClient
+      .storage
+      .from("noticias")
+      .upload(
+        caminho,
+        arquivo,
+        {
+          cacheControl: "3600",
+          upsert: false,
+          contentType: arquivo.type
+        }
+      );
+
+
+  if (resultado.error) {
+
+    throw resultado.error;
+
+  }
+
+
+  const url =
+    supabaseClient
+      .storage
+      .from("noticias")
+      .getPublicUrl(
+        caminho
+      );
+
+
+  return url.data.publicUrl;
+
+}
+
+
+/* =========================================
    PUBLICAR NOTÍCIA
 ========================================= */
 
@@ -117,17 +266,16 @@ async function publish() {
       .value
       .trim();
 
-  const image =
-    document
-      .getElementById("image")
-      .value
-      .trim();
-
   const body =
     document
       .getElementById("body")
       .value
       .trim();
+
+  const imageFile =
+    document
+      .getElementById("imageFile")
+      .files[0];
 
 
   if (!title || !body) {
@@ -141,59 +289,98 @@ async function publish() {
   }
 
 
-  const { data, error } =
-    await supabaseClient
-      .from("noticias")
-      .insert([
+  try {
 
-        {
-          titulo: title,
-
-          categoria: cat,
-
-          Imagem:
-            image || null,
-
-          texto: body
-
-        }
-
-      ])
-      .select();
+    let imagemURL = null;
 
 
-  if (error) {
+    /* =====================================
+       ENVIAR IMAGEM
+    ===================================== */
 
-    console.error(
-      "Erro ao publicar:",
-      error
+    if (imageFile) {
+
+      imagemURL =
+        await enviarImagem(
+          imageFile
+        );
+
+    }
+
+
+    /* =====================================
+       GUARDAR NOTÍCIA
+    ===================================== */
+
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .insert([
+
+          {
+            titulo: title,
+
+            categoria: cat,
+
+            Imagem:
+              imagemURL,
+
+            texto: body
+
+          }
+
+        ])
+        .select();
+
+
+    if (error) {
+
+      console.error(
+        "Erro ao publicar:",
+        error
+      );
+
+      alert(
+        "❌ Erro ao publicar:\n\n" +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    console.log(
+      "Notícia publicada:",
+      data
     );
+
+
+    limparFormulario();
+
+
+    await render();
+
 
     alert(
-      "❌ Erro ao publicar:\n\n" +
-      error.message
+      "✅ Notícia publicada com sucesso!"
     );
-
-    return;
 
   }
 
+  catch (erro) {
 
-  console.log(
-    "Notícia publicada:",
-    data
-  );
+    console.error(
+      "Erro no upload:",
+      erro
+    );
 
+    alert(
+      "❌ Não foi possível enviar a imagem.\n\n" +
+      erro.message
+    );
 
-  limparFormulario();
-
-
-  await render();
-
-
-  alert(
-    "✅ Notícia publicada com sucesso!"
-  );
+  }
 
 }
 
@@ -207,11 +394,18 @@ function limparFormulario() {
   const title =
     document.getElementById("title");
 
-  const image =
-    document.getElementById("image");
+  const imageFile =
+    document.getElementById(
+      "imageFile"
+    );
 
   const body =
     document.getElementById("body");
+
+  const preview =
+    document.getElementById(
+      "imagePreview"
+    );
 
 
   if (title) {
@@ -220,15 +414,21 @@ function limparFormulario() {
 
   }
 
-  if (image) {
+  if (imageFile) {
 
-    image.value = "";
+    imageFile.value = "";
 
   }
 
   if (body) {
 
     body.value = "";
+
+  }
+
+  if (preview) {
+
+    preview.innerHTML = "";
 
   }
 
@@ -452,8 +652,6 @@ async function editarNoticia(id) {
   }
 
 
-  /* Buscar notícia atual */
-
   const {
     data: noticia,
     error: buscarError
@@ -493,10 +691,6 @@ async function editarNoticia(id) {
   }
 
 
-  /* =========================================
-     NOVO TÍTULO
-  ========================================= */
-
   const novoTitulo =
     prompt(
       "Título da notícia:",
@@ -521,10 +715,6 @@ async function editarNoticia(id) {
 
   }
 
-
-  /* =========================================
-     NOVO TEXTO
-  ========================================= */
 
   const novoTexto =
     prompt(
@@ -551,24 +741,14 @@ async function editarNoticia(id) {
   }
 
 
-  /* =========================================
-     NOVA CATEGORIA
-  ========================================= */
-
   const categorias = [
 
     "Notícias",
-
     "Futebol",
-
     "Moçambique",
-
     "África",
-
     "Negócios",
-
     "Entretenimento",
-
     "Desporto"
 
   ];
@@ -583,10 +763,7 @@ async function editarNoticia(id) {
     prompt(
 
       "Categoria:\n\n" +
-
-      categorias.join(
-        " | "
-      ),
+      categorias.join(" | "),
 
       categoriaAtual
 
@@ -601,13 +778,11 @@ async function editarNoticia(id) {
 
 
   const categoriaDigitada =
-    novaCategoria
-      .trim();
+    novaCategoria.trim();
 
 
   const categoriaFinal =
     categorias.find(
-
       function(categoria) {
 
         return (
@@ -616,13 +791,8 @@ async function editarNoticia(id) {
         );
 
       }
-
     ) || categoriaAtual;
 
-
-  /* =========================================
-     NOVA IMAGEM
-  ========================================= */
 
   const imagemAtual =
     noticia.Imagem ??
@@ -632,11 +802,8 @@ async function editarNoticia(id) {
 
   const novaImagem =
     prompt(
-
-      "URL da imagem (deixe vazio para remover):",
-
+      "URL da imagem atual:",
       imagemAtual
-
     );
 
 
@@ -646,10 +813,6 @@ async function editarNoticia(id) {
 
   }
 
-
-  /* =========================================
-     ATUALIZAR NO SUPABASE
-  ========================================= */
 
   const {
     data: atualizado,
@@ -696,31 +859,13 @@ async function editarNoticia(id) {
   }
 
 
-  /* =========================================
-     CONFIRMAR ATUALIZAÇÃO
-  ========================================= */
-
   if (
     !atualizado ||
     atualizado.length === 0
   ) {
 
     alert(
-
-      "⚠️ A atualização não alterou nenhuma notícia.\n\n" +
-
-      "O ID " +
-      id +
-      " não foi atualizado no Supabase."
-
-    );
-
-    console.error(
-
-      "Nenhuma linha atualizada para o ID:",
-
-      id
-
+      "⚠️ A atualização não alterou nenhuma notícia."
     );
 
     return;
@@ -729,15 +874,10 @@ async function editarNoticia(id) {
 
 
   console.log(
-
     "Notícia realmente atualizada:",
-
     atualizado[0]
-
   );
 
-
-  /* Atualizar painel */
 
   await render();
 
@@ -773,7 +913,6 @@ async function excluirNoticia(id) {
     confirm(
 
       "⚠️ Tem certeza que deseja excluir esta notícia?\n\n" +
-
       "Esta ação não pode ser desfeita."
 
     );
@@ -804,11 +943,8 @@ async function excluirNoticia(id) {
     );
 
     alert(
-
       "❌ Não foi possível excluir a notícia:\n\n" +
-
       error.message
-
     );
 
     return;
