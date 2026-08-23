@@ -215,12 +215,14 @@ function formatarData(data) {
     return "";
   }
 
-  return d.toLocaleDateString(
-    "pt-PT",
+  return d.toLocaleString(
+    "pt-MZ",
     {
       day: "2-digit",
       month: "long",
-      year: "numeric"
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
     }
   );
 
@@ -439,12 +441,10 @@ async function carregarNoticia() {
       ).trim();
 
 
-    const dataPublicacao =
-      formatarData(
-        data.data_publicacao ??
-        data.created_at ??
-        data.createdAt
-      );
+   const dataPublicacao =
+  formatarData(
+    data.data
+  ); 
 
 
     /* =================================
