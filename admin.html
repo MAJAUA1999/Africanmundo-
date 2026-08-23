@@ -100,10 +100,30 @@
         </select>
 
 
-        <input
-          id="image"
-          placeholder="URL da imagem (opcional)"
+        <label
+          for="imageFile"
+          style="
+            display:block;
+            margin:12px 0 6px;
+            font-weight:700;
+          "
         >
+          🖼️ Escolher imagem
+        </label>
+
+        <input
+          id="imageFile"
+          type="file"
+          accept="image/*"
+        >
+
+
+        <div
+          id="imagePreview"
+          style="
+            margin-top:10px;
+          "
+        ></div>
 
 
         <textarea
