@@ -9,21 +9,246 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>AfricanMundo</title>
+  <title>AfricanMundo — Notícias de África</title>
+
+  <meta
+    name="description"
+    content="AfricanMundo — Notícias de Moçambique, África, futebol, negócios, entretenimento e desporto."
+  >
 
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f5f6f8;
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    header {
+      background: #111;
+      color: #fff;
+      padding: 18px 15px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 10px rgba(0,0,0,.15);
+    }
+
+    .top {
+      max-width: 1100px;
+      margin: auto;
+      font-size: 27px;
+      font-weight: 800;
+    }
+
+    main {
+      width: 100%;
+      max-width: 1100px;
+      margin: auto;
+      padding: 20px 14px 50px;
+    }
+
+    .news-section {
+      background: #fff;
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 24px;
+      box-shadow: 0 2px 12px rgba(0,0,0,.07);
+    }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-bottom: 16px;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 12px;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .section-title a {
+      color: #1976d2;
+      text-decoration: none;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .section-title a:hover {
+      text-decoration: underline;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .news {
+      background: #fff;
+      border: 1px solid #e4e4e4;
+      border-radius: 13px;
+      overflow: hidden;
+      padding-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.05);
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .news:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 18px rgba(0,0,0,.10);
+    }
+
+    .thumb {
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(
+        135deg,
+        #222,
+        #555
+      );
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #fff;
+      font-size: 42px;
+    }
+
+    .thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .news-content {
+      padding: 14px 15px 0;
+    }
+
+    .category {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 5px 9px;
+      border-radius: 20px;
+      background: #f0f0f0;
+      color: #444;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .news h3 {
+      margin: 5px 0 9px;
+      font-size: 19px;
+      line-height: 1.25;
+    }
+
+    .news p {
+      margin: 0;
+      color: #555;
+      line-height: 1.5;
+      font-size: 15px;
+
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 14px;
+      padding: 10px 14px;
+      background: #45c226;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    .read-more:hover {
+      background: #35a91b;
+    }
+
+    .empty {
+      color: #777;
+      padding: 15px 0;
+    }
+
+    @media (max-width: 800px) {
+
+      .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+    }
+
+    @media (max-width: 560px) {
+
+      header {
+        padding: 15px 12px;
+      }
+
+      .top {
+        font-size: 23px;
+      }
+
+      main {
+        padding: 14px 10px 40px;
+      }
+
+      .news-section {
+        padding: 13px;
+        border-radius: 13px;
+      }
+
+      .section-title h2 {
+        font-size: 19px;
+      }
+
+      .section-title a {
+        font-size: 14px;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .thumb {
+        height: 200px;
+      }
+
+    }
+
+  </style>
+
 </head>
+
 
 <body>
 
+
 <header>
+
   <div class="top">
     🌍 AfricanMundo
   </div>
+
 </header>
+
 
 
 <main>
@@ -44,7 +269,7 @@
     </div>
 
     <div id="noticias" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -66,7 +291,7 @@
     </div>
 
     <div id="futebol" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -88,7 +313,7 @@
     </div>
 
     <div id="mocambique" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -104,13 +329,13 @@
       <h2>🌍 África</h2>
 
       <a href="categoria.html?categoria=africa">
-        Ver todos
+        Ver todas
       </a>
 
     </div>
 
     <div id="africa" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -132,7 +357,7 @@
     </div>
 
     <div id="negocios" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -154,7 +379,7 @@
     </div>
 
     <div id="entretenimento" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -176,7 +401,7 @@
     </div>
 
     <div id="desporto" class="news-grid">
-      <p>Carregando...</p>
+      <p class="empty">🔄 Carregando...</p>
     </div>
 
   </section>
@@ -185,20 +410,19 @@
 </main>
 
 
+
 <script>
 
 
-/* ================================
+/* =========================================
    SUPABASE
-================================ */
+========================================= */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -208,9 +432,9 @@ const supabaseClient =
 
 
 
-/* ================================
+/* =========================================
    SEGURANÇA
-================================ */
+========================================= */
 
 function esc(valor) {
 
@@ -233,9 +457,9 @@ function esc(valor) {
 
 
 
-/* ================================
-   NORMALIZAR
-================================ */
+/* =========================================
+   NORMALIZAR CATEGORIA
+========================================= */
 
 function normalizarCategoria(valor) {
 
@@ -249,9 +473,9 @@ function normalizarCategoria(valor) {
 
 
 
-/* ================================
+/* =========================================
    CARTÃO DA NOTÍCIA
-================================ */
+========================================= */
 
 function criarNoticia(noticia) {
 
@@ -283,6 +507,8 @@ function criarNoticia(noticia) {
     noticia.id;
 
 
+  /* IMAGEM */
+
   let imagemHTML = "🌍";
 
 
@@ -292,20 +518,16 @@ function criarNoticia(noticia) {
       <img
         src="${esc(imagem)}"
         alt="${esc(titulo)}"
-        style="
-          width:100%;
-          height:180px;
-          object-fit:cover;
-          display:block;
-        "
         onerror="
-          this.style.display='none';
+          this.parentElement.innerHTML='🌍';
         "
       >
     `;
 
   }
 
+
+  /* BOTÃO */
 
   let botao = "";
 
@@ -320,17 +542,8 @@ function criarNoticia(noticia) {
 
     botao = `
       <a
+        class="read-more"
         href="noticia.html?id=${encodeURIComponent(id)}"
-        style="
-          display:inline-block;
-          margin-top:12px;
-          padding:11px 16px;
-          background:#45c226;
-          color:#fff;
-          text-decoration:none;
-          border-radius:8px;
-          font-weight:700;
-        "
       >
         📖 Ler mais
       </a>
@@ -350,22 +563,26 @@ function criarNoticia(noticia) {
       </div>
 
 
-      <small>
-        ${esc(categoria)}
-      </small>
+      <div class="news-content">
+
+        <span class="category">
+          🏷️ ${esc(categoria)}
+        </span>
 
 
-      <h3>
-        ${esc(titulo)}
-      </h3>
+        <h3>
+          ${esc(titulo)}
+        </h3>
 
 
-      <p>
-        ${esc(texto)}
-      </p>
+        <p>
+          ${esc(texto)}
+        </p>
 
 
-      ${botao}
+        ${botao}
+
+      </div>
 
     </article>
 
@@ -375,9 +592,9 @@ function criarNoticia(noticia) {
 
 
 
-/* ================================
-   CARREGAR
-================================ */
+/* =========================================
+   CARREGAR NOTÍCIAS
+========================================= */
 
 async function carregarNoticias() {
 
@@ -405,17 +622,22 @@ async function carregarNoticias() {
 
     if (error) {
 
-      console.error(error);
+      console.error(
+        "Erro Supabase:",
+        error
+      );
 
       document
         .getElementById("noticias")
         .innerHTML =
-        "<p>❌ Não foi possível carregar as notícias.</p>";
+        "<p class='empty'>❌ Não foi possível carregar as notícias.</p>";
 
       return;
 
     }
 
+
+    /* LIMPAR SEÇÕES */
 
     secoes.forEach(function(id) {
 
@@ -423,7 +645,9 @@ async function carregarNoticias() {
         document.getElementById(id);
 
       if (elemento) {
+
         elemento.innerHTML = "";
+
       }
 
     });
@@ -434,11 +658,19 @@ async function carregarNoticias() {
       document
         .getElementById("noticias")
         .innerHTML =
-        "<p>📰 Ainda não existem notícias.</p>";
+        "<p class='empty'>📰 Ainda não existem notícias.</p>";
 
       return;
 
     }
+
+
+    /*
+      Cada categoria recebe somente
+      as 3 notícias mais recentes.
+    */
+
+    const contadores = {};
 
 
     data.forEach(function(noticia) {
@@ -489,21 +721,42 @@ async function carregarNoticias() {
       }
 
 
-      const elemento =
-        document.getElementById(destino);
+      if (!contadores[destino]) {
+
+        contadores[destino] = 0;
+
+      }
 
 
-      if (elemento) {
+      /*
+        Mostrar somente 3 por categoria
+        na página inicial.
+      */
 
-        elemento.insertAdjacentHTML(
-          "beforeend",
-          criarNoticia(noticia)
-        );
+      if (contadores[destino] < 3) {
+
+        const elemento =
+          document.getElementById(destino);
+
+
+        if (elemento) {
+
+          elemento.insertAdjacentHTML(
+            "beforeend",
+            criarNoticia(noticia)
+          );
+
+        }
+
+
+        contadores[destino]++;
 
       }
 
     });
 
+
+    /* CATEGORIAS SEM NOTÍCIAS */
 
     secoes.forEach(function(id) {
 
@@ -517,7 +770,7 @@ async function carregarNoticias() {
       ) {
 
         elemento.innerHTML =
-          "<p>Nenhuma notícia publicada nesta categoria.</p>";
+          "<p class='empty'>📰 Nenhuma notícia publicada nesta categoria.</p>";
 
       }
 
@@ -528,22 +781,31 @@ async function carregarNoticias() {
 
   catch (erro) {
 
-    console.error(erro);
+    console.error(
+      "Erro inesperado:",
+      erro
+    );
 
     document
       .getElementById("noticias")
       .innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar.</p>";
+      "<p class='empty'>❌ Ocorreu um erro ao carregar as notícias.</p>";
 
   }
 
 }
 
 
+
+/* =========================================
+   INICIAR
+========================================= */
+
 carregarNoticias();
 
 
 </script>
+
 
 </body>
 </html>
