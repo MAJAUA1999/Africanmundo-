@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="pt">
-
 <head>
 
   <meta charset="utf-8">
@@ -10,71 +9,516 @@
     content="width=device-width, initial-scale=1"
   >
 
-  <title>AfricanMundo</title>
+  <title>Categoria — AfricanMundo</title>
 
-  <link rel="stylesheet" href="style.css">
+  <meta
+    name="description"
+    content="Notícias por categoria — AfricanMundo"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f4f4;
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    header {
+      background: #050505;
+      color: #fff;
+    }
+
+    .top {
+      max-width: 1200px;
+      margin: auto;
+      padding: 18px 15px;
+    }
+
+    .logo {
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    .logo span {
+      color: #45c226;
+    }
+
+    .tagline {
+      margin-top: 5px;
+      color: #ccc;
+      font-size: 13px;
+    }
+
+    .nav {
+      background: #151515;
+      border-top: 1px solid #292929;
+      border-bottom: 1px solid #292929;
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: auto;
+      display: flex;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .nav-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .nav a {
+      color: #fff;
+      text-decoration: none;
+      padding: 14px 18px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .nav a:hover {
+      background: #45c226;
+    }
+
+    main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px 12px 50px;
+    }
+
+    .advertising {
+      min-height: 90px;
+      margin-bottom: 20px;
+      background: linear-gradient(
+        90deg,
+        #101010,
+        #182719,
+        #101010
+      );
+      border-radius: 5px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 15px;
+    }
+
+    .advertising strong {
+      display: block;
+      color: #45c226;
+      font-size: 25px;
+      margin-bottom: 5px;
+    }
+
+    .category-header {
+      background: #fff;
+      border-left: 5px solid #45c226;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .category-header h1 {
+      margin: 0;
+      font-size: 28px;
+    }
+
+    .category-header p {
+      margin: 8px 0 0;
+      color: #777;
+      font-size: 13px;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .news-card {
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .news-card-image,
+    .news-card-placeholder {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .news-card-placeholder {
+      background: linear-gradient(
+        135deg,
+        #111,
+        #345b29
+      );
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 55px;
+    }
+
+    .news-card-content {
+      padding: 14px;
+    }
+
+    .news-category {
+      color: #45a52c;
+      font-size: 10px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    .news-card h2 {
+      margin: 7px 0;
+      font-size: 18px;
+      line-height: 1.3;
+    }
+
+    .news-card p {
+      margin: 0;
+      color: #555;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .news-date {
+      display: block;
+      margin-top: 10px;
+      color: #777;
+      font-size: 11px;
+    }
+
+    .read-more {
+      display: inline-block;
+      margin-top: 12px;
+      padding: 9px 12px;
+      background: #45c226;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 3px;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .message {
+      background: #fff;
+      padding: 25px;
+      text-align: center;
+      color: #777;
+      border-radius: 5px;
+    }
+
+    footer {
+      background: #111;
+      color: #fff;
+      padding: 35px 15px 15px;
+    }
+
+    .footer-grid {
+      max-width: 1200px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 30px;
+    }
+
+    footer h3 {
+      font-size: 14px;
+      text-transform: uppercase;
+    }
+
+    footer p,
+    footer a {
+      color: #ccc;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    footer a {
+      display: block;
+      text-decoration: none;
+      margin: 8px 0;
+    }
+
+    footer a:hover {
+      color: #45c226;
+    }
+
+    .copyright {
+      max-width: 1200px;
+      margin: 25px auto 0;
+      padding-top: 15px;
+      border-top: 1px solid #333;
+      color: #aaa;
+      font-size: 11px;
+    }
+
+    @media (max-width: 800px) {
+
+      .news-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+    }
+
+    @media (max-width: 600px) {
+
+      .logo {
+        text-align: center;
+        font-size: 30px;
+      }
+
+      .tagline {
+        text-align: center;
+      }
+
+      main {
+        padding: 12px 8px 35px;
+      }
+
+      .news-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .category-header h1 {
+        font-size: 24px;
+      }
+
+    }
+
+  </style>
+
 </head>
 
-
 <body>
-
 
 <header>
 
   <div class="top">
-    🌍 AfricanMundo
+
+    <div class="logo">
+      African<span>Mundo</span>
+    </div>
+
+    <div class="tagline">
+      A informação que liga África ao mundo
+    </div>
+
   </div>
 
-</header>
+  <nav class="nav">
 
-
-<main>
-
-  <section class="news-section">
-
-
-    <div class="section-title">
-
-      <h1 id="tituloCategoria">
-        📰 Notícias
-      </h1>
+    <div class="nav-inner">
 
       <a href="index.html">
-        ← Voltar
+        🏠 INÍCIO
+      </a>
+
+      <a href="categoria.html?categoria=noticias">
+        📰 NOTÍCIAS
+      </a>
+
+      <a href="categoria.html?categoria=futebol">
+        ⚽ FUTEBOL
+      </a>
+
+      <a href="categoria.html?categoria=africa">
+        🌍 ÁFRICA
+      </a>
+
+      <a href="categoria.html?categoria=mocambique">
+        🇲🇿 MOÇAMBIQUE
+      </a>
+
+      <a href="categoria.html?categoria=negocios">
+        💼 NEGÓCIOS
+      </a>
+
+      <a href="categoria.html?categoria=entretenimento">
+        🎬 ENTRETENIMENTO
+      </a>
+
+      <a href="categoria.html?categoria=desporto">
+        🏆 DESPORTO
       </a>
 
     </div>
 
+  </nav>
 
-    <div
-      id="newsGrid"
-      class="news-grid"
-    >
+</header>
 
-      <p>🔄 A carregar...</p>
+<main>
+
+  <div class="advertising">
+
+    <div>
+
+      <strong>ANUNCIE AQUI</strong>
+
+      A sua marca em destaque em todo o continente africano.
 
     </div>
 
+  </div>
+
+  <section class="category-header">
+
+    <h1 id="tituloCategoria">
+      🔄 A carregar...
+    </h1>
+
+    <p id="descricaoCategoria">
+      A carregar notícias...
+    </p>
 
   </section>
 
+  <section>
+
+    <div
+      id="listaNoticias"
+      class="news-grid"
+    >
+
+      <div class="message">
+        🔄 A carregar notícias...
+      </div>
+
+    </div>
+
+  </section>
+
+  <div class="advertising">
+
+    <div>
+
+      <strong>ANUNCIE AQUI</strong>
+
+      A sua marca em destaque em todo o continente africano.
+
+    </div>
+
+  </div>
+
 </main>
 
+<footer>
 
+  <div class="footer-grid">
+
+    <div>
+
+      <h3>AfricanMundo</h3>
+
+      <p>
+        A informação que liga África ao mundo.
+      </p>
+
+      <p>
+        Notícias de Moçambique, África,
+        futebol, negócios, entretenimento
+        e desporto.
+      </p>
+
+    </div>
+
+    <div>
+
+      <h3>Navegação</h3>
+
+      <a href="index.html">
+        Início
+      </a>
+
+      <a href="categoria.html?categoria=noticias">
+        Notícias
+      </a>
+
+      <a href="categoria.html?categoria=futebol">
+        Futebol
+      </a>
+
+      <a href="categoria.html?categoria=africa">
+        África
+      </a>
+
+      <a href="categoria.html?categoria=mocambique">
+        Moçambique
+      </a>
+
+    </div>
+
+    <div>
+
+      <h3>Categorias</h3>
+
+      <a href="categoria.html?categoria=negocios">
+        Negócios
+      </a>
+
+      <a href="categoria.html?categoria=entretenimento">
+        Entretenimento
+      </a>
+
+      <a href="categoria.html?categoria=desporto">
+        Desporto
+      </a>
+
+    </div>
+
+  </div>
+
+  <div class="copyright">
+
+    © 2026 AfricanMundo.
+    Todos os direitos reservados.
+
+  </div>
+
+</footer>
 
 <script>
-
+  /* =========================================
+   SUPABASE
+========================================= */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -83,6 +527,9 @@ const supabaseClient =
   );
 
 
+/* =========================================
+   SEGURANÇA
+========================================= */
 
 function esc(valor) {
 
@@ -104,41 +551,68 @@ function esc(valor) {
 }
 
 
+/* =========================================
+   NORMALIZAR CATEGORIA
+========================================= */
 
-function normalizar(valor) {
+function normalizarCategoria(valor) {
 
   return String(valor || "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
     .trim();
 
 }
 
 
+/* =========================================
+   DATA E HORA
+========================================= */
 
-const parametros =
-  new URLSearchParams(
-    window.location.search
+function formatarData(valor) {
+
+  if (!valor) {
+    return "";
+  }
+
+  const data =
+    new Date(valor);
+
+  if (isNaN(data.getTime())) {
+    return "";
+  }
+
+  return data.toLocaleString(
+    "pt-MZ",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }
   );
 
-
-const categoriaURL =
-  normalizar(
-    parametros.get("categoria")
-  );
+}
 
 
+/* =========================================
+   NOMES DAS CATEGORIAS
+========================================= */
 
-const nomes = {
+const nomesCategorias = {
 
-  noticias: "🌍 Notícias",
+  noticias: "📰 Notícias",
 
   futebol: "⚽ Futebol",
 
-  mocambique: "🇲🇿 Moçambique",
-
   africa: "🌍 África",
+
+  mocambique: "🇲🇿 Moçambique",
 
   negocios: "💼 Negócios",
 
@@ -149,80 +623,314 @@ const nomes = {
 };
 
 
+/* =========================================
+   DESCRIÇÕES
+========================================= */
 
-const titulo =
-  nomes[categoriaURL] ||
-  "📰 Notícias";
+const descricoesCategorias = {
+
+  noticias:
+    "Todas as notícias publicadas no AfricanMundo.",
+
+  futebol:
+    "As principais notícias de futebol.",
+
+  africa:
+    "Notícias e acontecimentos de África.",
+
+  mocambique:
+    "As principais notícias de Moçambique.",
+
+  negocios:
+    "Notícias sobre negócios e economia.",
+
+  entretenimento:
+    "Entretenimento, cultura e celebridades.",
+
+  desporto:
+    "Notícias de desporto e competições."
+
+};
 
 
-document.getElementById(
-  "tituloCategoria"
-).textContent = titulo;
+/* =========================================
+   PEGAR CATEGORIA DA URL
+========================================= */
+
+const parametros =
+  new URLSearchParams(
+    window.location.search
+  );
+
+const categoriaURL =
+  normalizarCategoria(
+    parametros.get("categoria")
+  );
 
 
+/* =========================================
+   TÍTULO DA PÁGINA
+========================================= */
+
+const tituloCategoria =
+  document.getElementById(
+    "tituloCategoria"
+  );
+
+const descricaoCategoria =
+  document.getElementById(
+    "descricaoCategoria"
+  );
+
+
+if (
+  categoriaURL &&
+  nomesCategorias[categoriaURL]
+) {
+
+  tituloCategoria.textContent =
+    nomesCategorias[categoriaURL];
+
+  descricaoCategoria.textContent =
+    descricoesCategorias[categoriaURL];
+
+}
+else {
+
+  tituloCategoria.textContent =
+    "📰 Notícias";
+
+  descricaoCategoria.textContent =
+    "Todas as notícias publicadas no AfricanMundo.";
+
+}
+
+
+/* =========================================
+   CRIAR CARTÃO
+========================================= */
+
+function criarCard(noticia) {
+
+  const titulo =
+    noticia.titulo ||
+    "Sem título";
+
+  const texto =
+    noticia.texto ||
+    "";
+
+  const categoria =
+    noticia.categoria ||
+    "Notícias";
+
+  const imagem =
+    noticia.imagem ||
+    "";
+
+  const id =
+    noticia.id;
+
+  const data =
+    formatarData(
+      noticia.data
+    );
+
+
+  let imagemHTML = `
+    <div class="news-card-placeholder">
+      🌍
+    </div>
+  `;
+
+
+  if (
+    String(imagem).trim() !== ""
+  ) {
+
+    imagemHTML = `
+      <img
+        class="news-card-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        onerror="
+          this.outerHTML =
+          '<div class=&quot;news-card-placeholder&quot;>🌍</div>'
+        "
+      >
+    `;
+
+  }
+
+
+  let botao = "";
+
+
+  if (
+    id !== null &&
+    id !== undefined &&
+    String(id) !== "" &&
+    String(id) !== "null"
+  ) {
+
+    botao = `
+      <a
+        class="read-more"
+        href="noticia.html?id=${encodeURIComponent(id)}"
+      >
+        📖 Ler mais
+      </a>
+    `;
+
+  }
+
+
+  return `
+    <article class="news-card">
+
+      ${imagemHTML}
+
+      <div class="news-card-content">
+
+        <span class="news-category">
+          ${esc(categoria)}
+        </span>
+
+        <h2>
+          ${esc(titulo)}
+        </h2>
+
+        <p>
+          ${esc(texto)}
+        </p>
+
+        ${
+          data
+            ? `
+              <span class="news-date">
+                📅 ${esc(data)}
+              </span>
+            `
+            : ""
+        }
+
+        ${botao}
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================
+   CARREGAR NOTÍCIAS
+========================================= */
 
 async function carregarNoticias() {
 
-  const grid =
-    document.getElementById("newsGrid");
+  const lista =
+    document.getElementById(
+      "listaNoticias"
+    );
 
 
   try {
 
-    const { data, error } =
+    const resultado =
       await supabaseClient
         .from("noticias")
         .select("*")
-        .order("id", {
-          ascending: false
-        });
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        );
 
 
-    if (error) {
+    if (resultado.error) {
 
-      console.error(error);
+      console.error(
+        "Erro Supabase:",
+        resultado.error
+      );
 
-      grid.innerHTML =
-        "<p>❌ Não foi possível carregar as notícias.</p>";
+      lista.innerHTML = `
+        <div class="message">
+          ❌ Não foi possível carregar
+          as notícias.
+          <br><br>
+          <small>
+            ${esc(
+              resultado.error.message
+            )}
+          </small>
+        </div>
+      `;
 
       return;
-
     }
 
 
-    const filtradas =
-      (data || []).filter(
-        function(noticia) {
-
-          const categoria =
-            normalizar(
-              noticia.categoria
-            );
+    const todasNoticias =
+      resultado.data || [];
 
 
-          if (categoriaURL === "noticias") {
+    console.log(
+      "Notícias recebidas:",
+      todasNoticias
+    );
+
+
+    let noticiasFiltradas = [];
+
+
+/* =========================================
+   FILTRAR CATEGORIA
+========================================= */
+
+    if (
+      !categoriaURL ||
+      categoriaURL === "noticias"
+    ) {
+
+      noticiasFiltradas =
+        todasNoticias;
+
+    }
+
+    else {
+
+      noticiasFiltradas =
+        todasNoticias.filter(
+          function(noticia) {
 
             return (
-              categoria === "noticias" ||
-              categoria === ""
+              normalizarCategoria(
+                noticia.categoria
+              ) === categoriaURL
             );
 
           }
+        );
+
+  }/* =========================================
+   MOSTRAR RESULTADO
+========================================= */
+
+    lista.innerHTML = "";
 
 
-          return categoria === categoriaURL;
+    if (
+      noticiasFiltradas.length === 0
+    ) {
 
-        }
-      );
-
-
-    if (filtradas.length === 0) {
-
-      grid.innerHTML = `
-        <div>
-          <p>
-            📰 Ainda não existem notícias nesta categoria.
-          </p>
+      lista.innerHTML = `
+        <div class="message">
+          📰 Ainda não existem notícias
+          nesta categoria.
         </div>
       `;
 
@@ -231,164 +939,56 @@ async function carregarNoticias() {
     }
 
 
-    grid.innerHTML =
-      filtradas.map(
-        function(noticia) {
+/* =========================================
+   CRIAR OS CARTÕES
+========================================= */
 
+    noticiasFiltradas.forEach(
+      function(noticia) {
 
-          const titulo =
-            noticia.titulo ||
-            "Sem título";
+        lista.innerHTML +=
+          criarCard(noticia);
 
-
-          const texto =
-            noticia.texto ||
-            noticia.descricao ||
-            "";
-
-
-          const categoria =
-            noticia.categoria ||
-            "Notícias";
-
-
-          const imagem =
-            noticia.imagem ||
-            noticia.Imagem ||
-            noticia.imagem_url ||
-            noticia.image_url ||
-            "";
-
-
-          const id =
-            noticia.id;
-
-
-          return `
-
-            <article class="news">
-
-
-              <div class="thumb">
-
-                ${
-                  String(imagem).trim()
-                  ?
-
-                  `
-                    <img
-                      src="${esc(imagem)}"
-                      alt="${esc(titulo)}"
-                      style="
-                        width:100%;
-                        height:180px;
-                        object-fit:cover;
-                        display:block;
-                      "
-                    >
-                  `
-
-                  :
-
-                  `
-                    <div
-                      style="
-                        width:100%;
-                        height:180px;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        font-size:55px;
-                      "
-                    >
-                      ${
-                        categoriaURL === "futebol"
-                        ? "⚽"
-                        : "🌍"
-                      }
-                    </div>
-                  `
-                }
-
-              </div>
-
-
-              <small>
-                ${esc(categoria)}
-              </small>
-
-
-              <h3>
-                ${esc(titulo)}
-              </h3>
-
-
-              <p>
-                ${esc(texto)}
-              </p>
-
-
-              ${
-                id !== null &&
-                id !== undefined &&
-                String(id).trim() !== "" &&
-                String(id).trim() !== "null" &&
-                String(id).trim() !== "undefined"
-
-                ?
-
-                `
-                  <a
-                    href="noticia.html?id=${encodeURIComponent(id)}"
-                    style="
-                      display:inline-block;
-                      margin-top:12px;
-                      padding:11px 16px;
-                      background:#45c226;
-                      color:#fff;
-                      text-decoration:none;
-                      border-radius:8px;
-                      font-weight:700;
-                    "
-                  >
-                    📖 Ler mais
-                  </a>
-                `
-
-                :
-
-                ""
-
-              }
-
-
-            </article>
-
-          `;
-
-        }
-      ).join("");
-
+      }
+    );
 
   }
 
   catch (erro) {
 
-    console.error(erro);
+    console.error(
+      "Erro inesperado:",
+      erro
+    );
 
-    grid.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar.</p>";
+    lista.innerHTML = `
+      <div class="message">
+        ❌ Ocorreu um erro ao carregar
+        as notícias.
+        <br><br>
+        <small>
+          ${esc(
+            erro.message ||
+            erro
+          )}
+        </small>
+      </div>
+    `;
 
   }
 
 }
 
 
-carregarNoticias();
+/* =========================================
+   INICIAR
+========================================= */
 
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
 
-</script>
+    carregarNoticias();
 
-
-</body>
-</html>
+  }
+);
