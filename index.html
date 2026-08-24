@@ -1315,7 +1315,11 @@ function criarCard(noticia) {
     noticia.categoria || "Notícias";
 
   const imagem =
-    String(noticia.imagem || "").trim();
+    String(
+      noticia.imagem ??
+      noticia.Imagem ??
+      ""
+    ).trim();
 
   const data =
     formatarData(noticia.data);
@@ -1439,7 +1443,11 @@ function criarUltima(noticia) {
     noticia.categoria || "Notícias";
 
   const imagem =
-    String(noticia.imagem || "").trim();
+    String(
+      noticia.imagem ??
+      noticia.Imagem ??
+      ""
+    ).trim();
 
   const data =
     formatarData(noticia.data);
