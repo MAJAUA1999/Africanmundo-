@@ -441,6 +441,7 @@
 
 </header>
 
+
 <main>
 
   <div class="page-title">
@@ -455,6 +456,7 @@
 
   </div>
 
+
   <div
     id="listaNoticias"
     class="category-grid"
@@ -467,6 +469,8 @@
   </div>
 
 </main>
+
+
 <footer>
 
   <div class="footer-grid">
@@ -488,6 +492,7 @@
       </p>
 
     </div>
+
 
     <div>
 
@@ -515,6 +520,7 @@
 
     </div>
 
+
     <div>
 
       <h3>Categorias</h3>
@@ -534,6 +540,7 @@
     </div>
 
   </div>
+
 
   <div class="copyright">
 
@@ -570,7 +577,9 @@ const supabaseClient =
 
 function esc(valor) {
 
-  return String(valor ?? "").replace(
+  return String(
+    valor ?? ""
+  ).replace(
     /[&<>"']/g,
     function(m) {
 
@@ -647,7 +656,8 @@ const parametros =
   );
 
 const categoriaURL =
-  parametros.get("categoria") || "noticias";
+  parametros.get("categoria") ||
+  "noticias";
 
 const categoriaAtual =
   normalizarCategoria(
@@ -697,7 +707,7 @@ if (tituloCategoria) {
 
 
 /* =========================================
-   CARTÃO
+   CARTÃO DA NOTÍCIA
 ========================================= */
 
 function criarCard(noticia) {
@@ -714,10 +724,14 @@ function criarCard(noticia) {
     noticia.categoria ||
     "Notícias";
 
+  /*
+    Aceita tanto "imagem" como "Imagem"
+  */
+
   const imagem =
-  noticia.Imagem ??
-  noticia.imagem ??
-  "";
+    noticia.imagem ??
+    noticia.Imagem ??
+    "";
 
   const id =
     noticia.id;
@@ -727,6 +741,10 @@ function criarCard(noticia) {
       noticia.data
     );
 
+
+  /* =====================================
+     IMAGEM
+  ===================================== */
 
   let imagemHTML = `
 
@@ -738,25 +756,32 @@ function criarCard(noticia) {
 
 
   if (
+    imagem &&
     String(imagem).trim() !== ""
   ) {
+
+    const imagemURL =
+      String(imagem).trim();
+
 
     imagemHTML = `
 
       <img
         class="news-card-image"
-        src="${esc(imagem)}"
+        src="${esc(imagemURL)}"
         alt="${esc(titulo)}"
-        onerror="
-          this.outerHTML =
-          '<div class=&quot;news-card-placeholder&quot;>🌍</div>'
-        "
+        loading="lazy"
+        onerror="mostrarPlaceholder(this)"
       >
 
     `;
 
   }
 
+
+  /* =====================================
+     BOTÃO LER MAIS
+  ===================================== */
 
   let botao = "";
 
@@ -823,7 +848,35 @@ function criarCard(noticia) {
   `;
 
 }
-  /* =========================================
+
+
+/* =========================================
+   PLACEHOLDER SE IMAGEM FALHAR
+========================================= */
+
+function mostrarPlaceholder(imagem) {
+
+  if (!imagem) {
+    return;
+  }
+
+  const div =
+    document.createElement(
+      "div"
+    );
+
+  div.className =
+    "news-card-placeholder";
+
+  div.textContent =
+    "🌍";
+
+  imagem.replaceWith(div);
+
+}
+
+
+/* =========================================
    CARREGAR NOTÍCIAS
 ========================================= */
 
@@ -851,10 +904,6 @@ async function carregarNoticias() {
 
   try {
 
-    /* =====================================
-       BUSCAR NO SUPABASE
-    ===================================== */
-
     const resultado =
       await supabaseClient
         .from("noticias")
@@ -879,10 +928,6 @@ async function carregarNoticias() {
       noticias
     );
 
-
-    /* =====================================
-       VERIFICAR ERRO
-    ===================================== */
 
     if (error) {
 
@@ -910,12 +955,9 @@ async function carregarNoticias() {
       `;
 
       return;
+
     }
 
-
-    /* =====================================
-       NENHUMA NOTÍCIA
-    ===================================== */
 
     if (
       !noticias ||
@@ -934,6 +976,7 @@ async function carregarNoticias() {
       `;
 
       return;
+
     }
 
 
@@ -960,10 +1003,6 @@ async function carregarNoticias() {
       );
 
 
-    /* =====================================
-       NENHUMA NESTA CATEGORIA
-    ===================================== */
-
     if (
       noticiasFiltradas.length === 0
     ) {
@@ -980,6 +1019,7 @@ async function carregarNoticias() {
       `;
 
       return;
+
     }
 
 
@@ -1052,4 +1092,4 @@ document.addEventListener(
 </script>
 
 </body>
-</html>
+  </html>
