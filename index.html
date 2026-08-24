@@ -1718,7 +1718,11 @@ async function carregarNoticias() {
       principal.categoria || "Notícias";
 
     const imagemPrincipal =
-      String(principal.imagem || "").trim();
+      String(
+        principal.imagem ??
+        principal.Imagem ??
+        ""
+      ).trim();
 
     const dataPrincipal =
       formatarData(principal.data);
