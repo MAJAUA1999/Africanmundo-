@@ -1466,40 +1466,57 @@ function criarUltima(noticia) {
   let imagemHTML = `
     <a
       href="${link}"
-      style="display:block;"
+      style="
+        display:block;
+        width:125px;
+        height:82px;
+      "
     >
-      <div class="latest-placeholder">
+
+      <div
+        class="latest-placeholder"
+        style="
+          width:125px;
+          height:82px;
+        "
+      >
         🌍
       </div>
+
     </a>
   `;
 
 
-  if (imagem !== "") {
+  if (imagem) {
 
     imagemHTML = `
       <a
         href="${link}"
-        style="display:block;"
+        style="
+          display:block;
+          width:125px;
+          height:82px;
+        "
       >
 
         <img
-          class="latest-image"
           src="${esc(imagem)}"
           alt="${esc(titulo)}"
           loading="lazy"
+          style="
+            width:125px;
+            height:82px;
+            min-width:125px;
+            min-height:82px;
+            display:block;
+            object-fit:cover;
+            border-radius:3px;
+          "
           onerror="
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
+            this.outerHTML =
+            '<div style=&quot;width:125px;height:82px;background:#333;display:flex;align-items:center;justify-content:center;color:#fff;font-size:25px;border-radius:3px;&quot;>🌍</div>';
           "
         >
-
-        <div
-          class="latest-placeholder"
-          style="display:none;"
-        >
-          🌍
-        </div>
 
       </a>
     `;
