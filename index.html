@@ -153,6 +153,7 @@
       font-size: 13px;
       font-weight: 800;
       white-space: nowrap;
+      transition: .2s;
     }
 
     .nav a:hover,
@@ -207,6 +208,14 @@
       color: #fff;
     }
 
+    .hero-link {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: inherit;
+      text-decoration: none;
+    }
+
     .hero-image {
       width: 100%;
       height: 100%;
@@ -239,6 +248,11 @@
         transparent,
         rgba(0,0,0,.9)
       );
+      pointer-events: none;
+    }
+
+    .hero-overlay .read-more {
+      pointer-events: auto;
     }
 
     .badge {
@@ -312,6 +326,12 @@
 
     .latest-item:last-child {
       border-bottom: 0;
+    }
+
+    .latest-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
 
     .latest-image,
@@ -390,6 +410,12 @@
       border-radius: 4px;
     }
 
+    .news-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+    }
+
     .news-card-image {
       width: 100%;
       height: 180px;
@@ -455,7 +481,10 @@
       font-weight: 800;
     }
 
-    footer {
+    .read-more:hover {
+      background: #369c20;
+    }
+        footer {
       background: #111;
       color: #fff;
       padding: 35px 15px 15px;
@@ -613,139 +642,173 @@
 
 <body>
 
-<div class="top-info">
+  <div class="top-info">
 
-  <div class="top-info-inner">
+    <div class="top-info-inner">
 
-    <div>
-      🌍 AfricanMundo — Informação que liga África ao mundo
-    </div>
+      <div>
+        🌍 AfricanMundo — Informação que liga África ao mundo
+      </div>
 
-    <div class="top-links">
+      <div class="top-links">
 
-      <a href="#">Quem Somos</a>
-      <a href="#">Anuncie</a>
-      <a href="#">Contacto</a>
+        <a href="#">Quem Somos</a>
+        <a href="#">Anuncie</a>
+        <a href="#">Contacto</a>
+
+      </div>
 
     </div>
 
   </div>
 
-</div>
+  <header>
 
-<header>
+    <div class="header-main">
 
-  <div class="header-main">
+      <div>
 
-    <div>
+        <div class="logo">
+          African<span>Mundo</span>
+        </div>
 
-      <div class="logo">
-        African<span>Mundo</span>
+        <div class="tagline">
+          A informação que liga África ao mundo
+        </div>
+
       </div>
 
-      <div class="tagline">
-        A informação que liga África ao mundo
+      <div class="advertising-top">
+
+        <div>
+
+          <strong>ANUNCIE AQUI</strong>
+
+          <small>
+            Alcance milhares de pessoas em toda África
+          </small>
+
+        </div>
+
       </div>
 
     </div>
 
-    <div class="advertising-top">
+    <nav class="nav">
+
+      <div class="nav-inner">
+
+        <a href="index.html" class="active">
+          🏠 INÍCIO
+        </a>
+
+        <a href="categoria.html?categoria=noticias">
+          NOTÍCIAS
+        </a>
+
+        <a href="categoria.html?categoria=futebol">
+          ⚽ FUTEBOL
+        </a>
+
+        <a href="categoria.html?categoria=africa">
+          🌍 ÁFRICA
+        </a>
+
+        <a href="categoria.html?categoria=mocambique">
+          🇲🇿 MOÇAMBIQUE
+        </a>
+
+        <a href="categoria.html?categoria=negocios">
+          💼 NEGÓCIOS
+        </a>
+
+        <a href="categoria.html?categoria=entretenimento">
+          🎬 ENTRETENIMENTO
+        </a>
+
+        <a href="categoria.html?categoria=desporto">
+          🏆 DESPORTO
+        </a>
+
+      </div>
+
+    </nav>
+
+  </header>
+
+  <main>
+
+    <div class="advertising">
 
       <div>
 
         <strong>ANUNCIE AQUI</strong>
 
-        <small>
-          Alcance milhares de pessoas em toda África
-        </small>
+        A sua marca em destaque em todo o continente africano.
 
       </div>
 
     </div>
 
-  </div>
+    <div class="hero-layout">
 
-  <nav class="nav">
+      <div
+        id="destaque"
+        class="hero"
+      >
 
-    <div class="nav-inner">
+        <div class="hero-no-image">
+          🌍
+        </div>
 
-      <a href="index.html" class="active">
-        🏠 INÍCIO
-      </a>
-
-      <a href="categoria.html?categoria=noticias">
-        NOTÍCIAS
-      </a>
-
-      <a href="categoria.html?categoria=futebol">
-        ⚽ FUTEBOL
-      </a>
-
-      <a href="categoria.html?categoria=africa">
-        🌍 ÁFRICA
-      </a>
-
-      <a href="categoria.html?categoria=mocambique">
-        🇲🇿 MOÇAMBIQUE
-      </a>
-
-      <a href="categoria.html?categoria=negocios">
-        💼 NEGÓCIOS
-      </a>
-
-      <a href="categoria.html?categoria=entretenimento">
-        🎬 ENTRETENIMENTO
-      </a>
-
-      <a href="categoria.html?categoria=desporto">
-        🏆 DESPORTO
-      </a>
-
-    </div>
-
-  </nav>
-
-</header>
-
-<main>
-
-  <div class="advertising">
-
-    <div>
-
-      <strong>ANUNCIE AQUI</strong>
-
-      A sua marca em destaque em todo o continente africano.
-
-    </div>
-
-  </div>
-
-  <div class="hero-layout">
-
-    <div id="destaque" class="hero">
-
-      <div class="hero-no-image">
-        🌍
       </div>
 
+      <aside class="latest">
+
+        <div class="section-heading">
+
+          <h2>
+            Últimas notícias
+          </h2>
+
+          <a href="categoria.html?categoria=noticias">
+            VER TODAS
+          </a>
+
+        </div>
+
+        <div id="ultimas">
+
+          <p>
+            🔄 Carregando...
+          </p>
+
+        </div>
+
+      </aside>
+
     </div>
 
-    <aside class="latest">
+    <!-- FUTEBOL -->
 
-      <div class="section-heading">
+    <section class="category-section">
+
+      <div class="category-title">
 
         <h2>
-          Últimas notícias
+          ⚽ Futebol em destaque
         </h2>
 
-        <a href="categoria.html?categoria=noticias">
-          VER TODAS
+        <a href="categoria.html?categoria=futebol">
+          VER TODOS
         </a>
 
       </div>
 
-      <div id="ultimas">
+      <div
+        id="futebol"
+        class="category-grid"
+      >
 
         <p>
           🔄 Carregando...
@@ -753,575 +816,377 @@
 
       </div>
 
-    </aside>
+    </section>
 
-  </div>
-    <!-- =========================================
-       FUTEBOL
-  ========================================= -->
+    <!-- MOÇAMBIQUE -->
 
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        ⚽ Futebol em destaque
-      </h2>
-
-      <a href="categoria.html?categoria=futebol">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="futebol"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       MOÇAMBIQUE
-  ========================================= -->
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🇲🇿 Moçambique
-      </h2>
-
-      <a href="categoria.html?categoria=mocambique">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="mocambique"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       ÁFRICA
-  ========================================= -->
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🌍 África
-      </h2>
-
-      <a href="categoria.html?categoria=africa">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="africa"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       NEGÓCIOS
-  ========================================= -->
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        💼 Negócios
-      </h2>
-
-      <a href="categoria.html?categoria=negocios">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="negocios"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       ENTRETENIMENTO
-  ========================================= -->
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🎬 Entretenimento
-      </h2>
-
-      <a href="categoria.html?categoria=entretenimento">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="entretenimento"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       DESPORTO
-  ========================================= -->
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🏆 Desporto
-      </h2>
-
-      <a href="categoria.html?categoria=desporto">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="desporto"
-      class="category-grid"
-    >
-
-      <p>
-        🔄 Carregando...
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <!-- =========================================
-       PUBLICIDADE
-  ========================================= -->
-
-  <div class="advertising">
-
-    <div>
-
-      <strong>
-        ANUNCIE AQUI
-      </strong>
-
-      A sua marca em destaque em todo o continente africano.
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<!-- =========================================
-     RODAPÉ
-========================================= -->
-
-<footer>
-
-  <div class="footer-grid">
-
-    <div>
-
-      <div class="footer-logo">
-        African<span>Mundo</span>
-      </div>
-
-      <p>
-        A informação que liga África ao mundo.
-      </p>
-
-      <p>
-        Notícias de Moçambique, África,
-        futebol, negócios, entretenimento
-        e desporto.
-      </p>
-
-    </div>
-
-
-    <div>
-
-      <h3>
-        Navegação
-      </h3>
-
-      <a href="index.html">
-        Início
-      </a>
-
-      <a href="categoria.html?categoria=noticias">
-        Notícias
-      </a>
-
-      <a href="categoria.html?categoria=futebol">
-        Futebol
-      </a>
-
-      <a href="categoria.html?categoria=africa">
-        África
-      </a>
-
-      <a href="categoria.html?categoria=mocambique">
-        Moçambique
-      </a>
-
-    </div>
-
-
-    <div>
-
-      <h3>
-        Categorias
-      </h3>
-
-      <a href="categoria.html?categoria=negocios">
-        Negócios
-      </a>
-
-      <a href="categoria.html?categoria=entretenimento">
-        Entretenimento
-      </a>
-
-      <a href="categoria.html?categoria=desporto">
-        Desporto
-      </a>
-
-    </div>
-
-
-    <div>
-
-      <h3>
-        Informações
-      </h3>
-
-      <a href="#">
-        Quem Somos
-      </a>
-
-      <a href="#">
-        Anuncie
-      </a>
-
-      <a href="#">
-        Contacto
-      </a>
-
-      <a href="#">
-        Política de Privacidade
-      </a>
-
-      <a href="#">
-        Termos de Uso
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="copyright">
-
-    © 2026 AfricanMundo.
-    Todos os direitos reservados.
-
-  </div>
-
-</footer>
-
-
-<script>
     <section class="category-section">
 
-    <div class="category-title">
+      <div class="category-title">
 
-      <h2>🇲🇿 Moçambique</h2>
+        <h2>
+          🇲🇿 Moçambique
+        </h2>
 
-      <a href="categoria.html?categoria=mocambique">
-        VER TODOS
-      </a>
+        <a href="categoria.html?categoria=mocambique">
+          VER TODOS
+        </a>
 
-    </div>
-
-    <div
-      id="mocambique"
-      class="category-grid"
-    >
-      <p>🔄 Carregando...</p>
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>🌍 África</h2>
-
-      <a href="categoria.html?categoria=africa">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="africa"
-      class="category-grid"
-    >
-      <p>🔄 Carregando...</p>
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>💼 Negócios</h2>
-
-      <a href="categoria.html?categoria=negocios">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="negocios"
-      class="category-grid"
-    >
-      <p>🔄 Carregando...</p>
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>🎬 Entretenimento</h2>
-
-      <a href="categoria.html?categoria=entretenimento">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="entretenimento"
-      class="category-grid"
-    >
-      <p>🔄 Carregando...</p>
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>🏆 Desporto</h2>
-
-      <a href="categoria.html?categoria=desporto">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="desporto"
-      class="category-grid"
-    >
-      <p>🔄 Carregando...</p>
-    </div>
-
-  </section>
-
-
-  <div class="advertising">
-
-    <div>
-
-      <strong>
-        ANUNCIE AQUI
-      </strong>
-
-      A sua marca em destaque em todo o continente africano.
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<footer>
-
-  <div class="footer-grid">
-
-    <div>
-
-      <div class="footer-logo">
-        African<span>Mundo</span>
       </div>
 
-      <p>
-        A informação que liga África ao mundo.
-      </p>
+      <div
+        id="mocambique"
+        class="category-grid"
+      >
 
-      <p>
-        Notícias de Moçambique, África,
-        futebol, negócios, entretenimento
-        e desporto.
-      </p>
+        <p>
+          🔄 Carregando...
+        </p>
+
+      </div>
+
+    </section>
+
+    <!-- ÁFRICA -->
+
+    <section class="category-section">
+
+      <div class="category-title">
+
+        <h2>
+          🌍 África
+        </h2>
+
+        <a href="categoria.html?categoria=africa">
+          VER TODOS
+        </a>
+
+      </div>
+
+      <div
+        id="africa"
+        class="category-grid"
+      >
+
+        <p>
+          🔄 Carregando...
+        </p>
+
+      </div>
+
+    </section>
+        <!-- NEGÓCIOS -->
+
+    <section class="category-section">
+
+      <div class="category-title">
+
+        <h2>
+          💼 Negócios
+        </h2>
+
+        <a href="categoria.html?categoria=negocios">
+          VER TODOS
+        </a>
+
+      </div>
+
+      <div
+        id="negocios"
+        class="category-grid"
+      >
+
+        <p>
+          🔄 Carregando...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- ENTRETENIMENTO -->
+
+    <section class="category-section">
+
+      <div class="category-title">
+
+        <h2>
+          🎬 Entretenimento
+        </h2>
+
+        <a href="categoria.html?categoria=entretenimento">
+          VER TODOS
+        </a>
+
+      </div>
+
+      <div
+        id="entretenimento"
+        class="category-grid"
+      >
+
+        <p>
+          🔄 Carregando...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- DESPORTO -->
+
+    <section class="category-section">
+
+      <div class="category-title">
+
+        <h2>
+          🏆 Desporto
+        </h2>
+
+        <a href="categoria.html?categoria=desporto">
+          VER TODOS
+        </a>
+
+      </div>
+
+      <div
+        id="desporto"
+        class="category-grid"
+      >
+
+        <p>
+          🔄 Carregando...
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- PUBLICIDADE -->
+
+    <div class="advertising">
+
+      <div>
+
+        <strong>
+          ANUNCIE AQUI
+        </strong>
+
+        A sua marca em destaque em todo o continente africano.
+
+      </div>
+
+    </div>
+
+  </main>
+
+
+  <!-- RODAPÉ -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+
+        <div class="footer-logo">
+          African<span>Mundo</span>
+        </div>
+
+        <p>
+          A informação que liga África ao mundo.
+        </p>
+
+        <p>
+          Notícias de Moçambique, África,
+          futebol, negócios, entretenimento
+          e desporto.
+        </p>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Navegação
+        </h3>
+
+        <a href="index.html">
+          Início
+        </a>
+
+        <a href="categoria.html?categoria=noticias">
+          Notícias
+        </a>
+
+        <a href="categoria.html?categoria=futebol">
+          Futebol
+        </a>
+
+        <a href="categoria.html?categoria=africa">
+          África
+        </a>
+
+        <a href="categoria.html?categoria=mocambique">
+          Moçambique
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Categorias
+        </h3>
+
+        <a href="categoria.html?categoria=negocios">
+          Negócios
+        </a>
+
+        <a href="categoria.html?categoria=entretenimento">
+          Entretenimento
+        </a>
+
+        <a href="categoria.html?categoria=desporto">
+          Desporto
+        </a>
+
+      </div>
+
+
+      <div>
+
+        <h3>
+          Informações
+        </h3>
+
+        <a href="#">
+          Quem Somos
+        </a>
+
+        <a href="#">
+          Anuncie
+        </a>
+
+        <a href="#">
+          Contacto
+        </a>
+
+        <a href="#">
+          Política de Privacidade
+        </a>
+
+        <a href="#">
+          Termos de Uso
+        </a>
+
+      </div>
 
     </div>
 
 
-    <div>
+    <div class="copyright">
 
-      <h3>Navegação</h3>
-
-      <a href="index.html">
-        Início
-      </a>
-
-      <a href="categoria.html?categoria=noticias">
-        Notícias
-      </a>
-
-      <a href="categoria.html?categoria=futebol">
-        Futebol
-      </a>
-
-      <a href="categoria.html?categoria=africa">
-        África
-      </a>
-
-      <a href="categoria.html?categoria=mocambique">
-        Moçambique
-      </a>
+      © 2026 AfricanMundo.
+      Todos os direitos reservados.
 
     </div>
 
-
-    <div>
-
-      <h3>Categorias</h3>
-
-      <a href="categoria.html?categoria=negocios">
-        Negócios
-      </a>
-
-      <a href="categoria.html?categoria=entretenimento">
-        Entretenimento
-      </a>
-
-      <a href="categoria.html?categoria=desporto">
-        Desporto
-      </a>
-
-    </div>
+  </footer>
 
 
-    <div>
-
-      <h3>Informações</h3>
-
-      <a href="#">
-        Quem Somos
-      </a>
-
-      <a href="#">
-        Anuncie
-      </a>
-
-      <a href="#">
-        Contacto
-      </a>
-
-      <a href="#">
-        Política de Privacidade
-      </a>
-
-      <a href="#">
-        Termos de Uso
-      </a>
-
-    </div>
-
-  </div>
-
-
-  <div class="copyright">
-
-    © 2026 AfricanMundo.
-    Todos os direitos reservados.
-
-  </div>
-
-</footer>
   <script>
+
+    /* =========================================
+       SUPABASE
+    ========================================= */
+
+    const SUPABASE_URL =
+      "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+    const SUPABASE_KEY =
+      "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+    const supabaseClient =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+
+    /* =========================================
+       SEGURANÇA
+    ========================================= */
+
+    function esc(valor) {
+
+      return String(valor ?? "").replace(
+        /[&<>"']/g,
+        function(m) {
+
+          return {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#039;"
+          }[m];
+
+        }
+      );
+
+    }
+
+
+    /* =========================================
+       NORMALIZAR CATEGORIA
+    ========================================= */
+
+    function normalizarCategoria(valor) {
+
+      return String(valor || "")
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .trim();
+
+    }
+
+
+    /* =========================================
+       DATA
+    ========================================= */
+
+    function formatarData(valor) {
+
+      if (!valor) {
+        return "";
+      }
+
+      const data = new Date(valor);
+
+      if (isNaN(data.getTime())) {
+        return "";
+      }
+
+      return data.toLocaleString(
+        "pt-MZ",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      );
+
+    }
+    <script>
 
 /* =========================================
    SUPABASE
@@ -1341,7 +1206,7 @@ const supabaseClient =
 
 
 /* =========================================
-   PROTEGER TEXTO
+   SEGURANÇA
 ========================================= */
 
 function esc(valor) {
@@ -1410,8 +1275,29 @@ function formatarData(valor) {
 
 
 /* =========================================
+   ABRIR NOTÍCIA
+========================================= */
+
+function abrirNoticia(id) {
+
+  if (
+    id === null ||
+    id === undefined ||
+    String(id).trim() === "" ||
+    String(id) === "null"
+  ) {
+    return;
+  }
+
+  window.location.href =
+    "noticia.html?id=" +
+    encodeURIComponent(id);
+
+}
+
+
+/* =========================================
    CARTÃO DE NOTÍCIA
-   IMAGEM TAMBÉM ABRE A NOTÍCIA
 ========================================= */
 
 function criarCard(noticia) {
@@ -1426,54 +1312,36 @@ function criarCard(noticia) {
     noticia.categoria || "Notícias";
 
   const imagem =
-    noticia.Imagem ??
-    noticia.imagem ??
-    "";
+    noticia.imagem || "";
 
   const id =
     noticia.id;
 
   const data =
-    formatarData(
-      noticia.data ||
-      noticia.created_at
-    );
+    formatarData(noticia.data);
 
 
   let imagemHTML = `
-    <div class="news-card-placeholder">
+    <div
+      class="news-card-placeholder"
+      onclick="abrirNoticia(${JSON.stringify(id)})"
+      style="cursor:pointer;"
+    >
       🌍
     </div>
   `;
 
 
-  if (
-    String(imagem).trim() !== "" &&
-    id !== null &&
-    id !== undefined &&
-    String(id) !== "" &&
-    String(id) !== "null"
-  ) {
+  if (String(imagem).trim() !== "") {
 
     imagemHTML = `
-
-      <a
-        href="noticia.html?id=${encodeURIComponent(id)}"
-        style="
-          display:block;
-          text-decoration:none;
-        "
+      <img
+        class="news-card-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        onclick="abrirNoticia(${JSON.stringify(id)})"
+        onerror="this.outerHTML='<div class=&quot;news-card-placeholder&quot; onclick=&quot;abrirNoticia(' + JSON.stringify(${JSON.stringify(id)}) + ')&quot;>🌍</div>'"
       >
-
-        <img
-          class="news-card-image"
-          src="${esc(imagem)}"
-          alt="${esc(titulo)}"
-          onerror="this.outerHTML='<div class=&quot;news-card-placeholder&quot;>🌍</div>'"
-        >
-
-      </a>
-
     `;
 
   }
@@ -1481,30 +1349,26 @@ function criarCard(noticia) {
 
   let botao = "";
 
-
   if (
     id !== null &&
     id !== undefined &&
-    String(id) !== "" &&
+    String(id).trim() !== "" &&
     String(id) !== "null"
   ) {
 
     botao = `
-
       <a
         class="read-more"
         href="noticia.html?id=${encodeURIComponent(id)}"
       >
         📖 Ler mais
       </a>
-
     `;
 
   }
 
 
   return `
-
     <article class="news-card">
 
       ${imagemHTML}
@@ -1544,7 +1408,6 @@ function criarCard(noticia) {
       </div>
 
     </article>
-
   `;
 
 }
@@ -1560,97 +1423,45 @@ function criarUltima(noticia) {
     noticia.titulo || "Sem título";
 
   const imagem =
-    noticia.Imagem ??
-    noticia.imagem ??
-    "";
+    noticia.imagem || "";
 
   const categoria =
     noticia.categoria || "Notícias";
 
   const data =
-    formatarData(
-      noticia.data ||
-      noticia.created_at
-    );
+    formatarData(noticia.data);
 
   const id =
     noticia.id;
 
 
   let imagemHTML = `
-    <div class="latest-placeholder">
+    <div
+      class="latest-placeholder"
+      onclick="abrirNoticia(${JSON.stringify(id)})"
+      style="cursor:pointer;"
+    >
       🌍
     </div>
   `;
 
 
-  if (
-    String(imagem).trim() !== "" &&
-    id !== null &&
-    id !== undefined &&
-    String(id) !== "" &&
-    String(id) !== "null"
-  ) {
+  if (String(imagem).trim() !== "") {
 
     imagemHTML = `
-
-      <a
-        href="noticia.html?id=${encodeURIComponent(id)}"
-        style="
-          display:block;
-          text-decoration:none;
-        "
+      <img
+        class="latest-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        onclick="abrirNoticia(${JSON.stringify(id)})"
+        onerror="this.style.display='none'"
       >
-
-        <img
-          class="latest-image"
-          src="${esc(imagem)}"
-          alt="${esc(titulo)}"
-          onerror="this.style.display='none'"
-        >
-
-      </a>
-
-    `;
-
-  }
-
-
-  if (
-    id === null ||
-    id === undefined ||
-    String(id) === "" ||
-    String(id) === "null"
-  ) {
-
-    return `
-
-      <div class="latest-item">
-
-        ${imagemHTML}
-
-        <div>
-
-          <h3>
-            ${esc(titulo)}
-          </h3>
-
-          <small>
-            ${esc(categoria)}
-            ${data ? " • " + esc(data) : ""}
-          </small>
-
-        </div>
-
-      </div>
-
     `;
 
   }
 
 
   return `
-
     <div class="latest-item">
 
       ${imagemHTML}
@@ -1659,15 +1470,26 @@ function criarUltima(noticia) {
 
         <h3>
 
-          <a
-            href="noticia.html?id=${encodeURIComponent(id)}"
-            style="
-              text-decoration:none;
-              color:inherit;
-            "
-          >
-            ${esc(titulo)}
-          </a>
+          ${
+            id !== null &&
+            id !== undefined &&
+            String(id).trim() !== "" &&
+            String(id) !== "null"
+
+            ? `
+              <a
+                href="noticia.html?id=${encodeURIComponent(id)}"
+                style="
+                  text-decoration:none;
+                  color:inherit;
+                "
+              >
+                ${esc(titulo)}
+              </a>
+            `
+
+            : esc(titulo)
+          }
 
         </h3>
 
@@ -1679,20 +1501,14 @@ function criarUltima(noticia) {
       </div>
 
     </div>
-
   `;
 
-}
-
-
-/* =========================================
+        }
+    /* =========================================
    MENSAGEM
 ========================================= */
 
-function mostrarMensagem(
-  elementoId,
-  mensagem
-) {
+function mostrarMensagem(elementoId, mensagem) {
 
   const elemento =
     document.getElementById(elementoId);
@@ -1702,7 +1518,6 @@ function mostrarMensagem(
   }
 
   elemento.innerHTML = `
-
     <p
       style="
         padding:20px;
@@ -1712,11 +1527,12 @@ function mostrarMensagem(
     >
       ${esc(mensagem)}
     </p>
-
   `;
 
-        }
-  /* =========================================
+}
+
+
+/* =========================================
    CARREGAR NOTÍCIAS
 ========================================= */
 
@@ -1758,12 +1574,9 @@ async function carregarNoticias() {
       await supabaseClient
         .from("noticias")
         .select("*")
-        .order(
-          "id",
-          {
-            ascending: false
-          }
-        );
+        .order("id", {
+          ascending: false
+        });
 
 
     if (resultado.error) {
@@ -1779,7 +1592,6 @@ async function carregarNoticias() {
       );
 
       return;
-
     }
 
 
@@ -1801,7 +1613,6 @@ async function carregarNoticias() {
       );
 
       return;
-
     }
 
 
@@ -1811,7 +1622,6 @@ async function carregarNoticias() {
 
     const principal =
       noticias[0];
-
 
     const tituloPrincipal =
       principal.titulo || "Sem título";
@@ -1823,26 +1633,23 @@ async function carregarNoticias() {
       principal.categoria || "Notícias";
 
     const imagemPrincipal =
-      principal.Imagem ??
-      principal.imagem ??
-      "";
+      principal.imagem || "";
 
     const dataPrincipal =
-      formatarData(
-        principal.data ||
-        principal.created_at
-      );
+      formatarData(principal.data);
 
     const idPrincipal =
       principal.id;
 
 
     let imagemDestaque = `
-
-      <div class="hero-no-image">
+      <div
+        class="hero-no-image"
+        onclick="abrirNoticia(${JSON.stringify(idPrincipal)})"
+        style="cursor:pointer;"
+      >
         🌍
       </div>
-
     `;
 
 
@@ -1851,26 +1658,14 @@ async function carregarNoticias() {
     ) {
 
       imagemDestaque = `
-
-        <a
-          href="noticia.html?id=${encodeURIComponent(idPrincipal)}"
-          style="
-            display:block;
-            width:100%;
-            height:100%;
-            text-decoration:none;
-          "
+        <img
+          class="hero-image"
+          src="${esc(imagemPrincipal)}"
+          alt="${esc(tituloPrincipal)}"
+          onclick="abrirNoticia(${JSON.stringify(idPrincipal)})"
+          style="cursor:pointer;"
+          onerror="this.style.display='none'"
         >
-
-          <img
-            class="hero-image"
-            src="${esc(imagemPrincipal)}"
-            alt="${esc(tituloPrincipal)}"
-            onerror="this.outerHTML='<div class=&quot;hero-no-image&quot;>🌍</div>'"
-          >
-
-        </a>
-
       `;
 
     }
@@ -1894,39 +1689,31 @@ async function carregarNoticias() {
           ${esc(textoPrincipal)}
         </p>
 
-
         ${
           dataPrincipal
             ? `
-
               <div class="hero-date">
                 📅 ${esc(dataPrincipal)}
               </div>
-
             `
             : ""
         }
 
-
         ${
           idPrincipal !== null &&
           idPrincipal !== undefined &&
-          String(idPrincipal) !== "" &&
+          String(idPrincipal).trim() !== "" &&
           String(idPrincipal) !== "null"
 
           ? `
-
             <a
               href="noticia.html?id=${encodeURIComponent(idPrincipal)}"
               class="read-more"
             >
               📖 Ler notícia
             </a>
-
           `
-
           : ""
-
         }
 
       </div>
@@ -1940,17 +1727,14 @@ async function carregarNoticias() {
 
     ultimas.innerHTML = "";
 
-
     noticias
       .slice(0, 5)
-      .forEach(
-        function(noticia) {
+      .forEach(function(noticia) {
 
-          ultimas.innerHTML +=
-            criarUltima(noticia);
+        ultimas.innerHTML +=
+          criarUltima(noticia);
 
-        }
-      );
+      });
 
 
     /* =====================================
@@ -1958,99 +1742,95 @@ async function carregarNoticias() {
     ===================================== */
 
     Object.keys(categorias)
-      .forEach(
-        function(nome) {
+      .forEach(function(nome) {
 
-          if (categorias[nome]) {
+        if (categorias[nome]) {
 
-            categorias[nome].innerHTML = "";
-
-          }
+          categorias[nome].innerHTML = "";
 
         }
-      );
+
+      });
 
 
     /* =====================================
        DISTRIBUIR NOTÍCIAS
     ===================================== */
 
-    noticias.forEach(
-      function(noticia) {
+    noticias.forEach(function(noticia) {
 
-        const categoria =
-          normalizarCategoria(
-            noticia.categoria
-          );
-
-
-        if (
-          categoria === "futebol" &&
-          categorias.futebol
-        ) {
-
-          categorias.futebol.innerHTML +=
-            criarCard(noticia);
-
-        }
+      const categoria =
+        normalizarCategoria(
+          noticia.categoria
+        );
 
 
-        else if (
-          categoria === "mocambique" &&
-          categorias.mocambique
-        ) {
+      if (
+        categoria === "futebol" &&
+        categorias.futebol
+      ) {
 
-          categorias.mocambique.innerHTML +=
-            criarCard(noticia);
-
-        }
-
-
-        else if (
-          categoria === "africa" &&
-          categorias.africa
-        ) {
-
-          categorias.africa.innerHTML +=
-            criarCard(noticia);
-
-        }
-
-
-        else if (
-          categoria === "negocios" &&
-          categorias.negocios
-        ) {
-
-          categorias.negocios.innerHTML +=
-            criarCard(noticia);
-
-        }
-
-
-        else if (
-          categoria === "entretenimento" &&
-          categorias.entretenimento
-        ) {
-
-          categorias.entretenimento.innerHTML +=
-            criarCard(noticia);
-
-        }
-
-
-        else if (
-          categoria === "desporto" &&
-          categorias.desporto
-        ) {
-
-          categorias.desporto.innerHTML +=
-            criarCard(noticia);
-
-        }
+        categorias.futebol.innerHTML +=
+          criarCard(noticia);
 
       }
-    );
+
+
+      else if (
+        categoria === "mocambique" &&
+        categorias.mocambique
+      ) {
+
+        categorias.mocambique.innerHTML +=
+          criarCard(noticia);
+
+      }
+
+
+      else if (
+        categoria === "africa" &&
+        categorias.africa
+      ) {
+
+        categorias.africa.innerHTML +=
+          criarCard(noticia);
+
+      }
+
+
+      else if (
+        categoria === "negocios" &&
+        categorias.negocios
+      ) {
+
+        categorias.negocios.innerHTML +=
+          criarCard(noticia);
+
+      }
+
+
+      else if (
+        categoria === "entretenimento" &&
+        categorias.entretenimento
+      ) {
+
+        categorias.entretenimento.innerHTML +=
+          criarCard(noticia);
+
+      }
+
+
+      else if (
+        categoria === "desporto" &&
+        categorias.desporto
+      ) {
+
+        categorias.desporto.innerHTML +=
+          criarCard(noticia);
+
+      }
+
+    });
 
 
     /* =====================================
@@ -2058,41 +1838,35 @@ async function carregarNoticias() {
     ===================================== */
 
     Object.keys(categorias)
-      .forEach(
-        function(nome) {
+      .forEach(function(nome) {
 
-          const elemento =
-            categorias[nome];
+        const elemento =
+          categorias[nome];
 
+        if (
+          elemento &&
+          elemento.innerHTML.trim() === ""
+        ) {
 
-          if (
-            elemento &&
-            elemento.innerHTML.trim() === ""
-          ) {
-
-            elemento.innerHTML = `
-
-              <p
-                style="
-                  grid-column:1/-1;
-                  padding:20px;
-                  color:#777;
-                  text-align:center;
-                "
-              >
-                Ainda não existem notícias
-                nesta categoria.
-              </p>
-
-            `;
-
-          }
+          elemento.innerHTML = `
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                color:#777;
+                text-align:center;
+              "
+            >
+              Ainda não existem notícias
+              nesta categoria.
+            </p>
+          `;
 
         }
-      );
+
+      });
 
   }
-
 
   catch (erro) {
 
@@ -2100,7 +1874,6 @@ async function carregarNoticias() {
       "Erro inesperado:",
       erro
     );
-
 
     mostrarMensagem(
       "ultimas",
@@ -2124,7 +1897,8 @@ document.addEventListener(
 
   }
 );
-  </script>
+    );
+</script>
 
 </body>
 </html>
