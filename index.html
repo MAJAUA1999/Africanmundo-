@@ -1457,7 +1457,10 @@ function criarUltima(noticia) {
 
 
   let imagemHTML = `
-    <a href="${link}">
+    <a
+      href="${link}"
+      style="display:block;"
+    >
       <div class="latest-placeholder">
         🌍
       </div>
@@ -1467,31 +1470,34 @@ function criarUltima(noticia) {
 
   if (imagem !== "") {
 
-  imagemHTML = `
-    <a href="${link}">
-
-      <img
-        class="latest-image"
-        src="${esc(imagem)}"
-        alt="${esc(titulo)}"
-        loading="lazy"
-        onerror="
-          this.style.display='none';
-          this.nextElementSibling.style.display='flex';
-        "
+    imagemHTML = `
+      <a
+        href="${link}"
+        style="display:block;"
       >
 
-      <div
-        class="latest-placeholder"
-        style="display:none;"
-      >
-        🌍
-      </div>
+        <img
+          class="latest-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+          loading="lazy"
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+          "
+        >
 
-    </a>
-  `;
+        <div
+          class="latest-placeholder"
+          style="display:none;"
+        >
+          🌍
+        </div>
 
-    }
+      </a>
+    `;
+
+  }
 
 
   return `
@@ -1525,7 +1531,7 @@ function criarUltima(noticia) {
     </div>
   `;
 
-}
+    }
 
 
 /* =========================================
