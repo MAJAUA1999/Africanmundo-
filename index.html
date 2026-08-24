@@ -1885,20 +1885,603 @@ async function carregarNoticias() {
 }
 
 
+<script>
+
+const SUPABASE_URL =
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const supabaseClient =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+
+/* =========================================
+   SEGURANÇA
+========================================= */
+
+function esc(valor) {
+
+  return String(valor ?? "").replace(
+    /[&<>"']/g,
+    function(m) {
+
+      return {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      }[m];
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   CATEGORIA
+========================================= */
+
+function normalizarCategoria(valor) {
+
+  return String(valor || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+
+}
+
+
+/* =========================================
+   DATA
+========================================= */
+
+function formatarData(valor) {
+
+  if (!valor) {
+    return "";
+  }
+
+  const data = new Date(valor);
+
+  if (isNaN(data.getTime())) {
+    return "";
+  }
+
+  return data.toLocaleString(
+    "pt-MZ",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit"
+    }
+  );
+
+}
+
+
+/* =========================================
+   LINK DA NOTÍCIA
+========================================= */
+
+function linkNoticia(id) {
+
+  if (
+    id === null ||
+    id === undefined ||
+    String(id).trim() === "" ||
+    String(id) === "null"
+  ) {
+    return "#";
+  }
+
+  return "noticia.html?id=" +
+    encodeURIComponent(id);
+
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+function criarCard(noticia) {
+
+  const id =
+    noticia.id;
+
+  const titulo =
+    noticia.titulo || "Sem título";
+
+  const texto =
+    noticia.texto || "";
+
+  const categoria =
+    noticia.categoria || "Notícias";
+
+  const imagem =
+    String(noticia.imagem || "").trim();
+
+  const data =
+    formatarData(noticia.data);
+
+  const link =
+    linkNoticia(id);
+
+
+  let imagemHTML = `
+    <a href="${link}">
+      <div class="news-card-placeholder">
+        🌍
+      </div>
+    </a>
+  `;
+
+
+  if (imagem !== "") {
+
+    imagemHTML = `
+      <a href="${link}">
+        <img
+          class="news-card-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+        >
+      </a>
+    `;
+
+  }
+
+
+  return `
+    <article class="news-card">
+
+      ${imagemHTML}
+
+      <div class="news-card-content">
+
+        <span class="news-category">
+          ${esc(categoria)}
+        </span>
+
+        <h3>
+          ${esc(titulo)}
+        </h3>
+
+        <p>
+          ${esc(texto)}
+        </p>
+
+        ${
+          data
+            ? `
+              <small
+                style="
+                  display:block;
+                  margin-top:8px;
+                  color:#777;
+                "
+              >
+                📅 ${esc(data)}
+              </small>
+            `
+            : ""
+        }
+
+        <a
+          class="read-more"
+          href="${link}"
+        >
+          📖 Ler mais
+        </a>
+
+      </div>
+
+    </article>
+  `;
+
+}
+
+
+/* =========================================
+   ÚLTIMA NOTÍCIA
+========================================= */
+
+function criarUltima(noticia) {
+
+  const id =
+    noticia.id;
+
+  const titulo =
+    noticia.titulo || "Sem título";
+
+  const categoria =
+    noticia.categoria || "Notícias";
+
+  const imagem =
+    String(noticia.imagem || "").trim();
+
+  const data =
+    formatarData(noticia.data);
+
+  const link =
+    linkNoticia(id);
+
+
+  let imagemHTML = `
+    <a href="${link}">
+      <div class="latest-placeholder">
+        🌍
+      </div>
+    </a>
+  `;
+
+
+  if (imagem !== "") {
+
+    imagemHTML = `
+      <a href="${link}">
+        <img
+          class="latest-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+        >
+      </a>
+    `;
+
+  }
+
+
+  return `
+    <div class="latest-item">
+
+      ${imagemHTML}
+
+      <div>
+
+        <h3>
+          <a
+            href="${link}"
+            style="
+              text-decoration:none;
+              color:inherit;
+            "
+          >
+            ${esc(titulo)}
+          </a>
+        </h3>
+
+        <small>
+          ${esc(categoria)}
+          ${data ? " • " + esc(data) : ""}
+        </small>
+
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* =========================================
+   CARREGAR NOTÍCIAS
+========================================= */
+
+async function carregarNoticias() {
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
+
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro Supabase:",
+        resultado.error
+      );
+
+      mostrarErro();
+
+      return;
+    }
+
+
+    const noticias =
+      resultado.data || [];
+
+
+    console.log(
+      "Notícias recebidas:",
+      noticias
+    );
+
+
+    if (noticias.length === 0) {
+
+      mostrarErro(
+        "Ainda não existem notícias publicadas."
+      );
+
+      return;
+    }
+
+
+    /* =====================================
+       DESTAQUE
+    ===================================== */
+
+    const destaque =
+      document.getElementById("destaque");
+
+    const principal =
+      noticias[0];
+
+    const id =
+      principal.id;
+
+    const titulo =
+      principal.titulo || "Sem título";
+
+    const texto =
+      principal.texto || "";
+
+    const categoria =
+      principal.categoria || "Notícias";
+
+    const imagem =
+      String(principal.imagem || "").trim();
+
+    const data =
+      formatarData(principal.data);
+
+    const link =
+      linkNoticia(id);
+
+
+    let imagemDestaque = `
+      <a href="${link}">
+        <div class="hero-no-image">
+          🌍
+        </div>
+      </a>
+    `;
+
+
+    if (imagem !== "") {
+
+      imagemDestaque = `
+        <a href="${link}">
+          <img
+            class="hero-image"
+            src="${esc(imagem)}"
+            alt="${esc(titulo)}"
+          >
+        </a>
+      `;
+
+    }
+
+
+    destaque.innerHTML = `
+
+      ${imagemDestaque}
+
+      <div class="hero-overlay">
+
+        <span class="badge">
+          ${esc(categoria)}
+        </span>
+
+        <h1>
+          ${esc(titulo)}
+        </h1>
+
+        <p>
+          ${esc(texto)}
+        </p>
+
+        ${
+          data
+            ? `
+              <div class="hero-date">
+                📅 ${esc(data)}
+              </div>
+            `
+            : ""
+        }
+
+        <a
+          href="${link}"
+          class="read-more"
+        >
+          📖 Ler notícia
+        </a>
+
+      </div>
+
+    `;
+
+
+    /* =====================================
+       ÚLTIMAS
+    ===================================== */
+
+    const ultimas =
+      document.getElementById("ultimas");
+
+    ultimas.innerHTML = "";
+
+    noticias
+      .slice(0, 5)
+      .forEach(function(noticia) {
+
+        ultimas.innerHTML +=
+          criarUltima(noticia);
+
+      });
+
+
+    /* =====================================
+       CATEGORIAS
+    ===================================== */
+
+    const categorias = {
+
+      futebol:
+        document.getElementById("futebol"),
+
+      mocambique:
+        document.getElementById("mocambique"),
+
+      africa:
+        document.getElementById("africa"),
+
+      negocios:
+        document.getElementById("negocios"),
+
+      entretenimento:
+        document.getElementById("entretenimento"),
+
+      desporto:
+        document.getElementById("desporto")
+
+    };
+
+
+    Object.values(categorias)
+      .forEach(function(elemento) {
+
+        if (elemento) {
+          elemento.innerHTML = "";
+        }
+
+      });
+
+
+    noticias.forEach(function(noticia) {
+
+      const categoria =
+        normalizarCategoria(
+          noticia.categoria
+        );
+
+
+      if (
+        categorias[categoria]
+      ) {
+
+        categorias[categoria].innerHTML +=
+          criarCard(noticia);
+
+      }
+
+    });
+
+
+    /* =====================================
+       CATEGORIAS VAZIAS
+    ===================================== */
+
+    Object.keys(categorias)
+      .forEach(function(nome) {
+
+        const elemento =
+          categorias[nome];
+
+        if (
+          elemento &&
+          elemento.innerHTML.trim() === ""
+        ) {
+
+          elemento.innerHTML = `
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                color:#777;
+                text-align:center;
+              "
+            >
+              Ainda não existem notícias
+              nesta categoria.
+            </p>
+          `;
+
+        }
+
+      });
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+    mostrarErro();
+
+  }
+
+}
+
+
+/* =========================================
+   ERRO
+========================================= */
+
+function mostrarErro(
+  mensagem =
+    "Não foi possível carregar as notícias."
+) {
+
+  const ultimas =
+    document.getElementById("ultimas");
+
+  if (ultimas) {
+
+    ultimas.innerHTML = `
+      <p
+        style="
+          padding:20px;
+          color:#c00;
+          text-align:center;
+        "
+      >
+        ${esc(mensagem)}
+      </p>
+    `;
+
+  }
+
+}
+
+
 /* =========================================
    INICIAR
 ========================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
-  function() {
-
-    carregarNoticias();
-
-  }
+  carregarNoticias
 );
-    );
-</script>
 
-</body>
-</html>
+</script>
