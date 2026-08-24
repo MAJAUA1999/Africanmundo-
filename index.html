@@ -333,14 +333,21 @@
     }
 
     .latest-image,
-    .latest-placeholder {
-      width: 125px;
-      height: 82px;
-      border-radius: 3px;
-      object-fit: cover;
-      background: #ddd;
-      display: block;
-    }
+.latest-placeholder {
+  width: 125px;
+  height: 82px;
+  min-width: 125px;
+  min-height: 82px;
+  border-radius: 3px;
+  object-fit: cover;
+  background: #ddd;
+  display: block;
+}
+
+.latest-image {
+  visibility: visible;
+  opacity: 1;
+}
 
     .latest-placeholder {
       background: #333;
