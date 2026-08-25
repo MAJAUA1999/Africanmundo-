@@ -45,6 +45,7 @@
       max-height: 500px;
       object-fit: cover;
       display: block;
+      cursor: zoom-in;
     }
 
     .article-content {
@@ -97,6 +98,57 @@
       border-radius: 12px;
       padding: 20px;
     }
+
+
+    /* =====================================
+       VISUALIZADOR DE IMAGEM GRANDE
+    ===================================== */
+
+    .image-viewer {
+      display: none;
+      position: fixed;
+      z-index: 99999;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.95);
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .image-viewer.active {
+      display: flex;
+    }
+
+    .image-viewer img {
+      max-width: 100%;
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .image-viewer-close {
+      position: absolute;
+      top: 15px;
+      right: 18px;
+      width: 46px;
+      height: 46px;
+      border: 0;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+      color: #fff;
+      font-size: 30px;
+      line-height: 46px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 100000;
+    }
+
 
     /* =====================================
        MAIS NOTÍCIAS
@@ -161,6 +213,7 @@
       line-height: 1.3;
     }
 
+
     @media (max-width: 600px) {
 
       .article-image {
@@ -200,6 +253,35 @@
 
 </header>
 
+
+<!-- =====================================
+     VISUALIZADOR DE FOTO
+===================================== -->
+
+<div
+  id="imageViewer"
+  class="image-viewer"
+  onclick="fecharImagemGrande(event)"
+>
+
+  <button
+    type="button"
+    class="image-viewer-close"
+    onclick="fecharImagemGrande()"
+    aria-label="Fechar imagem"
+  >
+    ×
+  </button>
+
+  <img
+    id="imageViewerImg"
+    src=""
+    alt="Imagem ampliada"
+  >
+
+</div>
+
+
 <main>
 
   <section class="news-section article-page">
@@ -222,7 +304,6 @@
   </section>
 
 </main>
-
 <script>
 
 /* =====================================
@@ -295,6 +376,102 @@ function formatarData(data) {
 
 }
 
+
+/* =====================================
+   ABRIR IMAGEM EM TAMANHO GRANDE
+===================================== */
+
+function abrirImagemGrande(url, alt = "") {
+
+  const viewer =
+    document.getElementById("imageViewer");
+
+  const viewerImg =
+    document.getElementById("imageViewerImg");
+
+
+  if (!viewer || !viewerImg || !url) {
+    return;
+  }
+
+
+  viewerImg.src = url;
+
+  viewerImg.alt =
+    alt || "Imagem ampliada";
+
+
+  viewer.classList.add("active");
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+/* =====================================
+   FECHAR IMAGEM GRANDE
+===================================== */
+
+function fecharImagemGrande(event) {
+
+  /*
+     Se tocar diretamente na imagem,
+     não fechar.
+  */
+
+  if (
+    event &&
+    event.target &&
+    event.target.id === "imageViewerImg"
+  ) {
+    return;
+  }
+
+
+  const viewer =
+    document.getElementById("imageViewer");
+
+  const viewerImg =
+    document.getElementById("imageViewerImg");
+
+
+  if (!viewer || !viewerImg) {
+    return;
+  }
+
+
+  viewer.classList.remove("active");
+
+
+  viewerImg.src = "";
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+/* =====================================
+   FECHAR COM TECLA ESC
+===================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (event.key === "Escape") {
+
+      fecharImagemGrande();
+
+    }
+
+  }
+);
+
+
 /* =====================================
    MAIS NOTÍCIAS
 ===================================== */
@@ -342,9 +519,9 @@ async function carregarMaisNoticias(
     }
 
 
-    /* =====================================
+    /* =================================
        CRIAR CARTÕES
-    ===================================== */
+    ================================= */
 
     const cards =
       noticias.map(function(noticia) {
@@ -522,8 +699,8 @@ async function carregarMaisNoticias(
 
   }
 
-  }
-/* =====================================
+}
+  /* =====================================
    CARREGAR NOTÍCIA
 ===================================== */
 
@@ -734,6 +911,14 @@ async function carregarNoticia() {
               class="article-image"
               src="${esc(imagem)}"
               alt="${esc(titulo)}"
+
+              onclick="
+                abrirImagemGrande(
+                  '${esc(imagem)}',
+                  '${esc(titulo)}'
+                )
+              "
+
               onerror="
                 this.style.display='none';
               "
