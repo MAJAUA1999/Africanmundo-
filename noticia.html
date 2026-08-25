@@ -17,10 +17,31 @@
 
   <style>
 
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: #f4f4f4;
+      color: #111;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    /* =====================================
+       PÁGINA DA NOTÍCIA
+    ===================================== */
+
     .article-page {
       max-width: 900px;
       margin: 0 auto;
     }
+
+
+    /* =====================================
+       BOTÃO VOLTAR
+    ===================================== */
 
     .back-button {
       display: inline-block;
@@ -33,12 +54,22 @@
       font-weight: 700;
     }
 
+
+    /* =====================================
+       ARTIGO
+    ===================================== */
+
     .article {
       background: #fff;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 4px 18px rgba(0,0,0,0.10);
     }
+
+
+    /* =====================================
+       FOTO DA NOTÍCIA
+    ===================================== */
 
     .article-image {
       width: 100%;
@@ -48,9 +79,20 @@
       cursor: zoom-in;
     }
 
+
+    .article-image:hover {
+      opacity: 0.96;
+    }
+
+
+    /* =====================================
+       CONTEÚDO
+    ===================================== */
+
     .article-content {
       padding: 28px;
     }
+
 
     .article-category {
       display: inline-block;
@@ -58,7 +100,9 @@
       font-size: 14px;
       font-weight: 800;
       text-transform: uppercase;
+      color: #45a52c;
     }
+
 
     .article-date {
       display: block;
@@ -67,17 +111,24 @@
       font-size: 14px;
     }
 
+
     .article-title {
       margin: 0 0 20px;
       font-size: 36px;
       line-height: 1.2;
     }
 
+
     .article-text {
       font-size: 19px;
       line-height: 1.85;
       white-space: pre-wrap;
     }
+
+
+    /* =====================================
+       PARTILHAR
+    ===================================== */
 
     .share-button {
       display: inline-block;
@@ -92,6 +143,11 @@
       cursor: pointer;
     }
 
+
+    /* =====================================
+       CARREGAMENTO / ERRO
+    ===================================== */
+
     .loading,
     .error-box {
       background: #fff;
@@ -101,52 +157,52 @@
 
 
     /* =====================================
-       VISUALIZADOR DE IMAGEM GRANDE
+       VISUALIZADOR DA FOTO GRANDE
     ===================================== */
 
-    .image-viewer {
-      display: none;
+    .photo-viewer {
       position: fixed;
-      z-index: 99999;
       inset: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0,0,0,0.95);
+      z-index: 999999;
+      display: none;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      box-sizing: border-box;
+      padding: 15px;
+      background: rgba(0,0,0,0.96);
     }
 
-    .image-viewer.active {
+
+    .photo-viewer.show {
       display: flex;
     }
 
-    .image-viewer img {
+
+    .photo-viewer img {
       max-width: 100%;
-      max-height: 90vh;
+      max-height: 94vh;
       width: auto;
       height: auto;
       object-fit: contain;
-      border-radius: 6px;
       display: block;
     }
 
-    .image-viewer-close {
-      position: absolute;
-      top: 15px;
-      right: 18px;
+
+    .photo-viewer-close {
+      position: fixed;
+      top: 12px;
+      right: 12px;
       width: 46px;
       height: 46px;
       border: 0;
       border-radius: 50%;
-      background: rgba(255,255,255,0.15);
-      color: #fff;
+      background: #fff;
+      color: #111;
       font-size: 30px;
+      font-weight: 900;
       line-height: 46px;
       text-align: center;
       cursor: pointer;
-      z-index: 100000;
+      z-index: 1000000;
     }
 
 
@@ -158,6 +214,7 @@
       margin-top: 30px;
     }
 
+
     .related-news-title {
       margin: 0 0 15px;
       font-size: 22px;
@@ -165,11 +222,13 @@
       padding-left: 10px;
     }
 
+
     .related-news-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 15px;
     }
+
 
     .related-card {
       background: #fff;
@@ -180,7 +239,8 @@
       color: #111;
     }
 
-    .related-card img,
+
+    .related-card-image,
     .related-placeholder {
       width: 100%;
       height: 150px;
@@ -188,17 +248,24 @@
       display: block;
     }
 
+
     .related-placeholder {
-      background: linear-gradient(135deg, #111, #345b29);
+      background: linear-gradient(
+        135deg,
+        #111,
+        #345b29
+      );
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 40px;
     }
 
+
     .related-content {
       padding: 12px;
     }
+
 
     .related-category {
       color: #45a52c;
@@ -207,6 +274,7 @@
       text-transform: uppercase;
     }
 
+
     .related-card h3 {
       margin: 6px 0 0;
       font-size: 16px;
@@ -214,27 +282,46 @@
     }
 
 
+    /* =====================================
+       RESPONSIVO
+    ===================================== */
+
     @media (max-width: 600px) {
 
       .article-image {
         max-height: 300px;
       }
 
+
       .article-content {
         padding: 18px;
       }
 
+
       .article-title {
         font-size: 27px;
       }
+
 
       .article-text {
         font-size: 17px;
         line-height: 1.75;
       }
 
+
       .related-news-grid {
         grid-template-columns: 1fr;
+      }
+
+
+      .photo-viewer {
+        padding: 8px;
+      }
+
+
+      .photo-viewer img {
+        max-width: 100%;
+        max-height: 92vh;
       }
 
     }
@@ -245,66 +332,129 @@
 
 <body>
 
-<header>
 
-  <div class="top">
-    🌍 AfricanMundo
-  </div>
+  <!-- =====================================
+       CABEÇALHO
+  ===================================== -->
 
-</header>
+  <header>
 
-
-<!-- =====================================
-     VISUALIZADOR DE FOTO
-===================================== -->
-
-<div
-  id="imageViewer"
-  class="image-viewer"
-  onclick="fecharImagemGrande(event)"
->
-
-  <button
-    type="button"
-    class="image-viewer-close"
-    onclick="fecharImagemGrande()"
-    aria-label="Fechar imagem"
-  >
-    ×
-  </button>
-
-  <img
-    id="imageViewerImg"
-    src=""
-    alt="Imagem ampliada"
-  >
-
-</div>
-
-
-<main>
-
-  <section class="news-section article-page">
-
-    <a
-      class="back-button"
-      href="javascript:history.back()"
+    <div
+      style="
+        background:#050505;
+        color:#fff;
+        padding:20px 15px;
+      "
     >
-      ← Voltar
-    </a>
 
-    <div id="article">
+      <div
+        style="
+          max-width:1200px;
+          margin:auto;
+        "
+      >
 
-      <div class="loading">
-        🔄 A carregar notícia...
+        <div
+          style="
+            font-size:32px;
+            font-weight:900;
+          "
+        >
+
+          African<span style="color:#45c226;">
+            Mundo
+          </span>
+
+        </div>
+
+        <div
+          style="
+            margin-top:5px;
+            color:#ddd;
+            font-size:13px;
+          "
+        >
+
+          A informação que liga África ao mundo
+
+        </div>
+
       </div>
 
     </div>
 
-  </section>
+  </header>
 
-</main>
-<script>
+
+  <!-- =====================================
+       VISUALIZADOR DA FOTO
+  ===================================== -->
+
+  <div
+    id="photoViewer"
+    class="photo-viewer"
+    onclick="fecharFotoGrande(event)"
+  >
+
+    <button
+      type="button"
+      class="photo-viewer-close"
+      onclick="fecharFotoGrande(event)"
+      aria-label="Fechar imagem"
+    >
+      ×
+    </button>
+
+
+    <img
+      id="photoViewerImg"
+      src=""
+      alt="Imagem ampliada"
+    >
+
+  </div>
+
+
+  <!-- =====================================
+       CONTEÚDO
+  ===================================== -->
+
+  <main
+    style="
+      max-width:1200px;
+      margin:auto;
+      padding:25px 12px 50px;
+    "
+  >
+
+    <section class="news-section article-page">
+
+
+      <a
+        class="back-button"
+        href="javascript:history.back()"
+      >
+
+        ← Voltar
+
+      </a>
+
+
+      <div id="article">
+
+        <div class="loading">
+
+          🔄 A carregar notícia...
+
+        </div>
+
+      </div>
+
+
+    </section>
+
+  </main>
+  <script>
 
 /* =====================================
    SUPABASE
@@ -357,7 +507,8 @@ function formatarData(data) {
     return "";
   }
 
-  const d = new Date(data);
+  const d =
+    new Date(data);
 
   if (isNaN(d.getTime())) {
     return "";
@@ -378,30 +529,46 @@ function formatarData(data) {
 
 
 /* =====================================
-   ABRIR IMAGEM EM TAMANHO GRANDE
+   ABRIR FOTO EM TAMANHO GRANDE
 ===================================== */
 
-function abrirImagemGrande(url, alt = "") {
+function abrirFotoGrande(
+  url,
+  titulo
+) {
 
   const viewer =
-    document.getElementById("imageViewer");
+    document.getElementById(
+      "photoViewer"
+    );
 
-  const viewerImg =
-    document.getElementById("imageViewerImg");
+  const img =
+    document.getElementById(
+      "photoViewerImg"
+    );
 
 
-  if (!viewer || !viewerImg || !url) {
+  if (
+    !viewer ||
+    !img ||
+    !url
+  ) {
+
     return;
+
   }
 
 
-  viewerImg.src = url;
+  img.src = url;
 
-  viewerImg.alt =
-    alt || "Imagem ampliada";
+  img.alt =
+    titulo ||
+    "Imagem ampliada";
 
 
-  viewer.classList.add("active");
+  viewer.classList.add(
+    "show"
+  );
 
 
   document.body.style.overflow =
@@ -411,41 +578,57 @@ function abrirImagemGrande(url, alt = "") {
 
 
 /* =====================================
-   FECHAR IMAGEM GRANDE
+   FECHAR FOTO GRANDE
 ===================================== */
 
-function fecharImagemGrande(event) {
+function fecharFotoGrande(
+  event
+) {
 
   /*
-     Se tocar diretamente na imagem,
-     não fechar.
+    Se tocar diretamente na foto,
+    não fecha.
   */
 
   if (
     event &&
     event.target &&
-    event.target.id === "imageViewerImg"
+    event.target.id ===
+    "photoViewerImg"
   ) {
+
     return;
+
   }
 
 
   const viewer =
-    document.getElementById("imageViewer");
+    document.getElementById(
+      "photoViewer"
+    );
 
-  const viewerImg =
-    document.getElementById("imageViewerImg");
+  const img =
+    document.getElementById(
+      "photoViewerImg"
+    );
 
 
-  if (!viewer || !viewerImg) {
+  if (
+    !viewer ||
+    !img
+  ) {
+
     return;
+
   }
 
 
-  viewer.classList.remove("active");
+  viewer.classList.remove(
+    "show"
+  );
 
 
-  viewerImg.src = "";
+  img.src = "";
 
 
   document.body.style.overflow =
@@ -455,16 +638,18 @@ function fecharImagemGrande(event) {
 
 
 /* =====================================
-   FECHAR COM TECLA ESC
+   TECLA ESC
 ===================================== */
 
 document.addEventListener(
   "keydown",
   function(event) {
 
-    if (event.key === "Escape") {
+    if (
+      event.key === "Escape"
+    ) {
 
-      fecharImagemGrande();
+      fecharFotoGrande();
 
     }
 
@@ -481,7 +666,9 @@ async function carregarMaisNoticias(
 ) {
 
   const article =
-    document.getElementById("article");
+    document.getElementById(
+      "article"
+    );
 
 
   try {
@@ -490,14 +677,22 @@ async function carregarMaisNoticias(
       await supabaseClient
         .from("noticias")
         .select("*")
-        .neq("id", noticiaAtualId)
-        .order("id", {
-          ascending: false
-        })
+        .neq(
+          "id",
+          noticiaAtualId
+        )
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        )
         .limit(3);
 
 
-    if (resultado.error) {
+    if (
+      resultado.error
+    ) {
 
       console.error(
         "Erro ao carregar mais notícias:",
@@ -505,161 +700,152 @@ async function carregarMaisNoticias(
       );
 
       return;
+
     }
 
 
     const noticias =
-      Array.isArray(resultado.data)
+      Array.isArray(
+        resultado.data
+      )
         ? resultado.data
         : [];
 
 
-    if (noticias.length === 0) {
+    if (
+      noticias.length === 0
+    ) {
+
       return;
+
     }
 
 
     /* =================================
-       CRIAR CARTÕES
+       CARTÕES
     ================================= */
 
     const cards =
-      noticias.map(function(noticia) {
+      noticias
+        .map(
+          function(noticia) {
 
-        const titulo =
-          noticia.titulo ||
-          noticia.title ||
-          noticia.nome ||
-          "Sem título";
-
-
-        const categoria =
-          noticia.categoria ||
-          noticia.category ||
-          noticia.cat ||
-          "Notícias";
+            const titulo =
+              noticia.titulo ||
+              noticia.title ||
+              noticia.nome ||
+              "Sem título";
 
 
-        /* =================================
-           PEGAR IMAGEM
-        ================================= */
-
-        let imagem =
-          noticia.imagem ??
-          noticia.Imagem ??
-          noticia.image ??
-          noticia.imagem_url ??
-          noticia.image_url ??
-          "";
+            const categoria =
+              noticia.categoria ||
+              noticia.category ||
+              noticia.cat ||
+              "Notícias";
 
 
-        imagem =
-          String(imagem || "").trim();
+            const imagem =
+              String(
+                noticia.imagem ??
+                noticia.Imagem ??
+                noticia.image ??
+                noticia.imagem_url ??
+                noticia.image_url ??
+                ""
+              ).trim();
 
 
-        console.log(
-          "Mais notícias:",
-          titulo,
-          "Imagem:",
-          imagem
-        );
+            const link =
+              "noticia.html?id=" +
+              encodeURIComponent(
+                noticia.id
+              );
 
 
-        /* =================================
-           IMAGEM PADRÃO
-        ================================= */
+            let imagemHTML = `
 
-        let imagemHTML = `
-
-          <div
-            class="related-placeholder"
-          >
-            🌍
-          </div>
-
-        `;
-
-
-        /* =================================
-           MOSTRAR IMAGEM
-        ================================= */
-
-        if (imagem !== "") {
-
-          imagemHTML = `
-
-            <img
-              class="related-card-image"
-              src="${esc(imagem)}"
-              alt="${esc(titulo)}"
-              loading="lazy"
-              style="
-                width:100%;
-                height:150px;
-                object-fit:cover;
-                display:block;
-                background:#ddd;
-              "
-              onerror="
-                this.style.display='none';
-                this.nextElementSibling.style.display='flex';
-              "
-            >
-
-            <div
-              class="related-placeholder"
-              style="display:none;"
-            >
-              🌍
-            </div>
-
-          `;
-
-        }
-
-
-        /* =================================
-           CARTÃO
-        ================================= */
-
-        return `
-
-          <a
-            class="related-card"
-            href="noticia.html?id=${encodeURIComponent(noticia.id)}"
-          >
-
-            ${imagemHTML}
-
-            <div class="related-content">
-
-              <div class="related-category">
-
-                ${esc(categoria)}
-
+              <div
+                class="related-placeholder"
+              >
+                🌍
               </div>
 
-              <h3>
-
-                ${esc(titulo)}
-
-              </h3>
-
-            </div>
-
-          </a>
-
-        `;
-
-      }).join("");
+            `;
 
 
-    /* =====================================
-       CRIAR SEÇÃO
-    ===================================== */
+            if (
+              imagem !== ""
+            ) {
+
+              imagemHTML = `
+
+                <img
+                  class="related-card-image"
+                  src="${esc(imagem)}"
+                  alt="${esc(titulo)}"
+                  loading="lazy"
+                  onerror="
+                    this.style.display='none';
+                    this.nextElementSibling.style.display='flex';
+                  "
+                >
+
+                <div
+                  class="related-placeholder"
+                  style="display:none;"
+                >
+                  🌍
+                </div>
+
+              `;
+
+            }
+
+
+            return `
+
+              <a
+                class="related-card"
+                href="${link}"
+              >
+
+                ${imagemHTML}
+
+
+                <div class="related-content">
+
+                  <div class="related-category">
+
+                    ${esc(categoria)}
+
+                  </div>
+
+
+                  <h3>
+
+                    ${esc(titulo)}
+
+                  </h3>
+
+                </div>
+
+              </a>
+
+            `;
+
+          }
+        )
+        .join("");
+
+
+    /* =================================
+       SEÇÃO
+    ================================= */
 
     const secao =
-      document.createElement("section");
+      document.createElement(
+        "section"
+      );
 
 
     secao.className =
@@ -674,6 +860,7 @@ async function carregarMaisNoticias(
 
       </h2>
 
+
       <div class="related-news-grid">
 
         ${cards}
@@ -687,8 +874,8 @@ async function carregarMaisNoticias(
       secao
     );
 
-
   }
+
 
   catch (erro) {
 
@@ -700,14 +887,18 @@ async function carregarMaisNoticias(
   }
 
 }
-  /* =====================================
+
+
+/* =====================================
    CARREGAR NOTÍCIA
 ===================================== */
 
 async function carregarNoticia() {
 
   const article =
-    document.getElementById("article");
+    document.getElementById(
+      "article"
+    );
 
 
   const url =
@@ -717,13 +908,9 @@ async function carregarNoticia() {
 
 
   const id =
-    url.searchParams.get("id");
-
-
-  console.log(
-    "URL atual:",
-    window.location.href
-  );
+    url.searchParams.get(
+      "id"
+    );
 
 
   console.log(
@@ -743,9 +930,15 @@ async function carregarNoticia() {
         <br><br>
 
         <small>
+
           Esta página precisa receber um ID.
+
           <br>
-          Exemplo: noticia.html?id=1
+
+          Exemplo:
+
+          noticia.html?id=1
+
         </small>
 
       </div>
@@ -753,6 +946,7 @@ async function carregarNoticia() {
     `;
 
     return;
+
   }
 
 
@@ -760,7 +954,9 @@ async function carregarNoticia() {
     String(id).trim();
 
 
-  if (idLimpo === "") {
+  if (
+    idLimpo === ""
+  ) {
 
     article.innerHTML = `
 
@@ -773,6 +969,7 @@ async function carregarNoticia() {
     `;
 
     return;
+
   }
 
 
@@ -782,7 +979,10 @@ async function carregarNoticia() {
       await supabaseClient
         .from("noticias")
         .select("*")
-        .eq("id", idLimpo)
+        .eq(
+          "id",
+          idLimpo
+        )
         .maybeSingle();
 
 
@@ -817,7 +1017,11 @@ async function carregarNoticia() {
           <br><br>
 
           <small>
-            ${esc(error.message)}
+
+            ${esc(
+              error.message
+            )}
+
           </small>
 
         </div>
@@ -825,6 +1029,7 @@ async function carregarNoticia() {
       `;
 
       return;
+
     }
 
 
@@ -839,8 +1044,11 @@ async function carregarNoticia() {
           <br><br>
 
           <small>
+
             ID procurado:
+
             ${esc(idLimpo)}
+
           </small>
 
         </div>
@@ -848,11 +1056,12 @@ async function carregarNoticia() {
       `;
 
       return;
+
     }
 
 
     /* =================================
-       DADOS
+       DADOS DA NOTÍCIA
     ================================= */
 
     const titulo =
@@ -895,6 +1104,41 @@ async function carregarNoticia() {
 
 
     /* =================================
+       PREPARAR IMAGEM
+    ================================= */
+
+    let imagemHTML = "";
+
+
+    if (
+      imagem !== ""
+    ) {
+
+      imagemHTML = `
+
+        <img
+          class="article-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+
+          onclick="
+            abrirFotoGrande(
+              '${esc(imagem)}',
+              '${esc(titulo)}'
+            )
+          "
+
+          onerror="
+            this.style.display='none';
+          "
+        >
+
+      `;
+
+    }
+
+
+    /* =================================
        MOSTRAR NOTÍCIA
     ================================= */
 
@@ -902,36 +1146,12 @@ async function carregarNoticia() {
 
       <article class="article">
 
-        ${
-          imagem
 
-          ? `
-
-            <img
-              class="article-image"
-              src="${esc(imagem)}"
-              alt="${esc(titulo)}"
-
-              onclick="
-                abrirImagemGrande(
-                  '${esc(imagem)}',
-                  '${esc(titulo)}'
-                )
-              "
-
-              onerror="
-                this.style.display='none';
-              "
-            >
-
-          `
-
-          : ""
-
-        }
+        ${imagemHTML}
 
 
         <div class="article-content">
+
 
           <span class="article-category">
 
@@ -943,19 +1163,18 @@ async function carregarNoticia() {
           ${
             dataPublicacao
 
-            ? `
+              ? `
 
-              <span class="article-date">
+                <span class="article-date">
 
-                📅 Publicado em
-                ${esc(dataPublicacao)}
+                  📅 Publicado em
+                  ${esc(dataPublicacao)}
 
-              </span>
+                </span>
 
-            `
+              `
 
-            : ""
-
+              : ""
           }
 
 
@@ -974,6 +1193,7 @@ async function carregarNoticia() {
 
 
           <button
+            type="button"
             class="share-button"
             onclick="partilharNoticia()"
           >
@@ -982,7 +1202,9 @@ async function carregarNoticia() {
 
           </button>
 
+
         </div>
+
 
       </article>
 
@@ -990,7 +1212,7 @@ async function carregarNoticia() {
 
 
     /* =================================
-       CARREGAR MAIS NOTÍCIAS
+       MAIS NOTÍCIAS
     ================================= */
 
     carregarMaisNoticias(
@@ -1017,10 +1239,12 @@ async function carregarNoticia() {
         <br><br>
 
         <small>
+
           ${esc(
             erro.message ||
             erro
           )}
+
         </small>
 
       </div>
@@ -1030,10 +1254,8 @@ async function carregarNoticia() {
   }
 
 }
-
-
-/* =====================================
-   PARTILHAR
+    /* =====================================
+   PARTILHAR NOTÍCIA
 ===================================== */
 
 async function partilharNoticia() {
@@ -1049,7 +1271,9 @@ async function partilharNoticia() {
     "AfricanMundo";
 
 
-  if (navigator.share) {
+  if (
+    navigator.share
+  ) {
 
     try {
 
@@ -1107,7 +1331,14 @@ async function partilharNoticia() {
    INICIAR
 ===================================== */
 
-carregarNoticia();
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    carregarNoticia();
+
+  }
+);
 
 </script>
 
