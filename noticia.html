@@ -295,7 +295,6 @@ function formatarData(data) {
 
 }
 
-
 /* =====================================
    MAIS NOTÍCIAS
 ===================================== */
@@ -306,6 +305,7 @@ async function carregarMaisNoticias(
 
   const article =
     document.getElementById("article");
+
 
   try {
 
@@ -332,7 +332,9 @@ async function carregarMaisNoticias(
 
 
     const noticias =
-      resultado.data || [];
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
 
 
     if (noticias.length === 0) {
@@ -340,48 +342,111 @@ async function carregarMaisNoticias(
     }
 
 
+    /* =====================================
+       CRIAR CARTÕES
+    ===================================== */
+
     const cards =
       noticias.map(function(noticia) {
 
         const titulo =
           noticia.titulo ||
+          noticia.title ||
+          noticia.nome ||
           "Sem título";
 
 
         const categoria =
           noticia.categoria ||
+          noticia.category ||
+          noticia.cat ||
           "Notícias";
 
 
-        const imagem =
-          String(
-            noticia.imagem || ""
-          ).trim();
+        /* =================================
+           PEGAR IMAGEM
+        ================================= */
 
+        let imagem =
+          noticia.imagem ??
+          noticia.Imagem ??
+          noticia.image ??
+          noticia.imagem_url ??
+          noticia.image_url ??
+          "";
+
+
+        imagem =
+          String(imagem || "").trim();
+
+
+        console.log(
+          "Mais notícias:",
+          titulo,
+          "Imagem:",
+          imagem
+        );
+
+
+        /* =================================
+           IMAGEM PADRÃO
+        ================================= */
 
         let imagemHTML = `
-          <div class="related-placeholder">
+
+          <div
+            class="related-placeholder"
+          >
             🌍
           </div>
+
         `;
 
+
+        /* =================================
+           MOSTRAR IMAGEM
+        ================================= */
 
         if (imagem !== "") {
 
           imagemHTML = `
+
             <img
+              class="related-card-image"
               src="${esc(imagem)}"
               alt="${esc(titulo)}"
+              loading="lazy"
+              style="
+                width:100%;
+                height:150px;
+                object-fit:cover;
+                display:block;
+                background:#ddd;
+              "
               onerror="
-                this.outerHTML='<div class=&quot;related-placeholder&quot;>🌍</div>'
+                this.style.display='none';
+                this.nextElementSibling.style.display='flex';
               "
             >
+
+            <div
+              class="related-placeholder"
+              style="display:none;"
+            >
+              🌍
+            </div>
+
           `;
 
         }
 
 
+        /* =================================
+           CARTÃO
+        ================================= */
+
         return `
+
           <a
             class="related-card"
             href="noticia.html?id=${encodeURIComponent(noticia.id)}"
@@ -392,20 +457,29 @@ async function carregarMaisNoticias(
             <div class="related-content">
 
               <div class="related-category">
+
                 ${esc(categoria)}
+
               </div>
 
               <h3>
+
                 ${esc(titulo)}
+
               </h3>
 
             </div>
 
           </a>
+
         `;
 
       }).join("");
 
+
+    /* =====================================
+       CRIAR SEÇÃO
+    ===================================== */
 
     const secao =
       document.createElement("section");
@@ -418,11 +492,15 @@ async function carregarMaisNoticias(
     secao.innerHTML = `
 
       <h2 class="related-news-title">
+
         📰 Mais notícias
+
       </h2>
 
       <div class="related-news-grid">
+
         ${cards}
+
       </div>
 
     `;
@@ -432,20 +510,19 @@ async function carregarMaisNoticias(
       secao
     );
 
+
   }
 
   catch (erro) {
 
     console.error(
-      "Erro:",
+      "Erro ao carregar mais notícias:",
       erro
     );
 
   }
 
-}
-
-
+  }
 /* =====================================
    CARREGAR NOTÍCIA
 ===================================== */
