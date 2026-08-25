@@ -39,6 +39,11 @@
       color: inherit;
     }
 
+
+    /* =========================================
+       TOPO
+    ========================================= */
+
     .top-info {
       background: #050505;
       color: #ddd;
@@ -64,6 +69,11 @@
       color: #fff;
       text-decoration: none;
     }
+
+
+    /* =========================================
+       CABEÇALHO
+    ========================================= */
 
     header {
       background: #050505;
@@ -128,6 +138,11 @@
       font-size: 13px;
     }
 
+
+    /* =========================================
+       MENU
+    ========================================= */
+
     .nav {
       background: #151515;
       border-top: 1px solid #292929;
@@ -160,6 +175,11 @@
       background: #45c226;
     }
 
+
+    /* =========================================
+       CONTEÚDO
+    ========================================= */
+
     main {
       max-width: 1200px;
       margin: auto;
@@ -191,6 +211,11 @@
       margin-bottom: 5px;
     }
 
+
+    /* =========================================
+       DESTAQUE
+    ========================================= */
+
     .hero-layout {
       display: grid;
       grid-template-columns: 2fr 1fr;
@@ -218,7 +243,7 @@
       height: 430px;
       object-fit: cover;
       display: block;
-      cursor: pointer;
+      cursor: zoom-in;
     }
 
     .hero-no-image {
@@ -283,6 +308,11 @@
       color: #ddd;
     }
 
+
+    /* =========================================
+       ÚLTIMAS NOTÍCIAS
+    ========================================= */
+
     .latest {
       background: #fff;
       padding: 15px;
@@ -326,28 +356,21 @@
       border-bottom: 0;
     }
 
-    .latest-link {
+    .latest-image,
+    .latest-placeholder {
+      width: 125px;
+      height: 82px;
+      min-width: 125px;
+      min-height: 82px;
+      border-radius: 3px;
+      object-fit: cover;
+      background: #ddd;
       display: block;
-      text-decoration: none;
-      color: inherit;
     }
 
-    .latest-image,
-.latest-placeholder {
-  width: 125px;
-  height: 82px;
-  min-width: 125px;
-  min-height: 82px;
-  border-radius: 3px;
-  object-fit: cover;
-  background: #ddd;
-  display: block;
-}
-
-.latest-image {
-  visibility: visible;
-  opacity: 1;
-}
+    .latest-image {
+      cursor: zoom-in;
+    }
 
     .latest-placeholder {
       background: #333;
@@ -375,6 +398,11 @@
       color: #777;
       font-size: 11px;
     }
+
+
+    /* =========================================
+       CATEGORIAS
+    ========================================= */
 
     .category-section {
       background: #fff;
@@ -414,6 +442,11 @@
       gap: 15px;
     }
 
+
+    /* =========================================
+       CARDS
+    ========================================= */
+
     .news-card {
       border: 1px solid #ddd;
       background: #fff;
@@ -427,7 +460,7 @@
       object-fit: cover;
       display: block;
       background: #222;
-      cursor: pointer;
+      cursor: zoom-in;
     }
 
     .news-card-placeholder {
@@ -442,7 +475,6 @@
       justify-content: center;
       font-size: 45px;
       color: #fff;
-      cursor: pointer;
     }
 
     .news-card-content {
@@ -495,7 +527,55 @@
     .read-more:hover {
       background: #369c20;
     }
-        /* =========================================
+
+
+    /* =========================================
+       VISUALIZADOR DE IMAGEM GRANDE
+    ========================================= */
+
+    .image-viewer {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.94);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      padding: 20px;
+    }
+
+    .image-viewer.show {
+      display: flex;
+    }
+
+    .image-viewer img {
+      max-width: 100%;
+      max-height: 92vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      border-radius: 4px;
+      box-shadow: 0 5px 30px rgba(0,0,0,.5);
+    }
+
+    .image-viewer-close {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      width: 45px;
+      height: 45px;
+      border: 0;
+      border-radius: 50%;
+      background: #fff;
+      color: #111;
+      font-size: 28px;
+      font-weight: 900;
+      cursor: pointer;
+      z-index: 100000;
+    }
+
+
+    /* =========================================
        RODAPÉ
     ========================================= */
 
@@ -663,7 +743,9 @@
       .latest-image,
       .latest-placeholder {
         width: 100px;
+        min-width: 100px;
         height: 70px;
+        min-height: 70px;
       }
 
       .category-grid {
@@ -807,6 +889,32 @@
 
 
   <!-- =========================================
+       VISUALIZADOR DE IMAGEM
+  ========================================= -->
+
+  <div
+    id="imageViewer"
+    class="image-viewer"
+    onclick="fecharImagemGrande(event)"
+  >
+
+    <button
+      class="image-viewer-close"
+      onclick="fecharImagemGrande(event)"
+    >
+      ×
+    </button>
+
+    <img
+      id="imageViewerImg"
+      src=""
+      alt="Imagem ampliada"
+    >
+
+  </div>
+
+
+  <!-- =========================================
        CONTEÚDO PRINCIPAL
   ========================================= -->
 
@@ -878,10 +986,8 @@
 
       </aside>
 
-    </div>
-
-
-    <!-- =========================================
+  </div>
+      <!-- =========================================
          FUTEBOL
     ========================================= -->
 
@@ -1210,10 +1316,15 @@
     </div>
 
   </footer>
-  <script>
 
+
+  <!-- =========================================
+       JAVASCRIPT
+  ========================================= -->
+
+  <script>
     /* =========================================
-   SUPABASE — AFRICANMUNDO
+   SUPABASE
 ========================================= */
 
 const SUPABASE_URL =
@@ -1227,6 +1338,8 @@ const supabaseClient =
     SUPABASE_URL,
     SUPABASE_KEY
   );
+
+
 /* =========================================
    FUNÇÕES DE APOIO
 ========================================= */
@@ -1305,81 +1418,195 @@ function obterLinkNoticia(id) {
 
 
 /* =========================================
+   ABRIR IMAGEM EM TAMANHO GRANDE
+========================================= */
+
+function abrirImagemGrande(url, titulo) {
+
+  if (!url) {
+    return;
+  }
+
+  const fundo =
+    document.createElement("div");
+
+  fundo.id =
+    "visualizadorImagem";
+
+  fundo.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:99999;
+    background:rgba(0,0,0,.94);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    cursor:zoom-out;
+  `;
+
+  fundo.innerHTML = `
+
+    <div
+      style="
+        width:100%;
+        height:100%;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        position:relative;
+      "
+    >
+
+      <button
+        type="button"
+        aria-label="Fechar imagem"
+        style="
+          position:absolute;
+          top:10px;
+          right:5px;
+          width:45px;
+          height:45px;
+          border:0;
+          border-radius:50%;
+          background:#fff;
+          color:#111;
+          font-size:28px;
+          font-weight:700;
+          cursor:pointer;
+          z-index:2;
+        "
+      >
+        ×
+      </button>
+
+      <img
+        src="${esc(url)}"
+        alt="${esc(titulo || "")}"
+        style="
+          max-width:100%;
+          max-height:100%;
+          width:auto;
+          height:auto;
+          object-fit:contain;
+          border-radius:4px;
+          cursor:default;
+        "
+      >
+
+    </div>
+
+  `;
+
+
+  fundo.addEventListener(
+    "click",
+    function(event) {
+
+      if (
+        event.target === fundo ||
+        event.target.tagName === "BUTTON"
+      ) {
+
+        fundo.remove();
+
+      }
+
+    }
+  );
+
+
+  document.body.appendChild(fundo);
+
+}
+
+
+/* =========================================
    CARD DE NOTÍCIA
 ========================================= */
 
 function criarCard(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
-    noticia.titulo || "Sem título";
+    noticia.titulo ||
+    noticia.title ||
+    "Sem título";
 
   const texto =
-    noticia.texto || "";
+    noticia.texto ||
+    noticia.body ||
+    noticia.conteudo ||
+    "";
 
   const categoria =
-    noticia.categoria || "Notícias";
+    noticia.categoria ||
+    noticia.category ||
+    "Notícias";
 
   const imagem =
     String(
       noticia.imagem ??
       noticia.Imagem ??
+      noticia.image ??
+      noticia.imagem_url ??
+      noticia.image_url ??
       ""
     ).trim();
 
   const data =
-    formatarData(noticia.data);
+    formatarData(
+      noticia.data
+    );
 
   const link =
     obterLinkNoticia(id);
 
 
   let imagemHTML = `
-    <a
-      href="${link}"
-      class="news-card-link"
+
+    <div
+      class="news-card-placeholder"
+      onclick="abrirImagemGrande('', '${esc(titulo)}')"
     >
-      <div class="news-card-placeholder">
-        🌍
-      </div>
-    </a>
+      🌍
+    </div>
+
   `;
 
 
   if (imagem !== "") {
 
     imagemHTML = `
-      <a
-        href="${link}"
-        class="news-card-link"
+
+      <img
+        class="news-card-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        loading="lazy"
+        onclick="abrirImagemGrande('${esc(imagem)}', '${esc(titulo)}')"
+        onerror="
+          this.style.display='none';
+          this.nextElementSibling.style.display='flex';
+        "
       >
 
-        <img
-          class="news-card-image"
-          src="${esc(imagem)}"
-          alt="${esc(titulo)}"
-          loading="lazy"
-          onerror="
-            this.style.display='none';
-            this.nextElementSibling.style.display='flex';
-          "
-        >
+      <div
+        class="news-card-placeholder"
+        style="display:none;"
+      >
+        🌍
+      </div>
 
-        <div
-          class="news-card-placeholder"
-          style="display:none;"
-        >
-          🌍
-        </div>
-
-      </a>
     `;
 
   }
 
 
   return `
+
     <article class="news-card">
 
       ${imagemHTML}
@@ -1391,7 +1618,15 @@ function criarCard(noticia) {
         </span>
 
         <h3>
-          ${esc(titulo)}
+          <a
+            href="${link}"
+            style="
+              text-decoration:none;
+              color:inherit;
+            "
+          >
+            ${esc(titulo)}
+          </a>
         </h3>
 
         <p>
@@ -1430,6 +1665,7 @@ function criarCard(noticia) {
       </div>
 
     </article>
+
   `;
 
 }
@@ -1441,120 +1677,103 @@ function criarCard(noticia) {
 
 function criarUltima(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
-    noticia.titulo || "Sem título";
+    noticia.titulo ||
+    noticia.title ||
+    "Sem título";
 
   const categoria =
-    noticia.categoria || "Notícias";
+    noticia.categoria ||
+    noticia.category ||
+    "Notícias";
 
   const imagem =
     String(
       noticia.imagem ??
       noticia.Imagem ??
+      noticia.image ??
+      noticia.imagem_url ??
+      noticia.image_url ??
       ""
     ).trim();
 
   const data =
-    formatarData(noticia.data);
+    formatarData(
+      noticia.data
+    );
 
   const link =
     obterLinkNoticia(id);
 
 
-  /* =====================================
-     IMAGEM
-  ===================================== */
+  let imagemHTML = `
 
-  let imagemHTML = "";
+    <div
+      class="latest-placeholder"
+      style="
+        cursor:pointer;
+      "
+    >
+      🌍
+    </div>
+
+  `;
 
 
   if (imagem !== "") {
 
     imagemHTML = `
-      <a
-        href="${link}"
-        style="
-          display:block;
-          width:125px;
-          height:82px;
+
+      <img
+        class="latest-image"
+        src="${esc(imagem)}"
+        alt="${esc(titulo)}"
+        loading="lazy"
+        onclick="abrirImagemGrande('${esc(imagem)}', '${esc(titulo)}')"
+        onerror="
+          this.style.display='none';
+          this.nextElementSibling.style.display='flex';
         "
       >
 
-        <img
-          src="${esc(imagem)}"
-          alt="${esc(titulo)}"
-          loading="lazy"
-          style="
-            display:block;
-            width:125px;
-            height:82px;
-            object-fit:cover;
-            border-radius:4px;
-            background:#ddd;
-          "
-        >
-
-      </a>
-    `;
-
-  } else {
-
-    imagemHTML = `
-      <a
-        href="${link}"
+      <div
+        class="latest-placeholder"
         style="
-          display:flex;
-          width:125px;
-          height:82px;
-          align-items:center;
-          justify-content:center;
-          background:#333;
-          border-radius:4px;
-          text-decoration:none;
+          display:none;
+          cursor:pointer;
         "
       >
-        <span
-          style="
-            font-size:25px;
-            color:#fff;
-          "
-        >
-          🌍
-        </span>
-      </a>
+        🌍
+      </div>
+
     `;
 
   }
 
 
-  /* =====================================
-     NOTÍCIA
-  ===================================== */
-
   return `
-    <div
-      class="latest-item"
-      style="
-        display:grid;
-        grid-template-columns:125px 1fr;
-        gap:12px;
-        align-items:start;
-      "
-    >
 
-      ${imagemHTML}
+    <div class="latest-item">
+
+      <div
+        style="
+          width:125px;
+          height:82px;
+          flex-shrink:0;
+        "
+      >
+
+        ${imagemHTML}
+
+      </div>
+
 
       <div>
 
-        <h3
-          style="
-            margin:0;
-            font-size:14px;
-            line-height:1.3;
-          "
-        >
+        <h3>
 
           <a
             href="${link}"
@@ -1568,38 +1787,47 @@ function criarUltima(noticia) {
 
         </h3>
 
-        <small
-          style="
-            display:block;
-            margin-top:8px;
-            color:#777;
-            font-size:11px;
-          "
-        >
+        <small>
+
           ${esc(categoria)}
-          ${data ? " • " + esc(data) : ""}
+
+          ${
+            data
+              ? " • " + esc(data)
+              : ""
+          }
+
         </small>
 
       </div>
 
     </div>
+
   `;
 
 }
+
+
 /* =========================================
-   MENSAGEM DE ERRO
+   MENSAGEM
 ========================================= */
 
-function mostrarMensagem(elementoId, mensagem) {
+function mostrarMensagem(
+  elementoId,
+  mensagem
+) {
 
   const elemento =
-    document.getElementById(elementoId);
+    document.getElementById(
+      elementoId
+    );
 
   if (!elemento) {
     return;
   }
 
   elemento.innerHTML = `
+
     <p
       style="
         padding:20px;
@@ -1609,6 +1837,7 @@ function mostrarMensagem(elementoId, mensagem) {
     >
       ${esc(mensagem)}
     </p>
+
   `;
 
 }
@@ -1628,6 +1857,7 @@ async function carregarNoticias() {
 
   const ultimas =
     document.getElementById("ultimas");
+
 
   const categorias = {
 
@@ -1653,13 +1883,13 @@ async function carregarNoticias() {
 
 
   /* =========================================
-     INICIAR COMO CARREGANDO
+     CARREGANDO
   ========================================= */
 
   if (ultimas) {
 
     ultimas.innerHTML = `
-      <p style="padding:20px;text-align:center;color:#777;">
+      <p class="loading">
         🔄 Carregando notícias...
       </p>
     `;
@@ -1667,24 +1897,28 @@ async function carregarNoticias() {
   }
 
 
-  Object.keys(categorias).forEach(function(nome) {
+  Object.keys(categorias).forEach(
+    function(nome) {
 
-    if (categorias[nome]) {
+      if (categorias[nome]) {
 
-      categorias[nome].innerHTML = `
-        <p style="
-          grid-column:1/-1;
-          padding:20px;
-          text-align:center;
-          color:#777;
-        ">
-          🔄 Carregando...
-        </p>
-      `;
+        categorias[nome].innerHTML = `
+          <p
+            style="
+              grid-column:1/-1;
+              padding:20px;
+              text-align:center;
+              color:#777;
+            "
+          >
+            🔄 Carregando...
+          </p>
+        `;
+
+      }
 
     }
-
-  });
+  );
 
 
   try {
@@ -1705,7 +1939,7 @@ async function carregarNoticias() {
     if (resultado.error) {
 
       console.error(
-        "Erro do Supabase:",
+        "Erro Supabase:",
         resultado.error
       );
 
@@ -1726,7 +1960,7 @@ async function carregarNoticias() {
 
 
     console.log(
-      "AfricanMundo — notícias recebidas:",
+      "AfricanMundo — notícias:",
       noticias
     );
 
@@ -1743,24 +1977,28 @@ async function carregarNoticias() {
       );
 
 
-      Object.keys(categorias).forEach(function(nome) {
+      Object.keys(categorias).forEach(
+        function(nome) {
 
-        if (categorias[nome]) {
+          if (categorias[nome]) {
 
-          categorias[nome].innerHTML = `
-            <p style="
-              grid-column:1/-1;
-              padding:20px;
-              text-align:center;
-              color:#777;
-            ">
-              Ainda não existem notícias nesta categoria.
-            </p>
-          `;
+            categorias[nome].innerHTML = `
+              <p
+                style="
+                  grid-column:1/-1;
+                  padding:20px;
+                  text-align:center;
+                  color:#777;
+                "
+              >
+                Ainda não existem notícias nesta categoria.
+              </p>
+            `;
+
+          }
 
         }
-
-      });
+      );
 
 
       return;
@@ -1769,7 +2007,7 @@ async function carregarNoticias() {
 
 
     /* =========================================
-       NOTÍCIA PRINCIPAL
+       DESTAQUE
     ========================================= */
 
     const principal =
@@ -1779,69 +2017,87 @@ async function carregarNoticias() {
     const idPrincipal =
       principal.id;
 
+
     const tituloPrincipal =
-      principal.titulo || "Sem título";
+      principal.titulo ||
+      principal.title ||
+      "Sem título";
+
 
     const textoPrincipal =
-      principal.texto || "";
+      principal.texto ||
+      principal.body ||
+      principal.conteudo ||
+      "";
+
 
     const categoriaPrincipal =
-      principal.categoria || "Notícias";
+      principal.categoria ||
+      principal.category ||
+      "Notícias";
+
 
     const imagemPrincipal =
       String(
         principal.imagem ??
         principal.Imagem ??
+        principal.image ??
+        principal.imagem_url ??
+        principal.image_url ??
         ""
       ).trim();
 
+
     const dataPrincipal =
-      formatarData(principal.data);
+      formatarData(
+        principal.data
+      );
+
 
     const linkPrincipal =
-      obterLinkNoticia(idPrincipal);
+      obterLinkNoticia(
+        idPrincipal
+      );
 
 
     let imagemDestaque = `
-      <a
-        href="${linkPrincipal}"
-        class="hero-link"
+
+      <div
+        class="hero-no-image"
       >
+        🌍
+      </div>
 
-        <div class="hero-no-image">
-          🌍
-        </div>
-
-      </a>
     `;
 
 
     if (imagemPrincipal !== "") {
 
       imagemDestaque = `
-        <a
-          href="${linkPrincipal}"
-          class="hero-link"
+
+        <img
+          class="hero-image"
+          src="${esc(imagemPrincipal)}"
+          alt="${esc(tituloPrincipal)}"
+          onclick="
+            abrirImagemGrande(
+              '${esc(imagemPrincipal)}',
+              '${esc(tituloPrincipal)}'
+            )
+          "
+          onerror="
+            this.style.display='none';
+            this.nextElementSibling.style.display='flex';
+          "
         >
 
-          <img
-            class="hero-image"
-            src="${esc(imagemPrincipal)}"
-            alt="${esc(tituloPrincipal)}"
-            onerror="
-              this.style.display='none';
-              this.nextElementSibling.style.display='flex';
-            "
-          >
+        <div
+          class="hero-no-image"
+          style="display:none;"
+        >
+          🌍
+        </div>
 
-          <div
-            class="hero-no-image"
-            style="display:none;"
-          >
-            🌍
-          </div>
-
-        </a>
       `;
 
     }
@@ -1853,19 +2109,33 @@ async function carregarNoticias() {
 
         ${imagemDestaque}
 
+
         <div class="hero-overlay">
 
           <span class="badge">
             ${esc(categoriaPrincipal)}
           </span>
 
+
           <h1>
-            ${esc(tituloPrincipal)}
+
+            <a
+              href="${linkPrincipal}"
+              style="
+                color:#fff;
+                text-decoration:none;
+              "
+            >
+              ${esc(tituloPrincipal)}
+            </a>
+
           </h1>
+
 
           <p>
             ${esc(textoPrincipal)}
           </p>
+
 
           ${
             dataPrincipal
@@ -1876,6 +2146,7 @@ async function carregarNoticias() {
               `
               : ""
           }
+
 
           ${
             linkPrincipal !== "#"
@@ -1898,305 +2169,176 @@ async function carregarNoticias() {
 
 
     /* =========================================
-   ÚLTIMA NOTÍCIA
-========================================= */
+       ÚLTIMAS NOTÍCIAS
+    ========================================= */
 
-function criarUltima(noticia) {
+    if (ultimas) {
 
-  const id = noticia.id;
-
-  const titulo =
-    noticia.titulo || "Sem título";
-
-  const categoria =
-    noticia.categoria || "Notícias";
-
-  const data =
-    formatarData(noticia.data);
-
-  const link =
-    obterLinkNoticia(id);
+      ultimas.innerHTML = "";
 
 
-  /* =====================================
-     PEGAR IMAGEM
-  ===================================== */
+      noticias
+        .slice(0, 5)
+        .forEach(
+          function(noticia) {
 
-  let imagem =
-    noticia.imagem;
+            ultimas.innerHTML +=
+              criarUltima(
+                noticia
+              );
 
-  if (
-    !imagem ||
-    String(imagem).trim() === ""
-  ) {
+          }
+        );
 
-    imagem =
-      noticia.Imagem;
+    }
 
-  }
-
-  imagem =
-    String(imagem || "").trim();
-
-
-  /* =====================================
-     IMAGEM
-  ===================================== */
-
-  let imagemHTML;
-
-
-  if (imagem) {
-
-    imagemHTML = `
-      <a
-        href="${link}"
-        style="
-          display:block;
-          width:125px;
-          height:82px;
-          overflow:hidden;
-          border-radius:4px;
-        "
-      >
-
-        <img
-          src="${imagem}"
-          alt="${esc(titulo)}"
-          style="
-            display:block !important;
-            width:125px !important;
-            height:82px !important;
-            min-width:125px !important;
-            min-height:82px !important;
-            max-width:none !important;
-            object-fit:cover !important;
-            visibility:visible !important;
-            opacity:1 !important;
-          "
-        >
-
-      </a>
-    `;
-
-  } else {
-
-    imagemHTML = `
-      <a
-        href="${link}"
-        style="
-          display:flex;
-          width:125px;
-          height:82px;
-          align-items:center;
-          justify-content:center;
-          background:#333;
-          border-radius:4px;
-          text-decoration:none;
-        "
-      >
-        <span
-          style="
-            font-size:25px;
-            color:#fff;
-          "
-        >
-          🌍
-        </span>
-      </a>
-    `;
-
-  }
-
-
-  /* =====================================
-     RESULTADO
-  ===================================== */
-
-  return `
-    <div
-      class="latest-item"
-      style="
-        display:grid;
-        grid-template-columns:125px minmax(0,1fr);
-        gap:12px;
-        padding:10px 0;
-        border-bottom:1px solid #ddd;
-      "
-    >
-
-      ${imagemHTML}
-
-      <div>
-
-        <h3
-          style="
-            margin:0;
-            font-size:14px;
-            line-height:1.3;
-          "
-        >
-
-          <a
-            href="${link}"
-            style="
-              text-decoration:none;
-              color:inherit;
-            "
-          >
-            ${esc(titulo)}
-          </a>
-
-        </h3>
-
-        <small
-          style="
-            display:block;
-            margin-top:8px;
-            color:#777;
-            font-size:11px;
-          "
-        >
-          ${esc(categoria)}
-          ${data ? " • " + esc(data) : ""}
-        </small>
-
-      </div>
-
-    </div>
-  `;
-
-}
 
     /* =========================================
        LIMPAR CATEGORIAS
     ========================================= */
 
-    Object.keys(categorias).forEach(function(nome) {
+    Object.keys(categorias).forEach(
+      function(nome) {
 
-      if (categorias[nome]) {
+        if (categorias[nome]) {
 
-        categorias[nome].innerHTML = "";
+          categorias[nome].innerHTML =
+            "";
+
+        }
 
       }
-
-    });
+    );
 
 
     /* =========================================
-       DISTRIBUIR POR CATEGORIA
+       DISTRIBUIR NOTÍCIAS
     ========================================= */
 
-    noticias.forEach(function(noticia) {
+    noticias.forEach(
+      function(noticia) {
 
-      const categoria =
-        normalizarCategoria(
-          noticia.categoria
-        );
+        const categoria =
+          normalizarCategoria(
+            noticia.categoria ??
+            noticia.category ??
+            ""
+          );
 
 
-      if (
-        categoria === "futebol" &&
-        categorias.futebol
-      ) {
+        if (
+          categoria === "futebol" &&
+          categorias.futebol
+        ) {
 
-        categorias.futebol.innerHTML +=
-          criarCard(noticia);
+          categorias.futebol.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        else if (
+          categoria === "mocambique" &&
+          categorias.mocambique
+        ) {
+
+          categorias.mocambique.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        else if (
+          categoria === "africa" &&
+          categorias.africa
+        ) {
+
+          categorias.africa.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        else if (
+          categoria === "negocios" &&
+          categorias.negocios
+        ) {
+
+          categorias.negocios.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        else if (
+          categoria === "entretenimento" &&
+          categorias.entretenimento
+        ) {
+
+          categorias.entretenimento.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        else if (
+          categoria === "desporto" &&
+          categorias.desporto
+        ) {
+
+          categorias.desporto.innerHTML +=
+            criarCard(noticia);
+
+        }
 
       }
-
-
-      else if (
-        categoria === "mocambique" &&
-        categorias.mocambique
-      ) {
-
-        categorias.mocambique.innerHTML +=
-          criarCard(noticia);
-
-      }
-
-
-      else if (
-        categoria === "africa" &&
-        categorias.africa
-      ) {
-
-        categorias.africa.innerHTML +=
-          criarCard(noticia);
-
-      }
-
-
-      else if (
-        categoria === "negocios" &&
-        categorias.negocios
-      ) {
-
-        categorias.negocios.innerHTML +=
-          criarCard(noticia);
-
-      }
-
-
-      else if (
-        categoria === "entretenimento" &&
-        categorias.entretenimento
-      ) {
-
-        categorias.entretenimento.innerHTML +=
-          criarCard(noticia);
-
-      }
-
-
-      else if (
-        categoria === "desporto" &&
-        categorias.desporto
-      ) {
-
-        categorias.desporto.innerHTML +=
-          criarCard(noticia);
-
-      }
-
-    });
+    );
 
 
     /* =========================================
-       MOSTRAR MENSAGEM NAS CATEGORIAS VAZIAS
+       CATEGORIAS VAZIAS
     ========================================= */
 
-    Object.keys(categorias).forEach(function(nome) {
+    Object.keys(categorias).forEach(
+      function(nome) {
 
-      const elemento =
-        categorias[nome];
+        const elemento =
+          categorias[nome];
 
-      if (
-        elemento &&
-        elemento.innerHTML.trim() === ""
-      ) {
 
-        elemento.innerHTML = `
-          <p style="
-            grid-column:1/-1;
-            padding:20px;
-            text-align:center;
-            color:#777;
-          ">
-            Ainda não existem notícias nesta categoria.
-          </p>
-        `;
+        if (
+          elemento &&
+          elemento.innerHTML.trim() === ""
+        ) {
+
+          elemento.innerHTML = `
+
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                text-align:center;
+                color:#777;
+              "
+            >
+              Ainda não existem notícias nesta categoria.
+            </p>
+
+          `;
+
+        }
 
       }
+    );
 
-    });
+
+  }
 
 
-  } catch (erro) {
+  catch (erro) {
 
     console.error(
-      "Erro inesperado ao carregar notícias:",
+      "Erro inesperado:",
       erro
     );
 
@@ -2207,24 +2349,30 @@ function criarUltima(noticia) {
     );
 
 
-    Object.keys(categorias).forEach(function(nome) {
+    Object.keys(categorias).forEach(
+      function(nome) {
 
-      if (categorias[nome]) {
+        if (categorias[nome]) {
 
-        categorias[nome].innerHTML = `
-          <p style="
-            grid-column:1/-1;
-            padding:20px;
-            text-align:center;
-            color:#c00;
-          ">
-            Não foi possível carregar esta categoria.
-          </p>
-        `;
+          categorias[nome].innerHTML = `
+
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                text-align:center;
+                color:#c00;
+              "
+            >
+              Não foi possível carregar esta categoria.
+            </p>
+
+          `;
+
+        }
 
       }
-
-    });
+    );
 
   }
 
@@ -2245,3 +2393,6 @@ document.addEventListener(
 );
 
 </script>
+
+</body>
+</html>
