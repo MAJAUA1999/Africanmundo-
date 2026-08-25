@@ -2254,190 +2254,225 @@
 
 
     /* =========================================
-       CRIAR DESTAQUE
-       IMAGEM E TEXTO LEVAM À NOTÍCIA
-    ========================================= */
+   CRIAR DESTAQUE
+   IMAGEM + TEXTO LEVAM À NOTÍCIA
+========================================= */
 
-    function criarDestaque(
-      noticia
-    ) {
+function criarDestaque(noticia) {
 
-      const id =
-        noticia.id;
+  const id =
+    noticia.id;
 
+  const titulo =
+    noticia.titulo ||
+    noticia.title ||
+    noticia.nome ||
+    "Sem título";
 
-      const titulo =
-        noticia.titulo ||
-        noticia.title ||
-        noticia.nome ||
-        "Sem título";
+  const texto =
+    noticia.texto ||
+    noticia.body ||
+    noticia.conteudo ||
+    noticia.content ||
+    "";
 
+  const categoria =
+    noticia.categoria ||
+    noticia.category ||
+    noticia.cat ||
+    "Notícias";
 
-      const texto =
-        noticia.texto ||
-        noticia.body ||
-        noticia.conteudo ||
-        noticia.content ||
-        "";
+  const imagem =
+    String(
+      noticia.imagem ??
+      noticia.Imagem ??
+      noticia.image ??
+      noticia.imagem_url ??
+      noticia.image_url ??
+      ""
+    ).trim();
 
+  const data =
+    formatarData(
+      noticia.data ??
+      noticia.created_at
+    );
 
-      const categoria =
-        noticia.categoria ||
-        noticia.category ||
-        noticia.cat ||
-        "Notícias";
-
-
-      const imagem =
-        String(
-          noticia.imagem ??
-          noticia.Imagem ??
-          noticia.image ??
-          noticia.imagem_url ??
-          noticia.image_url ??
-          ""
-        ).trim();
-
-
-      const data =
-        formatarData(
-          noticia.data ||
-          noticia.created_at
-        );
-
-
-      const link =
-        obterLinkNoticia(
-          id
-        );
+  const link =
+    "noticia.html?id=" +
+    encodeURIComponent(
+      String(id)
+    );
 
 
-      let imagemDestaque = `
+  /* =====================================
+     IMAGEM DO DESTAQUE
+  ===================================== */
 
-        <a
-          href="${link}"
-          class="hero-image-link"
-          aria-label="Abrir notícia"
+  let imagemHTML = `
+
+    <a
+      href="${link}"
+      class="hero-image-link"
+      aria-label="Abrir notícia"
+      style="
+        display:block;
+        width:100%;
+        height:430px;
+        text-decoration:none;
+        cursor:pointer;
+      "
+    >
+
+      <div class="hero-no-image">
+        🌍
+      </div>
+
+    </a>
+
+  `;
+
+
+  if (imagem !== "") {
+
+    imagemHTML = `
+
+      <a
+        href="${link}"
+        class="hero-image-link"
+        aria-label="Abrir notícia"
+        style="
+          display:block;
+          width:100%;
+          height:430px;
+          text-decoration:none;
+          cursor:pointer;
+        "
+      >
+
+        <img
+          class="hero-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+          style="
+            width:100%;
+            height:430px;
+            object-fit:cover;
+            display:block;
+            cursor:pointer;
+          "
+          onerror="
+            this.style.display='none';
+            if(this.nextElementSibling){
+              this.nextElementSibling.style.display='flex';
+            }
+          "
         >
 
-          <div class="hero-no-image">
-            🌍
-          </div>
+        <div
+          class="hero-no-image"
+          style="display:none;"
+        >
+          🌍
+        </div>
 
-        </a>
+      </a>
 
-      `;
+    `;
+
+  }
 
 
-      if (
-        imagem !== ""
-      ) {
+  /* =====================================
+     DESTAQUE COMPLETO
+  ===================================== */
 
-        imagemDestaque = `
+  return `
+
+    <div class="hero">
+
+
+      ${imagemHTML}
+
+
+      <div class="hero-overlay">
+
+
+        <span class="badge">
+
+          ${esc(categoria)}
+
+        </span>
+
+
+        <h1>
 
           <a
             href="${link}"
-            class="hero-image-link"
-            aria-label="Abrir notícia"
           >
 
-            <img
-              class="hero-image"
-              src="${esc(imagem)}"
-              alt="${esc(titulo)}"
-            >
+            ${esc(titulo)}
 
           </a>
 
-        `;
-
-      }
+        </h1>
 
 
-      return `
+        ${
+          texto
+            ? `
 
-        ${imagemDestaque}
+              <a
+                href="${link}"
+                class="hero-text-link"
+              >
 
+                <p>
 
-        <div class="hero-overlay">
+                  ${esc(texto)}
 
-          <span class="badge">
-            ${esc(categoria)}
-          </span>
+                </p>
 
+              </a>
 
-          <h1>
-
-            <a
-              href="${link}"
-            >
-
-              ${esc(titulo)}
-
-            </a>
-
-          </h1>
+            `
+            : ""
+        }
 
 
-          ${
-            texto
-              ? `
+        ${
+          data
+            ? `
 
-                <a
-                  href="${link}"
-                  class="hero-text-link"
-                >
+              <div class="hero-date">
 
-                  <p>
-                    ${esc(texto)}
-                  </p>
+                📅 ${esc(data)}
 
-                </a>
+              </div>
 
-              `
-              : ""
-          }
+            `
+            : ""
+        }
 
 
-          ${
-            data
-              ? `
+        <a
+          href="${link}"
+          class="read-more"
+        >
 
-                <div class="hero-date">
+          📖 Ler notícia completa
 
-                  📅 ${esc(data)}
-
-                </div>
-
-              `
-              : ""
-          }
+        </a>
 
 
-          ${
-            link !== "#"
-              ? `
+      </div>
 
-                <a
-                  href="${link}"
-                  class="read-more"
-                >
 
-                  📖 Ler notícia completa
+    </div>
 
-                </a>
-
-              `
-              : ""
-          }
-
-        </div>
-
-      `;
+  `;
 
     }
-
-
     /* =========================================
        CARREGAR NOTÍCIAS
     ========================================= */
