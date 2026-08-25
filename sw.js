@@ -1,7 +1,6 @@
-const CACHE_NAME = "africanmundo-v1";
+const CACHE_NAME = "africanmundo-v2";
 
 const ARQUIVOS = [
-  "./",
   "./index.html",
   "./manifest.json"
 ];
@@ -30,9 +29,19 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+  const url = new URL(event.request.url);
+
+  // Não interferir no painel de administração
+  if (
+    url.pathname.includes("admin") ||
+    url.pathname.includes("painel") ||
+    url.pathname.includes("supabase")
+  ) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then(resposta => {
-      return resposta || fetch(event.request);
-    })
+    fetch(event.request)
+      .catch(() => caches.match(event.request))
   );
 });
