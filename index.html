@@ -3493,6 +3493,18 @@ document.addEventListener(
 
   }
 );
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js")
+      .then(() => {
+        console.log("AfricanMundo: aplicativo ativado.");
+      })
+      .catch((erro) => {
+        console.error("Erro ao ativar o aplicativo:", erro);
+      });
+  });
+}
 
 </script>
 
