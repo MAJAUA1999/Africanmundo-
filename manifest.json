@@ -1,1 +1,10 @@
-
+{
+  "name": "AfricanMundo",
+  "short_name": "AfricanMundo",
+  "description": "A informação que liga África ao mundo",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0b6b3a",
+  "orientation": "portrait"
+}
