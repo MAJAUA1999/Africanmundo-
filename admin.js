@@ -444,193 +444,289 @@ async function render() {
   const posts =
     document.getElementById("posts");
 
-
   if (!posts) {
-
     return;
-
   }
-
 
   posts.innerHTML =
     "<p>🔄 A carregar notícias...</p>";
 
+  try {
 
-  const { data, error } =
-    await supabaseClient
-      .from("noticias")
-      .select("*")
-      .order(
-        "id",
-        {
-          ascending: false
-        }
-      );
+    /* =====================================
+       LIMITE DE TEMPO
+    ===================================== */
 
+    const tempoLimite = new Promise(
+      (_, reject) => {
 
-  if (error) {
+        setTimeout(() => {
 
-    console.error(
-      "Erro ao carregar:",
-      error
+          reject(
+            new Error(
+              "O Supabase demorou demasiado tempo para responder."
+            )
+          );
+
+        }, 10000);
+
+      }
     );
 
-    posts.innerHTML = `
-      <p>
-        ❌ Não foi possível carregar as notícias.
-        <br><br>
-        <small>
-          ${esc(error.message)}
-        </small>
-      </p>
-    `;
 
-    return;
+    /* =====================================
+       BUSCAR NOTÍCIAS
+    ===================================== */
 
-  }
+    const consulta =
+      supabaseClient
+        .from("noticias")
+        .select("*")
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        );
 
 
-  if (!data || data.length === 0) {
+    const resultado =
+      await Promise.race([
+        consulta,
+        tempoLimite
+      ]);
+
+
+    const data =
+      resultado.data;
+
+    const error =
+      resultado.error;
+
+
+    /* =====================================
+       ERRO SUPABASE
+    ===================================== */
+
+    if (error) {
+
+      console.error(
+        "Erro Supabase:",
+        error
+      );
+
+      posts.innerHTML = `
+        <div
+          style="
+            padding:15px;
+            border-radius:10px;
+            background:#fff3f3;
+            border:1px solid #e57373;
+          "
+        >
+
+          <strong>
+            ❌ Não foi possível carregar as notícias.
+          </strong>
+
+          <br><br>
+
+          <small>
+            ${esc(error.message)}
+          </small>
+
+        </div>
+      `;
+
+      return;
+
+    }
+
+
+    /* =====================================
+       NENHUMA NOTÍCIA
+    ===================================== */
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
+
+      posts.innerHTML =
+        "<p>📰 Ainda não existem notícias publicadas.</p>";
+
+      return;
+
+    }
+
+
+    /* =====================================
+       MOSTRAR NOTÍCIAS
+    ===================================== */
 
     posts.innerHTML =
-      "<p>📰 Ainda não existem notícias publicadas.</p>";
+      data
+        .map(
+          function(p) {
 
-    return;
-
-  }
-
-
-  posts.innerHTML =
-    data
-      .map(
-        function(p) {
-
-          const imagem =
-            p.imagem ??
-            p.Imagem ??
-            "";
+            const imagem =
+              p.imagem ??
+              p.Imagem ??
+              "";
 
 
-          return `
-
-            <div
-              class="post-item"
-              style="
-                margin-bottom:20px;
-                padding:15px;
-                border:1px solid #ddd;
-                border-radius:10px;
-              "
-            >
-
-              ${
-                imagem
-
-                ? `
-                  <img
-                    src="${esc(imagem)}"
-                    alt="${esc(p.titulo)}"
-                    style="
-                      width:100%;
-                      max-width:500px;
-                      border-radius:10px;
-                      margin-bottom:10px;
-                      display:block;
-                    "
-                  >
-                `
-
-                : ""
-
-              }
-
-
-              <b>
-                ${esc(
-                  p.titulo ||
-                  "Sem título"
-                )}
-              </b>
-
-
-              <br>
-
-
-              <small>
-                🏷️ ${esc(
-                  p.categoria ||
-                  "Notícias"
-                )}
-              </small>
-
-
-              <p>
-                ${esc(
-                  p.texto ||
-                  ""
-                )}
-              </p>
-
-
-              <small>
-                🆔 ID:
-                ${esc(p.id)}
-              </small>
-
+            return `
 
               <div
+                class="post-item"
                 style="
-                  margin-top:12px;
-                  display:flex;
-                  gap:8px;
-                  flex-wrap:wrap;
+                  margin-bottom:20px;
+                  padding:15px;
+                  border:1px solid #ddd;
+                  border-radius:10px;
                 "
               >
 
-                <button
-                  onclick="editarNoticia(${Number(p.id)})"
-                  style="
-                    padding:9px 14px;
-                    border:0;
-                    border-radius:7px;
-                    background:#1976d2;
-                    color:#fff;
-                    font-weight:700;
-                    cursor:pointer;
-                  "
-                >
-                  ✏️ Editar
-                </button>
+                ${
+                  imagem
+                  ? `
+                    <img
+                      src="${esc(imagem)}"
+                      alt="${esc(p.titulo)}"
+                      style="
+                        width:100%;
+                        max-width:500px;
+                        border-radius:10px;
+                        margin-bottom:10px;
+                        display:block;
+                      "
+                    >
+                  `
+                  : ""
+                }
 
 
-                <button
-                  onclick="excluirNoticia(${Number(p.id)})"
+                <b>
+                  ${esc(
+                    p.titulo ||
+                    "Sem título"
+                  )}
+                </b>
+
+
+                <br>
+
+
+                <small>
+                  🏷️ ${esc(
+                    p.categoria ||
+                    "Notícias"
+                  )}
+                </small>
+
+
+                <p>
+                  ${esc(
+                    p.texto ||
+                    ""
+                  )}
+                </p>
+
+
+                <small>
+                  🆔 ID:
+                  ${esc(p.id)}
+                </small>
+
+
+                <div
                   style="
-                    padding:9px 14px;
-                    border:0;
-                    border-radius:7px;
-                    background:#d32f2f;
-                    color:#fff;
-                    font-weight:700;
-                    cursor:pointer;
+                    margin-top:12px;
+                    display:flex;
+                    gap:8px;
+                    flex-wrap:wrap;
                   "
                 >
-                  🗑️ Excluir
-                </button>
+
+                  <button
+                    onclick="editarNoticia(${Number(p.id)})"
+                    style="
+                      padding:9px 14px;
+                      border:0;
+                      border-radius:7px;
+                      background:#1976d2;
+                      color:#fff;
+                      font-weight:700;
+                      cursor:pointer;
+                    "
+                  >
+                    ✏️ Editar
+                  </button>
+
+
+                  <button
+                    onclick="excluirNoticia(${Number(p.id)})"
+                    style="
+                      padding:9px 14px;
+                      border:0;
+                      border-radius:7px;
+                      background:#d32f2f;
+                      color:#fff;
+                      font-weight:700;
+                      cursor:pointer;
+                    "
+                  >
+                    🗑️ Excluir
+                  </button>
+
+                </div>
 
               </div>
 
+            `;
 
-            </div>
+          }
+        )
+        .join("");
 
-          `;
+  }
 
-        }
-      )
-      .join("");
+  catch (erro) {
 
-}
+    console.error(
+      "Erro ao carregar notícias:",
+      erro
+    );
 
+    posts.innerHTML = `
+      <div
+        style="
+          padding:15px;
+          border-radius:10px;
+          background:#fff3f3;
+          border:1px solid #e57373;
+        "
+      >
+
+        <strong>
+          ❌ Erro ao carregar notícias.
+        </strong>
+
+        <br><br>
+
+        <small>
+          ${esc(
+            erro.message ||
+            "Erro desconhecido."
+          )}
+        </small>
+
+      </div>
+    `;
+
+  }
+
+                   }
 
 /* =========================================
    EDITAR NOTÍCIA
