@@ -7,9 +7,11 @@
 <meta name="viewport"
       content="width=device-width, initial-scale=1">
 
-<meta name="theme-color" content="#0b6b3a">
+<meta name="theme-color"
+      content="#0b6b3a">
 
-<link rel="manifest" href="./manifest.json">
+<link rel="manifest"
+      href="./manifest.json">
 
 <title>AfricanMundo — Notícias de África</title>
 
@@ -19,6 +21,10 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
+
+/* =========================================
+   BASE
+========================================= */
 
 *{
   box-sizing:border-box;
@@ -33,11 +39,49 @@ body{
   background:#f4f4f4;
   color:#111;
   font-family:Arial,Helvetica,sans-serif;
+  transition:
+    background .25s ease,
+    color .25s ease;
+}
+
+body.dark{
+  background:#101410;
+  color:#f1f1f1;
+}
+
+body.dark .search-area,
+body.dark .quick-link,
+body.dark .latest,
+body.dark .category-section,
+body.dark .news-card,
+body.dark .action-panel{
+  background:#181d19;
+  color:#f1f1f1;
+}
+
+body.dark .search-input{
+  background:#111;
+  color:#fff;
+  border-color:#444;
+}
+
+body.dark .quick-name,
+body.dark .news-card p{
+  color:#ccc;
+}
+
+body.dark .section-heading,
+body.dark .category-title{
+  border-color:#444;
 }
 
 a{
   color:inherit;
 }
+
+/* =========================================
+   TOPO
+========================================= */
 
 .top-info{
   background:#050505;
@@ -64,6 +108,10 @@ a{
   color:#fff;
   text-decoration:none;
 }
+
+/* =========================================
+   CABEÇALHO
+========================================= */
 
 header{
   background:#050505;
@@ -139,6 +187,10 @@ header{
   font-size:13px;
 }
 
+/* =========================================
+   MENU PRINCIPAL
+========================================= */
+
 .nav{
   background:#151515;
   border-top:1px solid #292929;
@@ -171,323 +223,189 @@ header{
   background:#45c226;
 }
 
-.search-area{
+/* =========================================
+   BARRA DE AÇÕES
+========================================= */
+
+.action-bar{
   background:#fff;
   border-bottom:1px solid #ddd;
-  padding:18px 12px;
 }
 
-.search-box{
+.action-bar-inner{
   max-width:1200px;
   margin:auto;
-}
-
-.search-title{
-  margin:0 0 10px;
-  font-size:18px;
-  font-weight:900;
-}
-
-.search-form{
-  display:flex;
-  gap:8px;
-}
-
-.search-input{
-  flex:1;
-  min-width:0;
-  height:46px;
-  border:1px solid #ccc;
-  border-radius:5px;
-  padding:0 14px;
-  font-size:15px;
-}
-
-.search-button{
-  border:0;
-  background:#45c226;
-  color:#fff;
-  border-radius:5px;
-  padding:0 20px;
-  font-size:13px;
-  font-weight:900;
-}
-
-.quick-links{
-  max-width:1200px;
-  margin:12px auto 0;
-  display:grid;
-  grid-template-columns:repeat(6,1fr);
-  gap:8px;
-}
-
-.quick-link{
-  min-height:68px;
-  border:1px solid #e0e0e0;
-  border-radius:8px;
-  background:#fff;
-  text-decoration:none;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  gap:5px;
-}
-
-.quick-icon{
-  width:32px;
-  height:32px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:17px;
-  font-weight:900;
-}
-
-.quick-name{
-  font-size:10px;
-  font-weight:800;
-  color:#333;
-}
-
-.google-icon{
-  background:#fff;
-  border:1px solid #ddd;
-  color:#4285f4;
-}
-
-.facebook-icon{
-  background:#1877f2;
-  color:#fff;
-}
-
-.youtube-icon{
-  background:#f00;
-  color:#fff;
-  border-radius:8px;
-}
-
-.whatsapp-icon{
-  background:#25d366;
-  color:#fff;
-}
-
-.instagram-icon{
-  background:linear-gradient(
-    135deg,
-    #833ab4,
-    #fd1d1d,
-    #fcb045
-  );
-  color:#fff;
-}
-
-.tiktok-icon{
-  background:#111;
-  color:#fff;
-}
-
-main{
-  max-width:1200px;
-  margin:auto;
-  padding:20px 12px 50px;
-}
-
-.advertising{
-  min-height:90px;
-  margin-bottom:20px;
-  background:linear-gradient(
-    90deg,
-    #101010,
-    #182719,
-    #101010
-  );
-  border-radius:5px;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  padding:15px;
-}
-
-.advertising strong{
-  display:block;
-  color:#45c226;
-  font-size:25px;
-  margin-bottom:5px;
-}
-
-.hero-layout{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:20px;
-  margin-bottom:25px;
-}
-
-.hero{
-  min-height:430px;
-  border-radius:5px;
-  overflow:hidden;
-  position:relative;
-  background:#111;
-  color:#fff;
-}
-
-.hero-image{
-  width:100%;
-  height:430px;
-  object-fit:cover;
-  display:block;
-}
-
-.hero-no-image{
-  width:100%;
-  height:430px;
-  background:linear-gradient(
-    135deg,
-    #111,
-    #345b29
-  );
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:70px;
-}
-
-.hero-overlay{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:25px;
-  padding-top:100px;
-  background:linear-gradient(
-    transparent,
-    rgba(0,0,0,.92)
-  );
-}
-
-.badge{
-  display:inline-block;
-  background:#45c226;
-  color:#fff;
-  padding:6px 9px;
-  font-size:11px;
-  font-weight:800;
-  border-radius:2px;
-}
-
-.hero h1{
-  font-size:34px;
-  line-height:1.08;
-  margin:8px 0 10px;
-}
-
-.hero h1 a{
-  color:#fff;
-  text-decoration:none;
-}
-
-.hero p{
-  margin:0;
-  color:#eee;
-  font-size:15px;
-  line-height:1.45;
-}
-
-.read-more{
-  display:inline-block;
-  margin-top:12px;
   padding:9px 12px;
-  background:#45c226;
-  color:#fff;
-  text-decoration:none;
-  border-radius:3px;
-  font-size:12px;
-  font-weight:800;
-}
-
-.latest{
-  background:#fff;
-  padding:15px;
-  border-top:3px solid #45c226;
-  border-radius:3px;
-}
-
-.section-heading{
   display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  border-bottom:2px solid #ddd;
-  margin-bottom:12px;
-  padding-bottom:9px;
+  justify-content:flex-end;
+  gap:8px;
 }
 
-.section-heading h2{
+.action-btn{
+  width:42px;
+  height:42px;
+  border:1px solid #ddd;
+  border-radius:50%;
+  background:#fff;
+  cursor:pointer;
   font-size:18px;
-  margin:0;
-  text-transform:uppercase;
-}
-
-.section-heading a{
-  color:#45a52c;
-  text-decoration:none;
-  font-size:11px;
-  font-weight:900;
-}
-
-.latest-item{
-  display:grid;
-  grid-template-columns:125px 1fr;
-  gap:12px;
-  padding:10px 0;
-  border-bottom:1px solid #ddd;
-}
-
-.latest-image{
-  width:125px;
-  height:82px;
-  object-fit:cover;
-  border-radius:3px;
-}
-
-.latest-placeholder{
-  width:125px;
-  height:82px;
-  background:#333;
-  color:#fff;
+  position:relative;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:25px;
-  border-radius:3px;
 }
 
-.latest h3{
-  margin:0;
-  font-size:14px;
-  line-height:1.3;
+.action-btn:hover{
+  border-color:#45c226;
 }
 
-.latest h3 a{
-  text-decoration:none;
+body.dark .action-bar{
+  background:#151a16;
+  border-color:#333;
 }
 
-.latest small{
+body.dark .action-btn{
+  background:#222;
+  color:#fff;
+  border-color:#444;
+}
+
+.notification-count{
+  position:absolute;
+  top:-3px;
+  right:-3px;
+  min-width:18px;
+  height:18px;
+  padding:0 4px;
+  border-radius:20px;
+  background:#e53935;
+  color:#fff;
+  font-size:10px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* =========================================
+   PAINÉIS
+========================================= */
+
+.action-panel{
+  display:none;
+  position:absolute;
+  right:10px;
+  top:55px;
+  width:min(380px,calc(100vw - 20px));
+  background:#fff;
+  color:#111;
+  border:1px solid #ddd;
+  border-radius:10px;
+  box-shadow:0 8px 30px rgba(0,0,0,.2);
+  z-index:5000;
+}
+
+.action-panel.show{
   display:block;
-  margin-top:8px;
-  color:#777;
-  font-size:11px;
 }
 
-.loading{
-  padding:20px;
-  color:#777;
-  text-align:center;
+.panel-title{
+  background:#45c226;
+  color:#fff;
+  padding:13px 15px;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+
+.panel-close{
+  border:0;
+  background:transparent;
+  color:#fff;
+  font-size:23px;
+  cursor:pointer;
+}
+
+.panel-content{
+  padding:15px;
+}
+
+.panel-option{
+  width:100%;
+  border:1px solid #ddd;
+  background:#fff;
+  padding:12px;
+  border-radius:7px;
+  margin-bottom:8px;
+  text-align:left;
+  font-weight:700;
+  cursor:pointer;
+}
+
+body.dark .action-panel{
+  background:#181d19;
+  color:#fff;
+  border-color:#444;
+}
+
+body.dark .panel-option{
+  background:#222;
+  color:#fff;
+  border-color:#444;
+}
+
+/* =========================================
+   RESPONSIVO
+========================================= */
+
+@media(max-width:900px){
+
+  .header-main{
+    flex-direction:column;
+    align-items:stretch;
+  }
+
+  .advertising-top{
+    max-width:none;
+  }
+
+}
+
+@media(max-width:600px){
+
+  .top-info-inner{
+    justify-content:center;
+  }
+
+  .top-links{
+    display:none;
+  }
+
+  .logo{
+    font-size:31px;
+    justify-content:center;
+    letter-spacing:-1.5px;
+  }
+
+  .tagline{
+    text-align:center;
+  }
+
+  .nav a{
+    padding:13px 14px;
+    font-size:11px;
+  }
+
+  .action-bar-inner{
+    justify-content:space-between;
+  }
+
+}
+
+/* =========================================
+   FIM DA PARTE 1
+========================================= */
 
 </style>
 
@@ -506,7 +424,9 @@ main{
     <div class="top-links">
 
       <a href="#">Quem Somos</a>
+
       <a href="#">Anuncie</a>
+
       <a href="#">Contacto</a>
 
     </div>
@@ -566,7 +486,7 @@ main{
       </a>
 
       <a href="categoria.html?categoria=noticias">
-        NOTÍCIAS
+        📰 NOTÍCIAS
       </a>
 
       <a href="categoria.html?categoria=futebol">
@@ -597,8 +517,752 @@ main{
 
   </nav>
 
-  </header>
-  <style>
+</header>
+
+<!-- A Parte 2 continuará exatamente aqui -->
+<!-- =====================================================
+     PARTE 2/7 — AÇÕES, PESQUISA E ÁREAS PRINCIPAIS
+===================================================== -->
+
+<section class="action-bar">
+
+  <div class="action-bar-inner">
+
+    <button
+      type="button"
+      class="action-btn"
+      id="btnNotificacoes"
+      title="Notificações">
+      🔔
+      <span
+        id="notificationCount"
+        class="notification-count"
+        style="display:none;">
+        0
+      </span>
+    </button>
+
+    <button
+      type="button"
+      class="action-btn"
+      id="btnFerramentas"
+      title="Ferramentas">
+      🛠️
+    </button>
+
+    <button
+      type="button"
+      class="action-btn"
+      id="btnEu"
+      title="Eu">
+      👤
+    </button>
+
+    <button
+      type="button"
+      class="action-btn"
+      id="btnTema"
+      title="Modo claro/escuro">
+      🌙
+    </button>
+
+    <button
+      type="button"
+      class="action-btn"
+      id="btnAparencia"
+      title="Personalizar aparência">
+      🎨
+    </button>
+
+  </div>
+
+  <div
+    id="painelNotificacoes"
+    class="action-panel">
+
+    <div class="panel-title">
+
+      <span>🔔 Notificações</span>
+
+      <button
+        type="button"
+        class="panel-close"
+        data-close-panel="painelNotificacoes">
+        ×
+      </button>
+
+    </div>
+
+    <div
+      id="notificationContent"
+      class="panel-content">
+
+      <p>
+        Ainda não há notificações.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div
+    id="painelFerramentas"
+    class="action-panel">
+
+    <div class="panel-title">
+
+      <span>🛠️ Ferramentas</span>
+
+      <button
+        type="button"
+        class="panel-close"
+        data-close-panel="painelFerramentas">
+        ×
+      </button>
+
+    </div>
+
+    <div class="panel-content">
+
+      <button
+        type="button"
+        class="panel-option"
+        id="toolRefresh">
+        🔄 Atualizar notícias
+      </button>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="toolTop">
+        ⬆️ Voltar ao topo
+      </button>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="toolShareSite">
+        🔗 Partilhar AfricanMundo
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    id="painelEu"
+    class="action-panel">
+
+    <div class="panel-title">
+
+      <span>👤 Eu</span>
+
+      <button
+        type="button"
+        class="panel-close"
+        data-close-panel="painelEu">
+        ×
+      </button>
+
+    </div>
+
+    <div class="panel-content">
+
+      <p>
+        👤 Área pessoal
+      </p>
+
+      <p>
+        Aqui ficarão os seus favoritos,
+        notícias guardadas e preferências.
+      </p>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="toolFavorites">
+        ❤️ Meus favoritos
+      </button>
+
+    </div>
+
+  </div>
+
+  <div
+    id="painelAparencia"
+    class="action-panel">
+
+    <div class="panel-title">
+
+      <span>🎨 Aparência</span>
+
+      <button
+        type="button"
+        class="panel-close"
+        data-close-panel="painelAparencia">
+        ×
+      </button>
+
+    </div>
+
+    <div class="panel-content">
+
+      <button
+        type="button"
+        class="panel-option"
+        id="appearanceLight">
+        ☀️ Modo claro
+      </button>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="appearanceDark">
+        🌙 Modo escuro
+      </button>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="appearanceGreen">
+        🟢 Verde AfricanMundo
+      </button>
+
+      <button
+        type="button"
+        class="panel-option"
+        id="appearanceReset">
+        🔄 Restaurar aparência
+      </button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     PESQUISA
+===================================================== -->
+
+<section class="search-area">
+
+  <div class="search-box">
+
+    <h2 class="search-title">
+      🔎 Pesquisar no AfricanMundo
+    </h2>
+
+    <form
+      id="searchForm"
+      class="search-form">
+
+      <input
+        type="search"
+        id="searchInput"
+        class="search-input"
+        placeholder="Pesquisar notícias..."
+        autocomplete="off">
+
+      <button
+        type="submit"
+        class="search-button">
+        PESQUISAR
+      </button>
+
+    </form>
+
+    <div
+      id="searchResults"
+      class="search-results">
+
+      <h3
+        id="searchResultsTitle"
+        class="search-results-title">
+        Resultados
+      </h3>
+
+      <div
+        id="searchResultList"
+        class="search-result-list">
+      </div>
+
+    </div>
+
+
+    <!-- LINKS RÁPIDOS -->
+
+    <div class="quick-links">
+
+      <a
+        class="quick-link"
+        href="https://www.google.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon google-icon">
+          G
+        </span>
+
+        <span class="quick-name">
+          Google
+        </span>
+
+      </a>
+
+
+      <a
+        class="quick-link"
+        href="https://www.facebook.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon facebook-icon">
+          f
+        </span>
+
+        <span class="quick-name">
+          Facebook
+        </span>
+
+      </a>
+
+
+      <a
+        class="quick-link"
+        href="https://www.youtube.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon youtube-icon">
+          ▶
+        </span>
+
+        <span class="quick-name">
+          YouTube
+        </span>
+
+      </a>
+
+
+      <a
+        class="quick-link"
+        href="https://web.whatsapp.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon whatsapp-icon">
+          ☎
+        </span>
+
+        <span class="quick-name">
+          WhatsApp
+        </span>
+
+      </a>
+
+
+      <a
+        class="quick-link"
+        href="https://www.instagram.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon instagram-icon">
+          ◎
+        </span>
+
+        <span class="quick-name">
+          Instagram
+        </span>
+
+      </a>
+
+
+      <a
+        class="quick-link"
+        href="https://www.tiktok.com/"
+        target="_blank"
+        rel="noopener">
+
+        <span class="quick-icon tiktok-icon">
+          ♪
+        </span>
+
+        <span class="quick-name">
+          TikTok
+        </span>
+
+      </a>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     VISUALIZADOR DE IMAGEM
+===================================================== -->
+
+<div
+  id="imageViewer"
+  class="image-viewer"
+  aria-hidden="true">
+
+  <button
+    id="imageViewerClose"
+    class="image-viewer-close"
+    type="button"
+    aria-label="Fechar imagem">
+    ×
+  </button>
+
+  <img
+    id="imageViewerImg"
+    src=""
+    alt="Imagem ampliada">
+
+</div>
+
+
+<!-- =====================================================
+     CONTEÚDO PRINCIPAL
+===================================================== -->
+
+<main>
+
+  <!-- PUBLICIDADE -->
+
+  <div class="advertising">
+
+    <div>
+
+      <strong>
+        ANUNCIE AQUI
+      </strong>
+
+      <span>
+        A sua marca em destaque
+        em todo o continente africano.
+      </span>
+
+    </div>
+
+  </div>
+
+
+  <!-- DESTAQUE + ÚLTIMAS -->
+
+  <div class="hero-layout">
+
+    <div
+      id="destaque"
+      class="hero">
+
+      <div class="hero-no-image">
+        🌍
+      </div>
+
+    </div>
+
+
+    <aside class="latest">
+
+      <div class="section-heading">
+
+        <h2>
+          Últimas notícias
+        </h2>
+
+        <a
+          href="categoria.html?categoria=noticias">
+          VER TODAS
+        </a>
+
+      </div>
+
+      <div id="ultimas">
+
+        <p class="loading">
+          A preparar notícias...
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- ===================================================
+       MENSAGEM GERAL DE ESTADO
+  ==================================================== -->
+
+  <div
+    id="siteStatus"
+    style="display:none;"
+    class="error-box">
+  </div>
+
+</main>
+
+
+<!-- =====================================================
+     FIM DA PARTE 2
+===================================================== -->
+<!-- =====================================================
+     PARTE 3/7 — CATEGORIAS E CARTÕES
+===================================================== -->
+
+
+<!-- =====================================================
+     FUTEBOL
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      ⚽ Futebol em destaque
+    </h2>
+
+    <a href="categoria.html?categoria=futebol">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="futebol"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar Futebol...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     MOÇAMBIQUE
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      🇲🇿 Moçambique
+    </h2>
+
+    <a href="categoria.html?categoria=mocambique">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="mocambique"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar Moçambique...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ÁFRICA
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      🌍 África
+    </h2>
+
+    <a href="categoria.html?categoria=africa">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="africa"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar África...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     NEGÓCIOS
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      💼 Negócios
+    </h2>
+
+    <a href="categoria.html?categoria=negocios">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="negocios"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar Negócios...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ENTRETENIMENTO
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      🎬 Entretenimento
+    </h2>
+
+    <a href="categoria.html?categoria=entretenimento">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="entretenimento"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar Entretenimento...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     DESPORTO
+===================================================== -->
+
+<section class="category-section">
+
+  <div class="category-title">
+
+    <h2>
+      🏆 Desporto
+    </h2>
+
+    <a href="categoria.html?categoria=desporto">
+      VER TODOS
+    </a>
+
+  </div>
+
+  <div
+    id="desporto"
+    class="category-grid">
+
+    <p
+      class="loading"
+      style="grid-column:1/-1;">
+      A preparar Desporto...
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ÁREA DE FAVORITOS
+===================================================== -->
+
+<section
+  id="favoritosSection"
+  class="category-section"
+  style="display:none;">
+
+  <div class="category-title">
+
+    <h2>
+      ❤️ Meus favoritos
+    </h2>
+
+    <button
+      type="button"
+      id="fecharFavoritos"
+      class="panel-option"
+      style="
+        width:auto;
+        margin:0;
+        padding:7px 10px;
+      ">
+      Fechar
+    </button>
+
+  </div>
+
+  <div
+    id="favoritos"
+    class="category-grid">
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     ESTILO DOS CARTÕES
+===================================================== -->
+
+<style>
+
+/* -----------------------------------------
+   SEÇÕES
+----------------------------------------- */
 
 .category-section{
   background:#fff;
@@ -631,18 +1295,42 @@ main{
   font-weight:900;
 }
 
+
+/* -----------------------------------------
+   GRELHA
+----------------------------------------- */
+
 .category-grid{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:15px;
 }
 
+
+/* -----------------------------------------
+   CARTÃO
+----------------------------------------- */
+
 .news-card{
+  position:relative;
   border:1px solid #ddd;
   background:#fff;
   overflow:hidden;
-  border-radius:4px;
+  border-radius:6px;
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
+
+.news-card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 18px rgba(0,0,0,.12);
+}
+
+
+/* -----------------------------------------
+   IMAGEM
+----------------------------------------- */
 
 .news-card-image-link{
   display:block;
@@ -655,6 +1343,7 @@ main{
   object-fit:cover;
   display:block;
   background:#222;
+  cursor:zoom-in;
 }
 
 .news-card-placeholder{
@@ -670,6 +1359,11 @@ main{
   font-size:45px;
   color:#fff;
 }
+
+
+/* -----------------------------------------
+   CONTEÚDO
+----------------------------------------- */
 
 .news-card-content{
   padding:12px;
@@ -705,11 +1399,132 @@ main{
   overflow:hidden;
 }
 
+.data-noticia{
+  display:block;
+  color:#777;
+  font-size:10px;
+  margin-top:9px;
+}
+
+
+/* -----------------------------------------
+   AÇÕES DO CARTÃO
+----------------------------------------- */
+
+.news-card-actions{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-top:11px;
+}
+
+.card-action{
+  border:1px solid #ddd;
+  background:#fff;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:15px;
+}
+
+.card-action:hover{
+  border-color:#45c226;
+}
+
+.card-action.favorite-active{
+  background:#ffe9e9;
+  border-color:#e53935;
+}
+
+
+/* -----------------------------------------
+   DESTAQUE
+----------------------------------------- */
+
+.destaque-card{
+  position:relative;
+  width:100%;
+  height:100%;
+  min-height:430px;
+  background:#111;
+  color:#fff;
+}
+
+.destaque-imagem{
+  width:100%;
+  height:430px;
+  cursor:zoom-in;
+}
+
+.destaque-imagem img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.destaque-conteudo{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:25px;
+  padding-top:100px;
+  background:linear-gradient(
+    transparent,
+    rgba(0,0,0,.94)
+  );
+}
+
+.destaque-conteudo h2{
+  margin:8px 0 10px;
+  font-size:34px;
+  line-height:1.08;
+}
+
+.destaque-conteudo h2 a{
+  color:#fff;
+  text-decoration:none;
+}
+
+.destaque-conteudo p{
+  margin:0;
+  color:#eee;
+  font-size:15px;
+  line-height:1.45;
+}
+
+.destaque-actions{
+  display:flex;
+  gap:8px;
+  margin-top:12px;
+}
+
+.destaque-action{
+  border:1px solid rgba(255,255,255,.5);
+  background:rgba(0,0,0,.35);
+  color:#fff;
+  padding:8px 11px;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:12px;
+  font-weight:800;
+}
+
+
+/* -----------------------------------------
+   IMAGEM GRANDE
+----------------------------------------- */
+
 .image-viewer{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.92);
-  z-index:9999;
+  background:rgba(0,0,0,.94);
+  z-index:99999;
   display:none;
   align-items:center;
   justify-content:center;
@@ -721,104 +1536,37 @@ main{
 }
 
 .image-viewer img{
-  max-width:90vw;
-  max-height:85vh;
+  max-width:94vw;
+  max-height:88vh;
   width:auto;
   height:auto;
   object-fit:contain;
-  border-radius:4px;
+  border-radius:5px;
 }
 
 .image-viewer-close{
   position:absolute;
   top:15px;
   right:18px;
-  width:42px;
-  height:42px;
+  width:44px;
+  height:44px;
   border:0;
   border-radius:50%;
   background:rgba(255,255,255,.15);
   color:#fff;
   font-size:30px;
   cursor:pointer;
+  z-index:2;
 }
 
-footer{
-  background:#111;
-  color:#fff;
-  padding:35px 15px 15px;
-}
 
-.footer-grid{
-  max-width:1200px;
-  margin:auto;
-  display:grid;
-  grid-template-columns:2fr 1fr 1fr 1fr;
-  gap:30px;
-}
-
-.footer-logo{
-  display:flex;
-  align-items:center;
-  gap:5px;
-  font-size:25px;
-  font-weight:900;
-}
-
-.footer-logo span:last-child{
-  color:#45c226;
-}
-
-footer p{
-  color:#ccc;
-  line-height:1.5;
-  font-size:13px;
-}
-
-footer h3{
-  font-size:14px;
-  text-transform:uppercase;
-  border-bottom:1px solid #444;
-  padding-bottom:8px;
-}
-
-footer a{
-  display:block;
-  color:#ccc;
-  text-decoration:none;
-  font-size:13px;
-  margin:9px 0;
-}
-
-.copyright{
-  max-width:1200px;
-  margin:30px auto 0;
-  padding-top:15px;
-  border-top:1px solid #333;
-  color:#aaa;
-  font-size:11px;
-}
+/* -----------------------------------------
+   RESPONSIVO
+----------------------------------------- */
 
 @media(max-width:900px){
 
-  .header-main{
-    flex-direction:column;
-    align-items:stretch;
-  }
-
-  .advertising-top{
-    max-width:none;
-  }
-
-  .hero-layout{
-    grid-template-columns:1fr;
-  }
-
-  .quick-links{
-    grid-template-columns:repeat(3,1fr);
-  }
-
-  .footer-grid{
+  .category-grid{
     grid-template-columns:repeat(2,1fr);
   }
 
@@ -826,425 +1574,76 @@ footer a{
 
 @media(max-width:600px){
 
-  .top-info-inner{
-    justify-content:center;
-  }
-
-  .top-links{
-    display:none;
-  }
-
-  .logo{
-    font-size:31px;
-    justify-content:center;
-    letter-spacing:-1.5px;
-  }
-
-  .tagline{
-    text-align:center;
-  }
-
-  .nav a{
-    padding:13px 14px;
-    font-size:11px;
-  }
-
-  .search-form{
-    gap:6px;
-  }
-
-  .search-button{
-    padding:0 14px;
-  }
-
-  main{
-    padding:12px 8px 35px;
-  }
-
-  .hero{
-    min-height:380px;
-  }
-
-  .hero-image,
-  .hero-no-image{
-    height:380px;
-  }
-
-  .hero h1{
-    font-size:27px;
-  }
-
-  .latest-item{
-    grid-template-columns:100px 1fr;
-  }
-
-  .latest-image,
-  .latest-placeholder{
-    width:100px;
-    height:70px;
-  }
-
   .category-grid{
     grid-template-columns:1fr;
   }
 
-  .footer-grid{
-    grid-template-columns:1fr;
+  .category-title h2{
+    font-size:16px;
+  }
+
+  .news-card-image,
+  .news-card-placeholder{
+    height:200px;
+  }
+
+  .destaque-card{
+    min-height:380px;
+  }
+
+  .destaque-imagem{
+    height:380px;
+  }
+
+  .destaque-conteudo{
+    padding:18px;
+    padding-top:90px;
+  }
+
+  .destaque-conteudo h2{
+    font-size:27px;
   }
 
 }
 
 </style>
 
-</head>
 
-<body>
+<!-- =====================================================
+     FIM DA PARTE 3
+===================================================== -->
+      <!-- =====================================================
+     PARTE 4/7 — RODAPÉ + MENU INFERIOR
+===================================================== -->
 
-<section class="search-area">
 
-  <div class="search-box">
+<!-- =====================================================
+     PUBLICIDADE INFERIOR
+===================================================== -->
 
-    <h2 class="search-title">
-      🔎 Pesquisar no AfricanMundo
-    </h2>
+<section
+  class="advertising"
+  style="margin:0 12px 20px;">
 
-    <form id="searchForm"
-          class="search-form">
+  <div>
 
-      <input
-        type="search"
-        id="searchInput"
-        class="search-input"
-        placeholder="Pesquisar notícias..."
-        autocomplete="off"
-      >
+    <strong>
+      ANUNCIE AQUI
+    </strong>
 
-      <button
-        type="submit"
-        class="search-button">
-        PESQUISAR
-      </button>
-
-    </form>
-
-    <div class="quick-links">
-
-      <a
-        class="quick-link"
-        href="https://www.google.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon google-icon">G</span>
-        <span class="quick-name">Google</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.facebook.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon facebook-icon">f</span>
-        <span class="quick-name">Facebook</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.youtube.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon youtube-icon">▶</span>
-        <span class="quick-name">YouTube</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://web.whatsapp.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon whatsapp-icon">☎</span>
-        <span class="quick-name">WhatsApp</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.instagram.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon instagram-icon">◎</span>
-        <span class="quick-name">Instagram</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.tiktok.com/"
-        target="_blank"
-        rel="noopener">
-        <span class="quick-icon tiktok-icon">♪</span>
-        <span class="quick-name">TikTok</span>
-      </a>
-
-    </div>
+    <span>
+      Alcance leitores em Moçambique
+      e em toda África.
+    </span>
 
   </div>
 
 </section>
 
-<div
-  id="imageViewer"
-  class="image-viewer">
 
-  <button
-    type="button"
-    id="imageViewerClose"
-    class="image-viewer-close">
-    ×
-  </button>
-
-  <img
-    id="imageViewerImg"
-    src=""
-    alt="Imagem ampliada">
-
-</div>
-
-<main>
-
-  <div class="advertising">
-
-    <div>
-
-      <strong>ANUNCIE AQUI</strong>
-
-      A sua marca em destaque em todo o continente africano.
-
-    </div>
-
-  </div>
-
-  <div class="hero-layout">
-
-    <div
-      id="destaque"
-      class="hero">
-
-      <div class="hero-no-image">
-        🌍
-      </div>
-
-    </div>
-
-    <aside class="latest">
-
-      <div class="section-heading">
-
-        <h2>
-          Últimas notícias
-        </h2>
-
-        <a href="categoria.html?categoria=noticias">
-          VER TODAS
-        </a>
-
-      </div>
-
-      <div id="ultimas">
-
-        <p class="loading">
-          🔄 Carregando notícias...
-        </p>
-
-      </div>
-
-    </aside>
-
-        </div>
-          <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        ⚽ Futebol em destaque
-      </h2>
-
-      <a href="categoria.html?categoria=futebol">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="futebol"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🇲🇿 Moçambique
-      </h2>
-
-      <a href="categoria.html?categoria=mocambique">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="mocambique"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🌍 África
-      </h2>
-
-      <a href="categoria.html?categoria=africa">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="africa"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        💼 Negócios
-      </h2>
-
-      <a href="categoria.html?categoria=negocios">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="negocios"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🎬 Entretenimento
-      </h2>
-
-      <a href="categoria.html?categoria=entretenimento">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="entretenimento"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-
-  <section class="category-section">
-
-    <div class="category-title">
-
-      <h2>
-        🏆 Desporto
-      </h2>
-
-      <a href="categoria.html?categoria=desporto">
-        VER TODOS
-      </a>
-
-    </div>
-
-    <div
-      id="desporto"
-      class="category-grid">
-
-      <p
-        class="loading"
-        style="grid-column:1/-1;">
-
-        🔄 Carregando...
-
-      </p>
-
-    </div>
-
-  </section>
-
-</main>
-
+<!-- =====================================================
+     RODAPÉ
+===================================================== -->
 
 <footer>
 
@@ -1254,17 +1653,11 @@ footer a{
 
       <div class="footer-logo">
 
-        <span>
-          🌍
-        </span>
+        <span>🌍</span>
 
-        <span>
-          African
-        </span>
+        <span>African</span>
 
-        <span>
-          Mundo
-        </span>
+        <span>Mundo</span>
 
       </div>
 
@@ -1352,16 +1745,1158 @@ footer a{
 
   <div class="copyright">
 
-    © 2026 AfricanMundo — Todos os direitos reservados.
+    © 2026 AfricanMundo —
+    Todos os direitos reservados.
 
   </div>
 
 </footer>
-<script>
+
+
+<!-- =====================================================
+     MENU INFERIOR PARA CELULAR
+===================================================== -->
+
+<nav
+  id="mobileBottomNav"
+  class="mobile-bottom-nav"
+  aria-label="Menu principal móvel">
+
+  <a
+    href="index.html"
+    class="mobile-nav-item active">
+
+    <span>🏠</span>
+
+    <small>
+      Início
+    </small>
+
+  </a>
+
+
+  <button
+    type="button"
+    class="mobile-nav-item"
+    id="mobileSearch">
+
+    <span>🔎</span>
+
+    <small>
+      Pesquisar
+    </small>
+
+  </button>
+
+
+  <button
+    type="button"
+    class="mobile-nav-item"
+    id="mobileFavorites">
+
+    <span>❤️</span>
+
+    <small>
+      Favoritos
+    </small>
+
+  </button>
+
+
+  <button
+    type="button"
+    class="mobile-nav-item"
+    id="mobileTools">
+
+    <span>🛠️</span>
+
+    <small>
+      Ferramentas
+    </small>
+
+  </button>
+
+
+  <button
+    type="button"
+    class="mobile-nav-item"
+    id="mobileMe">
+
+    <span>👤</span>
+
+    <small>
+      Eu
+    </small>
+
+  </button>
+
+</nav>
+
+
+<!-- =====================================================
+     BOTÃO VOLTAR AO TOPO
+===================================================== -->
+
+<button
+  type="button"
+  id="backToTop"
+  class="back-to-top"
+  aria-label="Voltar ao topo">
+
+  ↑
+
+</button>
+
+
+<!-- =====================================================
+     CSS DO RODAPÉ E MENU MÓVEL
+===================================================== -->
+
+<style>
 
 /* =========================================
-   SUPABASE
+   RODAPÉ
 ========================================= */
+
+footer{
+  background:#111;
+  color:#fff;
+  padding:35px 15px 90px;
+}
+
+.footer-grid{
+  max-width:1200px;
+  margin:auto;
+  display:grid;
+  grid-template-columns:2fr 1fr 1fr 1fr;
+  gap:30px;
+}
+
+.footer-logo{
+  display:flex;
+  align-items:center;
+  gap:5px;
+  font-size:25px;
+  font-weight:900;
+}
+
+.footer-logo span:last-child{
+  color:#45c226;
+}
+
+footer p{
+  color:#ccc;
+  line-height:1.5;
+  font-size:13px;
+}
+
+footer h3{
+  font-size:14px;
+  text-transform:uppercase;
+  border-bottom:1px solid #444;
+  padding-bottom:8px;
+}
+
+footer a{
+  display:block;
+  color:#ccc;
+  text-decoration:none;
+  font-size:13px;
+  margin:9px 0;
+}
+
+footer a:hover{
+  color:#45c226;
+}
+
+.copyright{
+  max-width:1200px;
+  margin:30px auto 0;
+  padding-top:15px;
+  border-top:1px solid #333;
+  color:#aaa;
+  font-size:11px;
+}
+
+
+/* =========================================
+   MENU INFERIOR
+========================================= */
+
+.mobile-bottom-nav{
+  display:none;
+}
+
+.mobile-nav-item{
+  border:0;
+  background:transparent;
+  color:#777;
+  text-decoration:none;
+  cursor:pointer;
+  flex:1;
+  min-width:0;
+  height:62px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:3px;
+}
+
+.mobile-nav-item span{
+  font-size:20px;
+  line-height:1;
+}
+
+.mobile-nav-item small{
+  font-size:10px;
+  font-weight:800;
+}
+
+.mobile-nav-item.active,
+.mobile-nav-item:hover{
+  color:#45c226;
+}
+
+
+/* =========================================
+   VOLTAR AO TOPO
+========================================= */
+
+.back-to-top{
+  position:fixed;
+  right:18px;
+  bottom:85px;
+  width:44px;
+  height:44px;
+  border:0;
+  border-radius:50%;
+  background:#45c226;
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  cursor:pointer;
+  z-index:4000;
+  display:none;
+  box-shadow:0 4px 15px rgba(0,0,0,.25);
+}
+
+.back-to-top.show{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media(max-width:600px){
+
+  footer{
+    padding-bottom:85px;
+  }
+
+  .footer-grid{
+    grid-template-columns:1fr;
+    gap:15px;
+  }
+
+  .mobile-bottom-nav{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:0;
+    height:64px;
+    background:#fff;
+    border-top:1px solid #ddd;
+    display:flex;
+    z-index:6000;
+    box-shadow:0 -3px 15px rgba(0,0,0,.12);
+    padding-bottom:
+      env(safe-area-inset-bottom);
+  }
+
+  body.dark .mobile-bottom-nav{
+    background:#151915;
+    border-color:#333;
+  }
+
+  body.dark .mobile-nav-item{
+    color:#aaa;
+  }
+
+  body.dark .mobile-nav-item.active{
+    color:#45c226;
+  }
+
+  .back-to-top{
+    bottom:78px;
+    right:12px;
+  }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media(max-width:900px){
+
+  .footer-grid{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+}
+
+
+/* =========================================
+   FIM DA PARTE 4
+========================================= */
+
+</style>
+
+
+<!-- =====================================================
+     FIM DA PARTE 4/7
+===================================================== -->
+      <!-- =====================================================
+     PARTE 5/7 — JAVASCRIPT DE INTERFACE
+===================================================== -->
+
+<script>
+
+/* =====================================================
+   ESTADO DO SITE
+===================================================== */
+
+let favoritos =
+  JSON.parse(
+    localStorage.getItem("africanmundo_favoritos") || "[]"
+  );
+
+let temaAtual =
+  localStorage.getItem("africanmundo_tema") || "claro";
+
+let corAtual =
+  localStorage.getItem("africanmundo_cor") || "verde";
+
+
+/* =====================================================
+   ELEMENTOS
+===================================================== */
+
+const searchForm =
+  document.getElementById("searchForm");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const searchResults =
+  document.getElementById("searchResults");
+
+const searchResultList =
+  document.getElementById("searchResultList");
+
+const searchResultsTitle =
+  document.getElementById("searchResultsTitle");
+
+
+/* =====================================================
+   PAINÉIS
+===================================================== */
+
+const paineis = [
+
+  "painelNotificacoes",
+  "painelFerramentas",
+  "painelEu",
+  "painelAparencia"
+
+];
+
+
+function fecharTodosPaineis(){
+
+  paineis.forEach(function(id){
+
+    const painel =
+      document.getElementById(id);
+
+    if(painel){
+      painel.classList.remove("show");
+    }
+
+  });
+
+}
+
+
+function abrirPainel(id){
+
+  fecharTodosPaineis();
+
+  const painel =
+    document.getElementById(id);
+
+  if(painel){
+
+    painel.classList.add("show");
+
+  }
+
+}
+
+
+/* =====================================================
+   BOTÕES DOS PAINÉIS
+===================================================== */
+
+const btnNotificacoes =
+  document.getElementById("btnNotificacoes");
+
+if(btnNotificacoes){
+
+  btnNotificacoes.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelNotificacoes"
+      );
+
+    }
+  );
+
+}
+
+
+const btnFerramentas =
+  document.getElementById("btnFerramentas");
+
+if(btnFerramentas){
+
+  btnFerramentas.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelFerramentas"
+      );
+
+    }
+  );
+
+}
+
+
+const btnEu =
+  document.getElementById("btnEu");
+
+if(btnEu){
+
+  btnEu.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelEu"
+      );
+
+    }
+  );
+
+}
+
+
+const btnAparencia =
+  document.getElementById("btnAparencia");
+
+if(btnAparencia){
+
+  btnAparencia.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelAparencia"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   MODO ESCURO / CLARO
+===================================================== */
+
+const btnTema =
+  document.getElementById("btnTema");
+
+function aplicarTema(){
+
+  if(
+    temaAtual === "escuro"
+  ){
+
+    document.body.classList.add("dark");
+
+  }else{
+
+    document.body.classList.remove("dark");
+
+  }
+
+}
+
+
+aplicarTema();
+
+
+if(btnTema){
+
+  btnTema.addEventListener(
+    "click",
+    function(){
+
+      temaAtual =
+        temaAtual === "escuro"
+          ? "claro"
+          : "escuro";
+
+      localStorage.setItem(
+        "africanmundo_tema",
+        temaAtual
+      );
+
+      aplicarTema();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   APARÊNCIA
+===================================================== */
+
+function aplicarCor(){
+
+  document.body.classList.remove(
+    "theme-green",
+    "theme-blue",
+    "theme-red"
+  );
+
+  if(
+    corAtual === "azul"
+  ){
+
+    document.body.classList.add(
+      "theme-blue"
+    );
+
+  }
+
+  if(
+    corAtual === "vermelho"
+  ){
+
+    document.body.classList.add(
+      "theme-red"
+    );
+
+  }
+
+  if(
+    corAtual === "verde"
+  ){
+
+    document.body.classList.add(
+      "theme-green"
+    );
+
+  }
+
+}
+
+
+aplicarCor();
+
+
+const appearanceLight =
+  document.getElementById(
+    "appearanceLight"
+  );
+
+if(appearanceLight){
+
+  appearanceLight.addEventListener(
+    "click",
+    function(){
+
+      temaAtual = "claro";
+
+      localStorage.setItem(
+        "africanmundo_tema",
+        temaAtual
+      );
+
+      aplicarTema();
+
+    }
+  );
+
+}
+
+
+const appearanceDark =
+  document.getElementById(
+    "appearanceDark"
+  );
+
+if(appearanceDark){
+
+  appearanceDark.addEventListener(
+    "click",
+    function(){
+
+      temaAtual = "escuro";
+
+      localStorage.setItem(
+        "africanmundo_tema",
+        temaAtual
+      );
+
+      aplicarTema();
+
+    }
+  );
+
+}
+
+
+const appearanceGreen =
+  document.getElementById(
+    "appearanceGreen"
+  );
+
+if(appearanceGreen){
+
+  appearanceGreen.addEventListener(
+    "click",
+    function(){
+
+      corAtual = "verde";
+
+      localStorage.setItem(
+        "africanmundo_cor",
+        corAtual
+      );
+
+      aplicarCor();
+
+    }
+  );
+
+}
+
+
+const appearanceReset =
+  document.getElementById(
+    "appearanceReset"
+  );
+
+if(appearanceReset){
+
+  appearanceReset.addEventListener(
+    "click",
+    function(){
+
+      temaAtual = "claro";
+      corAtual = "verde";
+
+      localStorage.setItem(
+        "africanmundo_tema",
+        temaAtual
+      );
+
+      localStorage.setItem(
+        "africanmundo_cor",
+        corAtual
+      );
+
+      aplicarTema();
+      aplicarCor();
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FECHAR PAINÉIS
+===================================================== */
+
+document
+  .querySelectorAll(
+    "[data-close-panel]"
+  )
+  .forEach(function(botao){
+
+    botao.addEventListener(
+      "click",
+      function(){
+
+        const id =
+          botao.getAttribute(
+            "data-close-panel"
+          );
+
+        const painel =
+          document.getElementById(id);
+
+        if(painel){
+
+          painel.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+    );
+
+  });
+
+
+/* =====================================================
+   PESQUISA
+===================================================== */
+
+function pesquisarNoticias(termo){
+
+  termo =
+    String(termo || "")
+      .trim()
+      .toLowerCase();
+
+  if(!searchResults){
+    return;
+  }
+
+  if(!termo){
+
+    searchResults.classList.remove(
+      "show"
+    );
+
+    if(searchResultList){
+
+      searchResultList.innerHTML = "";
+
+    }
+
+    return;
+
+  }
+
+
+  const resultados =
+    Array.isArray(
+      window.todasNoticiasSite
+    )
+      ? window.todasNoticiasSite
+      : [];
+
+
+  const encontrados =
+    resultados.filter(
+      function(noticia){
+
+        const titulo =
+          String(
+            noticia.titulo ||
+            noticia.title ||
+            ""
+          ).toLowerCase();
+
+        const texto =
+          String(
+            noticia.texto ||
+            noticia.conteudo ||
+            noticia.content ||
+            ""
+          ).toLowerCase();
+
+        const categoria =
+          String(
+            noticia.categoria ||
+            noticia.category ||
+            ""
+          ).toLowerCase();
+
+        return (
+          titulo.includes(termo) ||
+          texto.includes(termo) ||
+          categoria.includes(termo)
+        );
+
+      }
+    );
+
+
+  searchResults.classList.add(
+    "show"
+  );
+
+
+  if(searchResultsTitle){
+
+    searchResultsTitle.textContent =
+      encontrados.length +
+      " resultado(s) encontrado(s)";
+
+  }
+
+
+  if(!searchResultList){
+    return;
+  }
+
+
+  if(
+    encontrados.length === 0
+  ){
+
+    searchResultList.innerHTML = `
+      <div class="search-empty">
+        🔎 Nenhuma notícia encontrada.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  searchResultList.innerHTML =
+    encontrados
+      .slice(0,30)
+      .map(function(noticia){
+
+        const id =
+          noticia.id;
+
+        const titulo =
+          noticia.titulo ||
+          noticia.title ||
+          "Sem título";
+
+        const imagem =
+          noticia.imagem ||
+          noticia.image ||
+          noticia.image_url ||
+          "";
+
+        const link =
+          id !== undefined &&
+          id !== null
+            ? "noticia.html?id=" +
+              encodeURIComponent(id)
+            : "#";
+
+
+        return `
+          <article
+            class="search-result-item">
+
+            ${
+              imagem
+                ? `
+                  <img
+                    src="${esc(imagem)}"
+                    alt="${esc(titulo)}"
+                    loading="lazy">
+                `
+                : `
+                  <div
+                    class="search-result-placeholder">
+                    📰
+                  </div>
+                `
+            }
+
+            <div>
+
+              <a
+                href="${link}">
+                ${esc(titulo)}
+              </a>
+
+              <small>
+                ${esc(
+                  noticia.categoria ||
+                  noticia.category ||
+                  ""
+                )}
+              </small>
+
+            </div>
+
+          </article>
+        `;
+
+      })
+      .join("");
+
+}
+
+
+if(searchForm){
+
+  searchForm.addEventListener(
+    "submit",
+    function(event){
+
+      event.preventDefault();
+
+      pesquisarNoticias(
+        searchInput
+          ? searchInput.value
+          : ""
+      );
+
+    }
+  );
+
+}
+
+
+if(searchInput){
+
+  searchInput.addEventListener(
+    "input",
+    function(){
+
+      const valor =
+        searchInput.value.trim();
+
+      if(valor.length >= 2){
+
+        pesquisarNoticias(
+          valor
+        );
+
+      }else{
+
+        if(searchResults){
+
+          searchResults.classList.remove(
+            "show"
+          );
+
+        }
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   VOLTAR AO TOPO
+===================================================== */
+
+const backToTop =
+  document.getElementById(
+    "backToTop"
+  );
+
+
+window.addEventListener(
+  "scroll",
+  function(){
+
+    if(!backToTop){
+      return;
+    }
+
+    if(window.scrollY > 400){
+
+      backToTop.classList.add(
+        "show"
+      );
+
+    }else{
+
+      backToTop.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+
+if(backToTop){
+
+  backToTop.addEventListener(
+    "click",
+    function(){
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   MENU INFERIOR — PESQUISA
+===================================================== */
+
+const mobileSearch =
+  document.getElementById(
+    "mobileSearch"
+  );
+
+if(mobileSearch){
+
+  mobileSearch.addEventListener(
+    "click",
+    function(){
+
+      const area =
+        document.querySelector(
+          ".search-area"
+        );
+
+      if(area){
+
+        area.scrollIntoView({
+          behavior:"smooth"
+        });
+
+      }
+
+      if(searchInput){
+
+        setTimeout(
+          function(){
+
+            searchInput.focus();
+
+          },
+          500
+        );
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   MENU INFERIOR — FERRAMENTAS
+===================================================== */
+
+const mobileTools =
+  document.getElementById(
+    "mobileTools"
+  );
+
+if(mobileTools){
+
+  mobileTools.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelFerramentas"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   MENU INFERIOR — EU
+===================================================== */
+
+const mobileMe =
+  document.getElementById(
+    "mobileMe"
+  );
+
+if(mobileMe){
+
+  mobileMe.addEventListener(
+    "click",
+    function(){
+
+      abrirPainel(
+        "painelEu"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FECHAR PAINEL AO CLICAR FORA
+===================================================== */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    if(
+      event.target.closest(
+        ".action-panel"
+      ) ||
+      event.target.closest(
+        ".action-btn"
+      )
+    ){
+
+      return;
+
+    }
+
+    fecharTodosPaineis();
+
+  }
+);
+
+
+/* =====================================================
+   FIM DA PARTE 5
+===================================================== */
+<script>
+
+/* =====================================================
+   SUPABASE
+===================================================== */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -1376,9 +2911,9 @@ const supabaseClient =
   );
 
 
-/* =========================================
+/* =====================================================
    ELEMENTOS
-========================================= */
+===================================================== */
 
 const destaque =
   document.getElementById("destaque");
@@ -1409,31 +2944,34 @@ const categorias = {
 };
 
 
-/* =========================================
-   TODAS AS NOTÍCIAS
-========================================= */
+/* =====================================================
+   NOTÍCIAS
+===================================================== */
 
 let todasNoticias = [];
 
+window.todasNoticiasSite =
+  todasNoticias;
 
-/* =========================================
+
+/* =====================================================
    ESCAPAR TEXTO
-========================================= */
+===================================================== */
 
-function esc(valor) {
+function esc(valor){
 
   return String(valor ?? "")
     .replace(
       /[&<>"']/g,
-      function(m) {
+      function(m){
 
         return {
 
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
+          "&":"&amp;",
+          "<":"&lt;",
+          ">":"&gt;",
+          '"':"&quot;",
+          "'":"&#039;"
 
         }[m];
 
@@ -1443,11 +2981,172 @@ function esc(valor) {
 }
 
 
-/* =========================================
-   NORMALIZAR CATEGORIA
-========================================= */
+/* =====================================================
+   ENCONTRAR CAMPO AUTOMATICAMENTE
+===================================================== */
 
-function normalizarCategoria(valor) {
+function encontrarCampo(
+  noticia,
+  nomes
+){
+
+  if(!noticia){
+    return "";
+  }
+
+  for(
+    let i = 0;
+    i < nomes.length;
+    i++
+  ){
+
+    const nome =
+      nomes[i];
+
+    if(
+      noticia[nome] !== undefined &&
+      noticia[nome] !== null &&
+      String(noticia[nome]).trim() !== ""
+    ){
+
+      return noticia[nome];
+
+    }
+
+  }
+
+  return "";
+
+}
+
+
+/* =====================================================
+   NORMALIZAR NOTÍCIA
+===================================================== */
+
+function normalizarNoticia(
+  noticia
+){
+
+  if(!noticia){
+    return null;
+  }
+
+
+  const id =
+    encontrarCampo(
+      noticia,
+      [
+        "id",
+        "noticia_id",
+        "news_id"
+      ]
+    );
+
+
+  const titulo =
+    encontrarCampo(
+      noticia,
+      [
+        "titulo",
+        "title",
+        "nome",
+        "headline"
+      ]
+    ) ||
+    "Sem título";
+
+
+  const texto =
+    encontrarCampo(
+      noticia,
+      [
+        "texto",
+        "conteudo",
+        "conteúdo",
+        "content",
+        "descricao",
+        "descrição",
+        "description",
+        "body",
+        "resumo"
+      ]
+    );
+
+
+  const categoria =
+    encontrarCampo(
+      noticia,
+      [
+        "categoria",
+        "category",
+        "tipo",
+        "secao",
+        "seção"
+      ]
+    );
+
+
+  const imagem =
+    encontrarCampo(
+      noticia,
+      [
+        "imagem",
+        "image",
+        "image_url",
+        "imagem_url",
+        "foto",
+        "fotografia",
+        "thumbnail",
+        "url_imagem",
+        "url_image"
+      ]
+    );
+
+
+  const data =
+    encontrarCampo(
+      noticia,
+      [
+        "created_at",
+        "createdAt",
+        "data",
+        "data_publicacao",
+        "data_publicação",
+        "published_at",
+        "publishedAt"
+      ]
+    );
+
+
+  return {
+
+    ...noticia,
+
+    id:id,
+
+    titulo:String(titulo),
+
+    texto:String(texto || ""),
+
+    categoria:String(categoria || ""),
+
+    imagem:String(imagem || ""),
+
+    created_at:data
+
+  };
+
+}
+
+
+/* =====================================================
+   NORMALIZAR CATEGORIA
+===================================================== */
+
+function normalizarCategoria(
+  valor
+){
 
   return String(valor ?? "")
     .toLowerCase()
@@ -1456,58 +3155,153 @@ function normalizarCategoria(valor) {
       /[\u0300-\u036f]/g,
       ""
     )
-    .trim();
+    .trim()
+    .replace(
+      /\s+/g,
+      "-"
+    );
 
 }
 
 
-/* =========================================
+/* =====================================================
+   CATEGORIAS EQUIVALENTES
+===================================================== */
+
+function categoriaCombina(
+  valor,
+  categoria
+){
+
+  const atual =
+    normalizarCategoria(
+      valor
+    );
+
+  const alvo =
+    normalizarCategoria(
+      categoria
+    );
+
+
+  if(atual === alvo){
+    return true;
+  }
+
+
+  const equivalencias = {
+
+    futebol:[
+      "futebol",
+      "football",
+      "soccer"
+    ],
+
+    mocambique:[
+      "mocambique",
+      "mozambique",
+      "mozambicano",
+      "mozambicana"
+    ],
+
+    africa:[
+      "africa",
+      "africano",
+      "africana"
+    ],
+
+    negocios:[
+      "negocios",
+      "negocio",
+      "business",
+      "economia"
+    ],
+
+    entretenimento:[
+      "entretenimento",
+      "entertainment",
+      "cultura"
+    ],
+
+    desporto:[
+      "desporto",
+      "esporte",
+      "sport"
+    ]
+
+  };
+
+
+  return Boolean(
+    equivalencias[alvo] &&
+    equivalencias[alvo].includes(
+      atual
+    )
+  );
+
+}
+
+
+/* =====================================================
    DATA
-========================================= */
+===================================================== */
 
-function formatarData(valor) {
+function formatarData(
+  valor
+){
 
-  if (!valor) {
+  if(!valor){
     return "";
   }
+
 
   const data =
     new Date(valor);
 
-  if (isNaN(data.getTime())) {
+
+  if(
+    isNaN(
+      data.getTime()
+    )
+  ){
+
     return "";
+
   }
+
 
   return data.toLocaleString(
     "pt-MZ",
     {
-      day: "2-digit",
-      month: "long",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
+      day:"2-digit",
+      month:"long",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
     }
   );
 
 }
 
 
-/* =========================================
+/* =====================================================
    LINK DA NOTÍCIA
-========================================= */
+===================================================== */
 
-function obterLinkNoticia(id) {
+function obterLinkNoticia(
+  id
+){
 
-  if (
+  if(
     id === null ||
     id === undefined ||
-    id === "" ||
-    String(id) === "null"
-  ) {
+    id === ""
+  ){
 
     return "#";
 
   }
+
 
   return (
     "noticia.html?id=" +
@@ -1519,171 +3313,197 @@ function obterLinkNoticia(id) {
 }
 
 
-/* =========================================
-   MENSAGEM DE ERRO
-========================================= */
+/* =====================================================
+   FAVORITOS
+===================================================== */
 
-function mostrarMensagem(
-  elemento,
-  mensagem
-) {
+let favoritos = [];
 
-  const alvo =
-    document.getElementById(
-      elemento
+
+try{
+
+  favoritos =
+    JSON.parse(
+      localStorage.getItem(
+        "africanmundo_favoritos"
+      ) || "[]"
     );
 
-  if (!alvo) {
+  if(!Array.isArray(favoritos)){
+    favoritos = [];
+  }
+
+}catch(erro){
+
+  favoritos = [];
+
+}
+
+
+function isFavorito(id){
+
+  return favoritos.some(
+    function(item){
+
+      return String(item) ===
+        String(id);
+
+    }
+  );
+
+}
+
+
+function salvarFavoritos(){
+
+  localStorage.setItem(
+    "africanmundo_favoritos",
+    JSON.stringify(
+      favoritos
+    )
+  );
+
+}
+
+
+function alternarFavorito(id){
+
+  if(
+    id === null ||
+    id === undefined ||
+    id === ""
+  ){
+
+    return;
+
+  }
+
+
+  if(
+    isFavorito(id)
+  ){
+
+    favoritos =
+      favoritos.filter(
+        function(item){
+
+          return String(item) !==
+            String(id);
+
+        }
+      );
+
+  }else{
+
+    favoritos.push(
+      String(id)
+    );
+
+  }
+
+
+  salvarFavoritos();
+
+  renderizarNoticias();
+
+}
+
+
+/* =====================================================
+   PARTILHAR NOTÍCIA
+===================================================== */
+
+async function partilharNoticia(
+  noticia
+){
+
+  if(!noticia){
     return;
   }
 
-  alvo.innerHTML = `
-    <p class="loading"
-       style="color:#b00020;">
-      ${esc(mensagem)}
-    </p>
-  `;
 
-}
+  const titulo =
+    noticia.titulo ||
+    "Notícia AfricanMundo";
 
 
-/* =========================================
-   ABRIR IMAGEM GRANDE
-========================================= */
-
-function abrirImagemGrande(url) {
-
-  const viewer =
-    document.getElementById(
-      "imageViewer"
-    );
-
-  const imagem =
-    document.getElementById(
-      "imageViewerImg"
-    );
-
-  if (
-    !viewer ||
-    !imagem ||
-    !url
-  ) {
-    return;
-  }
-
-  imagem.src = url;
-
-  viewer.classList.add("show");
-
-  document.body.style.overflow =
-    "hidden";
-
-}
+  const url =
+    new URL(
+      obterLinkNoticia(
+        noticia.id
+      ),
+      window.location.href
+    ).href;
 
 
-/* =========================================
-   FECHAR IMAGEM
-========================================= */
+  try{
 
-function fecharImagemGrande() {
+    if(
+      navigator.share
+    ){
 
-  const viewer =
-    document.getElementById(
-      "imageViewer"
-    );
+      await navigator.share({
 
-  const imagem =
-    document.getElementById(
-      "imageViewerImg"
-    );
+        title:titulo,
 
-  if (viewer) {
-    viewer.classList.remove("show");
-  }
+        text:titulo,
 
-  if (imagem) {
-    imagem.src = "";
-  }
+        url:url
 
-  document.body.style.overflow = "";
+      });
 
-}
-
-
-/* =========================================
-   FECHAR COM ESC
-========================================= */
-
-document.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (event.key === "Escape") {
-      fecharImagemGrande();
-    }
-
-  }
-);
-
-
-/* =========================================
-   CLICAR NO FUNDO DA IMAGEM
-========================================= */
-
-const imageViewer =
-  document.getElementById(
-    "imageViewer"
-  );
-
-if (imageViewer) {
-
-  imageViewer.addEventListener(
-    "click",
-    function(event) {
-
-      if (
-        event.target ===
-        imageViewer
-      ) {
-
-        fecharImagemGrande();
-
-      }
+      return;
 
     }
-  );
-
-}
 
 
-/* =========================================
-   BOTÃO FECHAR IMAGEM
-========================================= */
+    if(
+      navigator.clipboard
+    ){
 
-const imageViewerClose =
-  document.getElementById(
-    "imageViewerClose"
-  );
+      await navigator.clipboard.writeText(
+        url
+      );
 
-if (imageViewerClose) {
-
-  imageViewerClose.addEventListener(
-    "click",
-    function() {
-
-      fecharImagemGrande();
+      alert(
+        "🔗 Link copiado."
+      );
 
     }
-  );
+
+  }catch(erro){
+
+    console.log(
+      "Partilha cancelada."
+    );
+
+  }
 
 }
-  /* =========================================
-   CRIAR CARTÃO DE NOTÍCIA
-========================================= */
 
-function criarCard(noticia) {
 
-  if (!noticia) {
+/* =====================================================
+   MAPA DAS NOTÍCIAS
+===================================================== */
+
+window.__noticiasMap = {};
+
+
+/* =====================================================
+   FIM DA PARTE 6A
+===================================================== */
+      /* =====================================================
+   PARTE 6B — CARREGAR E RENDERIZAR NOTÍCIAS
+===================================================== */
+
+
+/* =====================================================
+   CRIAR CARD
+===================================================== */
+
+function criarCard(noticia){
+
+  if(!noticia){
     return "";
   }
 
@@ -1694,110 +3514,174 @@ function criarCard(noticia) {
     noticia.titulo ||
     "Sem título";
 
-  const imagem =
-    noticia.imagem ||
-    "";
-
   const texto =
     noticia.texto ||
-    noticia.conteudo ||
     "";
 
   const categoria =
     noticia.categoria ||
     "";
 
+  const imagem =
+    noticia.imagem ||
+    "";
+
   const data =
     formatarData(
-      noticia.created_at ||
-      noticia.data ||
-      noticia.createdAt
+      noticia.created_at
     );
 
   const link =
     obterLinkNoticia(id);
 
-  const imagemHTML =
-    imagem
-      ? `
-        <div
-          class="noticia-imagem"
-          onclick="event.stopPropagation(); abrirImagemGrande('${esc(imagem)}')"
-        >
-          <img
-            src="${esc(imagem)}"
-            alt="${esc(titulo)}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >
-        </div>
-      `
-      : "";
+  const favorito =
+    isFavorito(id);
+
 
   return `
-    <article class="card-noticia">
 
-      ${imagemHTML}
+    <article class="news-card">
 
-      <div class="card-conteudo">
+      ${
+        imagem
+        ? `
+          <div
+            class="news-card-image-link"
+            onclick="
+              abrirImagemGrande(
+                '${esc(imagem)}'
+              )
+            ">
+
+            <img
+              class="news-card-image"
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              loading="lazy"
+              onerror="
+                this.style.display='none'
+              ">
+
+          </div>
+        `
+        : `
+          <div class="news-card-placeholder">
+            📰
+          </div>
+        `
+      }
+
+
+      <div class="news-card-content">
 
         ${
           categoria
-            ? `
-              <span class="categoria-noticia">
-                ${esc(categoria)}
-              </span>
-            `
-            : ""
+          ? `
+            <span class="news-category">
+              ${esc(categoria)}
+            </span>
+          `
+          : ""
         }
 
+
         <h3>
+
           <a href="${link}">
             ${esc(titulo)}
           </a>
+
         </h3>
+
 
         ${
           texto
-            ? `
-              <p>
-                ${esc(
-                  String(texto)
-                    .replace(/<[^>]*>/g, "")
-                    .substring(0, 180)
-                )}${String(texto).length > 180 ? "..." : ""}
-              </p>
-            `
-            : ""
+          ? `
+            <p>
+              ${esc(
+                String(texto)
+                  .replace(
+                    /<[^>]*>/g,
+                    ""
+                  )
+                  .substring(
+                    0,
+                    180
+                  )
+              )}
+            </p>
+          `
+          : ""
         }
+
 
         ${
           data
-            ? `
-              <small class="data-noticia">
-                ${esc(data)}
-              </small>
-            `
-            : ""
+          ? `
+            <small>
+              ${esc(data)}
+            </small>
+          `
+          : ""
         }
+
+
+        <div class="news-card-actions">
+
+          <button
+            type="button"
+            onclick="
+              alternarFavorito(
+                '${esc(id)}'
+              )
+            "
+            title="Favoritos">
+
+            ${
+              favorito
+              ? "❤️"
+              : "♡"
+            }
+
+          </button>
+
+
+          <button
+            type="button"
+            onclick="
+              partilharNoticia(
+                window.__noticiasMap[
+                  '${esc(id)}'
+                ]
+              )
+            "
+            title="Partilhar">
+
+            🔗
+
+          </button>
+
+        </div>
 
       </div>
 
     </article>
+
   `;
 
 }
 
 
-/* =========================================
+/* =====================================================
    CRIAR DESTAQUE
-========================================= */
+===================================================== */
 
-function criarDestaque(noticia) {
+function criarDestaque(noticia){
 
-  if (!noticia) {
+  if(!noticia){
     return "";
   }
+
 
   const id =
     noticia.id;
@@ -1806,142 +3690,221 @@ function criarDestaque(noticia) {
     noticia.titulo ||
     "Sem título";
 
-  const imagem =
-    noticia.imagem ||
-    "";
-
   const texto =
     noticia.texto ||
-    noticia.conteudo ||
     "";
 
   const categoria =
     noticia.categoria ||
     "";
 
+  const imagem =
+    noticia.imagem ||
+    "";
+
   const data =
     formatarData(
-      noticia.created_at ||
-      noticia.data ||
-      noticia.createdAt
+      noticia.created_at
     );
 
   const link =
     obterLinkNoticia(id);
 
+
   return `
+
     <article class="destaque-card">
 
       ${
         imagem
-          ? `
-            <div
-              class="destaque-imagem"
-              onclick="event.stopPropagation(); abrirImagemGrande('${esc(imagem)}')"
-            >
-              <img
-                src="${esc(imagem)}"
-                alt="${esc(titulo)}"
-                onerror="this.style.display='none'"
-              >
-            </div>
-          `
-          : ""
+        ? `
+          <div
+            class="destaque-imagem"
+            onclick="
+              abrirImagemGrande(
+                '${esc(imagem)}'
+              )
+            ">
+
+            <img
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              onerror="
+                this.style.display='none'
+              ">
+
+          </div>
+        `
+        : `
+          <div class="hero-no-image">
+            🌍
+          </div>
+        `
       }
+
 
       <div class="destaque-conteudo">
 
         ${
           categoria
-            ? `
-              <span class="categoria-noticia">
-                ${esc(categoria)}
-              </span>
-            `
-            : ""
+          ? `
+            <span class="badge">
+              ${esc(categoria)}
+            </span>
+          `
+          : ""
         }
 
+
         <h2>
+
           <a href="${link}">
             ${esc(titulo)}
           </a>
+
         </h2>
+
 
         ${
           texto
-            ? `
-              <p>
-                ${esc(
-                  String(texto)
-                    .replace(/<[^>]*>/g, "")
-                    .substring(0, 250)
-                )}${String(texto).length > 250 ? "..." : ""}
-              </p>
-            `
-            : ""
+          ? `
+            <p>
+              ${esc(
+                String(texto)
+                  .replace(
+                    /<[^>]*>/g,
+                    ""
+                  )
+                  .substring(
+                    0,
+                    250
+                  )
+              )}
+            </p>
+          `
+          : ""
         }
+
 
         ${
           data
-            ? `
-              <small class="data-noticia">
-                ${esc(data)}
-              </small>
-            `
-            : ""
+          ? `
+            <small>
+              ${esc(data)}
+            </small>
+          `
+          : ""
         }
+
+
+        <div class="destaque-actions">
+
+          <a
+            href="${link}"
+            class="read-more">
+
+            LER NOTÍCIA
+
+          </a>
+
+
+          <button
+            type="button"
+            onclick="
+              alternarFavorito(
+                '${esc(id)}'
+              )
+            ">
+
+            ${
+              isFavorito(id)
+              ? "❤️"
+              : "♡"
+            }
+
+          </button>
+
+
+          <button
+            type="button"
+            onclick="
+              partilharNoticia(
+                window.__noticiasMap[
+                  '${esc(id)}'
+                ]
+              )
+            ">
+
+            🔗
+
+          </button>
+
+        </div>
 
       </div>
 
     </article>
+
   `;
 
 }
 
 
-/* =========================================
-   RENDERIZAR NOTÍCIAS
-========================================= */
+/* =====================================================
+   RENDERIZAR
+===================================================== */
 
-function renderizarNoticias() {
+function renderizarNoticias(){
 
-  /* -------------------------
-     LIMPAR ÁREAS
-  ------------------------- */
+  window.todasNoticiasSite =
+    todasNoticias;
 
-  if (destaque) {
-    destaque.innerHTML = "";
-  }
 
-  if (ultimas) {
-    ultimas.innerHTML = "";
-  }
+  window.__noticiasMap = {};
 
-  Object.values(categorias)
-    .forEach(function(elemento) {
 
-      if (elemento) {
-        elemento.innerHTML = "";
+  todasNoticias.forEach(
+    function(noticia){
+
+      if(
+        noticia &&
+        noticia.id !== null &&
+        noticia.id !== undefined
+      ){
+
+        window.__noticiasMap[
+          String(noticia.id)
+        ] = noticia;
+
       }
 
-    });
+    }
+  );
 
 
-  /* -------------------------
-     VERIFICAR NOTÍCIAS
-  ------------------------- */
-
-  if (
-    !Array.isArray(todasNoticias) ||
+  if(
     todasNoticias.length === 0
-  ) {
+  ){
 
-    if (destaque) {
+    if(destaque){
+
       destaque.innerHTML = `
+        <div class="error-box">
+          📰 Nenhuma notícia encontrada.
+        </div>
+      `;
+
+    }
+
+
+    if(ultimas){
+
+      ultimas.innerHTML = `
         <p class="loading">
-          Nenhuma notícia encontrada.
+          Nenhuma notícia disponível.
         </p>
       `;
+
     }
 
     return;
@@ -1949,84 +3912,60 @@ function renderizarNoticias() {
   }
 
 
-  /* -------------------------
-     DESTAQUE
-  ------------------------- */
+  /* DESTAQUE */
 
-  const primeira =
-    todasNoticias[0];
-
-  if (destaque) {
+  if(destaque){
 
     destaque.innerHTML =
       criarDestaque(
-        primeira
+        todasNoticias[0]
       );
 
   }
 
 
-  /* -------------------------
-     ÚLTIMAS NOTÍCIAS
-  ------------------------- */
+  /* ÚLTIMAS */
 
-  const ultimasNoticias =
-    todasNoticias.slice(
-      0,
-      10
-    );
-
-  if (ultimas) {
+  if(ultimas){
 
     ultimas.innerHTML =
-      ultimasNoticias
-        .map(function(noticia) {
-
-          return criarCard(
-            noticia
-          );
-
-        })
+      todasNoticias
+        .slice(0,10)
+        .map(criarCard)
         .join("");
 
   }
 
 
-  /* -------------------------
-     CATEGORIAS
-  ------------------------- */
+  /* CATEGORIAS */
 
-  Object.keys(categorias)
-    .forEach(function(nomeCategoria) {
+  Object.keys(
+    categorias
+  ).forEach(
+    function(nome){
 
       const elemento =
-        categorias[
-          nomeCategoria
-        ];
+        categorias[nome];
 
-      if (!elemento) {
+      if(!elemento){
         return;
       }
 
-      const noticiasCategoria =
-        todasNoticias.filter(
-          function(noticia) {
 
-            return (
-              normalizarCategoria(
-                noticia.categoria
-              ) ===
-              normalizarCategoria(
-                nomeCategoria
-              )
+      const lista =
+        todasNoticias.filter(
+          function(noticia){
+
+            return categoriaCombina(
+              noticia.categoria,
+              nome
             );
 
           }
         );
 
-      if (
-        noticiasCategoria.length === 0
-      ) {
+
+      if(lista.length === 0){
 
         elemento.innerHTML = `
           <p class="loading">
@@ -2038,53 +3977,106 @@ function renderizarNoticias() {
 
       }
 
+
       elemento.innerHTML =
-        noticiasCategoria
-          .slice(0, 6)
-          .map(function(noticia) {
-
-            return criarCard(
-              noticia
-            );
-
-          })
+        lista
+          .slice(0,6)
+          .map(criarCard)
           .join("");
 
-    });
+    }
+  );
 
-  }
-  /* =========================================
+}
+
+
+/* =====================================================
    CARREGAR NOTÍCIAS DO SUPABASE
-========================================= */
+===================================================== */
 
-async function carregarNoticias() {
+async function carregarNoticias(){
 
-  try {
+  let terminou = false;
 
-    /* -------------------------
-       MENSAGEM DE CARREGAMENTO
-    ------------------------- */
 
-    if (destaque) {
+  const limite =
+    setTimeout(
+      function(){
+
+        if(terminou){
+          return;
+        }
+
+
+        terminou = true;
+
+
+        if(destaque){
+
+          destaque.innerHTML = `
+            <div class="error-box">
+
+              ⚠️
+              <strong>
+                O carregamento demorou
+                demasiado.
+              </strong>
+
+              <br><br>
+
+              Verifique a ligação à internet
+              e as permissões de leitura
+              do Supabase.
+
+            </div>
+          `;
+
+        }
+
+
+        if(ultimas){
+
+          ultimas.innerHTML = `
+            <p
+              class="loading"
+              style="color:#b00020;">
+
+              ⚠️ Não foi possível carregar
+              as notícias.
+
+            </p>
+          `;
+
+        }
+
+      },
+      12000
+    );
+
+
+  try{
+
+    if(destaque){
+
       destaque.innerHTML = `
-        <p class="loading">
-          A carregar notícias...
-        </p>
+        <div class="loading">
+          🔄 A carregar notícias...
+        </div>
       `;
+
     }
 
-    if (ultimas) {
+
+    if(ultimas){
+
       ultimas.innerHTML = `
         <p class="loading">
-          A carregar notícias...
+          🔄 A carregar notícias...
         </p>
       `;
+
     }
 
-
-    /* -------------------------
-       BUSCAR NO SUPABASE
-    ------------------------- */
 
     const resultado =
       await supabaseClient
@@ -2093,86 +4085,160 @@ async function carregarNoticias() {
         .order(
           "id",
           {
-            ascending: false
+            ascending:false
           }
-        );
+        )
+        .limit(1000);
 
 
-    /* -------------------------
-       VERIFICAR ERRO
-    ------------------------- */
+    if(terminou){
+      return;
+    }
 
-    if (resultado.error) {
+
+    terminou = true;
+
+    clearTimeout(limite);
+
+
+    if(resultado.error){
 
       console.error(
         "Erro Supabase:",
         resultado.error
       );
 
-      mostrarMensagem(
-        "destaque",
-        "Não foi possível carregar as notícias."
-      );
 
-      if (ultimas) {
+      const mensagem =
+        resultado.error.message ||
+        "Erro desconhecido.";
+
+
+      if(destaque){
+
+        destaque.innerHTML = `
+          <div class="error-box">
+
+            ⚠️
+            <strong>
+              Não foi possível carregar
+              as notícias.
+            </strong>
+
+            <br><br>
+
+            ${esc(mensagem)}
+
+            <br><br>
+
+            Verifique as políticas de
+            leitura da tabela
+            <strong>noticias</strong>.
+
+          </div>
+        `;
+
+      }
+
+
+      if(ultimas){
 
         ultimas.innerHTML = `
-          <p class="loading"
-             style="color:#b00020;">
-            Não foi possível carregar as notícias.
+          <p
+            class="loading"
+            style="color:#b00020;">
+
+            ⚠️ Falha ao carregar notícias.
+
           </p>
         `;
 
       }
+
 
       return;
 
     }
 
 
-    /* -------------------------
-       GUARDAR NOTÍCIAS
-    ------------------------- */
-
-    todasNoticias =
+    const dados =
       Array.isArray(
         resultado.data
       )
-        ? resultado.data
-        : [];
+      ? resultado.data
+      : [];
+
+
+    todasNoticias =
+      dados
+        .map(
+          normalizarNoticia
+        )
+        .filter(
+          Boolean
+        );
 
 
     console.log(
       "Notícias recebidas:",
-      todasNoticias
+      todasNoticias.length
     );
 
-
-    /* -------------------------
-       RENDERIZAR
-    ------------------------- */
 
     renderizarNoticias();
 
 
-  } catch (erro) {
+    atualizarNotificacoes();
+
+
+  }catch(erro){
+
+    if(terminou){
+      return;
+    }
+
+
+    terminou = true;
+
+    clearTimeout(limite);
+
 
     console.error(
-      "Erro ao carregar notícias:",
+      "Erro:",
       erro
     );
 
-    mostrarMensagem(
-      "destaque",
-      "Ocorreu um erro ao carregar as notícias."
-    );
 
-    if (ultimas) {
+    if(destaque){
+
+      destaque.innerHTML = `
+        <div class="error-box">
+
+          ⚠️
+          <strong>
+            Ocorreu um erro.
+          </strong>
+
+          <br><br>
+
+          Não foi possível comunicar
+          com o servidor de notícias.
+
+        </div>
+      `;
+
+    }
+
+
+    if(ultimas){
 
       ultimas.innerHTML = `
-        <p class="loading"
-           style="color:#b00020;">
-          Ocorreu um erro ao carregar as notícias.
+        <p
+          class="loading"
+          style="color:#b00020;">
+
+          ⚠️ Falha ao carregar notícias.
+
         </p>
       `;
 
@@ -2183,37 +4249,76 @@ async function carregarNoticias() {
 }
 
 
-/* =========================================
-   INICIAR SITE
-========================================= */
+/* =====================================================
+   NOTIFICAÇÕES
+===================================================== */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
+function atualizarNotificacoes(){
 
-    carregarNoticias();
+  const contador =
+    document.getElementById(
+      "notificationCount"
+    );
+
+  if(!contador){
+    return;
+  }
+
+
+  if(
+    todasNoticias.length > 0
+  ){
+
+    contador.textContent =
+      Math.min(
+        todasNoticias.length,
+        99
+      );
+
+    contador.style.display =
+      "flex";
+
+  }else{
+
+    contador.style.display =
+      "none";
 
   }
-);
+
+}
 
 
-/* =========================================
-   ATUALIZAR NOTÍCIAS
-========================================= */
+/* =====================================================
+   INICIAR SITE
+===================================================== */
+
+if(
+  document.readyState ===
+  "loading"
+){
+
+  document.addEventListener(
+    "DOMContentLoaded",
+    function(){
+
+      carregarNoticias();
+
+    }
+  );
+
+}else{
+
+  carregarNoticias();
+
+}
+
+
+/* =====================================================
+   FUNÇÕES GLOBAIS
+===================================================== */
 
 window.carregarNoticias =
   carregarNoticias;
-
-
-/* =========================================
-   DISPONIBILIZAR FUNÇÕES
-========================================= */
-
-window.abrirImagemGrande =
-  abrirImagemGrande;
-
-window.fecharImagemGrande =
-  fecharImagemGrande;
 
 window.criarCard =
   criarCard;
@@ -2221,45 +4326,943 @@ window.criarCard =
 window.criarDestaque =
   criarDestaque;
 
-window.normalizarCategoria =
-  normalizarCategoria;
+window.alternarFavorito =
+  alternarFavorito;
 
-window.formatarData =
-  formatarData;
-  <!-- =========================================
-     VISUALIZADOR DE IMAGEM
-========================================= -->
+window.partilharNoticia =
+  partilharNoticia;
 
-<div
-  id="imageViewer"
-  class="image-viewer"
-  aria-hidden="true"
->
+window.abrirImagemGrande =
+  abrirImagemGrande;
 
-  <button
-    id="imageViewerClose"
-    type="button"
-    aria-label="Fechar imagem"
-  >
-    ×
-  </button>
-
-  <div class="image-viewer-content">
-
-    <img
-      id="imageViewerImg"
-      src=""
-      alt="Imagem da notícia"
-    >
-
-  </div>
-
-</div>
+window.fecharImagemGrande =
+  fecharImagemGrande;
 
 
-<!-- =========================================
-     FINAL DO JAVASCRIPT
-========================================= -->
+/* =====================================================
+   FIM DA PARTE 6B
+===================================================== */
+      /* =====================================================
+   PARTE 7/7 — PESQUISA, FERRAMENTAS, EU E TEMA
+===================================================== */
+
+
+/* =====================================================
+   PESQUISA
+===================================================== */
+
+const searchForm =
+  document.getElementById(
+    "searchForm"
+  );
+
+const searchInput =
+  document.getElementById(
+    "searchInput"
+  );
+
+
+if(searchForm){
+
+  searchForm.addEventListener(
+    "submit",
+    function(event){
+
+      event.preventDefault();
+
+
+      const termo =
+        String(
+          searchInput
+            ? searchInput.value
+            : ""
+        )
+        .trim()
+        .toLowerCase();
+
+
+      if(!termo){
+
+        alert(
+          "🔎 Digite algo para pesquisar."
+        );
+
+        return;
+
+      }
+
+
+      const resultados =
+        todasNoticias.filter(
+          function(noticia){
+
+            const titulo =
+              String(
+                noticia.titulo || ""
+              )
+              .toLowerCase();
+
+            const texto =
+              String(
+                noticia.texto || ""
+              )
+              .toLowerCase();
+
+            const categoria =
+              String(
+                noticia.categoria || ""
+              )
+              .toLowerCase();
+
+
+            return (
+              titulo.includes(termo) ||
+              texto.includes(termo) ||
+              categoria.includes(termo)
+            );
+
+          }
+        );
+
+
+      mostrarResultadosPesquisa(
+        resultados,
+        termo
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   MOSTRAR PESQUISA
+===================================================== */
+
+function mostrarResultadosPesquisa(
+  resultados,
+  termo
+){
+
+  const area =
+    document.getElementById(
+      "searchResults"
+    );
+
+
+  if(!area){
+
+    alert(
+      "🔎 Encontradas " +
+      resultados.length +
+      " notícias."
+    );
+
+    return;
+
+  }
+
+
+  area.style.display =
+    "block";
+
+
+  if(resultados.length === 0){
+
+    area.innerHTML = `
+
+      <div class="empty-state">
+
+        🔎 Nenhuma notícia encontrada
+        para:
+
+        <strong>
+          ${esc(termo)}
+        </strong>
+
+      </div>
+
+    `;
+
+  }else{
+
+    area.innerHTML = `
+
+      <div class="search-result-title">
+
+        🔎
+        ${resultados.length}
+        resultado(s) para
+        "${esc(termo)}"
+
+      </div>
+
+      <div class="category-grid">
+
+        ${resultados
+          .map(criarCard)
+          .join("")
+        }
+
+      </div>
+
+    `;
+
+  }
+
+
+  area.scrollIntoView({
+    behavior:"smooth",
+    block:"start"
+  });
+
+}
+
+
+/* =====================================================
+   NOTIFICAÇÕES
+===================================================== */
+
+const notificationButton =
+  document.getElementById(
+    "notificationButton"
+  );
+
+const notificationPanel =
+  document.getElementById(
+    "notificationPanel"
+  );
+
+
+if(notificationButton){
+
+  notificationButton.addEventListener(
+    "click",
+    function(){
+
+      fecharTodosPaineis();
+
+
+      if(notificationPanel){
+
+        notificationPanel.style.display =
+          "block";
+
+        atualizarNotificacoes();
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FERRAMENTAS
+===================================================== */
+
+const toolsButton =
+  document.getElementById(
+    "toolsButton"
+  );
+
+const toolsPanel =
+  document.getElementById(
+    "toolsPanel"
+  );
+
+
+if(toolsButton){
+
+  toolsButton.addEventListener(
+    "click",
+    function(){
+
+      fecharTodosPaineis();
+
+
+      if(toolsPanel){
+
+        toolsPanel.style.display =
+          "block";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   EU
+===================================================== */
+
+const userButton =
+  document.getElementById(
+    "userButton"
+  );
+
+const userPanel =
+  document.getElementById(
+    "userPanel"
+  );
+
+
+if(userButton){
+
+  userButton.addEventListener(
+    "click",
+    function(){
+
+      fecharTodosPaineis();
+
+
+      if(userPanel){
+
+        userPanel.style.display =
+          "block";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   FECHAR PAINÉIS
+===================================================== */
+
+function fecharTodosPaineis(){
+
+  const paineis = [
+
+    "notificationPanel",
+    "toolsPanel",
+    "userPanel"
+
+  ];
+
+
+  paineis.forEach(
+    function(id){
+
+      const elemento =
+        document.getElementById(id);
+
+
+      if(elemento){
+
+        elemento.style.display =
+          "none";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   BOTÕES DE FECHAR
+===================================================== */
+
+document.querySelectorAll(
+  "[data-close-panel]"
+).forEach(
+  function(botao){
+
+    botao.addEventListener(
+      "click",
+      fecharTodosPaineis
+    );
+
+  }
+);
+
+
+/* =====================================================
+   MODO ESCURO
+===================================================== */
+
+function aplicarTema(
+  tema
+){
+
+  if(
+    tema === "dark"
+  ){
+
+    document.body.classList.add(
+      "dark-mode"
+    );
+
+  }else{
+
+    document.body.classList.remove(
+      "dark-mode"
+    );
+
+  }
+
+
+  localStorage.setItem(
+    "africanmundo_tema",
+    tema
+  );
+
+}
+
+
+/* =====================================================
+   CARREGAR TEMA
+===================================================== */
+
+const temaGuardado =
+  localStorage.getItem(
+    "africanmundo_tema"
+  );
+
+
+if(
+  temaGuardado
+){
+
+  aplicarTema(
+    temaGuardado
+  );
+
+}
+
+
+/* =====================================================
+   BOTÃO TEMA
+===================================================== */
+
+const themeButton =
+  document.getElementById(
+    "themeButton"
+  );
+
+
+if(themeButton){
+
+  themeButton.addEventListener(
+    "click",
+    function(){
+
+      const escuro =
+        document.body.classList.contains(
+          "dark-mode"
+        );
+
+
+      aplicarTema(
+        escuro
+          ? "light"
+          : "dark"
+      );
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   PERSONALIZAÇÃO
+===================================================== */
+
+const appearanceButton =
+  document.getElementById(
+    "appearanceButton"
+  );
+
+
+const appearancePanel =
+  document.getElementById(
+    "appearancePanel"
+  );
+
+
+if(appearanceButton){
+
+  appearanceButton.addEventListener(
+    "click",
+    function(){
+
+      fecharTodosPaineis();
+
+
+      if(appearancePanel){
+
+        appearancePanel.style.display =
+          "block";
+
+      }
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   COR PRINCIPAL
+===================================================== */
+
+function mudarCor(
+  cor
+){
+
+  document.documentElement.style
+    .setProperty(
+      "--cor-principal",
+      cor
+    );
+
+
+  localStorage.setItem(
+    "africanmundo_cor",
+    cor
+  );
+
+}
+
+
+const corGuardada =
+  localStorage.getItem(
+    "africanmundo_cor"
+  );
+
+
+if(corGuardada){
+
+  mudarCor(
+    corGuardada
+  );
+
+}
+
+
+/* =====================================================
+   CORES
+===================================================== */
+
+document.querySelectorAll(
+  "[data-color]"
+).forEach(
+  function(botao){
+
+    botao.addEventListener(
+      "click",
+      function(){
+
+        mudarCor(
+          botao.dataset.color
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   TAMANHO DO TEXTO
+===================================================== */
+
+function mudarTamanhoTexto(
+  tamanho
+){
+
+  document.documentElement
+    .style
+    .setProperty(
+      "--tamanho-texto",
+      tamanho
+    );
+
+
+  localStorage.setItem(
+    "africanmundo_texto",
+    tamanho
+  );
+
+}
+
+
+const tamanhoGuardado =
+  localStorage.getItem(
+    "africanmundo_texto"
+  );
+
+
+if(tamanhoGuardado){
+
+  mudarTamanhoTexto(
+    tamanhoGuardado
+  );
+
+}
+
+
+document.querySelectorAll(
+  "[data-font]"
+).forEach(
+  function(botao){
+
+    botao.addEventListener(
+      "click",
+      function(){
+
+        mudarTamanhoTexto(
+          botao.dataset.font
+        );
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   FAVORITOS
+===================================================== */
+
+const favoritesButton =
+  document.getElementById(
+    "favoritesButton"
+  );
+
+
+if(favoritesButton){
+
+  favoritesButton.addEventListener(
+    "click",
+    function(){
+
+      const secao =
+        document.getElementById(
+          "favoritosSection"
+        );
+
+
+      fecharTodosPaineis();
+
+
+      if(!secao){
+
+        alert(
+          "❤️ Os favoritos aparecerão aqui."
+        );
+
+        return;
+
+      }
+
+
+      secao.style.display =
+        "block";
+
+
+      atualizarFavoritos();
+
+
+      secao.scrollIntoView({
+        behavior:"smooth"
+      });
+
+    }
+  );
+
+}
+
+
+/* =====================================================
+   ATUALIZAR FAVORITOS
+===================================================== */
+
+function atualizarFavoritos(){
+
+  const area =
+    document.getElementById(
+      "favoritos"
+    );
+
+
+  if(!area){
+    return;
+  }
+
+
+  const lista =
+    todasNoticias.filter(
+      function(noticia){
+
+        return isFavorito(
+          noticia.id
+        );
+
+      }
+    );
+
+
+  if(lista.length === 0){
+
+    area.innerHTML = `
+
+      <p class="loading">
+
+        ❤️ Ainda não existem
+        notícias favoritas.
+
+      </p>
+
+    `;
+
+    return;
+
+  }
+
+
+  area.innerHTML =
+    lista
+      .map(criarCard)
+      .join("");
+
+}
+
+
+/* =====================================================
+   MENU INFERIOR
+===================================================== */
+
+document.querySelectorAll(
+  ".mobile-nav-button"
+).forEach(
+  function(botao){
+
+    botao.addEventListener(
+      "click",
+      function(){
+
+        const acao =
+          botao.dataset.action;
+
+
+        if(
+          acao === "inicio"
+        ){
+
+          window.scrollTo({
+            top:0,
+            behavior:"smooth"
+          });
+
+        }
+
+
+        if(
+          acao === "pesquisa"
+        ){
+
+          if(searchInput){
+
+            searchInput.focus();
+
+            searchInput.scrollIntoView({
+              behavior:"smooth"
+            });
+
+          }
+
+        }
+
+
+        if(
+          acao === "favoritos"
+        ){
+
+          if(favoritesButton){
+
+            favoritesButton.click();
+
+          }
+
+        }
+
+
+        if(
+          acao === "notificacoes"
+        ){
+
+          if(notificationButton){
+
+            notificationButton.click();
+
+          }
+
+        }
+
+
+        if(
+          acao === "eu"
+        ){
+
+          if(userButton){
+
+            userButton.click();
+
+          }
+
+        }
+
+      }
+    );
+
+  }
+);
+
+
+/* =====================================================
+   CLIQUE FORA DOS PAINÉIS
+===================================================== */
+
+document.addEventListener(
+  "click",
+  function(event){
+
+    const elementos = [
+
+      notificationPanel,
+      toolsPanel,
+      userPanel,
+      appearancePanel
+
+    ];
+
+
+    const clicouPainel =
+      elementos.some(
+        function(elemento){
+
+          return (
+            elemento &&
+            elemento.contains(
+              event.target
+            )
+          );
+
+        }
+      );
+
+
+    const clicouBotao =
+      event.target.closest(
+        "#notificationButton,#toolsButton,#userButton,#appearanceButton"
+      );
+
+
+    if(
+      !clicouPainel &&
+      !clicouBotao
+    ){
+
+      fecharTodosPaineis();
+
+
+      if(appearancePanel){
+
+        appearancePanel.style.display =
+          "none";
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   ERRO GLOBAL
+===================================================== */
+
+window.addEventListener(
+  "error",
+  function(event){
+
+    console.error(
+      "Erro no AfricanMundo:",
+      event.error ||
+      event.message
+    );
+
+  }
+);
+
+
+/* =====================================================
+   ERRO DE PROMISE
+===================================================== */
+
+window.addEventListener(
+  "unhandledrejection",
+  function(event){
+
+    console.error(
+      "Erro de operação:",
+      event.reason
+    );
+
+  }
+);
+
+
+/* =====================================================
+   FINAL
+===================================================== */
+
+console.log(
+  "🌍 AfricanMundo iniciado."
+);
+
+console.log(
+  "📰 Sistema de notícias ativo."
+);
+
+console.log(
+  "🔎 Pesquisa ativa."
+);
+
+console.log(
+  "❤️ Favoritos ativos."
+);
+
+console.log(
+  "🔔 Notificações ativas."
+);
+
+console.log(
+  "🌙 Tema ativo."
+);
+
+console.log(
+  "📱 Menu móvel ativo."
+);
+
+
+/* =====================================================
+   FECHAR JAVASCRIPT
+===================================================== */
 
 </script>
 
