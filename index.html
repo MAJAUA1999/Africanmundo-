@@ -10,17 +10,19 @@
   content="width=device-width, initial-scale=1"
 >
 
-<link
-  rel="manifest"
-  href="./manifest.json"
->
-
 <meta
   name="theme-color"
   content="#0b6b3a"
 >
 
-<title>AfricanMundo — Notícias de África</title>
+<link
+  rel="manifest"
+  href="./manifest.json"
+>
+
+<title>
+  AfricanMundo — Notícias de África
+</title>
 
 <meta
   name="description"
@@ -31,6 +33,10 @@
 
 
 <style>
+
+/* =========================================
+   BASE
+========================================= */
 
 * {
   box-sizing: border-box;
@@ -44,7 +50,10 @@ body {
   margin: 0;
   background: #f4f4f4;
   color: #111;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 a {
@@ -66,10 +75,12 @@ a {
 .top-info-inner {
   max-width: 1200px;
   margin: auto;
+
   display: flex;
   justify-content: space-between;
-  gap: 15px;
   align-items: center;
+
+  gap: 15px;
 }
 
 .top-links {
@@ -95,11 +106,15 @@ header {
 .header-main {
   max-width: 1200px;
   margin: auto;
+
   min-height: 105px;
+
   padding: 18px 15px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: 25px;
 }
 
@@ -111,15 +126,20 @@ header {
 .logo {
   display: flex;
   align-items: center;
+
   gap: 5px;
+
   font-size: 38px;
   font-weight: 900;
+
   letter-spacing: -2px;
+
   white-space: nowrap;
 }
 
 .logo-globe {
   font-size: 35px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -135,61 +155,80 @@ header {
 
 .tagline {
   margin-top: 5px;
+
   color: #ddd;
+
   font-size: 13px;
 }
 
 
 /* =========================================
-   PUBLICIDADE DO TOPO
+   PUBLICIDADE TOPO
 ========================================= */
 
 .advertising-top {
   flex: 1;
+
   max-width: 610px;
+
   min-height: 75px;
+
   border: 1px solid #1c4320;
+
   border-radius: 4px;
-  background: linear-gradient(
-    90deg,
-    #071008,
-    #101f12,
-    #071008
-  );
+
+  background:
+    linear-gradient(
+      90deg,
+      #071008,
+      #101f12,
+      #071008
+    );
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   text-align: center;
+
   padding: 10px;
 }
 
 .advertising-top strong {
   display: block;
+
   color: #45c226;
+
   font-size: 25px;
 }
 
 .advertising-top small {
   color: #ddd;
+
   font-size: 13px;
 }
 
 
 /* =========================================
-   MENU
+   MENU PRINCIPAL
 ========================================= */
 
 .nav {
   background: #151515;
+
   border-top: 1px solid #292929;
   border-bottom: 1px solid #292929;
 }
 
 .nav-inner {
   max-width: 1200px;
+
   margin: auto;
+
   display: flex;
+
   overflow-x: auto;
+
   scrollbar-width: none;
 }
 
@@ -199,10 +238,15 @@ header {
 
 .nav a {
   color: #fff;
+
   text-decoration: none;
+
   padding: 15px 20px;
+
   font-size: 13px;
+
   font-weight: 800;
+
   white-space: nowrap;
 }
 
@@ -213,44 +257,255 @@ header {
 
 
 /* =========================================
+   BARRA DE FERRAMENTAS
+========================================= */
+
+.tools-bar {
+  background: #fff;
+
+  border-bottom: 1px solid #ddd;
+
+  padding: 8px 10px;
+}
+
+.tools-inner {
+  max-width: 1200px;
+
+  margin: auto;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.tool-button {
+  border: 1px solid #ddd;
+
+  background: #fff;
+
+  color: #222;
+
+  border-radius: 6px;
+
+  min-width: 42px;
+  height: 38px;
+
+  padding: 0 10px;
+
+  cursor: pointer;
+
+  font-size: 18px;
+}
+
+.tool-button span {
+  font-size: 11px;
+
+  font-weight: 800;
+
+  margin-left: 3px;
+}
+
+.tool-button:hover {
+  border-color: #45c226;
+
+  color: #45c226;
+}
+
+
+/* =========================================
+   NOTIFICAÇÃO
+========================================= */
+
+.notification-button {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+
+  top: -5px;
+  right: -4px;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 4px;
+
+  border-radius: 20px;
+
+  background: #e00000;
+
+  color: #fff;
+
+  font-size: 10px;
+
+  font-weight: 900;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* =========================================
+   PAINEL DE FERRAMENTAS
+========================================= */
+
+.tools-panel {
+  display: none;
+
+  max-width: 1200px;
+
+  margin: 10px auto;
+
+  padding: 15px;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+}
+
+.tools-panel.show {
+  display: block;
+}
+
+.tools-panel h3 {
+  margin: 0 0 12px;
+
+  font-size: 16px;
+}
+
+.tools-options {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+
+  gap: 8px;
+}
+
+.tools-option {
+  border: 1px solid #ddd;
+
+  background: #f8f8f8;
+
+  padding: 12px;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 800;
+}
+
+.tools-option:hover {
+  border-color: #45c226;
+
+  background: #f0faed;
+}
+
+
+/* =========================================
+   PAINEL EU
+========================================= */
+
+.user-panel {
+  display: none;
+
+  max-width: 1200px;
+
+  margin: 10px auto;
+
+  padding: 15px;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  border-radius: 8px;
+}
+
+.user-panel.show {
+  display: block;
+}
+
+.user-panel h3 {
+  margin: 0 0 8px;
+
+  font-size: 17px;
+}
+
+.user-panel p {
+  margin: 5px 0;
+
+  color: #666;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
    PESQUISA
 ========================================= */
 
 .search-area {
   background: #fff;
+
   border-bottom: 1px solid #ddd;
+
   padding: 18px 12px;
 }
 
 .search-box {
   max-width: 1200px;
+
   margin: auto;
 }
 
 .search-title {
   margin: 0 0 10px;
+
   font-size: 18px;
+
   font-weight: 900;
 }
 
 .search-form {
   display: flex;
+
   gap: 8px;
 }
 
 .search-input {
   flex: 1;
+
   min-width: 0;
+
   height: 46px;
+
   border: 1px solid #ccc;
+
   border-radius: 5px;
+
   padding: 0 14px;
+
   font-size: 15px;
+
   outline: none;
 }
 
 .search-input:focus {
   border-color: #45c226;
+
   box-shadow:
     0 0 0 2px
     rgba(69,194,38,.12);
@@ -258,12 +513,19 @@ header {
 
 .search-button {
   border: 0;
+
   background: #45c226;
+
   color: #fff;
+
   border-radius: 5px;
+
   padding: 0 20px;
+
   font-size: 13px;
+
   font-weight: 900;
+
   cursor: pointer;
 }
 
@@ -278,77 +540,94 @@ header {
 
 .quick-links {
   max-width: 1200px;
+
   margin: 12px auto 0;
+
   display: grid;
+
   grid-template-columns:
     repeat(6, 1fr);
+
   gap: 8px;
 }
 
 .quick-link {
   min-height: 68px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background: #fff;
-  text-decoration: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-  transition:
-    transform .15s ease,
-    box-shadow .15s ease;
-}
 
-.quick-link:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 3px 10px
-    rgba(0,0,0,.10);
+  border: 1px solid #e0e0e0;
+
+  border-radius: 8px;
+
+  background: #fff;
+
+  text-decoration: none;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  gap: 5px;
 }
 
 .quick-icon {
   width: 32px;
   height: 32px;
+
   border-radius: 50%;
+
   display: flex;
+
   align-items: center;
   justify-content: center;
+
   font-size: 17px;
+
   font-weight: 900;
 }
 
 .quick-name {
   font-size: 10px;
+
   font-weight: 800;
+
   color: #333;
 }
 
 .google-icon {
   background: #fff;
+
   border: 1px solid #ddd;
+
   color: #4285f4;
 }
 
 .facebook-icon {
   background: #1877f2;
+
   color: #fff;
 }
 
 .youtube-icon {
-  background: #ff0000;
+  background: #f00;
+
   color: #fff;
+
   border-radius: 8px;
 }
 
 .whatsapp-icon {
   background: #25d366;
+
   color: #fff;
 }
 
 .instagram-icon {
   color: #fff;
+
   background:
     linear-gradient(
       135deg,
@@ -360,11 +639,15 @@ header {
 
 .tiktok-icon {
   background: #111;
+
   color: #fff;
 }
 
 
 /* =========================================
+   FIM DA PARTE 1
+========================================= */
+  /* =========================================
    RESULTADOS DA PESQUISA
 ========================================= */
 
@@ -408,15 +691,16 @@ header {
 }
 
 .search-result-placeholder {
-  background:
-    linear-gradient(
-      135deg,
-      #111,
-      #345b29
-    );
+  background: linear-gradient(
+    135deg,
+    #111,
+    #345b29
+  );
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   color: #fff;
   font-size: 25px;
 }
@@ -448,7 +732,444 @@ header {
   text-align: center;
   color: #777;
 }
-  <style>
+
+
+/* =========================================
+   NOTIFICAÇÕES
+========================================= */
+
+.notifications-panel {
+  display: none;
+
+  position: fixed;
+
+  top: 60px;
+  right: 12px;
+
+  width: min(360px, calc(100vw - 24px));
+
+  max-height: 70vh;
+
+  overflow-y: auto;
+
+  background: #fff;
+
+  border: 1px solid #ddd;
+
+  border-radius: 10px;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.20);
+
+  z-index: 10000;
+}
+
+.notifications-panel.show {
+  display: block;
+}
+
+.notifications-header {
+  padding: 14px;
+
+  border-bottom: 1px solid #ddd;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+}
+
+.notifications-header strong {
+  font-size: 15px;
+}
+
+.notifications-close {
+  border: 0;
+
+  background: transparent;
+
+  font-size: 22px;
+
+  cursor: pointer;
+}
+
+.notification-item {
+  padding: 13px;
+
+  border-bottom: 1px solid #eee;
+
+  cursor: pointer;
+}
+
+.notification-item:hover {
+  background: #f7f7f7;
+}
+
+.notification-item strong {
+  display: block;
+
+  font-size: 13px;
+
+  margin-bottom: 4px;
+}
+
+.notification-item small {
+  color: #777;
+
+  font-size: 10px;
+}
+
+.notifications-empty {
+  padding: 25px 15px;
+
+  text-align: center;
+
+  color: #777;
+
+  font-size: 13px;
+}
+
+
+/* =========================================
+   CONTEÚDO PRINCIPAL
+========================================= */
+
+main {
+  max-width: 1200px;
+
+  margin: auto;
+
+  padding: 20px 12px 50px;
+}
+
+
+/* =========================================
+   PUBLICIDADE
+========================================= */
+
+.advertising {
+  min-height: 90px;
+
+  margin: 0 0 20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #101010,
+      #182719,
+      #101010
+    );
+
+  border-radius: 5px;
+
+  color: #fff;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  text-align: center;
+
+  padding: 15px;
+}
+
+.advertising strong {
+  display: block;
+
+  color: #45c226;
+
+  font-size: 25px;
+
+  margin-bottom: 5px;
+}
+
+
+/* =========================================
+   DESTAQUE + ÚLTIMAS
+========================================= */
+
+.hero-layout {
+  display: grid;
+
+  grid-template-columns:
+    2fr 1fr;
+
+  gap: 20px;
+
+  margin-bottom: 25px;
+}
+
+
+/* =========================================
+   DESTAQUE
+========================================= */
+
+.hero {
+  min-height: 430px;
+
+  border-radius: 5px;
+
+  overflow: hidden;
+
+  position: relative;
+
+  background: #111;
+
+  color: #fff;
+}
+
+.hero-image-link {
+  display: block;
+
+  width: 100%;
+  height: 430px;
+
+  text-decoration: none;
+}
+
+.hero-image {
+  width: 100%;
+  height: 430px;
+
+  object-fit: cover;
+
+  display: block;
+}
+
+.hero-no-image {
+  width: 100%;
+  height: 430px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #111,
+      #345b29
+    );
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 70px;
+}
+
+.hero-overlay {
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  padding: 25px;
+
+  padding-top: 100px;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0,0,0,.92)
+    );
+
+  z-index: 2;
+}
+
+.badge {
+  display: inline-block;
+
+  background: #45c226;
+
+  color: #fff;
+
+  padding: 6px 9px;
+
+  font-size: 11px;
+
+  font-weight: 800;
+
+  border-radius: 2px;
+
+  margin-bottom: 8px;
+}
+
+.hero h1 {
+  font-size: 34px;
+
+  line-height: 1.08;
+
+  margin: 5px 0 10px;
+}
+
+.hero h1 a {
+  color: #fff;
+
+  text-decoration: none;
+}
+
+.hero-text-link {
+  color: #eee;
+
+  text-decoration: none;
+
+  display: block;
+}
+
+.hero p {
+  margin: 0;
+
+  color: #eee;
+
+  font-size: 15px;
+
+  line-height: 1.45;
+}
+
+.hero-date {
+  margin-top: 12px;
+
+  font-size: 12px;
+
+  color: #ddd;
+}
+
+
+/* =========================================
+   ÚLTIMAS NOTÍCIAS
+========================================= */
+
+.latest {
+  background: #fff;
+
+  padding: 15px;
+
+  border-top: 3px solid #45c226;
+
+  border-radius: 3px;
+}
+
+.section-heading {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-bottom: 2px solid #ddd;
+
+  margin-bottom: 12px;
+
+  padding-bottom: 9px;
+}
+
+.section-heading h2 {
+  font-size: 18px;
+
+  margin: 0;
+
+  text-transform: uppercase;
+}
+
+.section-heading a {
+  color: #45a52c;
+
+  text-decoration: none;
+
+  font-size: 11px;
+
+  font-weight: 900;
+
+  white-space: nowrap;
+}
+
+.latest-item {
+  display: grid;
+
+  grid-template-columns:
+    125px 1fr;
+
+  gap: 12px;
+
+  padding: 10px 0;
+
+  border-bottom: 1px solid #ddd;
+}
+
+.latest-item:last-child {
+  border-bottom: 0;
+}
+
+.latest-image,
+.latest-placeholder {
+  width: 125px;
+  height: 82px;
+
+  min-width: 125px;
+  min-height: 82px;
+
+  border-radius: 3px;
+
+  object-fit: cover;
+
+  background: #ddd;
+
+  display: block;
+}
+
+.latest-image-link {
+  display: block;
+
+  text-decoration: none;
+}
+
+.latest-placeholder {
+  background: #333;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: #fff;
+
+  font-size: 25px;
+}
+
+.latest h3 {
+  margin: 0;
+
+  font-size: 14px;
+
+  line-height: 1.3;
+}
+
+.latest h3 a {
+  text-decoration: none;
+
+  color: inherit;
+}
+
+.latest h3 a:hover {
+  color: #45a52c;
+}
+
+.latest small {
+  display: block;
+
+  margin-top: 8px;
+
+  color: #777;
+
+  font-size: 11px;
+}
+
 
 /* =========================================
    CATEGORIAS
@@ -456,725 +1177,78 @@ header {
 
 .category-section {
   background: #fff;
+
   padding: 14px;
+
   margin-bottom: 20px;
+
   border-radius: 4px;
 }
 
 .category-title {
   display: flex;
+
   align-items: center;
+
   justify-content: space-between;
+
   gap: 10px;
+
   border-left: 4px solid #45c226;
+
   border-bottom: 2px solid #ddd;
+
   padding: 5px 0 8px 8px;
+
   margin-bottom: 15px;
 }
 
 .category-title h2 {
   margin: 0;
+
   font-size: 18px;
+
   text-transform: uppercase;
 }
 
 .category-title a {
   color: #45a52c;
+
   text-decoration: none;
+
   font-size: 11px;
+
   font-weight: 900;
+
   white-space: nowrap;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
   gap: 15px;
 }
 
 
 /* =========================================
-   CARTÕES DE NOTÍCIAS
+   FIM DA PARTE 2
 ========================================= */
-
-.news-card {
-  border: 1px solid #ddd;
-  background: #fff;
-  overflow: hidden;
-  border-radius: 4px;
-}
-
-.news-card-image-link {
-  display: block;
-  text-decoration: none;
-}
-
-.news-card-image {
-  width: 100%;
-  height: 180px;
-  object-fit: cover;
-  display: block;
-  background: #222;
-}
-
-.news-card-placeholder {
-  height: 180px;
-  background: linear-gradient(
-    135deg,
-    #111,
-    #345b29
-  );
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 45px;
-  color: #fff;
-}
-
-.news-card-content {
-  padding: 12px;
-}
-
-.news-category {
-  display: inline-block;
-  color: #45a52c;
-  font-size: 10px;
-  font-weight: 900;
-  text-transform: uppercase;
-  margin-bottom: 6px;
-}
-
-.news-card h3 {
-  font-size: 17px;
-  line-height: 1.25;
-  margin: 0 0 8px;
-}
-
-.news-card h3 a {
-  text-decoration: none;
-  color: inherit;
-}
-
-.news-card h3 a:hover {
-  color: #45a52c;
-}
-
-.news-card p {
-  color: #555;
-  font-size: 13px;
-  line-height: 1.45;
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.read-more {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 9px 12px;
-  background: #45c226;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 3px;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.read-more:hover {
-  background: #369c20;
-}
-
-
-/* =========================================
-   VISUALIZADOR DE IMAGEM
-========================================= */
-
-.image-viewer {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,.92);
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.image-viewer.show {
-  display: flex;
-}
-
-.image-viewer img {
-  max-width: 90vw;
-  max-height: 85vh;
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  border-radius: 4px;
-  box-shadow: 0 5px 30px rgba(0,0,0,.5);
-}
-
-.image-viewer-close {
-  position: absolute;
-  top: 15px;
-  right: 18px;
-  width: 42px;
-  height: 42px;
-  border: 0;
-  border-radius: 50%;
-  background: rgba(255,255,255,.15);
-  color: #fff;
-  font-size: 30px;
-  line-height: 40px;
-  cursor: pointer;
-}
-
-.image-viewer-close:hover {
-  background: #45c226;
-}
-
-
-/* =========================================
-   MENSAGENS
-========================================= */
-
-.loading {
-  padding: 20px;
-  color: #777;
-  text-align: center;
-}
-
-.error-message {
-  padding: 20px;
-  color: #b00020;
-  background: #fff1f1;
-  border-radius: 4px;
-  text-align: center;
-}
-
-
-/* =========================================
-   RODAPÉ
-========================================= */
-
-footer {
-  background: #111;
-  color: #fff;
-  padding: 35px 15px 15px;
-}
-
-.footer-grid {
-  max-width: 1200px;
-  margin: auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1fr;
-  gap: 30px;
-}
-
-.footer-logo {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 25px;
-  font-weight: 900;
-}
-
-.footer-logo-globe {
-  font-size: 24px;
-}
-
-.footer-logo span {
-  color: #45c226;
-}
-
-footer p {
-  color: #ccc;
-  line-height: 1.5;
-  font-size: 13px;
-}
-
-footer h3 {
-  font-size: 14px;
-  text-transform: uppercase;
-  border-bottom: 1px solid #444;
-  padding-bottom: 8px;
-}
-
-footer a {
-  display: block;
-  color: #ccc;
-  text-decoration: none;
-  font-size: 13px;
-  margin: 9px 0;
-}
-
-footer a:hover {
-  color: #45c226;
-}
-
-.copyright {
-  max-width: 1200px;
-  margin: 30px auto 0;
-  padding-top: 15px;
-  border-top: 1px solid #333;
-  color: #aaa;
-  font-size: 11px;
-}
-
-
-/* =========================================
-   RESPONSIVO
-========================================= */
-
-@media (max-width: 900px) {
-
-  .header-main {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .advertising-top {
-    max-width: none;
-  }
-
-  .hero-layout {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .quick-links {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-}
-
-
-@media (max-width: 600px) {
-
-  .top-info-inner {
-    justify-content: center;
-  }
-
-  .top-links {
-    display: none;
-  }
-
-  .logo {
-    font-size: 31px;
-    justify-content: center;
-    letter-spacing: -1.5px;
-  }
-
-  .logo-globe {
-    font-size: 29px;
-  }
-
-  .tagline {
-    text-align: center;
-  }
-
-  .advertising-top {
-    min-height: 65px;
-  }
-
-  .advertising-top strong {
-    font-size: 20px;
-  }
-
-  .nav a {
-    padding: 13px 14px;
-    font-size: 11px;
-  }
-
-  .search-area {
-    padding: 14px 8px;
-  }
-
-  .search-title {
-    font-size: 16px;
-  }
-
-  .search-form {
-    gap: 6px;
-  }
-
-  .search-input {
-    height: 44px;
-    font-size: 14px;
-  }
-
-  .search-button {
-    padding: 0 14px;
-  }
-
-  .quick-links {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-  }
-
-  .quick-link {
-    min-height: 62px;
-  }
-
-  .quick-icon {
-    width: 29px;
-    height: 29px;
-    font-size: 15px;
-  }
-
-  .quick-name {
-    font-size: 9px;
-  }
-
-  main {
-    padding: 12px 8px 35px;
-  }
-
-  .hero {
-    min-height: 380px;
-  }
-
-  .hero-image,
-  .hero-image-link,
-  .hero-no-image {
-    height: 380px;
-  }
-
-  .hero h1 {
-    font-size: 27px;
-  }
-
-  .hero-overlay {
-    padding: 18px;
-    padding-top: 90px;
-  }
-
-  .latest-item {
-    grid-template-columns: 100px 1fr;
-  }
-
-  .latest-image,
-  .latest-placeholder {
-    width: 100px;
-    min-width: 100px;
-    height: 70px;
-    min-height: 70px;
-  }
-
-  .category-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .footer-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .search-result-item {
-    grid-template-columns: 90px 1fr;
-  }
-
-  .search-result-image,
-  .search-result-placeholder {
-    width: 90px;
-    height: 65px;
-  }
-
-}
-
-</style>
-
-</head>
-
-<body>
-
-
-<!-- =========================================
-     TOPO
-========================================= -->
-
-<div class="top-info">
-
-  <div class="top-info-inner">
-
-    <div>
-      🌍 AfricanMundo — Informação que liga África ao mundo
-    </div>
-
-    <div class="top-links">
-
-      <a href="#">Quem Somos</a>
-      <a href="#">Anuncie</a>
-      <a href="#">Contacto</a>
-
-    </div>
-
-  </div>
-
-</div>
-
-
-<!-- =========================================
-     CABEÇALHO
-========================================= -->
-
-<header>
-
-  <div class="header-main">
-
-    <div>
-
-      <div class="logo">
-
-        <span class="logo-globe">🌍</span>
-
-        <span class="logo-african">
-          African
-        </span>
-
-        <span class="logo-mundo">
-          Mundo
-        </span>
-
-      </div>
-
-      <div class="tagline">
-        A informação que liga África ao mundo
-      </div>
-
-    </div>
-
-
-    <div class="advertising-top">
-
-      <div>
-
-        <strong>ANUNCIE AQUI</strong>
-
-        <small>
-          Alcance milhares de pessoas em toda África
-        </small>
-
-      </div>
-
-    </div>
-
-  </div>
-
-
-  <nav class="nav">
-
-    <div class="nav-inner">
-
-      <a href="index.html" class="active">
-        🏠 INÍCIO
-      </a>
-
-      <a href="categoria.html?categoria=noticias">
-        NOTÍCIAS
-      </a>
-
-      <a href="categoria.html?categoria=futebol">
-        ⚽ FUTEBOL
-      </a>
-
-      <a href="categoria.html?categoria=africa">
-        🌍 ÁFRICA
-      </a>
-
-      <a href="categoria.html?categoria=mocambique">
-        🇲🇿 MOÇAMBIQUE
-      </a>
-
-      <a href="categoria.html?categoria=negocios">
-        💼 NEGÓCIOS
-      </a>
-
-      <a href="categoria.html?categoria=entretenimento">
-        🎬 ENTRETENIMENTO
-      </a>
-
-      <a href="categoria.html?categoria=desporto">
-        🏆 DESPORTO
-      </a>
-
-    </div>
-
-  </nav>
-
-</header>
-
-
-<!-- =========================================
-     PESQUISA
-========================================= -->
-
-<section class="search-area">
-
-  <div class="search-box">
-
-    <h2 class="search-title">
-      🔎 Pesquisar no AfricanMundo
-    </h2>
-
-    <form
-      class="search-form"
-      id="searchForm"
-    >
-
-      <input
-        type="search"
-        id="searchInput"
-        class="search-input"
-        placeholder="Pesquisar notícias..."
-        autocomplete="off"
-      >
-
-      <button
-        type="submit"
-        class="search-button"
-      >
-        PESQUISAR
-      </button>
-
-    </form>
-
-
-    <div class="quick-links">
-
-      <a
-        class="quick-link"
-        href="https://www.google.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon google-icon">G</span>
-        <span class="quick-name">Google</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.facebook.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon facebook-icon">f</span>
-        <span class="quick-name">Facebook</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.youtube.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon youtube-icon">▶</span>
-        <span class="quick-name">YouTube</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://web.whatsapp.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon whatsapp-icon">☎</span>
-        <span class="quick-name">WhatsApp</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.instagram.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon instagram-icon">◎</span>
-        <span class="quick-name">Instagram</span>
-      </a>
-
-      <a
-        class="quick-link"
-        href="https://www.tiktok.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        <span class="quick-icon tiktok-icon">♪</span>
-        <span class="quick-name">TikTok</span>
-      </a>
-
-    </div>
-
-
-    <div
-      id="searchResults"
-      class="search-results"
-    >
-
-      <h3 class="search-results-title">
-        Resultados da pesquisa
-      </h3>
-
-      <div id="searchResultsList"></div>
-
-    </div>
-
-  </div>
-
-</section>
-<!-- =========================================
-     VISUALIZADOR DE IMAGEM
-========================================= -->
-
-<div
-  id="imageViewer"
-  class="image-viewer"
-  onclick="fecharImagemGrande(event)"
->
-
-  <button
-    type="button"
-    class="image-viewer-close"
-    onclick="fecharImagemGrande(event)"
-    aria-label="Fechar imagem"
-  >
-    ×
-  </button>
-
-  <img
-    id="imageViewerImg"
-    src=""
-    alt="Imagem ampliada"
-  >
-
-</div>
-
-
-<!-- =========================================
+  <!-- =========================================
      CONTEÚDO PRINCIPAL
 ========================================= -->
 
 <main>
 
   <!-- PUBLICIDADE -->
-
   <div class="advertising">
-
     <div>
-
-      <strong>
-        ANUNCIE AQUI
-      </strong>
-
+      <strong>ANUNCIE AQUI</strong>
       A sua marca em destaque em todo o continente africano.
-
     </div>
-
   </div>
-
 
   <!-- =======================================
        DESTAQUE + ÚLTIMAS NOTÍCIAS
@@ -1182,13 +1256,8 @@ footer a:hover {
 
   <div class="hero-layout">
 
-
     <!-- DESTAQUE -->
-
-    <div
-      id="destaque"
-      class="hero"
-    >
+    <div id="destaque" class="hero">
 
       <div class="hero-no-image">
         🌍
@@ -1196,9 +1265,7 @@ footer a:hover {
 
     </div>
 
-
     <!-- ÚLTIMAS NOTÍCIAS -->
-
     <aside class="latest">
 
       <div class="section-heading">
@@ -1213,11 +1280,10 @@ footer a:hover {
 
       </div>
 
-
       <div id="ultimas">
 
         <p class="loading">
-          🔄 Carregando...
+          🔄 Carregando notícias...
         </p>
 
       </div>
@@ -1244,7 +1310,6 @@ footer a:hover {
       </a>
 
     </div>
-
 
     <div
       id="futebol"
@@ -1281,7 +1346,6 @@ footer a:hover {
 
     </div>
 
-
     <div
       id="mocambique"
       class="category-grid"
@@ -1316,7 +1380,6 @@ footer a:hover {
       </a>
 
     </div>
-
 
     <div
       id="africa"
@@ -1353,7 +1416,6 @@ footer a:hover {
 
     </div>
 
-
     <div
       id="negocios"
       class="category-grid"
@@ -1369,9 +1431,7 @@ footer a:hover {
     </div>
 
   </section>
-
-
-  <!-- =======================================
+    <!-- =======================================
        ENTRETENIMENTO
   ======================================== -->
 
@@ -1388,7 +1448,6 @@ footer a:hover {
       </a>
 
     </div>
-
 
     <div
       id="entretenimento"
@@ -1425,7 +1484,6 @@ footer a:hover {
 
     </div>
 
-
     <div
       id="desporto"
       class="category-grid"
@@ -1442,6 +1500,25 @@ footer a:hover {
 
   </section>
 
+
+  <!-- =======================================
+       MENSAGEM DE ATUALIZAÇÃO
+  ======================================== -->
+
+  <div
+    id="statusNoticias"
+    style="
+      display:none;
+      margin:20px 0;
+      padding:14px;
+      background:#fff;
+      border-left:4px solid #45c226;
+      border-radius:4px;
+      color:#555;
+      font-size:13px;
+    "
+  ></div>
+
 </main>
 
 
@@ -1452,7 +1529,6 @@ footer a:hover {
 <footer>
 
   <div class="footer-grid">
-
 
     <!-- SOBRE -->
 
@@ -1474,11 +1550,9 @@ footer a:hover {
 
       </div>
 
-
       <p>
         A informação que liga África ao mundo.
       </p>
-
 
       <p>
         Notícias de Moçambique, África,
@@ -1560,7 +1634,6 @@ footer a:hover {
       </a>
 
     </div>
-
 
   </div>
 
@@ -1652,7 +1725,6 @@ function esc(valor) {
         ">": "&gt;",
         '"': "&quot;",
         "'": "&#039;"
-
       }[m];
 
     }
@@ -1670,7 +1742,10 @@ function normalizarCategoria(valor) {
   return String(valor ?? "")
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
+    .replace(
+      /[\u0300-\u036f]/g,
+      ""
+    )
     .trim();
 
 }
@@ -1718,9 +1793,7 @@ function obterLinkNoticia(id) {
     id === "" ||
     String(id) === "null"
   ) {
-
     return "#";
-
   }
 
   return (
@@ -1735,7 +1808,10 @@ function obterLinkNoticia(id) {
    MENSAGEM
 ========================================= */
 
-function mostrarMensagem(elemento, mensagem) {
+function mostrarMensagem(
+  elemento,
+  mensagem
+) {
 
   const alvo =
     document.getElementById(elemento);
@@ -1757,7 +1833,10 @@ function mostrarMensagem(elemento, mensagem) {
    ABRIR IMAGEM GRANDE
 ========================================= */
 
-function abrirImagemGrande(url, evento) {
+function abrirImagemGrande(
+  url,
+  evento
+) {
 
   if (evento) {
     evento.preventDefault();
@@ -1765,12 +1844,20 @@ function abrirImagemGrande(url, evento) {
   }
 
   const viewer =
-    document.getElementById("imageViewer");
+    document.getElementById(
+      "imageViewer"
+    );
 
   const viewerImg =
-    document.getElementById("imageViewerImg");
+    document.getElementById(
+      "imageViewerImg"
+    );
 
-  if (!viewer || !viewerImg || !url) {
+  if (
+    !viewer ||
+    !viewerImg ||
+    !url
+  ) {
     return;
   }
 
@@ -1778,7 +1865,8 @@ function abrirImagemGrande(url, evento) {
 
   viewer.classList.add("show");
 
-  document.body.style.overflow = "hidden";
+  document.body.style.overflow =
+    "hidden";
 
 }
 
@@ -1792,18 +1880,21 @@ function fecharImagemGrande(evento) {
   if (
     evento &&
     evento.target &&
-    evento.target.id === "imageViewerImg"
+    evento.target.id ===
+      "imageViewerImg"
   ) {
-
     return;
-
   }
 
   const viewer =
-    document.getElementById("imageViewer");
+    document.getElementById(
+      "imageViewer"
+    );
 
   const viewerImg =
-    document.getElementById("imageViewerImg");
+    document.getElementById(
+      "imageViewerImg"
+    );
 
   if (viewer) {
     viewer.classList.remove("show");
@@ -1840,7 +1931,8 @@ document.addEventListener(
 
 function criarCard(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
     noticia.titulo ||
@@ -2000,14 +2092,17 @@ function criarCard(noticia) {
     </article>
   `;
 
-  }
-  /* =========================================
+}
+
+
+/* =========================================
    CRIAR ÚLTIMA NOTÍCIA
 ========================================= */
 
 function criarUltima(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
     noticia.titulo ||
@@ -2111,16 +2206,15 @@ function criarUltima(noticia) {
     </article>
   `;
 
-}
-
-
-/* =========================================
+  }
+          /* =========================================
    CRIAR DESTAQUE
 ========================================= */
 
 function criarDestaque(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
     noticia.titulo ||
@@ -2153,7 +2247,7 @@ function criarDestaque(noticia) {
 
   const data =
     formatarData(
-      noticia.data ||
+      noticia.data ??
       noticia.created_at
     );
 
@@ -2234,11 +2328,9 @@ function criarDestaque(noticia) {
                 href="${link}"
                 class="hero-text-link"
               >
-
                 <p>
                   ${esc(texto)}
                 </p>
-
               </a>
             `
             : ""
@@ -2270,12 +2362,13 @@ function criarDestaque(noticia) {
 
 
 /* =========================================
-   CRIAR RESULTADO DE PESQUISA
+   CRIAR RESULTADO DA PESQUISA
 ========================================= */
 
 function criarResultadoPesquisa(noticia) {
 
-  const id = noticia.id;
+  const id =
+    noticia.id;
 
   const titulo =
     noticia.titulo ||
@@ -2388,13 +2481,19 @@ function criarResultadoPesquisa(noticia) {
 function pesquisarNoticias() {
 
   const input =
-    document.getElementById("searchInput");
+    document.getElementById(
+      "searchInput"
+    );
 
   const results =
-    document.getElementById("searchResults");
+    document.getElementById(
+      "searchResults"
+    );
 
   const resultsList =
-    document.getElementById("searchResultsList");
+    document.getElementById(
+      "searchResultsList"
+    );
 
 
   if (
@@ -2419,6 +2518,7 @@ function pesquisarNoticias() {
     resultsList.innerHTML = "";
 
     return;
+
   }
 
 
@@ -2469,12 +2569,15 @@ function pesquisarNoticias() {
 
     resultsList.innerHTML = `
       <div class="search-empty">
+
         🔎 Nenhuma notícia encontrada
         para "<strong>${esc(input.value)}</strong>".
+
       </div>
     `;
 
     return;
+
   }
 
 
@@ -2482,7 +2585,9 @@ function pesquisarNoticias() {
     encontrados
       .map(
         function(noticia) {
-          return criarResultadoPesquisa(noticia);
+          return criarResultadoPesquisa(
+            noticia
+          );
         }
       )
       .join("");
@@ -2495,7 +2600,9 @@ function pesquisarNoticias() {
 ========================================= */
 
 const searchForm =
-  document.getElementById("searchForm");
+  document.getElementById(
+    "searchForm"
+  );
 
 
 if (searchForm) {
@@ -2519,7 +2626,9 @@ if (searchForm) {
 ========================================= */
 
 const searchInput =
-  document.getElementById("searchInput");
+  document.getElementById(
+    "searchInput"
+  );
 
 
 if (searchInput) {
@@ -2528,384 +2637,16 @@ if (searchInput) {
     "input",
     function() {
 
-      if (this.value.trim() === "") {
-
-        const results =
-          document.getElementById("searchResults");
-
-        if (results) {
-          results.classList.remove("show");
-        }
-
-      }
-
-    }
-  );
-
-  }
-      /* =========================================
-       CARREGAR NOTÍCIAS DO SUPABASE
-    ========================================= */
-
-    async function carregarNoticias() {
-
-      if (ultimas) {
-        ultimas.innerHTML = `
-          <p class="loading">
-            🔄 Carregando notícias...
-          </p>
-        `;
-      }
-
-      Object.keys(categorias).forEach(function(nome) {
-
-        const elemento = categorias[nome];
-
-        if (elemento) {
-          elemento.innerHTML = `
-            <p
-              class="loading"
-              style="grid-column:1/-1;"
-            >
-              🔄 Carregando...
-            </p>
-          `;
-        }
-
-      });
-
-      try {
-
-        const { data, error } =
-          await supabaseClient
-            .from("noticias")
-            .select("*")
-            .order("id", {
-              ascending: false
-            });
-
-        if (error) {
-
-          console.error(
-            "ERRO SUPABASE:",
-            error
-          );
-
-          if (ultimas) {
-            ultimas.innerHTML = `
-              <p class="error-message">
-                ❌ Erro ao carregar as notícias.
-                <br>
-                <small>
-                  ${esc(error.message || "Erro desconhecido")}
-                </small>
-              </p>
-            `;
-          }
-
-          return;
-        }
-
-        const noticias =
-          Array.isArray(data)
-            ? data
-            : [];
-
-        todasNoticias = noticias;
-
-        console.log(
-          "AfricanMundo — notícias recebidas:",
-          noticias
-        );
-
-
-        /* =====================================
-           NENHUMA NOTÍCIA
-        ===================================== */
-
-        if (noticias.length === 0) {
-
-          if (ultimas) {
-            ultimas.innerHTML = `
-              <p class="loading">
-                Ainda não existem notícias publicadas.
-              </p>
-            `;
-          }
-
-          Object.keys(categorias).forEach(
-            function(nome) {
-
-              const elemento =
-                categorias[nome];
-
-              if (elemento) {
-
-                elemento.innerHTML = `
-                  <p
-                    class="loading"
-                    style="grid-column:1/-1;"
-                  >
-                    Ainda não existem notícias
-                    nesta categoria.
-                  </p>
-                `;
-
-              }
-
-            }
-          );
-
-          return;
-        }
-
-
-        /* =====================================
-           DESTAQUE PRINCIPAL
-        ===================================== */
-
-        const principal =
-          noticias[0];
-
-        if (destaque) {
-
-          destaque.innerHTML =
-            criarDestaque(
-              principal
-            );
-
-        }
-
-
-        /* =====================================
-           ÚLTIMAS NOTÍCIAS
-        ===================================== */
-
-        if (ultimas) {
-
-          ultimas.innerHTML = "";
-
-          noticias
-            .slice(0, 5)
-            .forEach(
-              function(noticia) {
-
-                ultimas.innerHTML +=
-                  criarUltima(
-                    noticia
-                  );
-
-              }
-            );
-
-        }
-
-
-        /* =====================================
-           LIMPAR CATEGORIAS
-        ===================================== */
-
-        Object.keys(categorias).forEach(
-          function(nome) {
-
-            const elemento =
-              categorias[nome];
-
-            if (elemento) {
-              elemento.innerHTML = "";
-            }
-
-          }
-        );
-
-
-        /* =====================================
-           DISTRIBUIR NOTÍCIAS
-        ===================================== */
-
-        noticias.forEach(
-          function(noticia) {
-
-            const categoria =
-              normalizarCategoria(
-                noticia.categoria ??
-                noticia.category ??
-                noticia.cat ??
-                ""
-              );
-
-
-            if (
-              categoria === "futebol" &&
-              categorias.futebol
-            ) {
-
-              categorias.futebol.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-
-            else if (
-              categoria === "mocambique" &&
-              categorias.mocambique
-            ) {
-
-              categorias.mocambique.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-
-            else if (
-              categoria === "africa" &&
-              categorias.africa
-            ) {
-
-              categorias.africa.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-
-            else if (
-              categoria === "negocios" &&
-              categorias.negocios
-            ) {
-
-              categorias.negocios.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-
-            else if (
-              categoria === "entretenimento" &&
-              categorias.entretenimento
-            ) {
-
-              categorias.entretenimento.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-
-            else if (
-              categoria === "desporto" &&
-              categorias.desporto
-            ) {
-
-              categorias.desporto.innerHTML +=
-                criarCard(noticia);
-
-            }
-
-          }
-        );
-
-
-        /* =====================================
-           VERIFICAR CATEGORIAS VAZIAS
-        ===================================== */
-
-        Object.keys(categorias).forEach(
-          function(nome) {
-
-            const elemento =
-              categorias[nome];
-
-            if (
-              elemento &&
-              elemento.innerHTML.trim() === ""
-            ) {
-
-              elemento.innerHTML = `
-                <p
-                  class="loading"
-                  style="grid-column:1/-1;"
-                >
-                  Ainda não existem notícias
-                  nesta categoria.
-                </p>
-              `;
-
-            }
-
-          }
-        );
-
-
-      } catch (erro) {
-
-        console.error(
-          "ERRO INESPERADO:",
-          erro
-        );
-
-        if (ultimas) {
-
-          ultimas.innerHTML = `
-            <p class="error-message">
-              ❌ Ocorreu um erro ao carregar
-              as notícias.
-            </p>
-          `;
-
-        }
-
-      }
-
-  }
-      /* =========================================
-       PESQUISA AO PRESSIONAR ENTER
-    ========================================= */
-
-    document.addEventListener(
-      "keydown",
-      function(event) {
-
-        if (
-          event.key === "Enter" &&
-          document.activeElement &&
-          document.activeElement.id ===
-            "searchInput"
-        ) {
-
-          event.preventDefault();
-
-          pesquisarNoticias();
-
-        }
-
-      }
-    );
-
-
-    /* =========================================
-       FECHAR RESULTADOS DA PESQUISA
-    ========================================= */
-
-    document.addEventListener(
-      "click",
-      function(event) {
-
-        const searchBox =
-          document.querySelector(
-            ".search-area"
-          );
+      if (
+        this.value.trim() === ""
+      ) {
 
         const results =
           document.getElementById(
             "searchResults"
           );
 
-        if (
-          searchBox &&
-          results &&
-          !searchBox.contains(
-            event.target
-          )
-        ) {
+        if (results) {
 
           results.classList.remove(
             "show"
@@ -2914,67 +2655,514 @@ if (searchInput) {
         }
 
       }
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   INÍCIO DO CARREGAMENTO
+========================================= */
+
+async function carregarNoticias() {
+
+  if (ultimas) {
+
+    ultimas.innerHTML = `
+      <p class="loading">
+        🔄 Carregando notícias...
+      </p>
+    `;
+
+  }
+
+
+  Object.keys(categorias).forEach(
+    function(nome) {
+
+      const elemento =
+        categorias[nome];
+
+      if (elemento) {
+
+        elemento.innerHTML = `
+          <p
+            class="loading"
+            style="grid-column:1/-1;"
+          >
+            🔄 Carregando...
+          </p>
+        `;
+
+      }
+
+    }
+  );
+
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro Supabase:",
+        resultado.error
+      );
+
+      mostrarMensagem(
+        "ultimas",
+        "Erro ao carregar as notícias."
+      );
+
+      return;
+
+    }
+
+
+    const noticias =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+
+    todasNoticias =
+      noticias;
+
+
+    console.log(
+      "AfricanMundo — notícias recebidas:",
+      noticias
     );
 
 
-    /* =========================================
-       INICIAR AFRICANMUNDO
-    ========================================= */
+    if (noticias.length === 0) {
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      function() {
+      mostrarMensagem(
+        "ultimas",
+        "Ainda não existem notícias publicadas."
+      );
 
-        carregarNoticias();
+      return;
+
+    }
+
+
+    /* =====================================
+       DESTAQUE PRINCIPAL
+    ===================================== */
+
+    const principal =
+      noticias[0];
+
+
+    if (destaque) {
+
+      destaque.innerHTML =
+        criarDestaque(
+          principal
+        );
+
+    }
+
+
+    /* =====================================
+       ÚLTIMAS NOTÍCIAS
+    ===================================== */
+
+    if (ultimas) {
+
+      ultimas.innerHTML = "";
+
+      noticias
+        .slice(0, 5)
+        .forEach(
+          function(noticia) {
+
+            ultimas.innerHTML +=
+              criarUltima(
+                noticia
+              );
+
+          }
+        );
+
+        }
+        /* =====================================
+       LIMPAR CATEGORIAS
+    ===================================== */
+
+    Object.keys(categorias).forEach(
+      function(nome) {
+
+        const elemento =
+          categorias[nome];
+
+        if (elemento) {
+          elemento.innerHTML = "";
+        }
 
       }
     );
 
-  </script>
+
+    /* =====================================
+       DISTRIBUIR AUTOMATICAMENTE
+       AS NOTÍCIAS POR CATEGORIA
+    ===================================== */
+
+    noticias.forEach(
+      function(noticia) {
+
+        const categoria =
+          normalizarCategoria(
+            noticia.categoria ??
+            noticia.category ??
+            noticia.cat ??
+            ""
+          );
 
 
-  <!-- =========================================
-       SERVICE WORKER / PWA
-  ========================================= -->
+        /* FUTEBOL */
 
-  <script>
+        if (
+          categoria === "futebol" &&
+          categorias.futebol
+        ) {
 
-    if (
-      "serviceWorker" in navigator
-    ) {
-
-      window.addEventListener(
-        "load",
-        function() {
-
-          navigator.serviceWorker
-            .register("./sw.js")
-            .then(
-              function() {
-
-                console.log(
-                  "AfricanMundo: aplicativo ativado."
-                );
-
-              }
-            )
-            .catch(
-              function(erro) {
-
-                console.error(
-                  "Erro ao ativar o aplicativo:",
-                  erro
-                );
-
-              }
-            );
+          categorias.futebol.innerHTML +=
+            criarCard(noticia);
 
         }
+
+
+        /* MOÇAMBIQUE */
+
+        else if (
+          categoria === "mocambique" &&
+          categorias.mocambique
+        ) {
+
+          categorias.mocambique.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        /* ÁFRICA */
+
+        else if (
+          categoria === "africa" &&
+          categorias.africa
+        ) {
+
+          categorias.africa.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        /* NEGÓCIOS */
+
+        else if (
+          categoria === "negocios" &&
+          categorias.negocios
+        ) {
+
+          categorias.negocios.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        /* ENTRETENIMENTO */
+
+        else if (
+          categoria === "entretenimento" &&
+          categorias.entretenimento
+        ) {
+
+          categorias.entretenimento.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+
+        /* DESPORTO */
+
+        else if (
+          categoria === "desporto" &&
+          categorias.desporto
+        ) {
+
+          categorias.desporto.innerHTML +=
+            criarCard(noticia);
+
+        }
+
+      }
+    );
+
+
+    /* =====================================
+       VERIFICAR CATEGORIAS VAZIAS
+    ===================================== */
+
+    Object.keys(categorias).forEach(
+      function(nome) {
+
+        const elemento =
+          categorias[nome];
+
+
+        if (
+          elemento &&
+          elemento.innerHTML.trim() === ""
+        ) {
+
+          elemento.innerHTML = `
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                text-align:center;
+                color:#777;
+              "
+            >
+              Ainda não existem notícias
+              nesta categoria.
+            </p>
+          `;
+
+        }
+
+      }
+    );
+
+
+    /* =====================================
+       ATUALIZAR STATUS
+    ===================================== */
+
+    const status =
+      document.getElementById(
+        "statusNoticias"
+      );
+
+    if (status) {
+
+      status.textContent =
+        "✓ Notícias atualizadas automaticamente.";
+
+      status.style.display =
+        "block";
+
+      setTimeout(
+        function() {
+
+          status.style.display =
+            "none";
+
+        },
+        3000
       );
 
     }
 
-  </script>
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro inesperado:",
+      erro
+    );
+
+
+    mostrarMensagem(
+      "ultimas",
+      "Ocorreu um erro ao carregar as notícias."
+    );
+
+
+    Object.keys(categorias).forEach(
+      function(nome) {
+
+        const elemento =
+          categorias[nome];
+
+
+        if (elemento) {
+
+          elemento.innerHTML = `
+            <p
+              style="
+                grid-column:1/-1;
+                padding:20px;
+                text-align:center;
+                color:#c00;
+              "
+            >
+              Não foi possível carregar
+              esta categoria.
+            </p>
+          `;
+
+        }
+
+      }
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   PESQUISA POR ENTER
+========================================= */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter" &&
+      document.activeElement &&
+      document.activeElement.id ===
+        "searchInput"
+    ) {
+
+      event.preventDefault();
+
+      pesquisarNoticias();
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   FECHAR PESQUISA AO CLICAR FORA
+========================================= */
+
+document.addEventListener(
+  "click",
+  function(event) {
+
+    const searchBox =
+      document.querySelector(
+        ".search-area"
+      );
+
+    const results =
+      document.getElementById(
+        "searchResults"
+      );
+
+
+    if (
+      searchBox &&
+      results &&
+      !searchBox.contains(
+        event.target
+      )
+    ) {
+
+      results.classList.remove(
+        "show"
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   ATUALIZAÇÃO AUTOMÁTICA
+========================================= */
+
+setInterval(
+  function() {
+
+    carregarNoticias();
+
+  },
+  60000
+);
+
+
+/* =========================================
+   INICIAR
+========================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
+
+    carregarNoticias();
+
+  }
+);
+    /* =========================================
+   SERVICE WORKER / APLICATIVO
+========================================= */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener(
+    "load",
+    function() {
+
+      navigator.serviceWorker
+        .register("./sw.js")
+        .then(
+          function() {
+
+            console.log(
+              "AfricanMundo: aplicativo ativado."
+            );
+
+          }
+        )
+        .catch(
+          function(erro) {
+
+            console.error(
+              "AfricanMundo: erro ao ativar aplicativo:",
+              erro
+            );
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================
+   FINAL
+========================================= */
+
+</script>
 
 </body>
 
