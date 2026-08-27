@@ -762,16 +762,20 @@ document.getElementById("modal").addEventListener("click",function(e){
 
 
 /* ==========================================
-   NOTIFICAÇÕES
+   NOTIFICAÇÕES REAIS
 ========================================== */
 
 function abrirNotificacoes(){
 
-  abrirModal(
-    "🔔 Notificações",
-    `
+  const noticias = window.__noticias || [];
+
+  if(!noticias.length){
+
+    abrirModal(
+      "🔔 Notificações",
+      `
       <div style="
-      padding:15px;
+      padding:18px;
       background:var(--bg);
       border-radius:12px;
       text-align:center;
@@ -780,22 +784,116 @@ function abrirNotificacoes(){
         <div style="font-size:35px">🔔</div>
 
         <p style="margin-top:8px">
-          Não há novas notificações.
+          Ainda não há novas notícias.
         </p>
 
-        <small>
-          Quando houver novas notícias,
-          elas aparecerão aqui.
-        </small>
+      </div>
+      `
+    );
+
+    return;
+  }
+
+  const recentes = noticias.slice(0,8);
+
+  const lista = recentes.map(n => {
+
+    const titulo =
+      n.titulo ||
+      n.title ||
+      "Nova notícia";
+
+    const categoria =
+      n.categoria ||
+      "Notícias";
+
+    const imagem =
+      n.imagem ||
+      n.image ||
+      n.url_imagem ||
+      "";
+
+    return `
+      <div
+      onclick='abrirNoticia(${JSON.stringify(n).replace(/'/g,"&#39;")})'
+      style="
+      display:flex;
+      gap:10px;
+      padding:10px 0;
+      border-bottom:1px solid var(--border);
+      cursor:pointer;
+      text-align:left;">
+
+        ${
+          imagem
+          ?
+          `<img
+          src="${esc(imagem)}"
+          style="
+          width:65px;
+          height:55px;
+          object-fit:cover;
+          border-radius:8px;
+          flex-shrink:0;">`
+          :
+          `<div style="
+          width:65px;
+          height:55px;
+          display:grid;
+          place-items:center;
+          background:var(--card);
+          border-radius:8px;
+          flex-shrink:0;">
+          🌍
+          </div>`
+        }
+
+        <div>
+
+          <div style="
+          font-size:9px;
+          color:var(--p);
+          font-weight:900;
+          text-transform:uppercase;">
+          ${esc(categoria)}
+          </div>
+
+          <div style="
+          margin-top:3px;
+          font-size:12px;
+          font-weight:800;
+          line-height:1.3;">
+          ${esc(titulo)}
+          </div>
+
+        </div>
 
       </div>
+    `;
+
+  }).join("");
+
+  abrirModal(
+    "🔔 Últimas notícias",
+    `
+    <div style="
+    max-height:65vh;
+    overflow-y:auto;">
+
+      ${lista}
+
+    </div>
     `
   );
 
 }
 
+
 document.getElementById("notificationBtn")
-.addEventListener("click",abrirNotificacoes);
+.addEventListener(
+  "click",
+  abrirNotificacoes
+);
 
 
 /* ==========================================
