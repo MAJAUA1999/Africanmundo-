@@ -2058,53 +2058,10 @@ function abrirRedes(){
 
 
 /* ==========================================
-   INFORMAÇÕES DO SITE
-========================================== */
-
-function mostrarRedesNoRodape(){
-
- const footer=document.querySelector("footer");
-
- if(!footer)return;
-
- const div=document.createElement("div");
-
- div.style.cssText=`
- max-width:1100px;
- margin:20px auto 0;
- padding-top:18px;
- border-top:1px solid var(--border);
- text-align:center;
- `;
-
- div.innerHTML=`
-
- <button onclick="abrirRedes()" style="
- border:0;
- background:var(--bg);
- color:var(--txt);
- padding:11px 18px;
- border-radius:10px;
- font-weight:bold">
-
- 🌐 Siga o AfricanMundo
-
- </button>
-
- `;
-
- footer.appendChild(div);
-
-}
-
-
-/* ==========================================
    INICIALIZAÇÃO
 ========================================== */
 
 document.addEventListener("DOMContentLoaded",()=>{
-
- mostrarRedesNoRodape();
 
  carregarNoticias();
 
