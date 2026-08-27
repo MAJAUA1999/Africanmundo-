@@ -16,39 +16,121 @@ const supabaseClient =
 
 
 /* =========================================
-   LOGIN
+   LOGIN COM SUPABASE AUTH
 ========================================= */
 
-function login() {
+async function login() {
 
-  const u =
+  const email =
     document
       .getElementById("user")
       .value
       .trim();
 
-  const p =
+  const senha =
     document
       .getElementById("pass")
       .value;
 
-  if (
-    u === "admin" &&
-    p === "admin123"
-  ) {
 
-    sessionStorage.setItem(
-      "am_login",
-      "1"
-    );
-
-    show();
-
-  } else {
+  if (!email || !senha) {
 
     alert(
-      "Utilizador ou senha incorretos."
+      "Digite o email e a senha."
     );
+
+    return;
+
+  }
+
+
+  const botao =
+    document.querySelector(
+      "#loginBox .btn"
+    );
+
+
+  if (botao) {
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "A entrar...";
+
+  }
+
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .auth
+        .signInWithPassword({
+
+          email: email,
+
+          password: senha
+
+        });
+
+
+    if (error) {
+
+      console.error(
+        "Erro de login:",
+        error
+      );
+
+      alert(
+        "❌ Email ou senha incorretos."
+      );
+
+      return;
+
+    }
+
+
+    if (!data || !data.user) {
+
+      alert(
+        "❌ Não foi possível iniciar a sessão."
+      );
+
+      return;
+
+    }
+
+
+    await show();
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro inesperado:",
+      erro
+    );
+
+    alert(
+      "❌ Ocorreu um erro ao entrar."
+    );
+
+  }
+
+  finally {
+
+    if (botao) {
+
+      botao.disabled = false;
+
+      botao.textContent =
+        "Entrar";
+
+    }
 
   }
 
@@ -59,27 +141,78 @@ function login() {
    MOSTRAR PAINEL
 ========================================= */
 
-function show() {
+async function show() {
 
   const loginBox =
-    document.getElementById("loginBox");
+    document.getElementById(
+      "loginBox"
+    );
 
   const dashboard =
-    document.getElementById("dashboard");
+    document.getElementById(
+      "dashboard"
+    );
+
 
   if (loginBox) {
 
-    loginBox.classList.add("hidden");
+    loginBox.classList.add(
+      "hidden"
+    );
 
   }
+
 
   if (dashboard) {
 
-    dashboard.classList.remove("hidden");
+    dashboard.classList.remove(
+      "hidden"
+    );
 
   }
 
-  render();
+
+  await render();
+
+}
+
+
+/* =========================================
+   VERIFICAR SESSÃO
+========================================= */
+
+async function verificarSessao() {
+
+  const {
+    data,
+    error
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (error) {
+
+    console.error(
+      "Erro ao verificar sessão:",
+      error
+    );
+
+    return;
+
+  }
+
+
+  if (
+    data &&
+    data.session &&
+    data.session.user
+  ) {
+
+    await show();
+
+  }
 
 }
 
@@ -88,11 +221,25 @@ function show() {
    SAIR
 ========================================= */
 
-function logout() {
+async function logout() {
 
-  sessionStorage.removeItem(
-    "am_login"
-  );
+  try {
+
+    await supabaseClient
+      .auth
+      .signOut();
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro ao sair:",
+      erro
+    );
+
+  }
+
 
   location.reload();
 
@@ -100,11 +247,32 @@ function logout() {
 
 
 /* =========================================
+   OBSERVAR ALTERAÇÕES DE SESSÃO
+========================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    function(event, session) {
+
+      console.log(
+        "Estado de autenticação:",
+        event
+      );
+
+    }
+  );
+
+
+/* =========================================
    PREVISUALIZAR IMAGEM
 ========================================= */
 
 const imageFileInput =
-  document.getElementById("imageFile");
+  document.getElementById(
+    "imageFile"
+  );
+
 
 if (imageFileInput) {
 
@@ -116,14 +284,19 @@ if (imageFileInput) {
         this.files &&
         this.files[0];
 
+
       const preview =
         document.getElementById(
           "imagePreview"
         );
 
+
       if (!preview) {
+
         return;
+
       }
+
 
       if (!arquivo) {
 
@@ -133,10 +306,12 @@ if (imageFileInput) {
 
       }
 
+
       const url =
         URL.createObjectURL(
           arquivo
         );
+
 
       preview.innerHTML = `
 
@@ -158,9 +333,7 @@ if (imageFileInput) {
     }
   );
 
-}
-
-
+   }
 /* =========================================
    ENVIAR IMAGEM PARA O STORAGE
 ========================================= */
@@ -254,11 +427,41 @@ async function enviarImagem(arquivo) {
 
 async function publish() {
 
+  /* =====================================
+     CONFIRMAR LOGIN
+  ===================================== */
+
+  const {
+    data: sessaoData
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (
+    !sessaoData ||
+    !sessaoData.session ||
+    !sessaoData.session.user
+  ) {
+
+    alert(
+      "🔐 A sua sessão terminou. Entre novamente."
+    );
+
+    location.reload();
+
+    return;
+
+  }
+
+
   const title =
     document
       .getElementById("title")
       .value
       .trim();
+
 
   const cat =
     document
@@ -266,11 +469,13 @@ async function publish() {
       .value
       .trim();
 
+
   const body =
     document
       .getElementById("body")
       .value
       .trim();
+
 
   const imageFile =
     document
@@ -285,6 +490,22 @@ async function publish() {
     );
 
     return;
+
+  }
+
+
+  const botao =
+    document.querySelector(
+      'button[onclick="publish()"]'
+    );
+
+
+  if (botao) {
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "⏳ A publicar...";
 
   }
 
@@ -312,20 +533,26 @@ async function publish() {
        GUARDAR NOTÍCIA
     ===================================== */
 
-    const { data, error } =
+    const {
+      data,
+      error
+    } =
       await supabaseClient
         .from("noticias")
         .insert([
 
           {
-            titulo: title,
+            titulo:
+              title,
 
-            categoria: cat,
+            categoria:
+              cat,
 
             Imagem:
               imagemURL,
 
-            texto: body
+            texto:
+              body
 
           }
 
@@ -382,6 +609,19 @@ async function publish() {
 
   }
 
+  finally {
+
+    if (botao) {
+
+      botao.disabled = false;
+
+      botao.textContent =
+        "📰 Publicar notícia";
+
+    }
+
+  }
+
 }
 
 
@@ -392,15 +632,22 @@ async function publish() {
 function limparFormulario() {
 
   const title =
-    document.getElementById("title");
+    document.getElementById(
+      "title"
+    );
+
 
   const imageFile =
     document.getElementById(
       "imageFile"
     );
 
+
   const body =
-    document.getElementById("body");
+    document.getElementById(
+      "body"
+    );
+
 
   const preview =
     document.getElementById(
@@ -414,11 +661,13 @@ function limparFormulario() {
 
   }
 
+
   if (imageFile) {
 
     imageFile.value = "";
 
   }
+
 
   if (body) {
 
@@ -426,15 +675,14 @@ function limparFormulario() {
 
   }
 
+
   if (preview) {
 
     preview.innerHTML = "";
 
   }
 
-}
-
-
+           }
 /* =========================================
    CARREGAR NOTÍCIAS
 ========================================= */
@@ -442,41 +690,44 @@ function limparFormulario() {
 async function render() {
 
   const posts =
-    document.getElementById("posts");
+    document.getElementById(
+      "posts"
+    );
+
 
   if (!posts) {
+
     return;
+
   }
+
 
   posts.innerHTML =
     "<p>🔄 A carregar notícias...</p>";
 
+
   try {
 
-    /* =====================================
-       LIMITE DE TEMPO
-    ===================================== */
+    const tempoLimite =
+      new Promise(
+        (_, reject) => {
 
-    const tempoLimite = new Promise(
-      (_, reject) => {
+          setTimeout(
+            () => {
 
-        setTimeout(() => {
+              reject(
+                new Error(
+                  "O Supabase demorou demasiado tempo para responder."
+                )
+              );
 
-          reject(
-            new Error(
-              "O Supabase demorou demasiado tempo para responder."
-            )
+            },
+            10000
           );
 
-        }, 10000);
+        }
+      );
 
-      }
-    );
-
-
-    /* =====================================
-       BUSCAR NOTÍCIAS
-    ===================================== */
 
     const consulta =
       supabaseClient
@@ -485,7 +736,7 @@ async function render() {
         .order(
           "id",
           {
-            ascending: false
+            ascending:false
           }
         );
 
@@ -500,13 +751,10 @@ async function render() {
     const data =
       resultado.data;
 
+
     const error =
       resultado.error;
 
-
-    /* =====================================
-       ERRO SUPABASE
-    ===================================== */
 
     if (error) {
 
@@ -515,7 +763,9 @@ async function render() {
         error
       );
 
+
       posts.innerHTML = `
+
         <div
           style="
             padding:15px;
@@ -536,16 +786,14 @@ async function render() {
           </small>
 
         </div>
+
       `;
+
 
       return;
 
     }
 
-
-    /* =====================================
-       NENHUMA NOTÍCIA
-    ===================================== */
 
     if (
       !data ||
@@ -555,14 +803,11 @@ async function render() {
       posts.innerHTML =
         "<p>📰 Ainda não existem notícias publicadas.</p>";
 
+
       return;
 
     }
 
-
-    /* =====================================
-       MOSTRAR NOTÍCIAS
-    ===================================== */
 
     posts.innerHTML =
       data
@@ -689,6 +934,7 @@ async function render() {
         )
         .join("");
 
+
   }
 
   catch (erro) {
@@ -698,7 +944,9 @@ async function render() {
       erro
     );
 
+
     posts.innerHTML = `
+
       <div
         style="
           padding:15px;
@@ -722,11 +970,13 @@ async function render() {
         </small>
 
       </div>
+
     `;
 
   }
 
-                   }
+}
+
 
 /* =========================================
    EDITAR NOTÍCIA
@@ -755,7 +1005,10 @@ async function editarNoticia(id) {
     await supabaseClient
       .from("noticias")
       .select("*")
-      .eq("id", id)
+      .eq(
+        "id",
+        id
+      )
       .maybeSingle();
 
 
@@ -766,10 +1019,12 @@ async function editarNoticia(id) {
       buscarError
     );
 
+
     alert(
       "❌ Erro ao carregar a notícia:\n\n" +
       buscarError.message
     );
+
 
     return;
 
@@ -781,6 +1036,7 @@ async function editarNoticia(id) {
     alert(
       "❌ Notícia não encontrada."
     );
+
 
     return;
 
@@ -807,6 +1063,7 @@ async function editarNoticia(id) {
       "❌ O título não pode ficar vazio."
     );
 
+
     return;
 
   }
@@ -831,6 +1088,7 @@ async function editarNoticia(id) {
     alert(
       "❌ O texto não pode ficar vazio."
     );
+
 
     return;
 
@@ -945,10 +1203,12 @@ async function editarNoticia(id) {
       updateError
     );
 
+
     alert(
       "❌ Erro ao editar:\n\n" +
       updateError.message
     );
+
 
     return;
 
@@ -963,6 +1223,7 @@ async function editarNoticia(id) {
     alert(
       "⚠️ A atualização não alterou nenhuma notícia."
     );
+
 
     return;
 
@@ -983,8 +1244,6 @@ async function editarNoticia(id) {
   );
 
 }
-
-
 /* =========================================
    EXCLUIR NOTÍCIA
 ========================================= */
@@ -1021,6 +1280,35 @@ async function excluirNoticia(id) {
   }
 
 
+  /* =====================================
+     CONFIRMAR SESSÃO
+  ===================================== */
+
+  const {
+    data: sessaoData
+  } =
+    await supabaseClient
+      .auth
+      .getSession();
+
+
+  if (
+    !sessaoData ||
+    !sessaoData.session ||
+    !sessaoData.session.user
+  ) {
+
+    alert(
+      "🔐 A sua sessão terminou. Entre novamente."
+    );
+
+    location.reload();
+
+    return;
+
+  }
+
+
   const { error } =
     await supabaseClient
       .from("noticias")
@@ -1038,10 +1326,12 @@ async function excluirNoticia(id) {
       error
     );
 
+
     alert(
       "❌ Não foi possível excluir a notícia:\n\n" +
       error.message
     );
+
 
     return;
 
@@ -1099,15 +1389,65 @@ function esc(s) {
 
 
 /* =========================================
-   VERIFICAR LOGIN AO ABRIR
+   INICIALIZAR PAINEL
 ========================================= */
 
-if (
-  sessionStorage.getItem(
-    "am_login"
-  ) === "1"
-) {
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
 
-  show();
+    verificarSessao();
 
-     }
+  }
+);
+
+
+/* =========================================
+   PROTEGER O PAINEL CONTRA SESSÃO EXPIRADA
+========================================= */
+
+supabaseClient
+  .auth
+  .onAuthStateChange(
+    function(event, session) {
+
+      if (
+        event === "SIGNED_OUT" ||
+        (
+          event === "TOKEN_REFRESHED" &&
+          !session
+        )
+      ) {
+
+        const dashboard =
+          document.getElementById(
+            "dashboard"
+          );
+
+        const loginBox =
+          document.getElementById(
+            "loginBox"
+          );
+
+
+        if (dashboard) {
+
+          dashboard.classList.add(
+            "hidden"
+          );
+
+        }
+
+
+        if (loginBox) {
+
+          loginBox.classList.remove(
+            "hidden"
+          );
+
+        }
+
+      }
+
+    }
+  );
