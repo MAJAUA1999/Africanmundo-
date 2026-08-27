@@ -2071,7 +2071,26 @@ line-height:1;
 
    </div>
  `;
+ 
+const btnFavorito=
+  card.querySelector(".btn-favorito");
 
+if(btnFavorito){
+
+  btnFavorito.addEventListener(
+    "click",
+    function(e){
+
+      e.preventDefault();
+      e.stopPropagation();
+
+      guardarFavorito(noticia);
+
+    }
+  );
+
+}
+ 
  return card;
 
 }
