@@ -1388,16 +1388,16 @@ function criarCard(noticia){
 
 function abrirNoticia(noticia){
 
- try{
+ if(!noticia || !noticia.id){
 
-   sessionStorage.setItem(
-     "africanmundo_noticia",
-     JSON.stringify(noticia)
-   );
+   alert("Não foi possível identificar esta notícia.");
+   return;
 
- }catch(e){}
+ }
 
- window.location.href="noticia.html";
+ window.location.href =
+   "noticia.html?id=" +
+   encodeURIComponent(noticia.id);
 
 }
 
