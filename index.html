@@ -200,7 +200,123 @@ section{margin:22px 0}
  </form>
  <div id="searchResults"></div>
 </div>
+ 
+<!-- ==========================================
+     REDES SOCIAIS — ABAIXO DA PESQUISA
+========================================== -->
 
+<div class="social-bar">
+
+  <a href="https://www.google.com"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon google">🔎</span>
+    <span>Google</span>
+  </a>
+
+  <a href="https://www.facebook.com"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon facebook">🔵</span>
+    <span>Facebook</span>
+  </a>
+
+  <a href="https://www.youtube.com"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon youtube">▶️</span>
+    <span>YouTube</span>
+  </a>
+
+  <a href="https://wa.me/"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon whatsapp">🟢</span>
+    <span>WhatsApp</span>
+  </a>
+
+  <a href="https://www.instagram.com"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon instagram">📷</span>
+    <span>Instagram</span>
+  </a>
+
+  <a href="https://www.tiktok.com"
+     target="_blank"
+     rel="noopener">
+    <span class="social-icon tiktok">🎵</span>
+    <span>TikTok</span>
+  </a>
+
+</div>
+
+<style>
+
+.social-bar{
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  margin:10px 0 18px;
+  padding:9px;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow-x:auto;
+  scrollbar-width:none;
+}
+
+.social-bar::-webkit-scrollbar{
+  display:none;
+}
+
+.social-bar a{
+  flex:0 0 auto;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  padding:7px 10px;
+  border-radius:9px;
+  background:var(--bg);
+  color:var(--txt);
+  font-size:10px;
+  font-weight:800;
+  transition:.2s;
+}
+
+.social-bar a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 4px 12px #0002;
+}
+
+.social-icon{
+  font-size:16px;
+  line-height:1;
+}
+
+@media(max-width:600px){
+
+  .social-bar{
+    justify-content:flex-start;
+    gap:6px;
+    padding:8px 6px;
+  }
+
+  .social-bar a{
+    padding:8px 9px;
+    font-size:9px;
+  }
+
+  .social-icon{
+    font-size:15px;
+  }
+
+}
+
+</style>
+ 
 <div class="ad">
  <div><b>ANUNCIE AQUI</b>
  Alcance milhares de pessoas em toda África.</div>
