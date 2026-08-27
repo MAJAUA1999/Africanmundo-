@@ -2052,13 +2052,20 @@ function criarCard(noticia){
     <span>${data}</span>
 
     <button
-    onclick="event.stopPropagation();guardarFavorito(${JSON.stringify(noticia).replace(/</g,"\\u003c")})"
-    style="
-    border:0;
-    background:none;
-    font-size:17px">
+class="btn-favorito"
+data-noticia-id="${esc(id)}"
+style="
+border:0;
+background:none;
+font-size:19px;
+padding:6px;
+cursor:pointer;
+line-height:1;
+">
 
-    ❤️
+❤️
+
+</button>
 
     </button>
 
