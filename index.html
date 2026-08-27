@@ -1115,45 +1115,209 @@ document.getElementById("toolsBtn")
 );
 
 /* ==========================================
-   UTILIZADOR / EU
+   UTILIZADOR / EU — PAINEL PROFISSIONAL
 ========================================== */
 
 function abrirUsuario(){
 
   abrirModal(
-    "👤 Eu",
+    "👤 Minha área",
     `
     <div style="text-align:center">
 
-      <div style="font-size:55px">👤</div>
+      <div style="
+      width:75px;
+      height:75px;
+      margin:0 auto 12px;
+      display:grid;
+      place-items:center;
+      border-radius:50%;
+      background:var(--p);
+      color:white;
+      font-size:38px;
+      box-shadow:0 6px 18px #0002;">
+      👤
+      </div>
 
-      <h3 style="margin:10px 0">
+      <h3 style="margin:5px 0">
         Bem-vindo ao AfricanMundo
       </h3>
 
       <p style="
+      margin:6px 0 18px;
       color:var(--muted);
-      font-size:13px;
-      line-height:1.5">
-
-        Personalize a sua experiência,
-        guarde notícias favoritas e
-        acompanhe as novidades.
-
+      font-size:12px;
+      line-height:1.5;">
+        Personalize a sua experiência
+        e tenha acesso rápido às suas
+        notícias favoritas.
       </p>
 
-      <button onclick="abrirFavoritos()" style="
-      width:100%;
-      margin-top:15px;
-      padding:13px;
-      border:0;
-      border-radius:10px;
-      background:var(--p);
-      color:white;
-      font-weight:bold">
 
+      <div style="
+      display:grid;
+      gap:9px;
+      text-align:left;">
+
+
+        <button onclick="abrirFavoritos()" style="
+        width:100%;
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        font-weight:800;
+        cursor:pointer;">
         ❤️ Meus favoritos
+        <small style="
+        display:block;
+        margin-top:4px;
+        color:var(--muted);
+        font-weight:400;">
+        Notícias que guardaste
+        </small>
+        </button>
 
+
+        <button onclick="abrirNotificacoes()" style="
+        width:100%;
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        font-weight:800;
+        cursor:pointer;">
+        🔔 Minhas notificações
+        <small style="
+        display:block;
+        margin-top:4px;
+        color:var(--muted);
+        font-weight:400;">
+        Ver as últimas novidades
+        </small>
+        </button>
+
+
+        <button onclick="abrirFerramentas()" style="
+        width:100%;
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        font-weight:800;
+        cursor:pointer;">
+        🛠️ Ferramentas
+        <small style="
+        display:block;
+        margin-top:4px;
+        color:var(--muted);
+        font-weight:400;">
+        Opções e personalização
+        </small>
+        </button>
+
+
+        <button onclick="abrirConfiguracoesUsuario()" style="
+        width:100%;
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        font-weight:800;
+        cursor:pointer;">
+        ⚙️ Configurações
+        <small style="
+        display:block;
+        margin-top:4px;
+        color:var(--muted);
+        font-weight:400;">
+        Preferências do AfricanMundo
+        </small>
+        </button>
+
+      </div>
+
+    </div>
+    `
+  );
+
+}
+
+
+/* ==========================================
+   CONFIGURAÇÕES DO UTILIZADOR
+========================================== */
+
+function abrirConfiguracoesUsuario(){
+
+  abrirModal(
+    "⚙️ Configurações",
+    `
+    <div style="
+    display:grid;
+    gap:10px;">
+
+      <button onclick="alternarTema()" style="
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:var(--bg);
+      color:var(--txt);
+      text-align:left;
+      font-weight:800;
+      cursor:pointer;">
+      🌙 Aparência
+      <small style="
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-weight:400;">
+      Alternar modo claro e escuro
+      </small>
+      </button>
+
+
+      <button onclick="alterarTamanhoTexto()" style="
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:var(--bg);
+      color:var(--txt);
+      text-align:left;
+      font-weight:800;
+      cursor:pointer;">
+      🔠 Tamanho do texto
+      <small style="
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-weight:400;">
+      Ajustar o tamanho das letras
+      </small>
+      </button>
+
+
+      <button onclick="abrirFavoritos()" style="
+      padding:14px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      background:var(--bg);
+      color:var(--txt);
+      text-align:left;
+      font-weight:800;
+      cursor:pointer;">
+      ❤️ Favoritos
+      <small style="
+      display:block;
+      margin-top:4px;
+      color:var(--muted);
+      font-weight:400;">
+      Gerir as notícias guardadas
+      </small>
       </button>
 
     </div>
@@ -1162,8 +1326,12 @@ function abrirUsuario(){
 
 }
 
+
 document.getElementById("userBtn")
-.addEventListener("click",abrirUsuario);
+.addEventListener(
+  "click",
+  abrirUsuario
+);
 
 
 /* ==========================================
