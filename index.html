@@ -1812,6 +1812,8 @@ async function carregarNoticias(){
 
    window.__noticias=noticias;
 
+  atualizarNotificacoes(noticias);
+  
  }catch(error){
 
    console.error("Erro Supabase:",error);
@@ -2056,6 +2058,71 @@ function abrirRedes(){
 
 }
 
+ /* ==========================================
+   NOTIFICAÇÕES
+========================================== */
+
+function atualizarNotificacoes(noticias){
+
+ const botao=document.getElementById("notificationBtn");
+
+ if(!botao)return;
+
+ const quantidade=
+   Array.isArray(noticias)
+   ? noticias.length
+   : 0;
+
+ let contador=
+   botao.querySelector(".notification-count");
+
+ if(!contador){
+
+   contador=document.createElement("span");
+
+   contador.className=
+     "notification-count";
+
+   contador.style.cssText=`
+   position:absolute;
+   top:-4px;
+   right:-4px;
+   min-width:17px;
+   height:17px;
+   padding:0 4px;
+   display:flex;
+   align-items:center;
+   justify-content:center;
+   background:#e53935;
+   color:white;
+   border-radius:50px;
+   font-size:9px;
+   font-weight:900;
+   border:2px solid var(--card);
+   `;
+
+   botao.style.position="relative";
+
+   botao.appendChild(contador);
+
+ }
+
+ if(quantidade>0){
+
+   contador.textContent=
+     quantidade>99
+     ? "99+"
+     : quantidade;
+
+   contador.style.display="flex";
+
+ }else{
+
+   contador.style.display="none";
+
+ }
+
+}
 
 /* ==========================================
    INICIALIZAÇÃO
