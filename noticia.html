@@ -142,7 +142,32 @@
       font-weight: 700;
       cursor: pointer;
     }
+.article-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 25px;
+}
 
+.article-actions .share-button {
+  margin-top: 0;
+}
+
+.favorite-button {
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #eee;
+  color: #111;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.favorite-button.active {
+  background: #ffe1e1;
+  color: #c40000;
+}
 
     /* =====================================
        CARREGAMENTO / ERRO
@@ -1192,15 +1217,26 @@ async function carregarNoticia() {
           </div>
 
 
-          <button
-            type="button"
-            class="share-button"
-            onclick="partilharNoticia()"
-          >
+        <div class="article-actions">
 
-            📤 Partilhar notícia
+  <button
+    type="button"
+    class="share-button"
+    onclick="partilharNoticia()"
+  >
+    📤 Partilhar notícia
+  </button>
 
-          </button>
+  <button
+    type="button"
+    class="favorite-button"
+    id="favoriteButton"
+    onclick="alternarFavorito()"
+  >
+    🤍 Favoritar
+  </button>
+
+</div>
 
 
         </div>
@@ -1209,7 +1245,12 @@ async function carregarNoticia() {
       </article>
 
     `;
+  
+    /* =================================
+   INICIAR FAVORITO
+================================= */
 
+iniciarFavorito();
 
     /* =================================
        MAIS NOTÍCIAS
@@ -1326,7 +1367,177 @@ async function partilharNoticia() {
 
 }
 
+/* =====================================
+   FAVORITOS
+===================================== */
 
+function obterFavoritos() {
+
+  try {
+
+    return JSON.parse(
+      localStorage.getItem(
+        "africanmundo_favoritos"
+      ) || "[]"
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao ler favoritos:",
+      erro
+    );
+
+    return [];
+
+  }
+
+}
+
+
+/* =====================================
+   VERIFICAR FAVORITO
+===================================== */
+
+function verificarFavorito(id) {
+
+  const favoritos =
+    obterFavoritos();
+
+  return favoritos.includes(
+    String(id)
+  );
+
+}
+
+
+/* =====================================
+   ATUALIZAR BOTÃO
+===================================== */
+
+function atualizarBotaoFavorito(id) {
+
+  const botao =
+    document.getElementById(
+      "favoriteButton"
+    );
+
+  if (!botao) {
+    return;
+  }
+
+  if (
+    verificarFavorito(id)
+  ) {
+
+    botao.innerHTML =
+      "❤️ Favoritado";
+
+    botao.classList.add(
+      "active"
+    );
+
+  } else {
+
+    botao.innerHTML =
+      "🤍 Favoritar";
+
+    botao.classList.remove(
+      "active"
+    );
+
+  }
+
+}
+
+
+/* =====================================
+   ALTERNAR FAVORITO
+===================================== */
+
+function alternarFavorito() {
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+  const id =
+    url.searchParams.get(
+      "id"
+    );
+
+  if (!id) {
+    return;
+  }
+
+  const idLimpo =
+    String(id).trim();
+
+  let favoritos =
+    obterFavoritos();
+
+  const indice =
+    favoritos.indexOf(
+      idLimpo
+    );
+
+  if (
+    indice === -1
+  ) {
+
+    favoritos.push(
+      idLimpo
+    );
+
+  } else {
+
+    favoritos.splice(
+      indice,
+      1
+    );
+
+  }
+
+  localStorage.setItem(
+    "africanmundo_favoritos",
+    JSON.stringify(
+      favoritos
+    )
+  );
+
+  atualizarBotaoFavorito(
+    idLimpo
+  );
+
+}
+
+
+/* =====================================
+   INICIAR FAVORITO
+===================================== */
+
+function iniciarFavorito() {
+
+  const url =
+    new URL(
+      window.location.href
+    );
+
+  const id =
+    url.searchParams.get(
+      "id"
+    );
+
+  if (!id) {
+    return;
+  }
+
+  atualizarBotaoFavorito(
+    String(id).trim()
+  );
+
+        }
 /* =====================================
    INICIAR
 ===================================== */
