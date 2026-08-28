@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://majaua1999.github.io/Africanmundo-/sitemap.xml
