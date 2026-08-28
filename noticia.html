@@ -10,7 +10,71 @@
   >
 
   <title>Notícia — AfricanMundo</title>
+  
+<meta
+  id="metaDescription"
+  name="description"
+  content="Leia as principais notícias de África e do mundo no AfricanMundo."
+>
 
+<meta
+  id="metaOgTitle"
+  property="og:title"
+  content="AfricanMundo — A informação que liga África ao mundo"
+>
+
+<meta
+  id="metaOgDescription"
+  property="og:description"
+  content="Leia as principais notícias de África e do mundo no AfricanMundo."
+>
+
+<meta
+  id="metaOgImage"
+  property="og:image"
+  content=""
+>
+
+<meta
+  id="metaOgUrl"
+  property="og:url"
+  content=""
+>
+  
+<link
+  id="canonicalUrl"
+  rel="canonical"
+  href=""
+>
+  
+<meta
+  property="og:type"
+  content="article"
+>
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+>
+
+<meta
+  id="metaTwitterTitle"
+  name="twitter:title"
+  content="AfricanMundo"
+>
+
+<meta
+  id="metaTwitterDescription"
+  name="twitter:description"
+  content="A informação que liga África ao mundo"
+>
+
+<meta
+  id="metaTwitterImage"
+  name="twitter:image"
+  content=""
+>
+  
   <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1121,7 +1185,185 @@ async function carregarNoticia() {
         ""
       ).trim();
 
+/* =================================
+   SEO DA NOTÍCIA
+================================= */
 
+const descricaoSEO =
+  String(
+    texto || titulo
+  )
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 160);
+
+
+/* TÍTULO DA PÁGINA */
+
+document.title =
+  titulo +
+  " — AfricanMundo";
+
+
+/* DESCRIÇÃO */
+
+const metaDescription =
+  document.getElementById(
+    "metaDescription"
+  );
+
+if (metaDescription) {
+
+  metaDescription.setAttribute(
+    "content",
+    descricaoSEO
+  );
+
+}
+
+
+/* OPEN GRAPH — TÍTULO */
+
+const metaOgTitle =
+  document.getElementById(
+    "metaOgTitle"
+  );
+
+if (metaOgTitle) {
+
+  metaOgTitle.setAttribute(
+    "content",
+    titulo
+  );
+
+}
+
+
+/* OPEN GRAPH — DESCRIÇÃO */
+
+const metaOgDescription =
+  document.getElementById(
+    "metaOgDescription"
+  );
+
+if (metaOgDescription) {
+
+  metaOgDescription.setAttribute(
+    "content",
+    descricaoSEO
+  );
+
+}
+
+
+/* OPEN GRAPH — IMAGEM */
+
+const metaOgImage =
+  document.getElementById(
+    "metaOgImage"
+  );
+
+if (
+  metaOgImage &&
+  imagem
+) {
+
+  metaOgImage.setAttribute(
+    "content",
+    imagem
+  );
+
+}
+
+
+/* OPEN GRAPH — URL */
+
+const metaOgUrl =
+  document.getElementById(
+    "metaOgUrl"
+  );
+
+if (metaOgUrl) {
+
+  metaOgUrl.setAttribute(
+    "content",
+    window.location.href
+  );
+
+}
+
+
+/* TWITTER — TÍTULO */
+
+const metaTwitterTitle =
+  document.getElementById(
+    "metaTwitterTitle"
+  );
+
+if (metaTwitterTitle) {
+
+  metaTwitterTitle.setAttribute(
+    "content",
+    titulo
+  );
+
+}
+
+
+/* TWITTER — DESCRIÇÃO */
+
+const metaTwitterDescription =
+  document.getElementById(
+    "metaTwitterDescription"
+  );
+
+if (metaTwitterDescription) {
+
+  metaTwitterDescription.setAttribute(
+    "content",
+    descricaoSEO
+  );
+
+}
+
+
+/* TWITTER — IMAGEM */
+
+const metaTwitterImage =
+  document.getElementById(
+    "metaTwitterImage"
+  );
+
+if (
+  metaTwitterImage &&
+  imagem
+) {
+
+  metaTwitterImage.setAttribute(
+    "content",
+    imagem
+  );
+
+      }
+
+    /* =================================
+   URL CANÓNICO
+================================= */
+
+const canonicalUrl =
+  document.getElementById(
+    "canonicalUrl"
+  );
+
+if (canonicalUrl) {
+
+  canonicalUrl.setAttribute(
+    "href",
+    window.location.href
+  );
+
+  }
+    
     const dataPublicacao =
       formatarData(
         data.data
