@@ -333,7 +333,9 @@ if (imageFileInput) {
     }
   );
 
-   }
+}
+
+
 /* =========================================
    ENVIAR IMAGEM PARA O STORAGE
 ========================================= */
@@ -419,8 +421,6 @@ async function enviarImagem(arquivo) {
   return url.data.publicUrl;
 
 }
-
-
 /* =========================================
    PUBLICAR NOTÍCIA
 ========================================= */
@@ -548,7 +548,7 @@ async function publish() {
             categoria:
               cat,
 
-            Imagem:
+            imagem:
               imagemURL,
 
             texto:
@@ -682,7 +682,7 @@ function limparFormulario() {
 
   }
 
-           }
+}
 /* =========================================
    CARREGAR NOTÍCIAS
 ========================================= */
@@ -736,7 +736,7 @@ async function render() {
         .order(
           "id",
           {
-            ascending:false
+            ascending: false
           }
         );
 
@@ -816,7 +816,6 @@ async function render() {
 
             const imagem =
               p.imagem ??
-              p.Imagem ??
               "";
 
 
@@ -975,9 +974,7 @@ async function render() {
 
   }
 
-}
-
-
+       }
 /* =========================================
    EDITAR NOTÍCIA
 ========================================= */
@@ -1149,7 +1146,6 @@ async function editarNoticia(id) {
 
 
   const imagemAtual =
-    noticia.Imagem ??
     noticia.imagem ??
     "";
 
@@ -1185,7 +1181,7 @@ async function editarNoticia(id) {
         categoria:
           categoriaFinal,
 
-        Imagem:
+        imagem:
           novaImagem.trim() || null
 
       })
@@ -1244,6 +1240,8 @@ async function editarNoticia(id) {
   );
 
 }
+
+
 /* =========================================
    EXCLUIR NOTÍCIA
 ========================================= */
