@@ -622,58 +622,93 @@ function mostrarNoticia(n){
    "block";
 
   }
- /* ==========================================
+/* ==========================================
    CARREGAR NOTÍCIA
 ========================================== */
 
 async function carregarNoticia(){
 
- const id =
-   obterId();
+  const id = obterId();
 
+  if(!id){
 
- /* VERIFICAR ID */
+    mostrarErro(
+      "Não foi encontrado o ID da notícia."
+    );
 
- if(!id){
+    return;
+  }
 
-   mostrarErro(
-     "Não foi encontrado o ID da notícia."
-   );
+  if(!db){
 
-   return;
+    mostrarErro(
+      "A ligação com o Supabase não está configurada."
+    );
 
- }
+    return;
+  }
 
+  try{
 
- /* ==========================================
-   LIGAÇÃO COM SUPABASE
-========================================== */
+    console.log(
+      "🔎 Procurando notícia ID:",
+      id
+    );
 
-const SUPABASE_URL =
-"https://sonzwfhepjfvzltuxxne.supabase.co";
+    const resposta =
+      await db
+      .from("noticias")
+      .select("*")
+      .eq("id", id)
+      .limit(1);
 
-const SUPABASE_KEY =
-"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+    if(resposta.error){
 
-let db;
+      console.error(
+        "❌ Erro Supabase:",
+        resposta.error
+      );
 
-try {
+      mostrarErro(
+        "Erro ao consultar a notícia."
+      );
 
-  db = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+      return;
+    }
 
-  console.log(
-    "✅ Supabase conectado."
-  );
+    const noticias =
+      resposta.data || [];
 
-} catch(e) {
+    if(!noticias.length){
 
-  console.error(
-    "❌ Erro ao conectar Supabase:",
-    e
-  );
+      mostrarErro(
+        "A notícia não foi encontrada."
+      );
+
+      return;
+    }
+
+    console.log(
+      "✅ Notícia encontrada:",
+      noticias[0]
+    );
+
+    mostrarNoticia(
+      noticias[0]
+    );
+
+  }catch(e){
+
+    console.error(
+      "❌ Erro ao carregar notícia:",
+      e
+    );
+
+    mostrarErro(
+      "Ocorreu um erro ao carregar a notícia."
+    );
+
+  }
 
 }
 
@@ -684,46 +719,42 @@ try {
 
 async function partilhar(){
 
- const titulo =
-   document.getElementById("titulo")
-   .textContent;
+  const titulo =
+    document.getElementById("titulo")
+    .textContent;
 
- const url =
-   window.location.href;
+  const url =
+    window.location.href;
 
+  try{
 
- try{
+    if(navigator.share){
 
-   if(navigator.share){
+      await navigator.share({
+        title:titulo,
+        url:url
+      });
 
-     await navigator.share({
+    }else{
 
-       title:titulo,
+      await navigator.clipboard
+      .writeText(url);
 
-       url:url
+      alert(
+        "🔗 Link da notícia copiado!"
+      );
 
-     });
+    }
 
-   }else{
+  }catch(e){
 
-     await navigator.clipboard
-       .writeText(url);
-
-     alert(
-       "🔗 Link da notícia copiado!"
-     );
-
-   }
-
- }catch(e){
-
-   console.log(
-     "Partilha cancelada."
-   );
-
- }
+    console.log(
+      "Partilha cancelada."
+    );
 
   }
+
+}
 /* ==========================================
    COMPATIBILIDADE
 ========================================== */
