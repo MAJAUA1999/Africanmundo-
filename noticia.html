@@ -81,6 +81,127 @@
 
   <style>
 
+    /* =====================================
+   COMENTÁRIOS
+===================================== */
+
+.comments-section {
+  margin-top: 30px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.08);
+}
+
+.comments-title {
+  margin: 0 0 20px;
+  font-size: 24px;
+  border-left: 4px solid #45c226;
+  padding-left: 10px;
+}
+
+.comments-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.comments-form input,
+.comments-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.comments-form input:focus,
+.comments-form textarea:focus {
+  border-color: #45c226;
+}
+
+.comments-form textarea {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.comments-submit {
+  width: fit-content;
+  padding: 12px 18px;
+  border: 0;
+  border-radius: 8px;
+  background: #45c226;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.comments-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.comments-list {
+  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.comment-item {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: #fafafa;
+}
+
+.comment-name {
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.comment-text {
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.comments-empty {
+  color: #666;
+  padding: 10px 0;
+}
+
+.comments-error {
+  color: #b00020;
+  padding: 10px 0;
+}
+
+@media (max-width: 600px) {
+
+  .comments-section {
+    padding: 18px;
+  }
+
+  .comments-title {
+    font-size: 21px;
+  }
+
+  .comments-submit {
+    width: 100%;
+  }
+
+}
+    
     * {
       box-sizing: border-box;
     }
@@ -1494,6 +1615,879 @@ if (canonicalUrl) {
 
 iniciarFavorito();
 
+    /* =================================
+   COMENTÁRIOS
+================================= */
+
+const commentsSection =
+  document.createElement("section");
+
+commentsSection.className =
+  "comments-section";
+
+commentsSection.innerHTML = `
+
+  <h2 class="comments-title">
+    💬 Comentários
+  </h2>
+
+  <form
+    class="comments-form"
+    id="commentsForm"
+  >
+
+    <input
+      type="text"
+      id="commentName"
+      placeholder="O seu nome"
+      maxlength="80"
+      required
+    >
+
+    <textarea
+      id="commentText"
+      placeholder="Escreva o seu comentário..."
+      maxlength="1000"
+      required
+    ></textarea>
+
+    <button
+      type="submit"
+      class="comments-submit"
+    >
+      💬 Publicar comentário
+    </button>
+
+  </form>
+
+  <div
+    id="commentsList"
+    class="comments-list"
+  >
+    🔄 A carregar comentários...
+  </div>
+
+`;
+
+article.parentNode.appendChild(
+  commentsSection
+);
+
+
+/* =================================
+   CARREGAR COMENTÁRIOS
+================================= */
+
+async function carregarComentarios() {
+
+  const lista =
+    document.getElementById(
+      "commentsList"
+    );
+
+  if (!lista) {
+    return;
+  }
+
+  lista.innerHTML =
+    "🔄 A carregar comentários...";
+
+
+  const resultado =
+    await supabaseClient
+      .from("comentarios")
+      .select("*")
+      .eq(
+        "noticia_id",
+        Number(idLimpo)
+      )
+      .order(
+        "criado_em",
+        {
+          ascending: false
+        }
+      );
+
+
+  if (resultado.error) {
+
+    console.error(
+      "Erro ao carregar comentários:",
+      resultado.error
+    );
+
+    lista.innerHTML = `
+
+      <div class="comments-error">
+
+        ❌ Não foi possível carregar os comentários.
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  const comentarios =
+    resultado.data || [];
+
+
+  if (
+    comentarios.length === 0
+  ) {
+
+    lista.innerHTML = `
+
+      <div class="comments-empty">
+
+        Ainda não existem comentários.
+        Seja o primeiro a comentar! 👋
+
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  lista.innerHTML =
+    comentarios
+      .map(
+        function(comentario) {
+
+          return `
+
+            <div class="comment-item">
+
+              <div class="comment-name">
+
+                👤 ${esc(
+                  comentario.nome
+                )}
+
+              </div>
+
+              <div class="comment-date">
+
+                🕐 ${esc(
+                  formatarData(
+                    comentario.criado_em
+                  )
+                )}
+
+              </div>
+
+              <div class="comment-text">
+
+                ${esc(
+                  comentario.comentario
+                )}
+
+              </div>
+
+            </div>
+
+          `;
+
+        }
+      )
+      .join("");
+
+}
+
+
+/* =================================
+   PUBLICAR COMENTÁRIO
+================================= */
+
+const commentsForm =
+  document.getElementById(
+    "commentsForm"
+  );
+
+
+if (commentsForm) {
+
+  commentsForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const nomeInput =
+        document.getElementById(
+          "commentName"
+        );
+
+
+      const textoInput =
+        document.getElementById(
+          "commentText"
+        );
+
+
+      const botao =
+        commentsForm.querySelector(
+          ".comments-submit"
+        );
+
+
+      const nome =
+        nomeInput.value.trim();
+
+
+      const comentario =
+        textoInput.value.trim();
+
+
+      if (
+        !nome ||
+        !comentario
+      ) {
+
+        alert(
+          "Preencha o seu nome e o comentário."
+        );
+
+        return;
+
+      }
+
+
+      if (!idLimpo) {
+
+        alert(
+          "❌ Não foi possível identificar a notícia."
+        );
+
+        return;
+
+      }
+
+
+      botao.disabled = true;
+
+      botao.textContent =
+        "⏳ A publicar...";
+
+
+      try {
+
+        const resultado =
+          await supabaseClient
+            .from("comentarios")
+            .insert([
+
+              {
+
+                noticia_id:
+                  Number(idLimpo),
+
+                nome:
+                  nome,
+
+                comentario:
+                  comentario
+
+              }
+
+            ]);
+
+
+        if (
+          resultado.error
+        ) {
+
+          console.error(
+            "Erro ao publicar comentário:",
+            resultado.error
+          );
+
+          alert(
+            "❌ Não foi possível publicar o comentário:\n\n" +
+            resultado.error.message
+          );
+
+          return;
+
+        }
+
+
+        nomeInput.value = "";
+
+        textoInput.value = "";
+
+
+        await carregarComentarios();
+
+
+        alert(
+          "✅ Comentário publicado com sucesso!"
+        );
+
+      }
+
+      catch (erro) {
+
+        console.error(
+          "Erro:",
+          erro
+        );
+
+        alert(
+          "❌ Ocorreu um erro ao publicar o comentário."
+        );
+
+      }
+
+      finally {
+
+        botao.disabled = false;
+
+        botao.textContent =
+          "💬 Publicar comentário";
+
+      }
+
+    }
+  );
+
+}
+
+
+carregarComentarios();
+
+      <div class="comments-form">
+
+    <input
+      type="text"
+      id="commentName"
+      placeholder="Seu nome"
+      maxlength="80"
+      autocomplete="name"
+    >
+
+    <textarea
+      id="commentText"
+      placeholder="Escreva o seu comentário..."
+      maxlength="1000"
+    ></textarea>
+
+    <button
+      type="button"
+      class="comments-submit"
+      id="commentSubmit"
+      onclick="enviarComentario()"
+    >
+      💬 Publicar comentário
+    </button>
+
+  </div>
+
+
+  <div
+    id="commentsMessage"
+    class="comments-empty"
+  >
+  </div>
+
+
+  <div
+    id="commentsList"
+    class="comments-list"
+  >
+
+    <div class="comments-empty">
+      🔄 A carregar comentários...
+    </div>
+
+  </div>
+
+`;
+
+article.parentNode.appendChild(
+  commentsSection
+);
+
+
+/* =================================
+   CARREGAR COMENTÁRIOS
+================================= */
+
+carregarComentarios(
+  idLimpo
+);
+
+/* =====================================
+   CARREGAR COMENTÁRIOS
+===================================== */
+
+async function carregarComentarios(noticiaId) {
+
+  const lista =
+    document.getElementById("commentsList");
+
+  if (!lista) {
+    return;
+  }
+
+  lista.innerHTML = `
+    <div class="comments-empty">
+      🔄 A carregar comentários...
+    </div>
+  `;
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("comentarios")
+        .select("*")
+        .eq("noticia_id", noticiaId)
+        .order("criado_em", {
+          ascending: false
+        });
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro ao carregar comentários:",
+        resultado.error
+      );
+
+      lista.innerHTML = `
+        <div class="comments-error">
+          ❌ Não foi possível carregar os comentários.
+        </div>
+      `;
+
+      return;
+    }
+
+    const comentarios =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+    if (comentarios.length === 0) {
+
+      lista.innerHTML = `
+        <div class="comments-empty">
+          💬 Ainda não existem comentários.
+          Seja o primeiro a comentar!
+        </div>
+      `;
+
+      return;
+    }
+
+    lista.innerHTML =
+      comentarios
+        .map(function(comentario) {
+
+          const nome =
+            comentario.nome ||
+            "Visitante";
+
+          const texto =
+            comentario.comentario ||
+            "";
+
+          const data =
+            comentario.criado_em
+              ? formatarData(
+                  comentario.criado_em
+                )
+              : "";
+
+          return `
+
+            <div class="comment-item">
+
+              <div class="comment-name">
+                👤 ${esc(nome)}
+              </div>
+
+              ${
+                data
+                  ? `
+                    <div class="comment-date">
+                      📅 ${esc(data)}
+                    </div>
+                  `
+                  : ""
+              }
+
+              <div class="comment-text">
+                ${esc(texto)}
+              </div>
+
+            </div>
+
+          `;
+
+        })
+        .join("");
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro ao carregar comentários:",
+      erro
+    );
+
+    lista.innerHTML = `
+      <div class="comments-error">
+        ❌ Ocorreu um erro ao carregar os comentários.
+      </div>
+    `;
+
+  }
+
+      }
+
+      /* =====================================
+   ENVIAR COMENTÁRIO
+===================================== */
+
+async function enviarComentario() {
+
+  const nomeInput =
+    document.getElementById("commentName");
+
+  const textoInput =
+    document.getElementById("commentText");
+
+  const botao =
+    document.getElementById("commentSubmit");
+
+  const mensagem =
+    document.getElementById("commentsMessage");
+
+
+  if (
+    !nomeInput ||
+    !textoInput ||
+    !botao
+  ) {
+
+    return;
+
+  }
+
+
+  const nome =
+    nomeInput.value.trim();
+
+  const texto =
+    textoInput.value.trim();
+
+
+  /* =================================
+     VERIFICAR NOTÍCIA
+  ================================= */
+
+  const url =
+    new URL(window.location.href);
+
+  const noticiaId =
+    url.searchParams.get("id");
+
+
+  if (!noticiaId) {
+
+    alert(
+      "❌ Não foi possível identificar a notícia."
+    );
+
+    return;
+
+  }
+
+
+  /* =================================
+     VALIDAR NOME
+  ================================= */
+
+  if (!nome) {
+
+    alert(
+      "✍️ Digite o seu nome."
+    );
+
+    nomeInput.focus();
+
+    return;
+
+  }
+
+
+  if (nome.length < 2) {
+
+    alert(
+      "✍️ O nome deve ter pelo menos 2 caracteres."
+    );
+
+    nomeInput.focus();
+
+    return;
+
+  }
+
+
+  /* =================================
+     VALIDAR COMENTÁRIO
+  ================================= */
+
+  if (!texto) {
+
+    alert(
+      "💬 Escreva o seu comentário."
+    );
+
+    textoInput.focus();
+
+    return;
+
+  }
+
+
+  if (texto.length < 2) {
+
+    alert(
+      "💬 O comentário é muito curto."
+    );
+
+    textoInput.focus();
+
+    return;
+
+  }
+
+
+  /* =================================
+     DESATIVAR BOTÃO
+  ================================= */
+
+  botao.disabled = true;
+
+  botao.innerHTML =
+    "⏳ A publicar...";
+
+
+  if (mensagem) {
+
+    mensagem.innerHTML = "";
+
+  }
+
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("comentarios")
+        .insert([
+          {
+            noticia_id: noticiaId,
+            nome: nome,
+            comentario: texto
+          }
+        ]);
+
+
+    /* =================================
+       VERIFICAR ERRO
+    ================================= */
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro ao publicar comentário:",
+        resultado.error
+      );
+
+      if (mensagem) {
+
+        mensagem.innerHTML = `
+          <div class="comments-error">
+            ❌ Não foi possível publicar o comentário.
+            <br>
+            <small>
+              ${esc(
+                resultado.error.message
+              )}
+            </small>
+          </div>
+        `;
+
+      }
+
+      return;
+
+    }
+
+
+    /* =================================
+       LIMPAR FORMULÁRIO
+    ================================= */
+
+    nomeInput.value = "";
+
+    textoInput.value = "";
+
+
+    if (mensagem) {
+
+      mensagem.innerHTML = `
+        <div style="color:#278a16;">
+          ✅ Comentário publicado com sucesso!
+        </div>
+      `;
+
+    }
+
+
+    /* =================================
+       ATUALIZAR LISTA
+    ================================= */
+
+    await carregarComentarios(
+      noticiaId
+    );
+
+
+    /* =================================
+       LIMPAR MENSAGEM
+    ================================= */
+
+    setTimeout(
+      function() {
+
+        if (mensagem) {
+
+          mensagem.innerHTML = "";
+
+        }
+
+      },
+      3000
+    );
+
+  }
+
+
+  catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+
+    if (mensagem) {
+
+      mensagem.innerHTML = `
+        <div class="comments-error">
+          ❌ Ocorreu um erro ao publicar o comentário.
+          <br>
+          <small>
+            ${esc(
+              erro.message ||
+              erro
+            )}
+          </small>
+        </div>
+      `;
+
+    }
+
+  }
+
+
+  finally {
+
+    botao.disabled = false;
+
+    botao.innerHTML =
+      "💬 Publicar comentário";
+
+  }
+
+                }
+            /* =====================================
+   ATUALIZAR COMENTÁRIOS APÓS PUBLICAÇÃO
+===================================== */
+
+window.addEventListener(
+  "storage",
+  function(event) {
+
+    if (
+      event.key ===
+      "africanmundo_comentarios_atualizados"
+    ) {
+
+      const url =
+        new URL(window.location.href);
+
+      const noticiaId =
+        url.searchParams.get("id");
+
+      if (noticiaId) {
+
+        carregarComentarios(
+          noticiaId
+        );
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =====================================
+   EVITAR ENVIO VAZIO PELO TECLADO
+===================================== */
+
+document.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter" &&
+      event.ctrlKey
+    ) {
+
+      const textarea =
+        document.getElementById(
+          "commentText"
+        );
+
+      if (
+        textarea &&
+        document.activeElement === textarea
+      ) {
+
+        enviarComentario();
+
+      }
+
+    }
+
+  }
+);
+    
     /* =================================
        MAIS NOTÍCIAS
     ================================= */
