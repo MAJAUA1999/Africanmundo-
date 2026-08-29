@@ -1523,13 +1523,18 @@ function iniciarFavorito() {
 
       try {
 
+                const idNumero =
+          Number(idLimpo);
+
         const resultado =
           await supabaseClient
             .from("noticias")
             .select("*")
             .eq(
               "id",
-              idLimpo
+              Number.isNaN(idNumero)
+                ? idLimpo
+                : idNumero
             )
             .maybeSingle();
 
