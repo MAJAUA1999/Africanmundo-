@@ -2006,14 +2006,34 @@ function iniciarFavorito() {
        INICIALIZAÇÃO
     ===================================== */
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      function() {
+document.addEventListener(
+  "DOMContentLoaded",
+  function() {
 
-        carregarNoticia();
+    console.log("✅ DOM carregado");
 
-      }
-    );
+    const article =
+      document.getElementById("article");
+
+    if (!article) {
+
+      console.error(
+        "❌ Elemento #article não encontrado"
+      );
+
+      return;
+    }
+
+    article.innerHTML = `
+      <div class="loading">
+        ⏳ JavaScript funcionando. A testar carregamento...
+      </div>
+    `;
+
+    carregarNoticia();
+
+  }
+);
 
 
     /* =====================================
