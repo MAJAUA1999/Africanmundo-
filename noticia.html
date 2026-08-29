@@ -90,6 +90,10 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       background: #f4f4f4;
@@ -97,10 +101,54 @@
       font-family: Arial, Helvetica, sans-serif;
     }
 
+    /* ================================
+       CABEÇALHO
+    ================================= */
+
+    .site-header {
+      background: #050505;
+      color: #fff;
+      padding: 20px 15px;
+    }
+
+    .site-header-inner {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .site-logo {
+      font-size: 32px;
+      font-weight: 900;
+    }
+
+    .site-logo span {
+      color: #45c226;
+    }
+
+    .site-tagline {
+      margin-top: 5px;
+      color: #ddd;
+      font-size: 13px;
+    }
+
+    /* ================================
+       CONTEÚDO
+    ================================= */
+
+    .page-main {
+      max-width: 1200px;
+      margin: auto;
+      padding: 25px 12px 50px;
+    }
+
     .article-page {
       max-width: 900px;
       margin: 0 auto;
     }
+
+    /* ================================
+       VOLTAR
+    ================================= */
 
     .back-button {
       display: inline-block;
@@ -112,6 +160,26 @@
       border-radius: 8px;
       font-weight: 700;
     }
+
+    /* ================================
+       CARREGAMENTO
+    ================================= */
+
+    .loading,
+    .error-box {
+      background: #fff;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    .loading {
+      text-align: center;
+      font-size: 17px;
+    }
+
+    /* ================================
+       ARTIGO
+    ================================= */
 
     .article {
       background: #fff;
@@ -135,10 +203,10 @@
     .article-category {
       display: inline-block;
       margin-bottom: 8px;
+      color: #45a52c;
       font-size: 14px;
       font-weight: 800;
       text-transform: uppercase;
-      color: #45a52c;
     }
 
     .article-date {
@@ -158,7 +226,12 @@
       font-size: 19px;
       line-height: 1.85;
       white-space: pre-wrap;
+      word-break: break-word;
     }
+
+    /* ================================
+       AÇÕES
+    ================================= */
 
     .article-actions {
       display: flex;
@@ -192,12 +265,9 @@
       color: #c40000;
     }
 
-    .loading,
-    .error-box {
-      background: #fff;
-      border-radius: 12px;
-      padding: 20px;
-    }
+    /* ================================
+       FOTO GRANDE
+    ================================= */
 
     .photo-viewer {
       position: fixed;
@@ -220,6 +290,7 @@
       width: auto;
       height: auto;
       object-fit: contain;
+      display: block;
     }
 
     .photo-viewer-close {
@@ -234,177 +305,21 @@
       color: #111;
       font-size: 30px;
       font-weight: 900;
+      line-height: 46px;
+      text-align: center;
       cursor: pointer;
       z-index: 1000000;
     }
-        .related-news {
-      margin-top: 30px;
-    }
 
-    .related-news-title {
-      margin: 0 0 15px;
-      font-size: 22px;
-      border-left: 4px solid #45c226;
-      padding-left: 10px;
-    }
-
-    .related-news-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-    }
-
-    .related-card {
-      background: #fff;
-      border-radius: 10px;
-      overflow: hidden;
-      border: 1px solid #ddd;
-      text-decoration: none;
-      color: #111;
-    }
-
-    .related-card-image,
-    .related-placeholder {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      display: block;
-    }
-
-    .related-placeholder {
-      background: linear-gradient(
-        135deg,
-        #111,
-        #345b29
-      );
-      align-items: center;
-      justify-content: center;
-      font-size: 40px;
-    }
-
-    .related-content {
-      padding: 12px;
-    }
-
-    .related-category {
-      color: #45a52c;
-      font-size: 11px;
-      font-weight: 800;
-      text-transform: uppercase;
-    }
-
-    .related-card h3 {
-      margin: 6px 0 0;
-      font-size: 16px;
-      line-height: 1.3;
-    }
-
-    /* =====================================
-       COMENTÁRIOS
-    ===================================== */
-
-    .comments-section {
-      margin-top: 30px;
-      background: #fff;
-      border-radius: 16px;
-      padding: 22px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
-
-    .comments-title {
-      margin: 0 0 20px;
-      font-size: 24px;
-      border-left: 4px solid #45c226;
-      padding-left: 10px;
-    }
-
-    .comments-form {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .comments-form input,
-    .comments-form textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 16px;
-      outline: none;
-    }
-
-    .comments-form input:focus,
-    .comments-form textarea:focus {
-      border-color: #45c226;
-    }
-
-    .comments-form textarea {
-      min-height: 110px;
-      resize: vertical;
-    }
-
-    .comments-submit {
-      width: fit-content;
-      padding: 12px 18px;
-      border: 0;
-      border-radius: 8px;
-      background: #45c226;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .comments-submit:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-    }
-
-    .comments-list {
-      margin-top: 25px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-
-    .comment-item {
-      padding: 15px;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      background: #fafafa;
-    }
-
-    .comment-name {
-      font-weight: 800;
-      margin-bottom: 5px;
-    }
-
-    .comment-date {
-      font-size: 12px;
-      color: #777;
-      margin-bottom: 10px;
-    }
-
-    .comment-text {
-      font-size: 15px;
-      line-height: 1.6;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    .comments-empty {
-      color: #666;
-      padding: 10px 0;
-    }
-
-    .comments-error {
-      color: #b00020;
-      padding: 10px 0;
-    }
+    /* ================================
+       RESPONSIVO
+    ================================= */
 
     @media (max-width: 600px) {
+
+      .site-logo {
+        font-size: 28px;
+      }
 
       .article-image {
         max-height: 300px;
@@ -423,10 +338,6 @@
         line-height: 1.75;
       }
 
-      .related-news-grid {
-        grid-template-columns: 1fr;
-      }
-
       .photo-viewer {
         padding: 8px;
       }
@@ -436,15 +347,12 @@
         max-height: 92vh;
       }
 
-      .comments-section {
-        padding: 18px;
+      .article-actions {
+        flex-direction: column;
       }
 
-      .comments-title {
-        font-size: 21px;
-      }
-
-      .comments-submit {
+      .share-button,
+      .favorite-button {
         width: 100%;
       }
 
@@ -456,57 +364,29 @@
 
 <body>
 
-  <!-- =====================================
+  <!-- ================================
        CABEÇALHO
-  ===================================== -->
+  ================================= -->
 
-  <header>
+  <header class="site-header">
 
-    <div
-      style="
-        background:#050505;
-        color:#fff;
-        padding:20px 15px;
-      "
-    >
+    <div class="site-header-inner">
 
-      <div
-        style="
-          max-width:1200px;
-          margin:auto;
-        "
-      >
+      <div class="site-logo">
+        African<span>Mundo</span>
+      </div>
 
-        <div
-          style="
-            font-size:32px;
-            font-weight:900;
-          "
-        >
-          African<span style="color:#45c226;">
-            Mundo
-          </span>
-        </div>
-
-        <div
-          style="
-            margin-top:5px;
-            color:#ddd;
-            font-size:13px;
-          "
-        >
-          A informação que liga África ao mundo
-        </div>
-
+      <div class="site-tagline">
+        A informação que liga África ao mundo
       </div>
 
     </div>
 
   </header>
 
-  <!-- =====================================
+  <!-- ================================
        VISUALIZADOR DA FOTO
-  ===================================== -->
+  ================================= -->
 
   <div
     id="photoViewer"
@@ -531,19 +411,13 @@
 
   </div>
 
-  <!-- =====================================
-       CONTEÚDO
-  ===================================== -->
+  <!-- ================================
+       CONTEÚDO PRINCIPAL
+  ================================= -->
 
-  <main
-    style="
-      max-width:1200px;
-      margin:auto;
-      padding:25px 12px 50px;
-    "
-  >
+  <main class="page-main">
 
-    <section class="news-section article-page">
+    <section class="article-page">
 
       <a
         class="back-button"
@@ -565,7 +439,8 @@
   </main>
 
   <script>
-        /* =====================================
+
+    /* =====================================
        SUPABASE
     ===================================== */
 
@@ -607,7 +482,30 @@
 
 
     /* =====================================
-       DATA + HORA
+       ID DA NOTÍCIA
+    ===================================== */
+
+    function obterIdNoticiaAtual() {
+
+      const url =
+        new URL(
+          window.location.href
+        );
+
+      const id =
+        url.searchParams.get("id");
+
+      if (!id) {
+        return "";
+      }
+
+      return String(id).trim();
+
+    }
+
+
+    /* =====================================
+       DATA
     ===================================== */
 
     function formatarData(data) {
@@ -616,9 +514,14 @@
         return "";
       }
 
-      const d = new Date(data);
+      const d =
+        new Date(data);
 
-      if (isNaN(d.getTime())) {
+      if (
+        isNaN(
+          d.getTime()
+        )
+      ) {
         return "";
       }
 
@@ -634,21 +537,27 @@
       );
 
     }
-
-
-    /* =====================================
+        /* =====================================
        FOTO GRANDE
     ===================================== */
 
     function abrirFotoGrande(url, titulo) {
 
       const viewer =
-        document.getElementById("photoViewer");
+        document.getElementById(
+          "photoViewer"
+        );
 
       const img =
-        document.getElementById("photoViewerImg");
+        document.getElementById(
+          "photoViewerImg"
+        );
 
-      if (!viewer || !img || !url) {
+      if (
+        !viewer ||
+        !img ||
+        !url
+      ) {
         return;
       }
 
@@ -666,6 +575,10 @@
     }
 
 
+    /* =====================================
+       FECHAR FOTO GRANDE
+    ===================================== */
+
     function fecharFotoGrande(event) {
 
       if (
@@ -678,12 +591,19 @@
       }
 
       const viewer =
-        document.getElementById("photoViewer");
+        document.getElementById(
+          "photoViewer"
+        );
 
       const img =
-        document.getElementById("photoViewerImg");
+        document.getElementById(
+          "photoViewerImg"
+        );
 
-      if (!viewer || !img) {
+      if (
+        !viewer ||
+        !img
+      ) {
         return;
       }
 
@@ -704,8 +624,12 @@
       "keydown",
       function(event) {
 
-        if (event.key === "Escape") {
+        if (
+          event.key === "Escape"
+        ) {
+
           fecharFotoGrande();
+
         }
 
       }
@@ -713,7 +637,7 @@
 
 
     /* =====================================
-       PARTILHAR
+       PARTILHAR NOTÍCIA
     ===================================== */
 
     async function partilharNoticia() {
@@ -727,15 +651,21 @@
         )?.innerText ||
         "AfricanMundo";
 
-      if (navigator.share) {
+      if (
+        navigator.share
+      ) {
 
         try {
 
           await navigator.share({
+
             title: titulo,
+
             text:
               "Confira esta notícia no AfricanMundo.",
+
             url: url
+
           });
 
         }
@@ -748,29 +678,28 @@
 
         }
 
+        return;
+
       }
 
-      else {
 
-        try {
+      try {
 
-          await navigator.clipboard.writeText(
-            url
-          );
+        await navigator.clipboard.writeText(
+          url
+        );
 
-          alert(
-            "🔗 Link da notícia copiado!"
-          );
+        alert(
+          "🔗 Link da notícia copiado!"
+        );
 
-        }
+      }
 
-        catch (erro) {
+      catch (erro) {
 
-          alert(
-            "Copie o endereço desta página para partilhar."
-          );
-
-        }
+        alert(
+          "Copie o endereço desta página para partilhar."
+        );
 
       }
 
@@ -778,17 +707,20 @@
 
 
     /* =====================================
-       FAVORITOS
+       FAVORITOS — OBTER
     ===================================== */
 
     function obterFavoritos() {
 
       try {
 
-        return JSON.parse(
+        const dados =
           localStorage.getItem(
             "africanmundo_favoritos"
-          ) || "[]"
+          );
+
+        return JSON.parse(
+          dados || "[]"
         );
 
       }
@@ -807,14 +739,25 @@
     }
 
 
+    /* =====================================
+       FAVORITOS — VERIFICAR
+    ===================================== */
+
     function verificarFavorito(id) {
 
-      return obterFavoritos().includes(
+      const favoritos =
+        obterFavoritos();
+
+      return favoritos.includes(
         String(id)
       );
 
     }
 
+
+    /* =====================================
+       FAVORITOS — BOTÃO
+    ===================================== */
 
     function atualizarBotaoFavorito(id) {
 
@@ -827,12 +770,16 @@
         return;
       }
 
-      if (verificarFavorito(id)) {
+      if (
+        verificarFavorito(id)
+      ) {
 
         botao.innerHTML =
           "❤️ Favoritado";
 
-        botao.classList.add("active");
+        botao.classList.add(
+          "active"
+        );
 
       }
 
@@ -841,235 +788,8 @@
         botao.innerHTML =
           "🤍 Favoritar";
 
-        botao.classList.remove("active");
-
-      }
-
-    }
-
-
-    function alternarFavorito() {
-
-      const url =
-        new URL(window.location.href);
-
-      const id =
-        url.searchParams.get("id");
-
-      if (!id) {
-        return;
-      }
-
-      const idLimpo =
-        String(id).trim();
-
-      let favoritos =
-        obterFavoritos();
-
-      const indice =
-        favoritos.indexOf(idLimpo);
-
-      if (indice === -1) {
-
-        favoritos.push(idLimpo);
-
-      }
-
-      else {
-
-        favoritos.splice(indice, 1);
-
-      }
-
-      localStorage.setItem(
-        "africanmundo_favoritos",
-        JSON.stringify(favoritos)
-      );
-
-      atualizarBotaoFavorito(idLimpo);
-
-    }
-
-
-    function iniciarFavorito() {
-
-      const url =
-        new URL(window.location.href);
-
-      const id =
-        url.searchParams.get("id");
-
-      if (!id) {
-        return;
-      }
-
-      atualizarBotaoFavorito(
-        String(id).trim()
-      );
-
-    }
-        /* =====================================
-       MAIS NOTÍCIAS
-    ===================================== */
-
-    async function carregarMaisNoticias(noticiaAtualId) {
-
-      const article =
-        document.getElementById("article");
-
-      if (!article) {
-        return;
-      }
-
-      try {
-
-        const resultado =
-          await supabaseClient
-            .from("noticias")
-            .select("*")
-            .neq("id", noticiaAtualId)
-            .order("id", {
-              ascending: false
-            })
-            .limit(3);
-
-        if (resultado.error) {
-
-          console.error(
-            "Erro ao carregar mais notícias:",
-            resultado.error
-          );
-
-          return;
-        }
-
-        const noticias =
-          Array.isArray(resultado.data)
-            ? resultado.data
-            : [];
-
-        if (noticias.length === 0) {
-          return;
-        }
-
-        const cards =
-          noticias.map(function(noticia) {
-
-            const titulo =
-              noticia.titulo ||
-              noticia.title ||
-              noticia.nome ||
-              "Sem título";
-
-            const categoria =
-              noticia.categoria ||
-              noticia.category ||
-              noticia.cat ||
-              "Notícias";
-
-            const imagem =
-              String(
-                noticia.imagem ??
-                noticia.Imagem ??
-                noticia.image ??
-                noticia.imagem_url ??
-                noticia.image_url ??
-                ""
-              ).trim();
-
-            const link =
-              "noticia.html?id=" +
-              encodeURIComponent(
-                noticia.id
-              );
-
-            let imagemHTML = `
-              <div
-                class="related-placeholder"
-                style="display:flex;"
-              >
-                🌍
-              </div>
-            `;
-
-            if (imagem) {
-
-              imagemHTML = `
-                <img
-                  class="related-card-image"
-                  src="${esc(imagem)}"
-                  alt="${esc(titulo)}"
-                  loading="lazy"
-                  onerror="
-                    this.style.display='none';
-                    this.nextElementSibling.style.display='flex';
-                  "
-                >
-
-                <div
-                  class="related-placeholder"
-                  style="display:none;"
-                >
-                  🌍
-                </div>
-              `;
-
-            }
-
-            return `
-              <a
-                class="related-card"
-                href="${link}"
-              >
-
-                ${imagemHTML}
-
-                <div class="related-content">
-
-                  <div class="related-category">
-                    ${esc(categoria)}
-                  </div>
-
-                  <h3>
-                    ${esc(titulo)}
-                  </h3>
-
-                </div>
-
-              </a>
-            `;
-
-          }).join("");
-
-        const secao =
-          document.createElement("section");
-
-        secao.className =
-          "related-news";
-
-        secao.innerHTML = `
-
-          <h2 class="related-news-title">
-            📰 Mais notícias
-          </h2>
-
-          <div class="related-news-grid">
-            ${cards}
-          </div>
-
-        `;
-
-        article.parentNode.appendChild(
-          secao
-        );
-
-      }
-
-      catch (erro) {
-
-        console.error(
-          "Erro ao carregar mais notícias:",
-          erro
+        botao.classList.remove(
+          "active"
         );
 
       }
@@ -1078,143 +798,1110 @@
 
 
     /* =====================================
-       COMENTÁRIOS — CARREGAR
+       FAVORITOS — ALTERNAR
     ===================================== */
 
-    async function carregarComentarios(noticiaId) {
+    function alternarFavorito() {
 
-      const lista =
-        document.getElementById(
-          "commentsList"
-        );
+      const id =
+        obterIdNoticiaAtual();
 
-      if (!lista) {
+      if (!id) {
         return;
       }
 
-      lista.innerHTML = `
-        <div class="comments-empty">
-          🔄 A carregar comentários...
-        </div>
-      `;
+      let favoritos =
+        obterFavoritos();
+
+      const indice =
+        favoritos.indexOf(id);
+
+      if (
+        indice === -1
+      ) {
+
+        favoritos.push(id);
+
+      }
+
+      else {
+
+        favoritos.splice(
+          indice,
+          1
+        );
+
+      }
+
+      localStorage.setItem(
+        "africanmundo_favoritos",
+        JSON.stringify(
+          favoritos
+        )
+      );
+
+      atualizarBotaoFavorito(
+        id
+      );
+
+    }
+
+
+    /* =====================================
+       FAVORITOS — INICIAR
+    ===================================== */
+
+    function iniciarFavorito() {
+
+      const id =
+        obterIdNoticiaAtual();
+
+      if (!id) {
+        return;
+      }
+
+      atualizarBotaoFavorito(
+        id
+      );
+
+        }
+        /* =====================================
+       CARREGAR NOTÍCIA
+    ===================================== */
+
+    async function carregarNoticia() {
+
+      const article =
+        document.getElementById(
+          "article"
+        );
+
+      if (!article) {
+        return;
+      }
+
+
+      const id =
+        obterIdNoticiaAtual();
+
+
+      console.log(
+        "AfricanMundo — ID recebido:",
+        id
+      );
+
+
+      /* =================================
+         VERIFICAR ID
+      ================================= */
+
+      if (!id) {
+
+        article.innerHTML = `
+
+          <div class="error-box">
+
+            ❌ Nenhuma notícia foi selecionada.
+
+            <br><br>
+
+            <small>
+              Abra uma notícia através de um link
+              como:
+              noticia.html?id=1
+            </small>
+
+          </div>
+
+        `;
+
+        return;
+
+      }
+
 
       try {
 
+        /* ===============================
+           BUSCAR NO SUPABASE
+        =============================== */
+
         const resultado =
           await supabaseClient
-            .from("comentarios")
+            .from("noticias")
             .select("*")
-            .eq("noticia_id", noticiaId)
-            .order("id", {
-              ascending: false
-            });
+            .eq("id", id)
+            .maybeSingle();
 
-        if (resultado.error) {
+
+        console.log(
+          "Resultado Supabase:",
+          resultado
+        );
+
+
+        /* ===============================
+           ERRO SUPABASE
+        =============================== */
+
+        if (
+          resultado.error
+        ) {
 
           console.error(
-            "Erro ao carregar comentários:",
+            "Erro Supabase:",
             resultado.error
           );
 
-          lista.innerHTML = `
-            <div class="comments-error">
-              ❌ Não foi possível carregar os comentários.
+
+          article.innerHTML = `
+
+            <div class="error-box">
+
+              ❌ Não foi possível carregar esta notícia.
+
+              <br><br>
+
+              <small>
+
+                ${esc(
+                  resultado.error.message ||
+                  "Erro desconhecido"
+                )}
+
+              </small>
+
             </div>
+
           `;
 
           return;
+
         }
 
-        const comentarios =
-          Array.isArray(resultado.data)
-            ? resultado.data
-            : [];
 
-        if (comentarios.length === 0) {
+        /* ===============================
+           NOTÍCIA NÃO ENCONTRADA
+        =============================== */
 
-          lista.innerHTML = `
-            <div class="comments-empty">
-              💬 Ainda não existem comentários.
-              Seja o primeiro a comentar!
+        if (
+          !resultado.data
+        ) {
+
+          article.innerHTML = `
+
+            <div class="error-box">
+
+              ❌ Notícia não encontrada.
+
+              <br><br>
+
+              <small>
+
+                ID procurado:
+                ${esc(id)}
+
+              </small>
+
             </div>
+
           `;
 
           return;
+
         }
 
-        lista.innerHTML =
-          comentarios.map(function(item) {
 
-            const nome =
-              item.nome ||
-              "Visitante";
+        const data =
+          resultado.data;
 
-            const texto =
-              item.comentario ||
-              "";
 
-            const data =
-              item.criado_em
-                ? formatarData(
-                    item.criado_em
-                  )
-                : "";
+        /* =================================
+           DADOS
+        ================================= */
 
-            return `
-              <div class="comment-item">
+        const titulo =
+          data.titulo ||
+          data.title ||
+          data.nome ||
+          "Sem título";
 
-                <div class="comment-name">
-                  👤 ${esc(nome)}
-                </div>
 
-                ${
-                  data
-                    ? `
-                      <div class="comment-date">
-                        📅 ${esc(data)}
-                      </div>
-                    `
-                    : ""
-                }
+        const texto =
+          data.texto ||
+          data.body ||
+          data.conteudo ||
+          data.content ||
+          "";
 
-                <div class="comment-text">
-                  ${esc(texto)}
-                </div>
 
-              </div>
-            `;
+        const categoria =
+          data.categoria ||
+          data.category ||
+          data.cat ||
+          "Notícias";
 
-          }).join("");
 
-      }
+        const imagem =
+          String(
+            data.imagem ??
+            data.Imagem ??
+            data.image ??
+            data.imagem_url ??
+            data.image_url ??
+            ""
+          ).trim();
 
-      catch (erro) {
 
-        console.error(
-          "Erro nos comentários:",
-          erro
-        );
+        const dataPublicacao =
+          formatarData(
+            data.data ||
+            data.criado_em ||
+            data.created_at
+          );
 
-        lista.innerHTML = `
-          <div class="comments-error">
-            ❌ Ocorreu um erro ao carregar os comentários.
-          </div>
-        `;
 
-      }
+        /* =================================
+           SEO
+        ================================= */
 
-    }
-    <!-- =====================================
-     PARTE 5 — COMENTÁRIOS
-===================================== -->
+        const descricaoSEO =
+          String(
+            texto || titulo
+          )
+            .replace(
+              /\s+/g,
+              " "
+            )
+            .trim()
+            .slice(
+              0,
+              160
+            );
 
-<script>
 
-/* =====================================
-   COMENTÁRIOS — VARIÁVEIS
+        document.title =
+          titulo +
+          " — AfricanMundo";
+
+
+        const metaDescription =
+          document.getElementById(
+            "metaDescription"
+          );
+
+        if (metaDescription) {
+
+          metaDescription.setAttribute(
+            "content",
+            descricaoSEO
+          );
+
+        }
+
+
+        const metaOgTitle =
+          document.getElementById(
+            "metaOgTitle"
+          );
+
+        if (metaOgTitle) {
+
+          metaOgTitle.setAttribute(
+            "content",
+            titulo
+          );
+
+        }
+
+
+        const metaOgDescription =
+          document.getElementById(
+            "metaOgDescription"
+          );
+
+        if (metaOgDescription) {
+
+          metaOgDescription.setAttribute(
+            "content",
+            descricaoSEO
+          );
+
+        }
+
+
+        const metaOgImage =
+          document.getElementById(
+            "metaOgImage"
+          );
+
+        if (
+          metaOgImage &&
+          imagem
+        ) {
+
+          metaOgImage.setAttribute(
+            "content",
+            imagem
+          );
+
+        }
+
+
+        const metaOgUrl =
+          document.getElementById(
+            "metaOgUrl"
+          );
+
+        if (metaOgUrl) {
+
+          metaOgUrl.setAttribute(
+            "content",
+            window.location.href
+          );
+
+        }
+
+
+        const metaTwitterTitle =
+          document.getElementById(
+            "metaTwitterTitle"
+          );
+
+        if (metaTwitterTitle) {
+
+          metaTwitterTitle.setAttribute(
+            "content",
+            titulo
+          );
+
+        }
+
+
+        const metaTwitterDescription =
+          document.getElementById(
+            "metaTwitterDescription"
+          );
+
+        if (metaTwitterDescription) {
+
+          metaTwitterDescription.setAttribute(
+            "content",
+            descricaoSEO
+          );
+
+        }
+
+
+        const metaTwitterImage =
+          document.getElementById(
+            "metaTwitterImage"
+          );
+
+        if (
+          metaTwitterImage &&
+          imagem
+        ) {
+
+          metaTwitterImage.setAttribute(
+            "content",
+            imagem
+          );
+
+        }
+
+
+        const canonicalUrl =
+          document.getElementById(
+            "canonicalUrl"
+          );
+
+        if (canonicalUrl) {
+
+          canonicalUrl.setAttribute(
+            "href",
+            window.location.href
+          );
+
+        }
+
+
+        /* =================================
+           PREPARAR IMAGEM
+        ================================= */
+
+        let imagemHTML = "";
+
+
+        if (imagem) {
+
+          imagemHTML = `
+
+            <img
+              class="article-image"
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              onclick="abrirFotoGrande(
+                '${esc(imagem)}',
+                '${esc(titulo)}'
+              )"
+              onerror="
+                this.style.display='none';
+              "
+            >
+
+          `;
+
+        }
+        /* =====================================
+   3B — CARREGAR NOTÍCIA
 ===================================== */
 
-let noticiaAtualParaComentarios = null;
+async function carregarNoticia() {
+
+  const article =
+    document.getElementById("article");
+
+  if (!article) {
+    return;
+  }
+
+  const url =
+    new URL(window.location.href);
+
+  const id =
+    url.searchParams.get("id");
+
+  console.log("ID recebido:", id);
+
+  if (!id) {
+
+    article.innerHTML = `
+      <div class="error-box">
+        ❌ Nenhuma notícia foi selecionada.
+
+        <br><br>
+
+        <small>
+          Esta página precisa receber um ID.
+          <br>
+          Exemplo: noticia.html?id=1
+        </small>
+      </div>
+    `;
+
+    return;
+  }
+
+  const idLimpo =
+    String(id).trim();
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .eq("id", idLimpo)
+        .maybeSingle();
+
+    console.log(
+      "Resultado Supabase:",
+      resultado
+    );
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro Supabase:",
+        resultado.error
+      );
+
+      article.innerHTML = `
+        <div class="error-box">
+
+          ❌ Não foi possível carregar esta notícia.
+
+          <br><br>
+
+          <small>
+            ${esc(resultado.error.message)}
+          </small>
+
+        </div>
+      `;
+
+      return;
+    }
+
+    const data =
+      resultado.data;
+
+    if (!data) {
+
+      article.innerHTML = `
+        <div class="error-box">
+
+          ❌ Notícia não encontrada.
+
+          <br><br>
+
+          <small>
+            ID procurado:
+            ${esc(idLimpo)}
+          </small>
+
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /* =================================
+       DADOS DA NOTÍCIA
+    ================================= */
+
+    const titulo =
+      data.titulo ||
+      data.title ||
+      data.nome ||
+      "Sem título";
+
+    const texto =
+      data.texto ||
+      data.body ||
+      data.conteudo ||
+      data.content ||
+      "";
+
+    const categoria =
+      data.categoria ||
+      data.category ||
+      data.cat ||
+      "Notícias";
+
+    const imagem =
+      String(
+        data.imagem ??
+        data.Imagem ??
+        data.image ??
+        data.imagem_url ??
+        data.image_url ??
+        ""
+      ).trim();
+
+    const dataPublicacao =
+      formatarData(
+        data.data ||
+        data.criado_em ||
+        data.created_at
+      );
+
+
+    /* =================================
+       SEO
+    ================================= */
+
+    const descricaoSEO =
+      String(
+        texto || titulo
+      )
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 160);
+
+    document.title =
+      titulo + " — AfricanMundo";
+
+
+    const metaDescription =
+      document.getElementById(
+        "metaDescription"
+      );
+
+    if (metaDescription) {
+
+      metaDescription.setAttribute(
+        "content",
+        descricaoSEO
+      );
+
+    }
+
+
+    const metaOgTitle =
+      document.getElementById(
+        "metaOgTitle"
+      );
+
+    if (metaOgTitle) {
+
+      metaOgTitle.setAttribute(
+        "content",
+        titulo
+      );
+
+    }
+
+
+    const metaOgDescription =
+      document.getElementById(
+        "metaOgDescription"
+      );
+
+    if (metaOgDescription) {
+
+      metaOgDescription.setAttribute(
+        "content",
+        descricaoSEO
+      );
+
+    }
+
+
+    const metaOgImage =
+      document.getElementById(
+        "metaOgImage"
+      );
+
+    if (
+      metaOgImage &&
+      imagem
+    ) {
+
+      metaOgImage.setAttribute(
+        "content",
+        imagem
+      );
+
+    }
+
+
+    const metaOgUrl =
+      document.getElementById(
+        "metaOgUrl"
+      );
+
+    if (metaOgUrl) {
+
+      metaOgUrl.setAttribute(
+        "content",
+        window.location.href
+      );
+
+    }
+
+
+    const metaTwitterTitle =
+      document.getElementById(
+        "metaTwitterTitle"
+      );
+
+    if (metaTwitterTitle) {
+
+      metaTwitterTitle.setAttribute(
+        "content",
+        titulo
+      );
+
+    }
+
+
+    const metaTwitterDescription =
+      document.getElementById(
+        "metaTwitterDescription"
+      );
+
+    if (metaTwitterDescription) {
+
+      metaTwitterDescription.setAttribute(
+        "content",
+        descricaoSEO
+      );
+
+    }
+
+
+    const metaTwitterImage =
+      document.getElementById(
+        "metaTwitterImage"
+      );
+
+    if (
+      metaTwitterImage &&
+      imagem
+    ) {
+
+      metaTwitterImage.setAttribute(
+        "content",
+        imagem
+      );
+
+    }
+
+
+    const canonicalUrl =
+      document.getElementById(
+        "canonicalUrl"
+      );
+
+    if (canonicalUrl) {
+
+      canonicalUrl.setAttribute(
+        "href",
+        window.location.href
+      );
+
+    }
+
+
+    /* =================================
+       PREPARAR IMAGEM
+    ================================= */
+
+    let imagemHTML = "";
+
+    if (imagem) {
+
+      imagemHTML = `
+
+        <img
+          class="article-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+          onclick="
+            abrirFotoGrande(
+              '${esc(imagem)}',
+              '${esc(titulo)}'
+            )
+          "
+          onerror="
+            this.style.display='none';
+          "
+        >
+
+      `;
+
+    }
+
+
+    /* =================================
+       MOSTRAR NOTÍCIA
+    ================================= */
+
+    article.innerHTML = `
+
+      <article class="article">
+
+        ${imagemHTML}
+
+        <div class="article-content">
+
+          <span class="article-category">
+            🏷️ ${esc(categoria)}
+          </span>
+
+          ${
+            dataPublicacao
+              ? `
+                <span class="article-date">
+                  📅 Publicado em
+                  ${esc(dataPublicacao)}
+                </span>
+              `
+              : ""
+          }
+
+          <h1 class="article-title">
+            ${esc(titulo)}
+          </h1>
+
+          <div class="article-text">
+            ${esc(texto)}
+          </div>
+
+          <div class="article-actions">
+
+            <button
+              type="button"
+              class="share-button"
+              onclick="partilharNoticia()"
+            >
+              📤 Partilhar notícia
+            </button>
+
+            <button
+              type="button"
+              class="favorite-button"
+              id="favoriteButton"
+              onclick="alternarFavorito()"
+            >
+              🤍 Favoritar
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    `;
+
+
+    /* =================================
+       FAVORITO
+    ================================= */
+
+    iniciarFavorito();
+
+
+    /* =================================
+       MAIS NOTÍCIAS
+    ================================= */
+
+    carregarMaisNoticias(
+      idLimpo
+    );
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro ao carregar notícia:",
+      erro
+    );
+
+    article.innerHTML = `
+
+      <div class="error-box">
+
+        ❌ Ocorreu um erro ao carregar a notícia.
+
+        <br><br>
+
+        <small>
+          ${esc(
+            erro.message ||
+            erro
+          )}
+        </small>
+
+      </div>
+
+    `;
+
+  }
+
+    }
+        /* =====================================
+   3C — MAIS NOTÍCIAS
+===================================== */
+
+async function carregarMaisNoticias(noticiaAtualId) {
+
+  const article =
+    document.getElementById("article");
+
+  if (!article) {
+    return;
+  }
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .neq("id", noticiaAtualId)
+        .order("id", {
+          ascending: false
+        })
+        .limit(3);
+
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro ao carregar mais notícias:",
+        resultado.error
+      );
+
+      return;
+    }
+
+
+    const noticias =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+
+    if (noticias.length === 0) {
+      return;
+    }
+
+
+    const cards =
+      noticias.map(function(noticia) {
+
+        const titulo =
+          noticia.titulo ||
+          noticia.title ||
+          noticia.nome ||
+          "Sem título";
+
+
+        const categoria =
+          noticia.categoria ||
+          noticia.category ||
+          noticia.cat ||
+          "Notícias";
+
+
+        const imagem =
+          String(
+            noticia.imagem ??
+            noticia.Imagem ??
+            noticia.image ??
+            noticia.imagem_url ??
+            noticia.image_url ??
+            ""
+          ).trim();
+
+
+        const link =
+          "noticia.html?id=" +
+          encodeURIComponent(
+            noticia.id
+          );
+
+
+        let imagemHTML = `
+
+          <div
+            class="related-placeholder"
+            style="
+              display:flex;
+            "
+          >
+            🌍
+          </div>
+
+        `;
+
+
+        if (imagem) {
+
+          imagemHTML = `
+
+            <img
+              class="related-card-image"
+              src="${esc(imagem)}"
+              alt="${esc(titulo)}"
+              loading="lazy"
+              onerror="
+                this.style.display='none';
+                this.nextElementSibling.style.display='flex';
+              "
+            >
+
+            <div
+              class="related-placeholder"
+              style="
+                display:none;
+              "
+            >
+              🌍
+            </div>
+
+          `;
+
+        }
+
+
+        return `
+
+          <a
+            class="related-card"
+            href="${link}"
+          >
+
+            ${imagemHTML}
+
+            <div
+              class="related-content"
+            >
+
+              <div
+                class="related-category"
+              >
+                ${esc(categoria)}
+              </div>
+
+              <h3>
+                ${esc(titulo)}
+              </h3>
+
+            </div>
+
+          </a>
+
+        `;
+
+      }).join("");
+
+
+    const secao =
+      document.createElement(
+        "section"
+      );
+
+
+    secao.className =
+      "related-news";
+
+
+    secao.innerHTML = `
+
+      <h2
+        class="related-news-title"
+      >
+        📰 Mais notícias
+      </h2>
+
+      <div
+        class="related-news-grid"
+      >
+
+        ${cards}
+
+      </div>
+
+    `;
+
+
+    if (article.parentNode) {
+
+      article.parentNode.appendChild(
+        secao
+      );
+
+    }
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro inesperado ao carregar mais notícias:",
+      erro
+    );
+
+  }
+
+}
 
 
 /* =====================================
@@ -1223,105 +1910,279 @@ let noticiaAtualParaComentarios = null;
 
 function obterIdNoticiaAtual() {
 
-  const url =
-    new URL(window.location.href);
+  try {
 
-  const id =
-    url.searchParams.get("id");
+    const url =
+      new URL(
+        window.location.href
+      );
 
-  if (!id) {
-    return null;
+    const id =
+      url.searchParams.get(
+        "id"
+      );
+
+    if (!id) {
+      return null;
+    }
+
+    return String(id).trim();
+
   }
 
-  return String(id).trim();
+  catch (erro) {
+
+    console.error(
+      "Erro ao obter ID:",
+      erro
+    );
+
+    return null;
+
+  }
+
+      }
+        /* =====================================
+   3D — COMENTÁRIOS
+===================================== */
+
+async function carregarComentarios(noticiaId) {
+
+  const lista =
+    document.getElementById("commentsList");
+
+  if (!lista) {
+    return;
+  }
+
+  lista.innerHTML = `
+    <div class="comments-empty">
+      🔄 A carregar comentários...
+    </div>
+  `;
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("comentarios")
+        .select("*")
+        .eq("noticia_id", noticiaId)
+        .order("id", {
+          ascending: false
+        });
+
+
+    if (resultado.error) {
+
+      console.error(
+        "Erro ao carregar comentários:",
+        resultado.error
+      );
+
+      lista.innerHTML = `
+        <div class="comments-error">
+          ❌ Não foi possível carregar os comentários.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    const comentarios =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+
+    if (comentarios.length === 0) {
+
+      lista.innerHTML = `
+        <div class="comments-empty">
+          💬 Ainda não existem comentários.
+          <br>
+          Seja o primeiro a comentar!
+        </div>
+      `;
+
+      return;
+    }
+
+
+    lista.innerHTML =
+      comentarios
+        .map(function(comentario) {
+
+          const nome =
+            comentario.nome ||
+            "Visitante";
+
+
+          const texto =
+            comentario.comentario ||
+            comentario.comentário ||
+            "";
+
+
+          const data =
+            comentario.criado_em
+              ? formatarData(
+                  comentario.criado_em
+                )
+              : "";
+
+
+          return `
+
+            <div
+              class="comment-item"
+            >
+
+              <div
+                class="comment-name"
+              >
+                👤 ${esc(nome)}
+              </div>
+
+
+              ${
+                data
+                  ? `
+                    <div
+                      class="comment-date"
+                    >
+                      📅 ${esc(data)}
+                    </div>
+                  `
+                  : ""
+              }
+
+
+              <div
+                class="comment-text"
+              >
+                ${esc(texto)}
+              </div>
+
+            </div>
+
+          `;
+
+        })
+        .join("");
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro inesperado nos comentários:",
+      erro
+    );
+
+    lista.innerHTML = `
+      <div class="comments-error">
+        ❌ Ocorreu um erro ao carregar os comentários.
+      </div>
+    `;
+
+  }
 
 }
 
 
 /* =====================================
-   CRIAR ÁREA DE COMENTÁRIOS
+   CRIAR SEÇÃO DE COMENTÁRIOS
 ===================================== */
 
-function criarSecaoComentarios(idNoticia) {
+function criarSecaoComentarios(
+  noticiaId
+) {
 
   const article =
-    document.getElementById("article");
+    document.getElementById(
+      "article"
+    );
 
-  if (!article || !idNoticia) {
+  if (!article) {
     return;
   }
 
-  noticiaAtualParaComentarios =
-    String(idNoticia).trim();
 
+  /* Evita criar duas vezes */
 
-  /* Evitar duplicação */
-
-  const antiga =
+  if (
     document.getElementById(
       "commentsSection"
-    );
-
-  if (antiga) {
-    antiga.remove();
+    )
+  ) {
+    return;
   }
 
 
-  const section =
-    document.createElement("section");
+  const commentsSection =
+    document.createElement(
+      "section"
+    );
 
-  section.id =
+
+  commentsSection.id =
     "commentsSection";
 
-  section.className =
+
+  commentsSection.className =
     "comments-section";
 
 
-  section.innerHTML = `
+  commentsSection.innerHTML = `
 
-    <h2 class="comments-title">
+    <h2
+      class="comments-title"
+    >
       💬 Comentários
     </h2>
 
 
     <form
-      id="commentsForm"
       class="comments-form"
+      id="commentsForm"
     >
 
       <input
-        id="commentName"
         type="text"
-        maxlength="80"
+        id="commentName"
         placeholder="Seu nome"
+        maxlength="80"
+        autocomplete="name"
         required
       >
 
 
       <textarea
         id="commentText"
-        maxlength="1000"
         placeholder="Escreva o seu comentário..."
+        maxlength="1000"
         required
       ></textarea>
 
 
       <button
-        id="commentsSubmit"
-        class="comments-submit"
         type="submit"
+        class="comments-submit"
+        id="commentsSubmit"
       >
         💬 Publicar comentário
       </button>
 
+
+      <div
+        id="commentsMessage"
+        class="comments-empty"
+        style="display:none;"
+      ></div>
+
     </form>
-
-
-    <div
-      id="commentsMessage"
-      class="comments-empty"
-      style="display:none;"
-    ></div>
 
 
     <div
@@ -1329,7 +2190,9 @@ function criarSecaoComentarios(idNoticia) {
       class="comments-list"
     >
 
-      <div class="comments-empty">
+      <div
+        class="comments-empty"
+      >
         🔄 A carregar comentários...
       </div>
 
@@ -1339,7 +2202,7 @@ function criarSecaoComentarios(idNoticia) {
 
 
   article.parentNode.appendChild(
-    section
+    commentsSection
   );
 
 
@@ -1360,351 +2223,29 @@ function criarSecaoComentarios(idNoticia) {
 
 
   carregarComentarios(
-    noticiaAtualParaComentarios
-  );
-
-}
-
-/* =====================================
-   OBTER ID DA NOTÍCIA
-===================================== */
-
-function obterIdNoticiaAtual() {
-
-  const url =
-    new URL(window.location.href);
-
-  const id =
-    url.searchParams.get("id");
-
-  if (!id) {
-    return "";
-  }
-
-  return String(id).trim();
-
-}
-
-
-/* =====================================
-   CRIAR SEÇÃO DE COMENTÁRIOS
-===================================== */
-
-function criarSecaoComentarios(noticiaId) {
-
-  const article =
-    document.getElementById("article");
-
-  if (!article) {
-    return;
-  }
-
-  /* Evitar duplicação */
-
-  const antiga =
-    document.getElementById(
-      "commentsSection"
-    );
-
-  if (antiga) {
-    antiga.remove();
-  }
-
-  const section =
-    document.createElement("section");
-
-  section.id =
-    "commentsSection";
-
-  section.className =
-    "comments-section";
-
-  section.innerHTML = `
-
-    <h2 class="comments-title">
-      💬 Comentários
-    </h2>
-
-    <form
-      class="comments-form"
-      id="commentsForm"
-      onsubmit="publicarComentario(event)"
-    >
-
-      <input
-        type="text"
-        id="commentName"
-        placeholder="Seu nome"
-        maxlength="80"
-        required
-      >
-
-      <textarea
-        id="commentText"
-        placeholder="Escreva o seu comentário..."
-        maxlength="1000"
-        required
-      ></textarea>
-
-      <button
-        type="submit"
-        class="comments-submit"
-        id="commentsSubmit"
-      >
-        💬 Publicar comentário
-      </button>
-
-      <div
-        id="commentsMessage"
-        style="display:none;"
-      ></div>
-
-    </form>
-
-    <div
-      id="commentsList"
-      class="comments-list"
-    >
-      🔄 A carregar comentários...
-    </div>
-
-  `;
-
-  article.parentNode.appendChild(
-    section
-  );
-
-  carregarComentarios(
     noticiaId
   );
 
     }
-    
-/* =====================================
-   CARREGAR COMENTÁRIOS
+        /* =====================================
+   3E — PUBLICAR COMENTÁRIO
 ===================================== */
 
-async function carregarComentarios(
-  noticiaId
-) {
-
-  const lista =
-    document.getElementById(
-      "commentsList"
-    );
-
-  if (!lista || !noticiaId) {
-    return;
-  }
-
-
-  lista.innerHTML = `
-
-    <div class="comments-empty">
-      🔄 A carregar comentários...
-    </div>
-
-  `;
-
-
-  try {
-
-    const resultado =
-      await supabaseClient
-        .from("comentarios")
-        .select(
-          "id, noticia_id, nome, comentário, criado_em"
-        )
-        .eq(
-          "noticia_id",
-          noticiaId
-        )
-        .order(
-          "criado_em",
-          {
-            ascending: false
-          }
-        );
-
-
-    if (resultado.error) {
-
-      console.error(
-        "Erro ao carregar comentários:",
-        resultado.error
-      );
-
-
-      lista.innerHTML = `
-
-        <div class="comments-error">
-
-          ❌ Não foi possível carregar os comentários.
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    const comentarios =
-      Array.isArray(resultado.data)
-        ? resultado.data
-        : [];
-
-
-    if (comentarios.length === 0) {
-
-      lista.innerHTML = `
-
-        <div class="comments-empty">
-
-          💬 Ainda não existem comentários.
-          Seja o primeiro a comentar!
-
-        </div>
-
-      `;
-
-      return;
-
-    }
-
-
-    lista.innerHTML =
-      comentarios
-        .map(
-          function(comentario) {
-
-            const nome =
-              comentario.nome ||
-              "Visitante";
-
-
-            const texto =
-  comentario.comentario ||
-  comentario.comentário ||
-  comentario.texto ||
-  "";
-
-
-            const data =
-              comentario.criado_em
-                ? formatarData(
-                    comentario.criado_em
-                  )
-                : "";
-
-
-            return `
-
-              <div
-                class="comment-item"
-              >
-
-                <div
-                  class="comment-name"
-                >
-
-                  👤 ${esc(nome)}
-
-                </div>
-
-
-                ${
-                  data
-                    ? `
-
-                      <div
-                        class="comment-date"
-                      >
-
-                        📅 ${esc(data)}
-
-                      </div>
-
-                    `
-                    : ""
-                }
-
-
-                <div
-                  class="comment-text"
-                >
-
-                  ${esc(texto)}
-
-                </div>
-
-              </div>
-
-            `;
-
-          }
-        )
-        .join("");
-
-  }
-
-  catch (erro) {
-
-    console.error(
-      "Erro inesperado nos comentários:",
-      erro
-    );
-
-
-    lista.innerHTML = `
-
-      <div class="comments-error">
-
-        ❌ Ocorreu um erro ao carregar os comentários.
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-/* =====================================
-   PUBLICAR COMENTÁRIO
-===================================== */
-
-async function publicarComentario(
-  event
-) {
+async function publicarComentario(event) {
 
   event.preventDefault();
 
-
   const nomeInput =
-    document.getElementById(
-      "commentName"
-    );
-
+    document.getElementById("commentName");
 
   const textoInput =
-    document.getElementById(
-      "commentText"
-    );
-
+    document.getElementById("commentText");
 
   const botao =
-    document.getElementById(
-      "commentsSubmit"
-    );
-
+    document.getElementById("commentsSubmit");
 
   const mensagem =
-    document.getElementById(
-      "commentsMessage"
-    );
+    document.getElementById("commentsMessage");
 
 
   if (
@@ -1712,19 +2253,15 @@ async function publicarComentario(
     !textoInput ||
     !botao
   ) {
-
     return;
-
   }
 
 
   const noticiaId =
     obterIdNoticiaAtual();
 
-
   const nome =
     nomeInput.value.trim();
-
 
   const texto =
     textoInput.value.trim();
@@ -1737,7 +2274,6 @@ async function publicarComentario(
     );
 
     return;
-
   }
 
 
@@ -1750,7 +2286,6 @@ async function publicarComentario(
     nomeInput.focus();
 
     return;
-
   }
 
 
@@ -1763,7 +2298,6 @@ async function publicarComentario(
     textoInput.focus();
 
     return;
-
   }
 
 
@@ -1774,7 +2308,6 @@ async function publicarComentario(
     );
 
     return;
-
   }
 
 
@@ -1785,7 +2318,6 @@ async function publicarComentario(
     );
 
     return;
-
   }
 
 
@@ -1814,7 +2346,7 @@ async function publicarComentario(
         nome,
 
       comentario:
-  texto
+        texto
 
     };
 
@@ -1822,9 +2354,9 @@ async function publicarComentario(
     const resultado =
       await supabaseClient
         .from("comentarios")
-        .insert(
-          [dadosComentario]
-        );
+        .insert([
+          dadosComentario
+        ]);
 
 
     if (resultado.error) {
@@ -1849,11 +2381,8 @@ async function publicarComentario(
       }
 
       return;
-
     }
 
-
-    /* Limpar formulário */
 
     nomeInput.value =
       "";
@@ -1876,13 +2405,12 @@ async function publicarComentario(
     }
 
 
-    /* Atualizar lista */
-
     await carregarComentarios(
       noticiaId
     );
 
   }
+
 
   catch (erro) {
 
@@ -1906,6 +2434,7 @@ async function publicarComentario(
     }
 
   }
+
 
   finally {
 
@@ -1941,21 +2470,16 @@ function iniciarComentarios() {
 
 }
 
-</script>
-<script>
 
 /* =====================================
-   PARTE 6 — INICIALIZAÇÃO FINAL
+   INICIALIZAÇÃO FINAL
 ===================================== */
-
-/*
-   Inicia os comentários depois que
-   a página terminar de carregar.
-*/
 
 document.addEventListener(
   "DOMContentLoaded",
   function() {
+
+    carregarNoticia();
 
     iniciarComentarios();
 
@@ -1964,13 +2488,8 @@ document.addEventListener(
 
 
 /* =====================================
-   ATUALIZAÇÃO AUTOMÁTICA
+   ATUALIZAÇÃO DOS COMENTÁRIOS
 ===================================== */
-
-/*
-   Verifica novos comentários
-   periodicamente.
-*/
 
 setInterval(
   function() {
@@ -1982,7 +2501,9 @@ setInterval(
       return;
     }
 
-    carregarComentarios(id);
+    carregarComentarios(
+      id
+    );
 
   },
   30000
@@ -1990,15 +2511,7 @@ setInterval(
 
 
 /* =====================================
-   PROTEÇÃO CONTRA ENVIO DUPLO
-===================================== */
-
-let comentarioEnviando =
-  false;
-
-
-/* =====================================
-   MENSAGEM DE ERRO GLOBAL
+   PROTEÇÃO DE ERROS
 ===================================== */
 
 window.addEventListener(
@@ -2015,12 +2528,373 @@ window.addEventListener(
 );
 
 
+console.log(
+  "✅ AfricanMundo — página da notícia iniciada."
+);
+        /* =====================================
+   PARTE 4 — VERIFICAÇÃO FINAL
+===================================== */
+
+/*
+   Garante que o Supabase foi carregado
+   corretamente antes de executar.
+*/
+
+if (
+  typeof window.supabase === "undefined"
+) {
+
+  console.error(
+    "❌ Supabase JS não foi carregado."
+  );
+
+}
+
+
+/* =====================================
+   VERIFICAR ELEMENTO DA NOTÍCIA
+===================================== */
+
+const artigoPrincipal =
+  document.getElementById("article");
+
+if (!artigoPrincipal) {
+
+  console.error(
+    "❌ Elemento #article não encontrado."
+  );
+
+}
+
+
+/* =====================================
+   VERIFICAR ID DA NOTÍCIA
+===================================== */
+
+function verificarPaginaNoticia() {
+
+  const id =
+    obterIdNoticiaAtual();
+
+  console.log(
+    "🔎 ID da notícia:",
+    id
+  );
+
+  if (!id) {
+
+    console.warn(
+      "⚠️ Esta página foi aberta sem ?id="
+    );
+
+    return false;
+
+  }
+
+  return true;
+
+}
+
+
+/* =====================================
+   EXECUTAR VERIFICAÇÃO
+===================================== */
+
+verificarPaginaNoticia();
+
+
+/* =====================================
+   LOG FINAL
+===================================== */
+
+console.log(
+  "✅ AfricanMundo — Parte 4 carregada."
+);
+        /* =====================================
+   PARTE 5 — CONTROLO DOS COMENTÁRIOS
+===================================== */
+
+let atualizacaoComentarios = null;
+
+
+/* =====================================
+   INICIAR ATUALIZAÇÃO AUTOMÁTICA
+===================================== */
+
+function iniciarAtualizacaoComentarios() {
+
+  if (atualizacaoComentarios) {
+    clearInterval(
+      atualizacaoComentarios
+    );
+  }
+
+
+  atualizacaoComentarios =
+    setInterval(
+      async function() {
+
+        const noticiaId =
+          obterIdNoticiaAtual();
+
+
+        if (!noticiaId) {
+          return;
+        }
+
+
+        const lista =
+          document.getElementById(
+            "commentsList"
+          );
+
+
+        /*
+          Não atualiza enquanto o utilizador
+          estiver a escrever.
+        */
+
+        const campoNome =
+          document.getElementById(
+            "commentName"
+          );
+
+        const campoTexto =
+          document.getElementById(
+            "commentText"
+          );
+
+
+        if (
+          document.activeElement === campoNome ||
+          document.activeElement === campoTexto
+        ) {
+
+          return;
+
+        }
+
+
+        await carregarComentarios(
+          noticiaId
+        );
+
+      },
+      30000
+    );
+
+}
+
+
+/* =====================================
+   PARAR ATUALIZAÇÃO
+===================================== */
+
+function pararAtualizacaoComentarios() {
+
+  if (
+    atualizacaoComentarios
+  ) {
+
+    clearInterval(
+      atualizacaoComentarios
+    );
+
+    atualizacaoComentarios =
+      null;
+
+  }
+
+}
+
+
+/* =====================================
+   QUANDO A PÁGINA SAI
+===================================== */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    pararAtualizacaoComentarios();
+
+  }
+);
+
+
+/* =====================================
+   VISIBILIDADE DA PÁGINA
+===================================== */
+
+document.addEventListener(
+  "visibilitychange",
+  function() {
+
+    if (
+      document.hidden
+    ) {
+
+      pararAtualizacaoComentarios();
+
+    }
+
+    else {
+
+      const noticiaId =
+        obterIdNoticiaAtual();
+
+      if (noticiaId) {
+
+        carregarComentarios(
+          noticiaId
+        );
+
+        iniciarAtualizacaoComentarios();
+
+      }
+
+    }
+
+  }
+);
+
+
+/* =====================================
+   INICIAR CONTROLO
+===================================== */
+
+const idComentarios =
+  obterIdNoticiaAtual();
+
+
+if (idComentarios) {
+
+  iniciarAtualizacaoComentarios();
+
+}
+
+
+console.log(
+  "✅ AfricanMundo — controlo de comentários ativo."
+);
+        /* =====================================
+   PARTE 6 — FINALIZAÇÃO
+===================================== */
+
+
+/* =====================================
+   TESTAR SUPABASE
+===================================== */
+
+async function testarSupabase() {
+
+  try {
+
+    const resultado =
+      await supabaseClient
+        .from("noticias")
+        .select("id")
+        .limit(1);
+
+
+    if (resultado.error) {
+
+      console.error(
+        "❌ Supabase respondeu com erro:",
+        resultado.error
+      );
+
+      return false;
+
+    }
+
+
+    console.log(
+      "✅ Ligação ao Supabase funcionando."
+    );
+
+    return true;
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "❌ Erro na ligação ao Supabase:",
+      erro
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* =====================================
+   DIAGNÓSTICO DA PÁGINA
+===================================== */
+
+function diagnosticarPagina() {
+
+  const id =
+    obterIdNoticiaAtual();
+
+
+  const article =
+    document.getElementById(
+      "article"
+    );
+
+
+  console.log(
+    "========== AFRICANMUNDO =========="
+  );
+
+  console.log(
+    "ID:",
+    id
+  );
+
+  console.log(
+    "Elemento article:",
+    article
+  );
+
+  console.log(
+    "Supabase:",
+    typeof window.supabase
+  );
+
+  console.log(
+    "=================================="
+  );
+
+}
+
+
+/* =====================================
+   EXECUTAR DIAGNÓSTICO
+===================================== */
+
+diagnosticarPagina();
+
+
+/* =====================================
+   TESTAR SUPABASE
+===================================== */
+
+testarSupabase();
+
+
 /* =====================================
    FINAL
 ===================================== */
 
 console.log(
-  "✅ AfricanMundo — sistema de comentários iniciado."
+  "✅ AfricanMundo — sistema final carregado."
 );
+        </script>
 
-</script>
+</body>
+</html>
