@@ -514,114 +514,154 @@ function mostrarErro(msg){
 
 }
 
-
 /* ==========================================
    MOSTRAR NOTÍCIA
 ========================================== */
 
 function mostrarNoticia(n){
 
- const estado =
-   document.getElementById("estado");
+  const estado =
+    document.getElementById("estado");
 
- const artigo =
-   document.getElementById("noticia");
+  const artigo =
+    document.getElementById("noticia");
 
- const titulo =
-   document.getElementById("titulo");
+  const titulo =
+    document.getElementById("titulo");
 
- const categoria =
-   document.getElementById("categoria");
+  const categoria =
+    document.getElementById("categoria");
 
- const data =
-   document.getElementById("data");
+  const data =
+    document.getElementById("data");
 
- const texto =
-   document.getElementById("texto");
+  const texto =
+    document.getElementById("texto");
 
- const imagem =
-   document.getElementById("imagem");
-
-
- /* TÍTULO */
-
- titulo.textContent =
-   n.titulo ||
-   n.title ||
-   "Sem título";
+  const imagem =
+    document.getElementById("imagem");
 
 
- /* CATEGORIA */
+  /* TÍTULO */
 
- categoria.textContent =
-   n.categoria ||
-   n.category ||
-   "Notícias";
-
-
- /* DATA */
-
- data.textContent =
-   formatarData(
-     n.created_at ||
-     n.data ||
-     n.createdAt ||
-     n.publicado_em
-   );
+  titulo.textContent =
+    n.titulo ||
+    n.title ||
+    "Sem título";
 
 
- /* TEXTO */
+  /* CATEGORIA */
 
- texto.textContent =
-   n.texto ||
-   n.conteudo ||
-   n.content ||
-   n.descricao ||
-   "";
+  categoria.textContent =
+    n.categoria ||
+    n.category ||
+    "Notícias";
 
 
- /* IMAGEM */
+  /* DATA */
 
- const foto =
-   n.imagem ||
-   n.imagem_url ||
-   n.image ||
-   n.image_url ||
-   n.foto ||
-   n.url_imagem ||
-   "";
-
-
- if(foto){
-
-   imagem.src = foto;
-
-   imagem.style.display =
-     "block";
-
-   imagem.onerror =
-     function(){
-
-       imagem.style.display =
-         "none";
-
-     };
-
- }else{
-
-   imagem.style.display =
-     "none";
-
- }
+  data.textContent =
+    formatarData(
+      n.created_at ||
+      n.data ||
+      n.createdAt ||
+      n.publicado_em
+    );
 
 
- estado.style.display =
-   "none";
+  /* TEXTO */
 
- artigo.style.display =
-   "block";
+  texto.textContent =
+    n.texto ||
+    n.conteudo ||
+    n.content ||
+    n.descricao ||
+    "";
+
+
+  /* ==========================================
+     IMAGEM DA NOTÍCIA
+  ========================================== */
+
+  const foto =
+    n.imagem ||
+    n.imagem_url ||
+    n.image ||
+    n.image_url ||
+    n.foto ||
+    n.foto_url ||
+    n.url_imagem ||
+    n.urlImagem ||
+    n.capa ||
+    n.capa_url ||
+    "";
+
+
+  console.log(
+    "🖼️ Imagem encontrada:",
+    foto
+  );
+
+
+  if(foto){
+
+    imagem.src = foto;
+
+    imagem.alt =
+      n.titulo ||
+      n.title ||
+      "Imagem da notícia";
+
+    imagem.style.display =
+      "block";
+
+    imagem.style.width =
+      "100%";
+
+    imagem.style.height =
+      "auto";
+
+    imagem.style.maxHeight =
+      "600px";
+
+    imagem.style.objectFit =
+      "cover";
+
+    imagem.onerror =
+      function(){
+
+        console.error(
+          "❌ Não foi possível carregar a imagem:",
+          foto
+        );
+
+        imagem.style.display =
+          "none";
+
+      };
+
+  }else{
+
+    console.log(
+      "⚠️ Esta notícia não possui imagem."
+    );
+
+    imagem.style.display =
+      "none";
 
   }
+
+
+  /* MOSTRAR NOTÍCIA */
+
+  estado.style.display =
+    "none";
+
+  artigo.style.display =
+    "block";
+
+     }
+ 
 /* ==========================================
    CARREGAR NOTÍCIA
 ========================================== */
