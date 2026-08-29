@@ -2330,104 +2330,221 @@ function renderizarDestaque(lista){
 
 } 
 
+ /* ==========================================
+   CONEXÃO SUPABASE
+========================================== */
+
+const SUPABASE_URL =
+"https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+ 
 /* ==========================================
    CARREGAR NOTÍCIAS
 ========================================== */
 
 async function carregarNoticias(){
 
- if(!supabaseClient){
+  try{
 
-   mostrarErroSupabase();
+    console.log("🔄 A carregar notícias...");
 
-   return;
+    const { data, error } =
+      await supabaseClient
+        .from("noticias")
+        .select("*")
+        .order("id", {
+          ascending:false
+        });
 
- }
+    if(error){
 
- try{
+      console.error(
+        "❌ Erro Supabase:",
+        error
+      );
 
-   const {data,error}=
-     await supabaseClient
-      .from("noticias")
-      .select("*")
-      .order("id",{ascending:false});
+      mostrarErroSupabase(
+        error.message
+      );
 
-   if(error)throw error;
+      return;
+    }
 
-   const noticias=Array.isArray(data)?data:[];
+    const noticias =
+      Array.isArray(data)
+      ? data
+      : [];
 
-   renderizarDestaque(noticias);
+    console.log(
+      "✅ Notícias recebidas:",
+      noticias.length
+    );
 
-   renderizarLista(
-     "ultimas",
-     noticias
-   );
 
-   renderizarLista(
-     "futebol",
-     noticias.filter(n=>
-       normalizarCategoria(n.categoria)
-       ==="futebol"
-     )
-   );
+    /* ======================================
+       DESTAQUE
+    ====================================== */
 
-   renderizarLista(
-     "mocambique",
-     noticias.filter(n=>{
-       const c=normalizarCategoria(n.categoria);
-       return c==="mocambique" ||
-              c==="moçambique";
-     })
-   );
+    renderizarDestaque(
+      noticias
+    );
 
-   renderizarLista(
-     "africa",
-     noticias.filter(n=>
-       normalizarCategoria(n.categoria)
-       ==="africa"
-     )
-   );
 
-   renderizarLista(
-     "negocios",
-     noticias.filter(n=>
-       normalizarCategoria(n.categoria)
-       ==="negocios"
-     )
-   );
+    /* ======================================
+       ÚLTIMAS
+    ====================================== */
 
-   renderizarLista(
-     "entretenimento",
-     noticias.filter(n=>
-       normalizarCategoria(n.categoria)
-       ==="entretenimento"
-     )
-   );
+    renderizarLista(
+      "ultimas",
+      noticias
+    );
 
-   renderizarLista(
-     "desporto",
-     noticias.filter(n=>
-       normalizarCategoria(n.categoria)
-       ==="desporto"
-     )
-   );
 
-   window.__noticias=noticias;
+    /* ======================================
+       FUTEBOL
+    ====================================== */
 
-  atualizarNotificacoes(noticias);
-  
- }catch(error){
+    renderizarLista(
+      "futebol",
+      noticias.filter(n =>
+        normalizarCategoria(
+          n.categoria
+        ) === "futebol"
+      )
+    );
 
-   console.error("Erro Supabase:",error);
 
-   mostrarErroSupabase(
-     error.message
-   );
+    /* ======================================
+       MOÇAMBIQUE
+    ====================================== */
 
- }
+    renderizarLista(
+      "mocambique",
+      noticias.filter(n => {
+
+        const c =
+          normalizarCategoria(
+            n.categoria
+          );
+
+        return (
+          c === "mocambique" ||
+          c === "moçambique"
+        );
+
+      })
+    );
+
+
+    /* ======================================
+       ÁFRICA
+    ====================================== */
+
+    renderizarLista(
+      "africa",
+      noticias.filter(n =>
+        normalizarCategoria(
+          n.categoria
+        ) === "africa"
+      )
+    );
+
+
+    /* ======================================
+       NEGÓCIOS
+    ====================================== */
+
+    renderizarLista(
+      "negocios",
+      noticias.filter(n =>
+        normalizarCategoria(
+          n.categoria
+        ) === "negocios"
+      )
+    );
+
+
+    /* ======================================
+       ENTRETENIMENTO
+    ====================================== */
+
+    renderizarLista(
+      "entretenimento",
+      noticias.filter(n =>
+        normalizarCategoria(
+          n.categoria
+        ) === "entretenimento"
+      )
+    );
+
+
+    /* ======================================
+       DESPORTO
+    ====================================== */
+
+    renderizarLista(
+      "desporto",
+      noticias.filter(n =>
+        normalizarCategoria(
+          n.categoria
+        ) === "desporto"
+      )
+    );
+
+
+    /* ======================================
+       GUARDAR NOTÍCIAS
+    ====================================== */
+
+    window.__noticias =
+      noticias;
+
+
+    /* ======================================
+       NOTIFICAÇÕES
+    ====================================== */
+
+    if(
+      typeof atualizarNotificacoes ===
+      "function"
+    ){
+
+      atualizarNotificacoes(
+        noticias
+      );
+
+    }
+
+
+  }catch(error){
+
+    console.error(
+      "❌ Erro ao carregar notícias:",
+      error
+    );
+
+    if(
+      typeof mostrarErroSupabase ===
+      "function"
+    ){
+
+      mostrarErroSupabase(
+        error.message
+      );
+
+    }
+
+  }
 
 }
-
 
 /* ==========================================
    ERRO SUPABASE
