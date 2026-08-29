@@ -1585,9 +1585,10 @@ async function carregarComentarios(
 
 
             const texto =
-              comentario.comentário ||
-              comentario.comentario ||
-              "";
+  comentario.comentario ||
+  comentario.comentário ||
+  comentario.texto ||
+  "";
 
 
             const data =
@@ -1812,8 +1813,8 @@ async function publicarComentario(
       nome:
         nome,
 
-      comentário:
-        texto
+      comentario:
+  texto
 
     };
 
