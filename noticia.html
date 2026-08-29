@@ -1365,7 +1365,121 @@ function criarSecaoComentarios(idNoticia) {
 
 }
 
+/* =====================================
+   OBTER ID DA NOTÍCIA
+===================================== */
 
+function obterIdNoticiaAtual() {
+
+  const url =
+    new URL(window.location.href);
+
+  const id =
+    url.searchParams.get("id");
+
+  if (!id) {
+    return "";
+  }
+
+  return String(id).trim();
+
+}
+
+
+/* =====================================
+   CRIAR SEÇÃO DE COMENTÁRIOS
+===================================== */
+
+function criarSecaoComentarios(noticiaId) {
+
+  const article =
+    document.getElementById("article");
+
+  if (!article) {
+    return;
+  }
+
+  /* Evitar duplicação */
+
+  const antiga =
+    document.getElementById(
+      "commentsSection"
+    );
+
+  if (antiga) {
+    antiga.remove();
+  }
+
+  const section =
+    document.createElement("section");
+
+  section.id =
+    "commentsSection";
+
+  section.className =
+    "comments-section";
+
+  section.innerHTML = `
+
+    <h2 class="comments-title">
+      💬 Comentários
+    </h2>
+
+    <form
+      class="comments-form"
+      id="commentsForm"
+      onsubmit="publicarComentario(event)"
+    >
+
+      <input
+        type="text"
+        id="commentName"
+        placeholder="Seu nome"
+        maxlength="80"
+        required
+      >
+
+      <textarea
+        id="commentText"
+        placeholder="Escreva o seu comentário..."
+        maxlength="1000"
+        required
+      ></textarea>
+
+      <button
+        type="submit"
+        class="comments-submit"
+        id="commentsSubmit"
+      >
+        💬 Publicar comentário
+      </button>
+
+      <div
+        id="commentsMessage"
+        style="display:none;"
+      ></div>
+
+    </form>
+
+    <div
+      id="commentsList"
+      class="comments-list"
+    >
+      🔄 A carregar comentários...
+    </div>
+
+  `;
+
+  article.parentNode.appendChild(
+    section
+  );
+
+  carregarComentarios(
+    noticiaId
+  );
+
+    }
+    
 /* =====================================
    CARREGAR COMENTÁRIOS
 ===================================== */
