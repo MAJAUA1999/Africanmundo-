@@ -645,93 +645,35 @@ async function carregarNoticia(){
  }
 
 
- /* VERIFICAR SUPABASE */
+ /* ==========================================
+   LIGAÇÃO COM SUPABASE
+========================================== */
 
- if(!db){
+const SUPABASE_URL =
+"https://sonzwfhepjfvzltuxxne.supabase.co";
 
-   mostrarErro(
-     "A ligação com o Supabase não está configurada."
-   );
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-   return;
+let db;
 
- }
+try {
 
+  db = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
 
- try{
+  console.log(
+    "✅ Supabase conectado."
+  );
 
-   console.log(
-     "A carregar notícia:",
-     id
-   );
+} catch(e) {
 
-
-   /* BUSCAR NOTÍCIA */
-
-   const resposta =
-     await db
-     .from("noticias")
-     .select("*")
-     .eq("id",id)
-     .maybeSingle();
-
-
-   /* VERIFICAR ERRO */
-
-   if(resposta.error){
-
-     console.error(
-       "Erro Supabase:",
-       resposta.error
-     );
-
-     mostrarErro(
-       "Não foi possível carregar a notícia."
-     );
-
-     return;
-
-   }
-
-
-   /* NOTÍCIA NÃO ENCONTRADA */
-
-   if(!resposta.data){
-
-     mostrarErro(
-       "A notícia não foi encontrada."
-     );
-
-     return;
-
-   }
-
-
-   /* NOTÍCIA ENCONTRADA */
-
-   console.log(
-     "Notícia recebida:",
-     resposta.data
-   );
-
-
-   mostrarNoticia(
-     resposta.data
-   );
-
-
- }catch(e){
-
-   console.error(
-     "Erro ao carregar notícia:",
-     e
-   );
-
-   mostrarErro(
-     "Ocorreu um erro ao carregar a notícia."
-   );
-
- }
+  console.error(
+    "❌ Erro ao conectar Supabase:",
+    e
+  );
 
 }
 
