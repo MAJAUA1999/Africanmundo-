@@ -518,7 +518,7 @@ function mostrarErro(msg){
    MOSTRAR NOTÍCIA
 ========================================== */
 
-function mostrarNoticia(n){
+function mostrarNoticia(n) {
 
   const estado =
     document.getElementById("estado");
@@ -542,7 +542,9 @@ function mostrarNoticia(n){
     document.getElementById("imagem");
 
 
-  /* TÍTULO */
+  /* ==========================================
+     TÍTULO
+  ========================================== */
 
   titulo.textContent =
     n.titulo ||
@@ -550,7 +552,9 @@ function mostrarNoticia(n){
     "Sem título";
 
 
-  /* CATEGORIA */
+  /* ==========================================
+     CATEGORIA
+  ========================================== */
 
   categoria.textContent =
     n.categoria ||
@@ -558,7 +562,9 @@ function mostrarNoticia(n){
     "Notícias";
 
 
-  /* DATA */
+  /* ==========================================
+     DATA
+  ========================================== */
 
   data.textContent =
     formatarData(
@@ -569,7 +575,9 @@ function mostrarNoticia(n){
     );
 
 
-  /* TEXTO */
+  /* ==========================================
+     TEXTO
+  ========================================== */
 
   texto.textContent =
     n.texto ||
@@ -580,104 +588,111 @@ function mostrarNoticia(n){
 
 
   /* ==========================================
-   IMAGEM DA NOTÍCIA
-   TOCAR → ABRIR IMAGEM GRANDE
-========================================== */
+     IMAGEM DA NOTÍCIA
+  ========================================== */
 
-const foto =
-  n.imagem ||
-  n.imagem_url ||
-  n.image ||
-  n.image_url ||
-  n.foto ||
-  n.foto_url ||
-  n.url_imagem ||
-  n.urlImagem ||
-  n.capa ||
-  n.capa_url ||
-  "";
+  const foto =
+    n.imagem ||
+    n.imagem_url ||
+    n.image ||
+    n.image_url ||
+    n.foto ||
+    n.foto_url ||
+    n.url_imagem ||
+    n.urlImagem ||
+    n.capa ||
+    n.capa_url ||
+    "";
 
-
-console.log(
-  "🖼️ Imagem encontrada:",
-  foto
-);
-
-
-if (foto) {
-
-  imagem.src = foto;
-
-  imagem.alt =
-    n.titulo ||
-    n.title ||
-    "Imagem da notícia";
-
-  imagem.style.display =
-    "block";
-
-  imagem.style.width =
-    "100%";
-
-  imagem.style.height =
-    "auto";
-
-  imagem.style.maxHeight =
-    "600px";
-
-  imagem.style.objectFit =
-    "cover";
-
-  /* ======================================
-     CLICAR NA IMAGEM
-  ====================================== */
-
-  imagem.style.cursor =
-    "zoom-in";
-
-  imagem.onclick =
-    function () {
-
-      window.open(
-        foto,
-        "_blank"
-      );
-
-    };
-
-
-  imagem.onerror =
-    function () {
-
-      console.error(
-        "❌ Não foi possível carregar a imagem:",
-        foto
-      );
-
-      imagem.style.display =
-        "none";
-
-    };
-
-} else {
 
   console.log(
-    "⚠️ Esta notícia não possui imagem."
+    "🖼️ Imagem encontrada:",
+    foto
   );
 
-  imagem.style.display =
+
+  if (foto) {
+
+    imagem.src = foto;
+
+    imagem.alt =
+      n.titulo ||
+      n.title ||
+      "Imagem da notícia";
+
+
+    imagem.style.display =
+      "block";
+
+    imagem.style.width =
+      "100%";
+
+    imagem.style.height =
+      "auto";
+
+    imagem.style.maxHeight =
+      "600px";
+
+    imagem.style.objectFit =
+      "cover";
+
+
+    /* ======================================
+       ABRIR IMAGEM GRANDE
+    ====================================== */
+
+    imagem.style.cursor =
+      "zoom-in";
+
+
+    imagem.onclick =
+      function () {
+
+        window.open(
+          foto,
+          "_blank"
+        );
+
+      };
+
+
+    imagem.onerror =
+      function () {
+
+        console.error(
+          "❌ Não foi possível carregar a imagem:",
+          foto
+        );
+
+        imagem.style.display =
+          "none";
+
+      };
+
+
+  } else {
+
+    console.log(
+      "⚠️ Esta notícia não possui imagem."
+    );
+
+    imagem.style.display =
+      "none";
+
+  }
+
+
+  /* ==========================================
+     MOSTRAR NOTÍCIA
+  ========================================== */
+
+  estado.style.display =
     "none";
 
-}
+  artigo.style.display =
+    "block";
 
-
-/* MOSTRAR NOTÍCIA */
-
-estado.style.display =
-  "none";
-
-artigo.style.display =
-  "block";
+   }
  
 /* ==========================================
    CARREGAR NOTÍCIA
