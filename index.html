@@ -1781,6 +1781,366 @@ function executarPesquisa(texto) {
       .trim();
 
 
+  /* ======================================
+     ÁREA DE RESULTADOS
+  ====================================== */
+
+  let resultados =
+    document.getElementById(
+      "resultadoPesquisa"
+    );
+
+
+  if (!resultados) {
+
+    resultados =
+      document.createElement("div");
+
+    resultados.id =
+      "resultadoPesquisa";
+
+    resultados.style.maxWidth =
+      "1100px";
+
+    resultados.style.margin =
+      "20px auto";
+
+    resultados.style.padding =
+      "0 14px";
+
+
+    const formulario =
+      document.getElementById(
+        "searchForm"
+      );
+
+
+    if (formulario) {
+
+      formulario.insertAdjacentElement(
+        "afterend",
+        resultados
+      );
+
+    } else {
+
+      document.body.appendChild(
+        resultados
+      );
+
+    }
+
+  }
+
+
+  /* ======================================
+     PESQUISA VAZIA
+  ====================================== */
+
+  if (!termo) {
+
+    resultados.innerHTML = "";
+
+    return;
+
+  }
+
+
+  /* ======================================
+     OBTER NOTÍCIAS
+  ====================================== */
+
+  const noticias =
+    Array.isArray(window.__noticias)
+      ? window.__noticias
+      : [];
+
+
+  if (!noticias.length) {
+
+    resultados.innerHTML = `
+      <div class="loading">
+        ⏳ As notícias ainda estão a carregar...
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  /* ======================================
+     FILTRAR NOTÍCIAS
+  ====================================== */
+
+  const encontrados =
+    noticias.filter(function(noticia) {
+
+      const titulo =
+        String(
+          noticia.titulo ||
+          noticia.title ||
+          ""
+        );
+
+      const texto =
+        String(
+          noticia.texto ||
+          noticia.conteudo ||
+          noticia.content ||
+          noticia.descricao ||
+          ""
+        );
+
+      const categoria =
+        String(
+          noticia.categoria ||
+          noticia.category ||
+          ""
+        );
+
+
+      const conteudo =
+        (
+          titulo +
+          " " +
+          texto +
+          " " +
+          categoria
+        )
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        );
+
+
+      return conteudo.includes(
+        termo
+      );
+
+    });
+
+
+  /* ======================================
+     NENHUM RESULTADO
+  ====================================== */
+
+  if (!encontrados.length) {
+
+    resultados.innerHTML = `
+      <div style="
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:15px;
+        padding:20px;
+        text-align:center;
+        color:var(--muted);
+      ">
+        🔎 Nenhuma notícia encontrada.
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  /* ======================================
+     CABEÇALHO DOS RESULTADOS
+  ====================================== */
+
+  resultados.innerHTML = `
+
+    <div style="
+      margin-bottom:12px;
+    ">
+
+      <div style="
+        font-size:20px;
+        font-weight:900;
+        margin-bottom:4px;
+      ">
+        Resultados da pesquisa
+      </div>
+
+      <div style="
+        color:var(--muted);
+        font-size:13px;
+      ">
+        ${encontrados.length}
+        notícia(s) encontrada(s)
+      </div>
+
+    </div>
+
+  `;
+
+
+  /* ======================================
+     CRIAR CARTÕES
+  ====================================== */
+
+  encontrados.forEach(function(noticia) {
+
+    const id =
+      noticia.id;
+
+
+    const titulo =
+      noticia.titulo ||
+      noticia.title ||
+      "Sem título";
+
+
+    const texto =
+      noticia.texto ||
+      noticia.conteudo ||
+      noticia.content ||
+      noticia.descricao ||
+      "";
+
+
+    const categoria =
+      noticia.categoria ||
+      noticia.category ||
+      "Notícias";
+
+
+    const imagem =
+      noticia.imagem ||
+      noticia.imagem_url ||
+      noticia.image ||
+      noticia.image_url ||
+      noticia.url_imagem ||
+      noticia.foto ||
+      "";
+
+
+    const cartao =
+      document.createElement("a");
+
+
+    cartao.href =
+      "noticia.html?id=" +
+      encodeURIComponent(id);
+
+
+    cartao.style.cssText = `
+      display:block;
+      text-decoration:none;
+      color:inherit;
+      background:var(--card);
+      border:1px solid var(--border);
+      border-radius:15px;
+      overflow:hidden;
+      margin-bottom:14px;
+      box-shadow:0 2px 8px #00000008;
+    `;
+
+
+    cartao.innerHTML = `
+
+      ${
+        imagem
+        ?
+        `
+        <img
+          src="${escaparHTML(imagem)}"
+          alt="${escaparHTML(titulo)}"
+          style="
+            width:100%;
+            height:190px;
+            object-fit:cover;
+            display:block;
+          "
+        >
+        `
+        :
+        `
+        <div style="
+          height:150px;
+          display:grid;
+          place-items:center;
+          background:var(--bg);
+          font-size:45px;
+        ">
+          🌍
+        </div>
+        `
+      }
+
+
+      <div style="
+        padding:14px;
+      ">
+
+        <div style="
+          color:var(--p);
+          font-size:10px;
+          font-weight:900;
+          text-transform:uppercase;
+          margin-bottom:6px;
+        ">
+          ${escaparHTML(categoria)}
+        </div>
+
+
+        <div style="
+          font-size:18px;
+          font-weight:900;
+          line-height:1.3;
+        ">
+          ${escaparHTML(titulo)}
+        </div>
+
+
+        ${
+          texto
+          ?
+          `
+          <div style="
+            margin-top:7px;
+            color:var(--muted);
+            font-size:12px;
+            line-height:1.5;
+          ">
+            ${escaparHTML(
+              texto.length > 180
+                ? texto.substring(0,180) + "..."
+                : texto
+            )}
+          </div>
+          `
+          :
+          ""
+        }
+
+
+        <div style="
+          margin-top:12px;
+          color:var(--p);
+          font-size:12px;
+          font-weight:900;
+        ">
+          LER NOTÍCIA →
+        </div>
+
+      </div>
+
+    `;
+
+
+    resultados.appendChild(
+      cartao
+    );
+
+  });
+
+ }
+
+
 /* ======================================
    ÁREA DE RESULTADOS DA PESQUISA
 ====================================== */
