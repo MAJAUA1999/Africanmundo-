@@ -580,87 +580,104 @@ function mostrarNoticia(n){
 
 
   /* ==========================================
-     IMAGEM DA NOTÍCIA
-  ========================================== */
+   IMAGEM DA NOTÍCIA
+   TOCAR → ABRIR IMAGEM GRANDE
+========================================== */
 
-  const foto =
-    n.imagem ||
-    n.imagem_url ||
-    n.image ||
-    n.image_url ||
-    n.foto ||
-    n.foto_url ||
-    n.url_imagem ||
-    n.urlImagem ||
-    n.capa ||
-    n.capa_url ||
-    "";
-
-
-  console.log(
-    "🖼️ Imagem encontrada:",
-    foto
-  );
+const foto =
+  n.imagem ||
+  n.imagem_url ||
+  n.image ||
+  n.image_url ||
+  n.foto ||
+  n.foto_url ||
+  n.url_imagem ||
+  n.urlImagem ||
+  n.capa ||
+  n.capa_url ||
+  "";
 
 
-  if(foto){
-
-    imagem.src = foto;
-
-    imagem.alt =
-      n.titulo ||
-      n.title ||
-      "Imagem da notícia";
-
-    imagem.style.display =
-      "block";
-
-    imagem.style.width =
-      "100%";
-
-    imagem.style.height =
-      "auto";
-
-    imagem.style.maxHeight =
-      "600px";
-
-    imagem.style.objectFit =
-      "cover";
-
-    imagem.onerror =
-      function(){
-
-        console.error(
-          "❌ Não foi possível carregar a imagem:",
-          foto
-        );
-
-        imagem.style.display =
-          "none";
-
-      };
-
-  }else{
-
-    console.log(
-      "⚠️ Esta notícia não possui imagem."
-    );
-
-    imagem.style.display =
-      "none";
-
-  }
+console.log(
+  "🖼️ Imagem encontrada:",
+  foto
+);
 
 
-  /* MOSTRAR NOTÍCIA */
+if (foto) {
 
-  estado.style.display =
-    "none";
+  imagem.src = foto;
 
-  artigo.style.display =
+  imagem.alt =
+    n.titulo ||
+    n.title ||
+    "Imagem da notícia";
+
+  imagem.style.display =
     "block";
 
-     }
+  imagem.style.width =
+    "100%";
+
+  imagem.style.height =
+    "auto";
+
+  imagem.style.maxHeight =
+    "600px";
+
+  imagem.style.objectFit =
+    "cover";
+
+  /* ======================================
+     CLICAR NA IMAGEM
+  ====================================== */
+
+  imagem.style.cursor =
+    "zoom-in";
+
+  imagem.onclick =
+    function () {
+
+      window.open(
+        foto,
+        "_blank"
+      );
+
+    };
+
+
+  imagem.onerror =
+    function () {
+
+      console.error(
+        "❌ Não foi possível carregar a imagem:",
+        foto
+      );
+
+      imagem.style.display =
+        "none";
+
+    };
+
+} else {
+
+  console.log(
+    "⚠️ Esta notícia não possui imagem."
+  );
+
+  imagem.style.display =
+    "none";
+
+}
+
+
+/* MOSTRAR NOTÍCIA */
+
+estado.style.display =
+  "none";
+
+artigo.style.display =
+  "block";
  
 /* ==========================================
    CARREGAR NOTÍCIA
