@@ -2388,7 +2388,148 @@ async function carregarNoticias(){
       noticias.length
     );
 
+/* ==========================================
+   DISTRIBUIR NOTÍCIAS
+========================================== */
 
+renderizarDestaque(
+  noticias
+);
+
+
+renderizarLista(
+  "ultimas",
+  noticias
+);
+
+
+renderizarLista(
+  "futebol",
+  noticias.filter(n =>
+    normalizarCategoria(
+      n.categoria
+    ) === "futebol"
+  )
+);
+
+
+renderizarLista(
+  "mocambique",
+  noticias.filter(n => {
+
+    const c =
+      normalizarCategoria(
+        n.categoria
+      );
+
+    return (
+      c === "mocambique" ||
+      c === "moçambique"
+    );
+
+  })
+);
+
+
+renderizarLista(
+  "africa",
+  noticias.filter(n =>
+    normalizarCategoria(
+      n.categoria
+    ) === "africa"
+  )
+);
+
+
+renderizarLista(
+  "negocios",
+  noticias.filter(n =>
+    normalizarCategoria(
+      n.categoria
+    ) === "negocios"
+  )
+);
+
+
+renderizarLista(
+  "entretenimento",
+  noticias.filter(n =>
+    normalizarCategoria(
+      n.categoria
+    ) === "entretenimento"
+  )
+);
+
+
+renderizarLista(
+  "desporto",
+  noticias.filter(n =>
+    normalizarCategoria(
+      n.categoria
+    ) === "desporto"
+  )
+);
+   /* ==========================================
+   GUARDAR NOTÍCIAS
+========================================== */
+
+window.__noticias = noticias;
+
+
+/* ==========================================
+   ATUALIZAR NOTIFICAÇÕES
+========================================== */
+
+if(
+  typeof atualizarNotificacoes === "function"
+){
+
+  atualizarNotificacoes(
+    noticias
+  );
+
+}
+
+
+/* ==========================================
+   FINAL DO CARREGAMENTO
+========================================== */
+
+  }catch(error){
+
+    console.error(
+      "❌ Erro ao carregar notícias:",
+      error
+    );
+
+    if(
+      typeof mostrarErroSupabase === "function"
+    ){
+
+      mostrarErroSupabase(
+        error.message
+      );
+
+    }
+
+  }
+
+}
+
+
+/* ==========================================
+   INICIAR CARREGAMENTO
+========================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    carregarNoticias();
+
+  }
+);
+ 
     /* ======================================
        DESTAQUE
     ====================================== */
