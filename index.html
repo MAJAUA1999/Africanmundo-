@@ -2500,228 +2500,6 @@ function renderizarLista(id,lista){
 
 }
 
-<!-- ==========================================
-     ÁREA DE PUBLICIDADE
-========================================== -->
-
-<a
-  href="contato.html"
-  style="
-    display:block;
-    max-width:1100px;
-    margin:20px auto;
-    padding:22px 18px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:18px;
-    text-align:center;
-    box-shadow:0 3px 12px #0000000a;
-    text-decoration:none;
-    color:inherit;
-  "
->
-
-  <div style="
-    font-size:30px;
-    margin-bottom:8px;
-  ">
-    📢
-  </div>
-
-  <h2 style="
-    margin:0 0 8px;
-    font-size:24px;
-    font-weight:900;
-  ">
-    ANUNCIE AQUI
-  </h2>
-
-  <p style="
-    margin:0 auto 15px;
-    max-width:650px;
-    color:var(--muted);
-    font-size:14px;
-    line-height:1.6;
-  ">
-    Alcance milhares de pessoas em toda África.
-    Divulgue a sua empresa, marca, produto,
-    serviço ou evento no AfricanMundo.
-  </p>
-
-  <div style="
-    display:flex;
-    flex-wrap:wrap;
-    justify-content:center;
-    gap:8px;
-    margin-bottom:18px;
-  ">
-
-    <span style="
-      padding:7px 12px;
-      border-radius:20px;
-      background:var(--bg);
-      font-size:12px;
-      font-weight:800;
-    ">
-      🌍 Público africano
-    </span>
-
-    <span style="
-      padding:7px 12px;
-      border-radius:20px;
-      background:var(--bg);
-      font-size:12px;
-      font-weight:800;
-    ">
-      📱 Divulgação online
-    </span>
-
-    <span style="
-      padding:7px 12px;
-      border-radius:20px;
-      background:var(--bg);
-      font-size:12px;
-      font-weight:800;
-    ">
-      📢 Espaços publicitários
-    </span>
-
-  </div>
-
-  <div style="
-    display:inline-block;
-    padding:12px 22px;
-    border-radius:12px;
-    background:var(--p);
-    color:#fff;
-    font-weight:900;
-    font-size:13px;
-  ">
-    QUERO ANUNCIAR →
-  </div>
-
-</a>
-
- 
-/* ==========================================
-   DESTAQUE
-========================================== */
-function renderizarDestaque(lista){
-
- const el=document.getElementById("destaque");
- if(!el)return;
-
- if(!lista || !lista.length){
-   el.innerHTML=`
-   <div class="loading">
-   Nenhum destaque disponível.
-   </div>`;
-   return;
- }
-
- const n=lista[0];
-
- const imagem=
-   n.imagem ||
-   n.image ||
-   n.url_imagem ||
-   n.imagem_url ||
-   n.foto ||
-   n.url ||
-   "";
-
- const titulo=
-   n.titulo ||
-   n.title ||
-   "Sem título";
-
- const categoria=
-   n.categoria ||
-   "Notícias";
-
- el.style.cssText=`
- position:relative;
- min-height:340px;
- overflow:hidden;
- border-radius:18px;
- background:#222;
- cursor:pointer;
- `;
-
- el.innerHTML=`
-
- ${
- imagem
- ?
- `<img src="${esc(imagem)}"
-   alt="${esc(titulo)}"
-   style="
-   width:100%;
-   height:340px;
-   object-fit:cover;
-   display:block">`
- :
- `<div style="
-   height:340px;
-   display:grid;
-   place-items:center;
-   font-size:60px">
-   🌍
-  </div>`
- }
-
- <div style="
- position:absolute;
- inset:0;
- padding:20px;
- display:flex;
- flex-direction:column;
- justify-content:flex-end;
- color:white;
- background:linear-gradient(transparent,#000d)">
-
- <span style="
- width:max-content;
- padding:6px 9px;
- border-radius:20px;
- background:var(--p);
- font-size:9px;
- font-weight:bold">
-
- ${esc(categoria)}
-
- </span>
-
- <h2 style="
- margin-top:8px;
- font-size:clamp(22px,4vw,34px);
- line-height:1.12">
-
- ${esc(titulo)}
-
- </h2>
-
- <small style="margin-top:8px">
- ${formatarData(n.created_at||n.data)}
- </small>
-
- </div>
- `;
-
- el.onclick=function(){
-
-   if(!n.id){
-     alert("Esta notícia não possui ID.");
-     return;
-   }
-
-   window.location.href=
-     "noticia.html?id="+
-     encodeURIComponent(n.id);
-
- };
-
-} 
 
  /* ==========================================
    CONEXÃO SUPABASE
@@ -3032,7 +2810,108 @@ async function carregarNoticias() {
 
     }
 
+<!-- ==========================================
+     ÁREA DE PUBLICIDADE
+========================================== -->
 
+<a
+  href="contato.html"
+  style="
+    display:block;
+    max-width:1100px;
+    margin:20px auto;
+    padding:22px 18px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:18px;
+    text-align:center;
+    box-shadow:0 3px 12px #0000000a;
+    text-decoration:none;
+    color:inherit;
+  "
+>
+
+  <div style="
+    font-size:30px;
+    margin-bottom:8px;
+  ">
+    📢
+  </div>
+
+  <h2 style="
+    margin:0 0 8px;
+    font-size:24px;
+    font-weight:900;
+  ">
+    ANUNCIE AQUI
+  </h2>
+
+  <p style="
+    margin:0 auto 15px;
+    max-width:650px;
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.6;
+  ">
+    Alcance milhares de pessoas em toda África.
+    Divulgue a sua empresa, marca, produto,
+    serviço ou evento no AfricanMundo.
+  </p>
+
+  <div style="
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    gap:8px;
+    margin-bottom:18px;
+  ">
+
+    <span style="
+      padding:7px 12px;
+      border-radius:20px;
+      background:var(--bg);
+      font-size:12px;
+      font-weight:800;
+    ">
+      🌍 Público africano
+    </span>
+
+    <span style="
+      padding:7px 12px;
+      border-radius:20px;
+      background:var(--bg);
+      font-size:12px;
+      font-weight:800;
+    ">
+      📱 Divulgação online
+    </span>
+
+    <span style="
+      padding:7px 12px;
+      border-radius:20px;
+      background:var(--bg);
+      font-size:12px;
+      font-weight:800;
+    ">
+      📢 Espaços publicitários
+    </span>
+
+  </div>
+
+  <div style="
+    display:inline-block;
+    padding:12px 22px;
+    border-radius:12px;
+    background:var(--p);
+    color:#fff;
+    font-weight:900;
+    font-size:13px;
+  ">
+    QUERO ANUNCIAR →
+  </div>
+
+</a>
+   
     /* ======================================
        DESTAQUE
     ====================================== */
