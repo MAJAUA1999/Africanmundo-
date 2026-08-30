@@ -1781,41 +1781,71 @@ function executarPesquisa(texto) {
       .trim();
 
 
-  /* ======================================
-     ÁREA DE RESULTADOS
-  ====================================== */
+/* ======================================
+   ÁREA DE RESULTADOS DA PESQUISA
+====================================== */
 
-  let resultados =
-    document.getElementById(
-      "resultadoPesquisa"
+let resultados =
+  document.getElementById(
+    "resultadoPesquisa"
+  );
+
+
+if (!resultados) {
+
+  resultados =
+    document.createElement("div");
+
+  resultados.id =
+    "resultadoPesquisa";
+
+  resultados.style.maxWidth =
+    "1100px";
+
+  resultados.style.margin =
+    "20px auto";
+
+  resultados.style.padding =
+    "0 14px";
+
+
+  /* ====================================
+     COLOCAR RESULTADOS DEPOIS DA PESQUISA
+  ==================================== */
+
+  const formulario =
+    document.getElementById("searchForm");
+
+  if (formulario) {
+
+    formulario.insertAdjacentElement(
+      "afterend",
+      resultados
     );
 
+  } else {
 
-  if (!resultados) {
+    const pesquisa =
+      document.getElementById("searchInput");
 
-    resultados =
-      document.createElement("div");
+    if (pesquisa) {
 
-    resultados.id =
-      "resultadoPesquisa";
+      pesquisa.insertAdjacentElement(
+        "afterend",
+        resultados
+      );
 
-    resultados.style.maxWidth =
-      "1100px";
+    } else {
 
-    resultados.style.margin =
-      "20px auto";
+      document.body.appendChild(
+        resultados
+      );
 
-    resultados.style.padding =
-      "0 14px";
-
-
-    const principal =
-      document.querySelector("main") ||
-      document.body;
-
-    principal.prepend(resultados);
+    }
 
   }
+
+ }
 
 
   /* ======================================
