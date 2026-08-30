@@ -1673,28 +1673,319 @@ if(corGuardada && corGuardada!=="green"){
 
 
 /* ==========================================
-   PESQUISA
+   PESQUISA — AFRICANMUNDO
 ========================================== */
 
-document.getElementById("searchBtn")
-.addEventListener("click",()=>{
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
 
-  const box=document.getElementById("searchBox");
+    const searchBtn =
+      document.getElementById("searchBtn");
 
-  box.classList.toggle("open");
+    const searchBox =
+      document.getElementById("searchBox");
 
-  if(box.classList.contains("open")){
+    const searchInput =
+      document.getElementById("searchInput");
 
-    document.getElementById("searchInput").focus();
 
-    window.scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+    /* ======================================
+       ABRIR PESQUISA
+    ====================================== */
+
+    if (searchBtn && searchBox) {
+
+      searchBtn.addEventListener(
+        "click",
+        function () {
+
+          searchBox.classList.toggle("open");
+
+          if (
+            searchBox.classList.contains("open") &&
+            searchInput
+          ) {
+
+            searchInput.focus();
+
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth"
+            });
+
+          }
+
+        }
+      );
+
+    }
+
+
+    /* ======================================
+       PESQUISAR AO DIGITAR
+    ====================================== */
+
+    if (searchInput) {
+
+      searchInput.addEventListener(
+        "input",
+        function () {
+
+          executarPesquisa(
+            searchInput.value
+          );
+
+        }
+      );
+
+
+      /* ====================================
+         PESQUISAR COM ENTER
+      ==================================== */
+
+      searchInput.addEventListener(
+        "keydown",
+        function (evento) {
+
+          if (evento.key === "Enter") {
+
+            evento.preventDefault();
+
+            executarPesquisa(
+              searchInput.value
+            );
+
+          }
+
+        }
+      );
+
+    }
+
+  }
+);
+
+
+/* ==========================================
+   EXECUTAR PESQUISA
+========================================== */
+
+function executarPesquisa(texto) {
+
+  const termo =
+    String(texto || "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .trim();
+
+
+  /* ======================================
+     ÁREA DE RESULTADOS
+  ====================================== */
+
+  let resultados =
+    document.getElementById(
+      "resultadoPesquisa"
+    );
+
+
+  if (!resultados) {
+
+    resultados =
+      document.createElement("div");
+
+    resultados.id =
+      "resultadoPesquisa";
+
+    resultados.style.maxWidth =
+      "1100px";
+
+    resultados.style.margin =
+      "20px auto";
+
+    resultados.style.padding =
+      "0 14px";
+
+
+    const principal =
+      document.querySelector("main") ||
+      document.body;
+
+    principal.prepend(resultados);
 
   }
 
-});
+
+  /* ======================================
+     PESQUISA VAZIA
+  ====================================== */
+
+  if (!termo) {
+
+    resultados.innerHTML = "";
+
+    return;
+
+  }
+
+
+  /* ======================================
+     OBTER NOTÍCIAS
+  ====================================== */
+
+  const noticias =
+    Array.isArray(window.__noticias)
+      ? window.__noticias
+      : [];
+
+
+  if (!noticias.length) {
+
+    resultados.innerHTML = `
+      <div class="loading">
+        ⏳ As notícias ainda estão a carregar...
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  /* ======================================
+     FILTRAR
+  ====================================== */
+
+  const encontrados =
+    noticias.filter(function (noticia) {
+
+      const titulo =
+        String(
+          noticia.titulo ||
+          noticia.title ||
+          ""
+        );
+
+      const texto =
+        String(
+          noticia.texto ||
+          noticia.conteudo ||
+          noticia.content ||
+          noticia.descricao ||
+          ""
+        );
+
+      const categoria =
+        String(
+          noticia.categoria ||
+          ""
+        );
+
+
+      const conteudo =
+        (
+          titulo +
+          " " +
+          texto +
+          " " +
+          categoria
+        )
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+          /[\u0300-\u036f]/g,
+          ""
+        );
+
+
+      return conteudo.includes(
+        termo
+      );
+
+    });
+
+
+  /* ======================================
+     NENHUM RESULTADO
+  ====================================== */
+
+  if (!encontrados.length) {
+
+    resultados.innerHTML = `
+      <div style="
+        background:var(--card);
+        border:1px solid var(--border);
+        border-radius:15px;
+        padding:20px;
+        text-align:center;
+      ">
+        🔎
+        <h3>
+          Nenhuma notícia encontrada
+        </h3>
+
+        <p style="
+          color:var(--muted);
+          font-size:13px;
+        ">
+          Não encontramos resultados para
+          <strong>
+            "${escaparHTML(termo)}"
+          </strong>.
+        </p>
+      </div>
+    `;
+
+    return;
+
+  }
+
+
+  /* ======================================
+     MOSTRAR RESULTADOS
+  ====================================== */
+
+  resultados.innerHTML = `
+
+    <div style="
+      margin-bottom:15px;
+    ">
+
+      <h2 style="
+        margin-bottom:5px;
+      ">
+        🔎 Resultados da pesquisa
+      </h2>
+
+      <div style="
+        color:var(--muted);
+        font-size:13px;
+      ">
+        ${encontrados.length}
+        notícia(s) encontrada(s)
+      </div>
+
+    </div>
+
+    ${encontrados
+      .slice(0,20)
+      .map(criarCartao)
+      .join("")
+    }
+
+  `;
+
+
+  window.scrollTo({
+    top:
+      resultados.offsetTop - 20,
+    behavior:
+      "smooth"
+  });
+
+}
 
 
 /* ==========================================
