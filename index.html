@@ -931,126 +931,147 @@ function abrirFerramentas(){
     "🛠️ Ferramentas",
     `
     <div style="
-    display:grid;
-    gap:10px;">
+      display:grid;
+      gap:10px;
+    ">
 
       <button onclick="location.reload()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      🔄 Atualizar notícias
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Verificar as notícias mais recentes
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        🔄 Atualizar notícias
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Verificar as notícias mais recentes
+        </small>
+      </button>
+
+
+      <button onclick="alternarModoEscuro()" style="
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        🌙 Modo escuro
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Alternar entre modo claro e escuro
+        </small>
       </button>
 
 
       <button onclick="compartilharSite()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      📤 Partilhar AfricanMundo
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Enviar o site para outras pessoas
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        📤 Partilhar AfricanMundo
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Enviar o site para outras pessoas
+        </small>
       </button>
 
 
       <button onclick="copiarLinkSite()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      🔗 Copiar link
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Copiar o endereço do AfricanMundo
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        🔗 Copiar link
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Copiar o endereço do AfricanMundo
+        </small>
       </button>
 
 
       <button onclick="salvarSite()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      ⭐ Adicionar aos favoritos
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Guardar o AfricanMundo no navegador
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        ⭐ Adicionar aos favoritos
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Guardar o AfricanMundo no navegador
+        </small>
       </button>
 
 
       <button onclick="alterarTamanhoTexto()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      🔠 Tamanho do texto
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Aumentar ou diminuir o tamanho das letras
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        🔠 Tamanho do texto
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Aumentar ou diminuir o tamanho das letras
+        </small>
       </button>
 
 
       <button onclick="window.print()" style="
-      padding:14px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--bg);
-      color:var(--txt);
-      text-align:left;
-      font-weight:800;
-      cursor:pointer;">
-      🖨️ Imprimir página
-      <small style="
-      display:block;
-      margin-top:4px;
-      color:var(--muted);
-      font-weight:400;">
-      Preparar a página para impressão
-      </small>
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;">
+        🖨️ Imprimir página
+        <small style="
+          display:block;
+          margin-top:4px;
+          color:var(--muted);
+          font-weight:400;">
+          Preparar a página para impressão
+        </small>
       </button>
 
     </div>
@@ -1058,6 +1079,196 @@ function abrirFerramentas(){
   );
 
 }
+
+
+/* ==========================================
+   MODO ESCURO
+========================================== */
+
+function alternarModoEscuro(){
+
+  document.body.classList.toggle("dark");
+
+  const escuro =
+    document.body.classList.contains("dark");
+
+  localStorage.setItem(
+    "africanmundo_modo_escuro",
+    escuro ? "1" : "0"
+  );
+
+}
+
+
+/* ==========================================
+   RECUPERAR MODO ESCURO
+========================================== */
+
+function carregarModoEscuro(){
+
+  const modo =
+    localStorage.getItem(
+      "africanmundo_modo_escuro"
+    );
+
+  if(modo === "1"){
+
+    document.body.classList.add("dark");
+
+  }
+
+}
+
+
+/* ==========================================
+   PARTILHAR SITE
+========================================== */
+
+async function compartilharSite(){
+
+  const url =
+    window.location.href;
+
+  try{
+
+    if(navigator.share){
+
+      await navigator.share({
+
+        title:
+          "AfricanMundo",
+
+        text:
+          "🌍 A informação que liga África ao mundo",
+
+        url:url
+
+      });
+
+    }else{
+
+      await navigator.clipboard.writeText(url);
+
+      alert(
+        "🔗 Link do AfricanMundo copiado!"
+      );
+
+    }
+
+  }catch(e){
+
+    console.log(
+      "Partilha cancelada."
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   COPIAR LINK DO SITE
+========================================== */
+
+async function copiarLinkSite(){
+
+  try{
+
+    await navigator.clipboard.writeText(
+      window.location.href
+    );
+
+    alert(
+      "🔗 Link do AfricanMundo copiado!"
+    );
+
+  }catch(e){
+
+    alert(
+      "Não foi possível copiar o link."
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   FAVORITOS
+========================================== */
+
+function salvarSite(){
+
+  alert(
+    "⭐ Para adicionar aos favoritos, use o menu do navegador e escolha Adicionar aos favoritos."
+  );
+
+}
+
+
+/* ==========================================
+   TAMANHO DO TEXTO
+========================================== */
+
+function alterarTamanhoTexto(){
+
+  const atual =
+    document.documentElement.style
+      .getPropertyValue("--tamanho-texto");
+
+  if(!atual){
+
+    document.documentElement.style
+      .setProperty(
+        "--tamanho-texto",
+        "1.1"
+      );
+
+    alert(
+      "🔠 Texto aumentado."
+    );
+
+  }else if(atual === "1.1"){
+
+    document.documentElement.style
+      .setProperty(
+        "--tamanho-texto",
+        "1.2"
+      );
+
+    alert(
+      "🔠 Texto aumentado novamente."
+    );
+
+  }else{
+
+    document.documentElement.style
+      .setProperty(
+        "--tamanho-texto",
+        "1"
+      );
+
+    alert(
+      "🔠 Tamanho normal restaurado."
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   INICIAR MODO ESCURO
+========================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    carregarModoEscuro();
+
+  }
+);
 
 
 /* ==========================================
