@@ -139,141 +139,261 @@ function obterImagem(noticia) {
 }
 
 
-/* ==========================================
-   CRIAR CARTÃO
-========================================== */
-
 function criarCartao(noticia) {
 
-  const id =
-    noticia.id;
+const titulo =
+noticia.titulo ||
+noticia.title ||
+"Sem título";
 
-  const titulo =
-    noticia.titulo ||
-    noticia.title ||
-    "Sem título";
+const texto =
+noticia.texto ||
+noticia.conteudo ||
+noticia.content ||
+noticia.descricao ||
+"";
 
-  const texto =
-    noticia.texto ||
-    noticia.conteudo ||
-    noticia.content ||
-    noticia.descricao ||
-    "";
+const imagem =
+noticia.imagem ||
+noticia.imagem_url ||
+noticia.image ||
+noticia.image_url ||
+noticia.url_imagem ||
+noticia.foto ||
+noticia.foto_url ||
+"";
 
-  const categoria =
-    noticia.categoria ||
-    noticia.category ||
-    "Notícias";
+const categoria =
+noticia.categoria ||
+noticia.category ||
+"Notícias";
 
-  const imagem =
-    obterImagem(noticia);
+const data =
+noticia.created_at ||
+noticia.data ||
+noticia.createdAt ||
+noticia.publicado_em ||
+"";
 
+const id =
+noticia.id;
 
-  return `
-    <a
-      href="noticia.html?id=${encodeURIComponent(id)}"
+/* ======================================
+RESUMO DA NOTÍCIA
+====================================== */
+
+let resumo =
+String(texto || "").trim();
+
+if(resumo.length > 120){
+
+resumo =
+  resumo.substring(0,120)
+  .trim() + "...";
+
+}
+
+/* ======================================
+CARTÃO
+====================================== */
+
+return `
+<a
+href="noticia.html?id=${encodeURIComponent(id)}"
+style="
+display:block;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:16px;
+overflow:hidden;
+text-decoration:none;
+color:inherit;
+margin-bottom:14px;
+box-shadow:0 3px 12px #0000000b;
+transition:transform .15s ease,box-shadow .15s ease;
+"
+onmousedown="this.style.transform='scale(.99)'"
+onmouseup="this.style.transform='scale(1)'"
+ontouchstart="this.style.transform='scale(.99)'"
+ontouchend="this.style.transform='scale(1)'"
+>
+
+  <!-- IMAGEM -->
+
+  ${
+    imagem
+    ?
+    `
+    <div
       style="
-        display:block;
-        background:var(--card);
-        border:1px solid var(--border);
-        border-radius:15px;
+        width:100%;
+        height:210px;
         overflow:hidden;
-        margin-bottom:12px;
-        box-shadow:0 2px 8px #00000008;
-        text-decoration:none;
-        color:inherit;
+        background:var(--bg);
       "
     >
 
+      <img
+        src="${escaparHTML(imagem)}"
+        alt="${escaparHTML(titulo)}"
+        style="
+          width:100%;
+          height:100%;
+          object-fit:cover;
+          display:block;
+        "
+        onerror="
+          this.parentElement.innerHTML=
+          '<div style=&quot;height:100%;display:grid;place-items:center;font-size:45px;&quot;>🌍</div>';
+        "
+      >
+
+    </div>
+    `
+    :
+    `
+    <div
+      style="
+        width:100%;
+        height:180px;
+        display:grid;
+        place-items:center;
+        background:var(--bg);
+        font-size:48px;
+      "
+    >
+      🌍
+    </div>
+    `
+  }
+
+
+  <!-- CONTEÚDO -->
+
+  <div
+    style="
+      padding:15px;
+    "
+  >
+
+    <!-- CATEGORIA -->
+
+    <div
+      style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        gap:8px;
+        margin-bottom:8px;
+      "
+    >
+
+      <span
+        style="
+          display:inline-block;
+          padding:5px 9px;
+          border-radius:20px;
+          background:#e8f6f1;
+          color:var(--p);
+          font-size:10px;
+          font-weight:900;
+          text-transform:uppercase;
+        "
+      >
+        ${escaparHTML(categoria)}
+      </span>
+
       ${
-        imagem
+        data
         ?
         `
-        <img
-          src="${esc(imagem)}"
-          alt="${esc(titulo)}"
+        <span
           style="
-            width:100%;
-            height:190px;
-            object-fit:cover;
-            display:block;
+            color:var(--muted);
+            font-size:10px;
+            white-space:nowrap;
           "
         >
+          ${escaparHTML(formatarData(data))}
+        </span>
         `
         :
-        `
-        <div
-          style="
-            height:150px;
-            display:grid;
-            place-items:center;
-            background:var(--bg);
-            font-size:45px;
-          "
-        >
-          🌍
-        </div>
-        `
+        ""
       }
 
-      <div style="padding:13px">
+    </div>
 
-        <div
-          style="
-            color:var(--p);
-            font-size:10px;
-            font-weight:900;
-            text-transform:uppercase;
-            margin-bottom:6px;
-          "
-        >
-          ${esc(categoria)}
-        </div>
 
-        <div
-          style="
-            font-size:17px;
-            font-weight:900;
-            line-height:1.3;
-          "
-        >
-          ${esc(titulo)}
-        </div>
+    <!-- TÍTULO -->
 
-        ${
-          texto
-          ?
-          `
-          <div
-            style="
-              margin-top:7px;
-              color:var(--muted);
-              font-size:12px;
-              line-height:1.5;
-            "
-          >
-            ${esc(texto)}
-          </div>
-          `
-          :
-          ""
-        }
+    <div
+      style="
+        font-size:18px;
+        font-weight:900;
+        line-height:1.3;
+        margin-bottom:7px;
+      "
+    >
+      ${escaparHTML(titulo)}
+    </div>
 
-        <div
-          style="
-            margin-top:10px;
-            color:var(--p);
-            font-size:11px;
-            font-weight:900;
-          "
-        >
-          LER NOTÍCIA →
-        </div>
 
+    <!-- RESUMO -->
+
+    ${
+      resumo
+      ?
+      `
+      <div
+        style="
+          color:var(--muted);
+          font-size:12px;
+          line-height:1.55;
+          margin-bottom:12px;
+        "
+      >
+        ${escaparHTML(resumo)}
       </div>
+      `
+      :
+      ""
+    }
 
-    </a>
-  `;
+
+    <!-- LER NOTÍCIA -->
+
+    <div
+      style="
+        display:flex;
+        align-items:center;
+        justify-content:space-between;
+        padding-top:10px;
+        border-top:1px solid var(--border);
+        color:var(--p);
+        font-size:11px;
+        font-weight:900;
+      "
+    >
+
+      <span>
+        LER NOTÍCIA
+      </span>
+
+      <span
+        style="
+          font-size:16px;
+        "
+      >
+        →
+      </span>
+
+    </div>
+
+  </div>
+
+</a>
+
+`;
 
 }
 
