@@ -1,20 +1,14 @@
-<!DOCTYPE html>
-<html lang="pt">
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
+<!DOCTYPE html><html lang="pt">
+<head><meta charset="UTF-8"><meta name="viewport"
 content="width=device-width,initial-scale=1">
 
 <meta name="theme-color"
 content="#087f5b">
 
-<title>Notícia — AfricanMundo</title>
+<meta name="description"
+content="Notícia do AfricanMundo — A informação que liga África ao mundo.">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<style>
+<title>Notícia — AfricanMundo</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 :root{
  --p:#087f5b;
@@ -175,9 +169,10 @@ main{
 
 .imagem{
  width:100%;
- max-height:520px;
+ max-height:600px;
  object-fit:cover;
  display:block;
+ cursor:zoom-in;
 }
 
 .texto{
@@ -204,6 +199,117 @@ main{
  font-weight:bold;
 }
 
+/* ==========================================
+   MAIS NOTÍCIAS
+========================================== */
+
+.mais-noticias{
+ margin-top:20px;
+}
+
+.mais-titulo{
+ margin:0 0 14px;
+ font-size:22px;
+ font-weight:900;
+}
+
+.lista-mais{
+ display:grid;
+ gap:12px;
+}
+
+.cartao-mais{
+ display:flex;
+ gap:10px;
+ padding:10px;
+ background:var(--card);
+ border:1px solid var(--border);
+ border-radius:12px;
+ text-decoration:none;
+ color:inherit;
+ overflow:hidden;
+}
+
+.cartao-mais img,
+.cartao-sem-imagem{
+ width:100px;
+ height:75px;
+ flex-shrink:0;
+ border-radius:8px;
+ object-fit:cover;
+}
+
+.cartao-sem-imagem{
+ display:grid;
+ place-items:center;
+ background:var(--bg);
+ font-size:30px;
+}
+
+.cartao-mais-titulo{
+ display:flex;
+ align-items:center;
+ font-size:14px;
+ line-height:1.35;
+ font-weight:900;
+}
+
+.botao-mais{
+ display:block;
+ width:100%;
+ margin-top:16px;
+ padding:14px;
+ border:0;
+ border-radius:12px;
+ background:var(--p);
+ color:#fff;
+ font-size:13px;
+ font-weight:900;
+ cursor:pointer;
+}
+
+.botao-mais:active{
+ transform:scale(.98);
+}
+
+/* ==========================================
+   IMAGEM GRANDE
+========================================== */
+
+#visualizadorImagem{
+ position:fixed;
+ inset:0;
+ z-index:9999;
+ background:rgba(0,0,0,.96);
+ display:none;
+ align-items:center;
+ justify-content:center;
+ padding:15px;
+}
+
+#visualizadorImagem img{
+ max-width:100%;
+ max-height:95vh;
+ width:auto;
+ height:auto;
+ object-fit:contain;
+ border-radius:5px;
+}
+
+#fecharImagem{
+ position:absolute;
+ top:15px;
+ right:15px;
+ width:42px;
+ height:42px;
+ border:0;
+ border-radius:50%;
+ background:rgba(255,255,255,.15);
+ color:#fff;
+ font-size:25px;
+ font-weight:bold;
+}
+
 @media(max-width:600px){
 
  .logo small{
@@ -227,128 +333,100 @@ main{
   max-height:380px;
  }
 
+ .cartao-mais-titulo{
+  font-size:13px;
+ }
+
 }
 
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<div class="head">
-
-<a href="index.html"
+</style></head><body><header><div class="head"><a href="index.html"
 class="logo">
 
 <div class="logo-icon">
 🌍
-</div>
-
-<div>
-
-<div class="logo-name">
+</div><div><div class="logo-name">
 African<span>Mundo</span>
-</div>
-
-<small>
+</div><small>
 A informação que liga África ao mundo
-</small>
-
-</div>
-
-</a>
-
-<button
+</small></div></a><button
 class="voltar"
 onclick="voltar()">
 
 ← Voltar
 
-</button>
-
-</div>
-
-</header>
-<main>
-
-<div
+</button></div></header><main><div
 id="estado"
-class="estado">
+class="estado">⏳ A carregar notícia...
 
-⏳ A carregar notícia...
-
-</div>
-
-
-<article
+</div><article
 id="noticia"
 class="noticia"
-style="display:none;">
-
-
-<div
+style="display:none;"><div
 id="categoria"
 class="categoria">
-</div>
-
-
-<h1
+</div><h1
 id="titulo"
 class="titulo">
-</h1>
-
-
-<div
+</h1><div
 id="data"
 class="data">
-</div>
-
-
-<img
+</div><img
 id="imagem"
 class="imagem"
 alt="Imagem da notícia"
 style="display:none;"
->
 
+«»
 
 <div
 id="texto"
 class="texto">
-</div>
-
-
-<div class="acoes">
-
-
-<button
+</div><div class="acoes"><button
 class="acao"
 onclick="partilhar()">
 
 📤 Partilhar
 
-</button>
-
-
-<button
+</button><button
 class="acao"
 onclick="voltar()">
 
 ← Voltar
 
-</button>
+</button></div><!-- ==========================================
+     MAIS NOTÍCIAS
+========================================== --><section
+class="mais-noticias"
+id="maisNoticias"><h2 class="mais-titulo">
+📰 Mais notícias
+</h2><div
+id="listaMaisNoticias"
+class="lista-mais">
+</div><button
+id="botaoMaisNoticias"
+class="botao-mais"
+type="button"
+style="display:none;">
 
+➕ MAIS NOTÍCIAS
 
-</div>
+</button></section></article></main><!-- ==========================================
+     VISUALIZADOR DE IMAGEM
+========================================== --><div
+id="visualizadorImagem"><button
+id="fecharImagem"
+type="button"
+onclick="fecharImagem()">
 
-</article>
+×
 
-</main>
+</button><img
+id="imagemGrande"
+alt="Imagem ampliada"
 
+«»
 
-<script>
+</div><script>
 
 /* ==========================================
    CONFIGURAÇÃO SUPABASE
@@ -359,6 +437,7 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
 "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
 
 /* ==========================================
    CLIENTE SUPABASE
@@ -380,12 +459,16 @@ try{
        SUPABASE_KEY
      );
 
+   console.log(
+     "✅ Supabase conectado."
+   );
+
  }
 
 }catch(e){
 
  console.error(
-   "Erro ao iniciar Supabase:",
+   "❌ Erro ao iniciar Supabase:",
    e
  );
 
@@ -393,7 +476,7 @@ try{
 
 
 /* ==========================================
-   OBTER ID DA NOTÍCIA
+   OBTER ID
 ========================================== */
 
 function obterId(){
@@ -435,6 +518,8 @@ function esc(valor){
    .replace(/'/g,"&#039;");
 
 }
+
+
 /* ==========================================
    FORMATAR DATA
 ========================================== */
@@ -514,346 +599,640 @@ function mostrarErro(msg){
 
 }
 
+
 /* ==========================================
    MOSTRAR NOTÍCIA
 ========================================== */
 
-function mostrarNoticia(n) {
+function mostrarNoticia(n){
 
-  const estado =
-    document.getElementById("estado");
+ const estado =
+   document.getElementById("estado");
 
-  const artigo =
-    document.getElementById("noticia");
+ const artigo =
+   document.getElementById("noticia");
 
-  const titulo =
-    document.getElementById("titulo");
+ const titulo =
+   document.getElementById("titulo");
 
-  const categoria =
-    document.getElementById("categoria");
+ const categoria =
+   document.getElementById("categoria");
 
-  const data =
-    document.getElementById("data");
+ const data =
+   document.getElementById("data");
 
-  const texto =
-    document.getElementById("texto");
+ const texto =
+   document.getElementById("texto");
 
-  const imagem =
-    document.getElementById("imagem");
-
-
-  /* ==========================================
-     TÍTULO
-  ========================================== */
-
-  titulo.textContent =
-    n.titulo ||
-    n.title ||
-    "Sem título";
+ const imagem =
+   document.getElementById("imagem");
 
 
-  /* ==========================================
-     CATEGORIA
-  ========================================== */
+ /* ======================================
+    TÍTULO
+ ====================================== */
 
-  categoria.textContent =
-    n.categoria ||
-    n.category ||
-    "Notícias";
-
-
-  /* ==========================================
-     DATA
-  ========================================== */
-
-  data.textContent =
-    formatarData(
-      n.created_at ||
-      n.data ||
-      n.createdAt ||
-      n.publicado_em
-    );
+ titulo.textContent =
+   n.titulo ||
+   n.title ||
+   "Sem título";
 
 
-  /* ==========================================
-     TEXTO
-  ========================================== */
+ /* ======================================
+    CATEGORIA
+ ====================================== */
 
-  texto.textContent =
-    n.texto ||
-    n.conteudo ||
-    n.content ||
-    n.descricao ||
-    "";
+ categoria.textContent =
+   n.categoria ||
+   n.category ||
+   "Notícias";
 
 
-  /* ==========================================
-     IMAGEM DA NOTÍCIA
-  ========================================== */
+ /* ======================================
+    DATA
+ ====================================== */
 
-  const foto =
-    n.imagem ||
-    n.imagem_url ||
-    n.image ||
-    n.image_url ||
-    n.foto ||
-    n.foto_url ||
-    n.url_imagem ||
-    n.urlImagem ||
-    n.capa ||
-    n.capa_url ||
-    "";
+ data.textContent =
+   formatarData(
+     n.created_at ||
+     n.data ||
+     n.createdAt ||
+     n.publicado_em
+   );
 
 
-  console.log(
-    "🖼️ Imagem encontrada:",
-    foto
-  );
+ /* ======================================
+    TEXTO
+ ====================================== */
+
+ texto.textContent =
+   n.texto ||
+   n.conteudo ||
+   n.content ||
+   n.descricao ||
+   "";
 
 
-  if (foto) {
+ /* ======================================
+    IMAGEM
+ ====================================== */
 
-    imagem.src = foto;
-
-    imagem.alt =
-      n.titulo ||
-      n.title ||
-      "Imagem da notícia";
-
-
-    imagem.style.display =
-      "block";
-
-    imagem.style.width =
-      "100%";
-
-    imagem.style.height =
-      "auto";
-
-    imagem.style.maxHeight =
-      "600px";
-
-    imagem.style.objectFit =
-      "cover";
+ const foto =
+   n.imagem ||
+   n.imagem_url ||
+   n.image ||
+   n.image_url ||
+   n.foto ||
+   n.foto_url ||
+   n.url_imagem ||
+   n.urlImagem ||
+   n.capa ||
+   n.capa_url ||
+   "";
 
 
-    /* ======================================
-       ABRIR IMAGEM GRANDE
-    ====================================== */
-
-    imagem.style.cursor =
-      "zoom-in";
+ console.log(
+   "🖼️ Imagem:",
+   foto
+ );
 
 
-    imagem.onclick =
-      function () {
+ if(foto){
 
-        window.open(
-          foto,
-          "_blank"
-        );
+   imagem.src =
+     foto;
 
-      };
+   imagem.alt =
+     n.titulo ||
+     n.title ||
+     "Imagem da notícia";
 
-
-    imagem.onerror =
-      function () {
-
-        console.error(
-          "❌ Não foi possível carregar a imagem:",
-          foto
-        );
-
-        imagem.style.display =
-          "none";
-
-      };
+   imagem.style.display =
+     "block";
 
 
-  } else {
+   imagem.onclick =
+     function(){
 
-    console.log(
-      "⚠️ Esta notícia não possui imagem."
-    );
+       abrirImagemGrande(
+         foto
+       );
 
-    imagem.style.display =
-      "none";
-
-  }
+     };
 
 
-  /* ==========================================
-     MOSTRAR NOTÍCIA
-  ========================================== */
+   imagem.onerror =
+     function(){
 
-  estado.style.display =
-    "none";
+       console.error(
+         "❌ Erro na imagem:",
+         foto
+       );
 
-  artigo.style.display =
-    "block";
+       imagem.style.display =
+         "none";
+
+     };
+
+ }else{
+
+   imagem.style.display =
+     "none";
+
+ }
+
+
+ estado.style.display =
+   "none";
+
+ artigo.style.display =
+   "block";
+
+}
+
+
+/* ==========================================
+   ABRIR IMAGEM GRANDE
+========================================== */
+
+function abrirImagemGrande(url){
+
+ const visualizador =
+   document.getElementById(
+     "visualizadorImagem"
+   );
+
+ const imagemGrande =
+   document.getElementById(
+     "imagemGrande"
+   );
+
+ if(!visualizador ||
+    !imagemGrande){
+
+   return;
+
+ }
+
+ imagemGrande.src =
+   url;
+
+ visualizador.style.display =
+   "flex";
+
+ document.body.style.overflow =
+   "hidden";
+
+}
+
+
+/* ==========================================
+   FECHAR IMAGEM GRANDE
+========================================== */
+
+function fecharImagem(){
+
+ const visualizador =
+   document.getElementById(
+     "visualizadorImagem"
+   );
+
+ if(!visualizador) return;
+
+ visualizador.style.display =
+   "none";
+
+ document.body.style.overflow =
+   "";
+
+}
+
+
+/* ==========================================
+   FECHAR COM ESC
+========================================== */
+
+document.addEventListener(
+ "keydown",
+ function(e){
+
+   if(e.key === "Escape"){
+
+     fecharImagem();
 
    }
- 
+
+ });
+
+
 /* ==========================================
    CARREGAR NOTÍCIA
 ========================================== */
 
 async function carregarNoticia(){
 
-  const id = obterId();
+ const id =
+   obterId();
 
-  if(!id){
+ if(!id){
 
-    mostrarErro(
-      "Não foi encontrado o ID da notícia."
-    );
+   mostrarErro(
+     "Não foi encontrado o ID da notícia."
+   );
 
-    return;
-  }
+   return;
 
-  if(!db){
+ }
 
-    mostrarErro(
-      "A ligação com o Supabase não está configurada."
-    );
 
-    return;
-  }
+ if(!db){
 
-  try{
+   mostrarErro(
+     "A ligação com o Supabase não está configurada."
+   );
 
-    console.log(
-      "🔎 Procurando notícia ID:",
-      id
-    );
+   return;
 
-    const resposta =
-      await db
-      .from("noticias")
-      .select("*")
-      .eq("id", id)
-      .limit(1);
+ }
 
-    if(resposta.error){
 
-      console.error(
-        "❌ Erro Supabase:",
-        resposta.error
-      );
+ try{
 
-      mostrarErro(
-        "Erro ao consultar a notícia."
-      );
+   console.log(
+     "🔎 Procurando notícia:",
+     id
+   );
 
-      return;
-    }
 
-    const noticias =
-      resposta.data || [];
+   const resposta =
+     await db
+       .from("noticias")
+       .select("*")
+       .eq("id",id)
+       .limit(1);
 
-    if(!noticias.length){
 
-      mostrarErro(
-        "A notícia não foi encontrada."
-      );
+   if(resposta.error){
 
-      return;
-    }
+     console.error(
+       "❌ Erro Supabase:",
+       resposta.error
+     );
 
-    console.log(
-      "✅ Notícia encontrada:",
-      noticias[0]
-    );
+     mostrarErro(
+       "Erro ao consultar a notícia."
+     );
 
-    mostrarNoticia(
-      noticias[0]
-    );
+     return;
 
-  }catch(e){
+   }
 
-    console.error(
-      "❌ Erro ao carregar notícia:",
-      e
-    );
 
-    mostrarErro(
-      "Ocorreu um erro ao carregar a notícia."
-    );
+   const noticias =
+     resposta.data || [];
 
-  }
+
+   if(!noticias.length){
+
+     mostrarErro(
+       "A notícia não foi encontrada."
+     );
+
+     return;
+
+   }
+
+
+   const noticiaAtual =
+     noticias[0];
+
+
+   console.log(
+     "✅ Notícia encontrada:",
+     noticiaAtual
+   );
+
+
+   mostrarNoticia(
+     noticiaAtual
+   );
+
+
+   /* CARREGAR MAIS NOTÍCIAS */
+
+   carregarMaisNoticias(
+     noticiaAtual.id
+   );
+
+
+ }catch(e){
+
+   console.error(
+     "❌ Erro ao carregar:",
+     e
+   );
+
+   mostrarErro(
+     "Ocorreu um erro ao carregar a notícia."
+   );
+
+ }
 
 }
 
 
 /* ==========================================
-   PARTILHAR NOTÍCIA
+   MAIS NOTÍCIAS
+========================================== */
+
+let todasMaisNoticias = [];
+
+let quantidadeMaisNoticias = 6;
+
+
+/* ==========================================
+   CARREGAR MAIS NOTÍCIAS DO SUPABASE
+========================================== */
+
+async function carregarMaisNoticias(idAtual){
+
+ const lista =
+   document.getElementById(
+     "listaMaisNoticias"
+   );
+
+ if(!lista || !db) return;
+
+
+ try{
+
+   const resposta =
+     await db
+       .from("noticias")
+       .select("*")
+       .order("id",{
+         ascending:false
+       });
+
+
+   if(resposta.error){
+
+     console.error(
+       "❌ Erro ao carregar mais notícias:",
+       resposta.error
+     );
+
+     return;
+
+   }
+
+
+   todasMaisNoticias =
+     (resposta.data || [])
+       .filter(function(n){
+
+         return String(n.id) !==
+                String(idAtual);
+
+       });
+
+
+   renderizarMaisNoticias();
+
+
+ }catch(e){
+
+   console.error(
+     "❌ Erro nas mais notícias:",
+     e
+   );
+
+ }
+
+}
+
+
+/* ==========================================
+   RENDERIZAR MAIS NOTÍCIAS
+========================================== */
+
+function renderizarMaisNoticias(){
+
+ const lista =
+   document.getElementById(
+     "listaMaisNoticias"
+   );
+
+ const botao =
+   document.getElementById(
+     "botaoMaisNoticias"
+   );
+
+
+ if(!lista || !botao) return;
+
+
+ const noticiasVisiveis =
+   todasMaisNoticias.slice(
+     0,
+     quantidadeMaisNoticias
+   );
+
+
+ lista.innerHTML =
+   noticiasVisiveis
+     .map(function(n){
+
+       const titulo =
+         n.titulo ||
+         n.title ||
+         "Sem título";
+
+
+       const imagem =
+         n.imagem ||
+         n.imagem_url ||
+         n.image ||
+         n.image_url ||
+         n.foto ||
+         n.foto_url ||
+         n.url_imagem ||
+         "";
+
+
+       return `
+
+         <a
+           class="cartao-mais"
+           href="noticia.html?id=${encodeURIComponent(n.id)}"
+         >
+
+           ${
+             imagem
+             ?
+             `
+             <img
+               src="${esc(imagem)}"
+               alt="${esc(titulo)}"
+             >
+             `
+             :
+             `
+             <div class="cartao-sem-imagem">
+               🌍
+             </div>
+             `
+           }
+
+
+           <div
+             class="cartao-mais-titulo"
+           >
+             ${esc(titulo)}
+           </div>
+
+         </a>
+
+       `;
+
+     })
+     .join("");
+
+
+ if(
+   quantidadeMaisNoticias <
+   todasMaisNoticias.length
+ ){
+
+   botao.style.display =
+     "block";
+
+ }else{
+
+   botao.style.display =
+     "none";
+
+ }
+
+}
+
+
+/* ==========================================
+   BOTÃO MAIS NOTÍCIAS
+========================================== */
+
+document.addEventListener(
+ "DOMContentLoaded",
+ function(){
+
+   const botao =
+     document.getElementById(
+       "botaoMaisNoticias"
+     );
+
+
+   if(!botao) return;
+
+
+   botao.addEventListener(
+     "click",
+     function(){
+
+       quantidadeMaisNoticias +=
+         6;
+
+
+       renderizarMaisNoticias();
+
+
+     }
+   );
+
+ });
+
+
+/* ==========================================
+   PARTILHAR
 ========================================== */
 
 async function partilhar(){
 
-  const titulo =
-    document.getElementById("titulo")
-    .textContent;
+ const titulo =
+   document.getElementById(
+     "titulo"
+   ).textContent;
 
-  const url =
-    window.location.href;
 
-  try{
+ const url =
+   window.location.href;
 
-    if(navigator.share){
 
-      await navigator.share({
-        title:titulo,
-        url:url
-      });
+ try{
 
-    }else{
+   if(
+     navigator.share
+   ){
 
-      await navigator.clipboard
-      .writeText(url);
+     await navigator.share({
 
-      alert(
-        "🔗 Link da notícia copiado!"
-      );
+       title:
+         titulo,
 
-    }
+       text:
+         titulo,
 
-  }catch(e){
+       url:
+         url
 
-    console.log(
-      "Partilha cancelada."
-    );
+     });
 
-  }
+   }else{
+
+     await navigator.clipboard
+       .writeText(url);
+
+
+     alert(
+       "🔗 Link da notícia copiado!"
+     );
+
+   }
+
+ }catch(e){
+
+   console.log(
+     "Partilha cancelada."
+   );
+
+ }
 
 }
-/* ==========================================
-   COMPATIBILIDADE
-========================================== */
-
-function carregarMaisNoticias(){
-
-  console.log(
-    "Função não necessária na página da notícia."
-  );
-
-}
 
 
 /* ==========================================
-   INICIAR PÁGINA
+   INICIAR
 ========================================== */
 
 document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+ "DOMContentLoaded",
+ function(){
 
-    carregarNoticia();
+   console.log(
+     "🚀 AfricanMundo: notícia iniciada."
+   );
 
-  }
+   carregarNoticia();
+
+ });
+
+
+/* ==========================================
+   FIM
+========================================== */
+
+console.log(
+ "✅ noticia.html carregado."
 );
 
-</script>
-
-</body>
-</html>
+</script></body>
+ </html>
