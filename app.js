@@ -211,7 +211,13 @@ function criarCartao(noticia) {
             }
 /* ==========================================
    MOSTRAR LISTA DE NOTÍCIAS
+   + MAIS NOTÍCIAS
 ========================================== */
+
+const quantidadeNoticiasPorPagina = 6;
+
+const paginasNoticias = {};
+
 
 function mostrarLista(id, lista) {
 
@@ -241,11 +247,108 @@ function mostrarLista(id, lista) {
   }
 
 
-  elemento.innerHTML =
+  /* ======================================
+     COMEÇAR NOVAMENTE
+  ====================================== */
+
+  paginasNoticias[id] = 1;
+
+
+  renderizarListaNoticias(
+    id,
     lista
-      .slice(0, 6)
+  );
+
+}
+
+
+/* ==========================================
+   RENDERIZAR NOTÍCIAS
+========================================== */
+
+function renderizarListaNoticias(id, lista) {
+
+  const elemento =
+    document.getElementById(id);
+
+  if (!elemento) return;
+
+
+  const pagina =
+    paginasNoticias[id] || 1;
+
+
+  const quantidade =
+    pagina *
+    quantidadeNoticiasPorPagina;
+
+
+  const noticiasVisiveis =
+    lista.slice(
+      0,
+      quantidade
+    );
+
+
+  elemento.innerHTML =
+    noticiasVisiveis
       .map(criarCartao)
       .join("");
+
+
+  /* ======================================
+     BOTÃO MAIS NOTÍCIAS
+  ====================================== */
+
+  if (
+    noticiasVisiveis.length <
+    lista.length
+  ) {
+
+    const botao =
+      document.createElement("button");
+
+    botao.type = "button";
+
+    botao.innerHTML =
+      "➕ MAIS NOTÍCIAS";
+
+
+    botao.style.cssText = `
+      display:block;
+      width:100%;
+      margin:18px 0 5px;
+      padding:14px;
+      border:0;
+      border-radius:12px;
+      background:var(--p);
+      color:#fff;
+      font-size:13px;
+      font-weight:900;
+      cursor:pointer;
+    `;
+
+
+    botao.onclick =
+      function () {
+
+        paginasNoticias[id] =
+          (paginasNoticias[id] || 1) + 1;
+
+
+        renderizarListaNoticias(
+          id,
+          lista
+        );
+
+      };
+
+
+    elemento.appendChild(
+      botao
+    );
+
+  }
 
 }
 
