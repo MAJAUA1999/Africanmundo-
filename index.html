@@ -1188,11 +1188,25 @@ function alterarTamanhoTexto(){
 })();
 
 
-document.getElementById("toolsBtn")
-.addEventListener(
-  "click",
-  abrirFerramentas
-);
+/* ==========================================
+   BOTÃO FERRAMENTAS
+========================================== */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const toolsBtn =
+    document.getElementById("toolsBtn");
+
+  if(toolsBtn){
+
+    toolsBtn.addEventListener(
+      "click",
+      abrirFerramentas
+    );
+
+  }
+
+});
 
 /* ==========================================
    UTILIZADOR / EU — PAINEL PROFISSIONAL
