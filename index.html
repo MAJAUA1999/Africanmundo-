@@ -3,125 +3,401 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="description" content="AfricanMundo — A informação que liga África ao mundo.">
 <meta name="theme-color" content="#168a45">
+<meta name="description" content="AfricanMundo — A informação que liga África ao mundo.">
 <title>AfricanMundo</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root{
- --p:#168a45;--bg:#f5f7f8;--card:#fff;--txt:#172026;
- --muted:#69757d;--border:#e2e7ea;--radius:15px;
+  --p:#168a45;
+  --p2:#0f6d36;
+  --bg:#f5f7f8;
+  --card:#fff;
+  --txt:#172026;
+  --muted:#69757d;
+  --border:#e2e7ea;
+  --radius:16px;
+  --shadow:0 4px 18px #0000000b;
 }
-body.dark{--bg:#101417;--card:#171d21;--txt:#f2f5f6;--muted:#aab5ba;--border:#293238}
-body.blue{--p:#1976d2}
-body.red{--p:#d62828}
-body.purple{--p:#7b3fc6}
-body.orange{--p:#ed7d16}
 
 *{box-sizing:border-box}
+
+html{scroll-behavior:smooth}
+
 body{
- margin:0;background:var(--bg);color:var(--txt);
- font-family:Arial,sans-serif;transition:.2s
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--txt);
 }
+
+body.dark{
+  --bg:#101417;
+  --card:#171d21;
+  --txt:#f2f5f6;
+  --muted:#aab5ba;
+  --border:#293238;
+}
+
+body.blue{--p:#1976d2;--p2:#1259a4}
+body.red{--p:#d62828;--p2:#a61f1f}
+body.purple{--p:#7b3fc6;--p2:#5b2c91}
+body.orange{--p:#ed7d16;--p2:#b85b0c}
+
 button,input{font:inherit}
+
 button{cursor:pointer}
-.container{width:min(1100px,calc(100% - 24px));margin:auto}
+
+.container{
+  width:min(1100px,calc(100% - 24px));
+  margin:auto;
+}
 
 header{
- position:sticky;top:0;z-index:1000;
- background:var(--card);border-bottom:1px solid var(--border)
+  position:sticky;
+  top:0;
+  z-index:1000;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 2px 12px #00000008;
 }
+
 .top{
- min-height:62px;display:flex;align-items:center;
- justify-content:space-between;gap:8px
+  min-height:64px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
 }
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  text-decoration:none;
+  min-width:0;
+}
+
 .logo{
- display:flex;align-items:center;gap:8px;
- font-weight:900;font-size:19px
+  width:40px;
+  height:40px;
+  display:grid;
+  place-items:center;
+  border-radius:12px;
+  background:var(--p);
+  color:#fff;
+  font-size:21px;
 }
-.actions{display:flex;gap:4px}
+
+.brand-text{min-width:0}
+
+.brand-title{
+  font-size:19px;
+  font-weight:950;
+}
+
+.brand-subtitle{
+  color:var(--muted);
+  font-size:9px;
+  white-space:nowrap;
+}
+
+.actions{
+  display:flex;
+  gap:5px;
+}
+
 .icon{
- width:37px;height:37px;border:1px solid var(--border);
- border-radius:11px;background:var(--card);color:var(--txt)
+  width:38px;
+  height:38px;
+  border:1px solid var(--border);
+  border-radius:11px;
+  background:var(--card);
+  color:var(--txt);
+  display:grid;
+  place-items:center;
+  font-size:17px;
 }
+
 .menu{
- display:flex;gap:6px;overflow:auto;padding:8px 0
+  border-top:1px solid var(--border);
+  overflow-x:auto;
+  scrollbar-width:none;
 }
+
+.menu::-webkit-scrollbar{display:none}
+
+.menu-inner{
+  display:flex;
+  gap:6px;
+  padding:8px 0;
+  white-space:nowrap;
+}
+
 .menu a{
- flex:none;text-decoration:none;padding:8px 10px;
- border-radius:9px;background:var(--bg);
- font-size:11px;font-weight:800
+  padding:8px 11px;
+  border-radius:10px;
+  background:var(--bg);
+  color:var(--txt);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:900;
 }
-.search{padding:18px 0 8px;display:flex;gap:7px}
+
+.menu a:hover{
+  color:var(--p);
+  outline:1px solid var(--p);
+}
+
+main{
+  padding-bottom:45px;
+}
+
+.search{
+  padding:18px 0 8px;
+}
+
+.search-box{
+  display:flex;
+  gap:7px;
+}
+
 .search input{
- flex:1;min-width:0;padding:12px;border:1px solid var(--border);
- border-radius:11px;background:var(--card);color:var(--txt)
+  flex:1;
+  min-width:0;
+  height:44px;
+  padding:0 13px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+  color:var(--txt);
+  outline:none;
 }
+
 .search button{
- border:0;border-radius:11px;padding:0 15px;
- background:var(--p);color:white;font-weight:900
+  height:44px;
+  padding:0 16px;
+  border:0;
+  border-radius:12px;
+  background:var(--p);
+  color:#fff;
+  font-weight:900;
 }
-.social{
- display:flex;flex-wrap:wrap;gap:6px;margin:8px 0
+
+#searchResults{
+  margin-top:10px;
 }
-.social a{
- text-decoration:none;padding:8px 10px;border-radius:9px;
- background:var(--card);border:1px solid var(--border);
- font-size:11px;font-weight:800
+
+.socials{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+  margin:8px 0 18px;
 }
+
+.socials button{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--txt);
+  border-radius:10px;
+  padding:8px 11px;
+  font-size:11px;
+  font-weight:800;
+}
+
 .ad{
- margin:18px 0;padding:18px;text-align:center;
- background:var(--card);border:1px solid var(--border);
- border-radius:16px
+  display:block;
+  padding:18px;
+  text-align:center;
+  text-decoration:none;
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
 }
-.ad strong{font-size:20px}
-.section{margin:25px 0}
+
+.ad strong{
+  display:block;
+  font-size:21px;
+  margin:6px 0;
+}
+
+.ad span{
+  color:var(--muted);
+  font-size:12px;
+}
+
+.section{
+  margin-top:26px;
+}
+
 .section-head{
- display:flex;justify-content:space-between;
- align-items:center;margin-bottom:10px
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:11px;
 }
-.section h2{margin:0;font-size:19px}
+
+.section-head h2{
+  margin:0;
+  font-size:19px;
+  font-weight:950;
+}
+
 .section-head a{
- color:var(--p);text-decoration:none;font-size:11px;font-weight:900
+  color:var(--p);
+  text-decoration:none;
+  font-size:11px;
+  font-weight:900;
 }
+
 .grid{
- display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
 }
+
 .card{
- background:var(--card);border:1px solid var(--border);
- border-radius:var(--radius);overflow:hidden;
- box-shadow:0 3px 12px #0000000b
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:pointer;
 }
+
 .card img{
- width:100%;height:145px;object-fit:cover;display:block
+  width:100%;
+  height:155px;
+  object-fit:cover;
+  display:block;
+  background:var(--bg);
 }
-.card-body{padding:11px}
-.cat{color:var(--p);font-size:9px;font-weight:900;text-transform:uppercase}
-.card h3{margin:5px 0 0;font-size:14px;line-height:1.35}
-.loading,.empty{
- grid-column:1/-1;padding:25px;text-align:center;
- color:var(--muted);background:var(--card);
- border:1px solid var(--border);border-radius:14px
+
+.card-body{
+  padding:11px;
 }
+
+.card-cat{
+  color:var(--p);
+  font-size:9px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.card-title{
+  margin-top:5px;
+  font-size:14px;
+  line-height:1.35;
+  font-weight:900;
+}
+
 .featured{
- background:var(--card);border:1px solid var(--border);
- border-radius:17px;overflow:hidden
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:pointer;
 }
-.featured img{width:100%;height:250px;object-fit:cover}
-.featured-body{padding:15px}
-.featured h1{font-size:22px;margin:6px 0}
-.featured p{color:var(--muted);line-height:1.5;margin:0}
+
+.featured img{
+  width:100%;
+  height:300px;
+  object-fit:cover;
+  display:block;
+}
+
+.featured-body{
+  padding:16px;
+}
+
+.featured-cat{
+  color:var(--p);
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.featured-title{
+  margin:7px 0;
+  font-size:24px;
+  line-height:1.2;
+  font-weight:950;
+}
+
+.featured-text{
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.55;
+}
+
+.loading{
+  grid-column:1/-1;
+  padding:25px;
+  text-align:center;
+  color:var(--muted);
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:14px;
+}
+
 footer{
- margin-top:35px;padding:28px 0 70px;
- text-align:center;background:var(--card);
- border-top:1px solid var(--border);color:var(--muted);font-size:11px
+  margin-top:30px;
+  padding:28px 0 70px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  text-align:center;
 }
+
+footer strong{
+  color:var(--p);
+  font-size:17px;
+}
+
+footer p{
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(min-width:700px){
+  .grid{
+    grid-template-columns:repeat(4,minmax(0,1fr));
+  }
+}
+
+@media(max-width:600px){
+  .brand-title{font-size:17px}
+  .brand-subtitle{font-size:8px}
+  .icon{
+    width:34px;
+    height:34px;
+    font-size:15px;
+  }
+  .featured img{height:220px}
+  .featured-title{font-size:21px}
+}
+
 @media(max-width:400px){
- .actions{gap:2px}.icon{width:34px;height:34px}
- .search{flex-direction:column}.search button{padding:11px}
- .grid{grid-template-columns:1fr}
+  .container{
+    width:calc(100% - 18px);
+  }
+
+  .brand-subtitle{display:none}
+
+  .actions{gap:3px}
+
+  .search-box{
+    flex-direction:column;
+  }
+
+  .search button{
+    width:100%;
+  }
+
+  .card img{height:140px}
 }
 </style>
 </head>
@@ -129,227 +405,261 @@ footer{
 <body>
 
 <header>
-<div class="container top">
- <div class="logo">🌍 AfricanMundo</div>
+  <div class="container top">
 
- <div class="actions">
-  <button class="icon" id="notificationBtn">🔔</button>
-  <button class="icon" id="toolsBtn">🛠️</button>
-  <button class="icon" id="userBtn">👤</button>
-  <button class="icon" id="themeBtn">🌙</button>
-  <button class="icon" id="colorBtn">🎨</button>
- </div>
-</div>
+    <a href="index.html" class="brand">
+      <div class="logo">🌍</div>
 
-<nav class="container menu">
- <a href="index.html">🏠 INÍCIO</a>
- <a href="categoria.html?categoria=noticias">📰 NOTÍCIAS</a>
- <a href="categoria.html?categoria=futebol">⚽ FUTEBOL</a>
- <a href="categoria.html?categoria=mocambique">🇲🇿 MOÇAMBIQUE</a>
- <a href="categoria.html?categoria=africa">🌍 ÁFRICA</a>
- <a href="categoria.html?categoria=negocios">💼 NEGÓCIOS</a>
- <a href="categoria.html?categoria=entretenimento">🎬 ENTRETENIMENTO</a>
- <a href="categoria.html?categoria=desporto">🏆 DESPORTO</a>
-</nav>
+      <div class="brand-text">
+        <div class="brand-title">AfricanMundo</div>
+        <div class="brand-subtitle">
+          A informação que liga África ao mundo
+        </div>
+      </div>
+    </a>
+
+    <div class="actions">
+      <button class="icon" id="notificationBtn">🔔</button>
+      <button class="icon" id="toolsBtn">🛠️</button>
+      <button class="icon" id="userBtn">👤</button>
+      <button class="icon" id="themeBtn">🌙</button>
+      <button class="icon" id="colorBtn">🎨</button>
+    </div>
+
+  </div>
+
+  <nav class="menu">
+    <div class="container menu-inner">
+      <a href="index.html">🏠 INÍCIO</a>
+      <a href="categoria.html?categoria=noticias">📰 NOTÍCIAS</a>
+      <a href="categoria.html?categoria=futebol">⚽ FUTEBOL</a>
+      <a href="categoria.html?categoria=mocambique">🇲🇿 MOÇAMBIQUE</a>
+      <a href="categoria.html?categoria=africa">🌍 ÁFRICA</a>
+      <a href="categoria.html?categoria=negocios">💼 NEGÓCIOS</a>
+      <a href="categoria.html?categoria=entretenimento">🎬 ENTRETENIMENTO</a>
+      <a href="categoria.html?categoria=desporto">🏆 DESPORTO</a>
+    </div>
+  </nav>
 </header>
 
-<main class="container">
+<main>
+<div class="container">
 
-<form class="search" id="searchForm">
- <input id="searchInput" type="search" placeholder="🔎 Pesquisar notícias...">
- <button>PESQUISAR</button>
-</form>
+<section class="search">
+  <form class="search-box" id="searchForm">
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="🔎 Pesquisar notícias..."
+    >
+    <button type="submit">PESQUISAR</button>
+  </form>
 
-<div id="searchResults"></div>
+  <div id="searchResults"></div>
+</section>
 
-<div class="social">
- <a href="https://www.google.com" target="_blank">🌐 Google</a>
- <a href="https://www.facebook.com" target="_blank">Facebook</a>
- <a href="https://www.youtube.com" target="_blank">▶️ YouTube</a>
- <a href="https://wa.me/" target="_blank">🟢 WhatsApp</a>
- <a href="https://www.instagram.com" target="_blank">📷 Instagram</a>
- <a href="https://www.tiktok.com" target="_blank">🎵 TikTok</a>
-</div>
-<!-- CONTEÚDO -->
-
-<div class="ad">
-  📢 <strong>ANUNCIE AQUI</strong>
-  <div style="color:var(--muted);margin:6px 0 12px">
-    Divulgue a sua empresa, marca, produto ou serviço.
-  </div>
-  <a href="contacto.html" style="color:var(--p);font-weight:900">
-    QUERO ANUNCIAR →
-  </a>
+<div class="socials">
+  <button onclick="abrirRede('Google')">🌐 Google</button>
+  <button onclick="abrirRede('Facebook')">🔵 Facebook</button>
+  <button onclick="abrirRede('YouTube')">▶️ YouTube</button>
+  <button onclick="abrirRede('WhatsApp')">💬 WhatsApp</button>
+  <button onclick="abrirRede('Instagram')">📷 Instagram</button>
+  <button onclick="abrirRede('TikTok')">🎵 TikTok</button>
 </div>
 
-
-<!-- DESTAQUE -->
+<a class="ad" href="contacto.html">
+  📢
+  <strong>ANUNCIE AQUI</strong>
+  <span>Divulgue a sua empresa, marca, produto ou serviço.</span>
+</a>
 
 <section class="section">
   <div class="section-head">
     <h2>🌟 DESTAQUE</h2>
-    <a href="categoria.html?categoria=noticias">VER TODAS →</a>
   </div>
-
   <div id="destaque">
     <div class="loading">⏳ A carregar destaque...</div>
   </div>
 </section>
-
-
-<!-- ÚLTIMAS NOTÍCIAS -->
 
 <section class="section">
   <div class="section-head">
     <h2>📰 ÚLTIMAS NOTÍCIAS</h2>
     <a href="categoria.html?categoria=noticias">VER TODAS →</a>
   </div>
-
   <div id="ultimas" class="grid">
     <div class="loading">⏳ A carregar notícias...</div>
   </div>
-</section>
-
-
-<!-- FUTEBOL -->
-
-<section class="section">
+   </section>
+   <section class="section">
   <div class="section-head">
     <h2>⚽ FUTEBOL</h2>
     <a href="categoria.html?categoria=futebol">VER TODAS →</a>
   </div>
-
   <div id="futebol" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
 
 
-<!-- MOÇAMBIQUE -->
-
 <section class="section">
   <div class="section-head">
     <h2>🇲🇿 MOÇAMBIQUE</h2>
     <a href="categoria.html?categoria=mocambique">VER TODAS →</a>
   </div>
-
   <div id="mocambique" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
-<!-- ÁFRICA -->
+
 
 <section class="section">
   <div class="section-head">
     <h2>🌍 ÁFRICA</h2>
     <a href="categoria.html?categoria=africa">VER TODAS →</a>
   </div>
-
   <div id="africa" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
 
 
-<!-- NEGÓCIOS -->
-
 <section class="section">
   <div class="section-head">
     <h2>💼 NEGÓCIOS</h2>
     <a href="categoria.html?categoria=negocios">VER TODAS →</a>
   </div>
-
   <div id="negocios" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
 
 
-<!-- ENTRETENIMENTO -->
-
 <section class="section">
   <div class="section-head">
     <h2>🎬 ENTRETENIMENTO</h2>
     <a href="categoria.html?categoria=entretenimento">VER TODAS →</a>
   </div>
-
   <div id="entretenimento" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
 
 
-<!-- DESPORTO -->
-
 <section class="section">
   <div class="section-head">
     <h2>🏆 DESPORTO</h2>
     <a href="categoria.html?categoria=desporto">VER TODAS →</a>
   </div>
-
   <div id="desporto" class="grid">
     <div class="loading">⏳ A carregar...</div>
   </div>
 </section>
+</div>
 </main>
 
 
-<!-- RODAPÉ -->
-
 <footer>
   <div class="container">
-    <strong style="color:var(--txt);font-size:16px">
-      🌍 AfricanMundo
-    </strong>
+    <strong>🌍 AfricanMundo</strong>
 
-    <div style="margin-top:6px">
+    <p>
       A informação que liga África ao mundo
-    </div>
+    </p>
 
-    <div style="margin-top:12px">
+    <p>
+      Sobre · Contacto · Anuncie · Privacidade
+    </p>
+
+    <p>
       © 2026 AfricanMundo — Todos os direitos reservados.
-    </div>
+    </p>
   </div>
 </footer>
 
 
 <!-- MODAL -->
+<div id="modal" class="modal-overlay">
+  <div class="modal-box">
 
-<div id="modal" class="modal" style="
-  display:none;
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  background:#0008;
-  padding:15px;
-  align-items:center;
-  justify-content:center;
-">
-  <div style="
-    width:min(500px,100%);
-    max-height:90vh;
-    overflow:auto;
-    background:var(--card);
-    color:var(--txt);
-    border-radius:16px;
-    padding:18px;
-  ">
-    <div style="
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-    ">
-      <strong id="modalTitle"></strong>
-      <button onclick="fecharModal()" class="icon">✕</button>
+    <div class="modal-head">
+      <strong id="modalTitle">AfricanMundo</strong>
+
+      <button
+        type="button"
+        onclick="fecharModal()">
+        ✕
+      </button>
     </div>
 
-    <div id="modalBody" style="margin-top:15px"></div>
+    <div id="modalBody"></div>
+
   </div>
 </div>
 
 
+<style>
+.modal-overlay{
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:15px;
+  background:#0008;
+}
+
+.modal-overlay.active{
+  display:flex;
+}
+
+.modal-box{
+  width:min(520px,100%);
+  max-height:90vh;
+  overflow:auto;
+  background:var(--card);
+  color:var(--txt);
+  border:1px solid var(--border);
+  border-radius:18px;
+  box-shadow:0 20px 60px #0006;
+}
+
+.modal-head{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:14px 16px;
+  border-bottom:1px solid var(--border);
+}
+
+.modal-head button{
+  border:0;
+  background:var(--bg);
+  color:var(--txt);
+  border-radius:9px;
+  padding:7px 10px;
+}
+
+#modalBody{
+  padding:16px;
+}
+</style>
+
+
 <script src="app.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+
+  if(typeof iniciarAplicacao==="function"){
+    iniciarAplicacao();
+  }else if(typeof carregarNoticias==="function"){
+    carregarNoticias();
+  }
+
+});
+</script>
 
 </body>
 </html>
