@@ -1,784 +1,355 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
-
 <head>
-
-  <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
-  <meta name="description"
-        content="AfricanMundo — A informação que liga África ao mundo.">
-
-  <meta name="theme-color"
-        content="#168a45">
-
-  <title>AfricanMundo — Informação que liga África ao mundo</title>
-
-
-  <!-- ==========================================
-       SUPABASE
-  ========================================== -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-  <!-- ==========================================
-       ESTILO AFRICANMUNDO
-  ========================================== -->
-
-  <style>
-
-    :root{
-      --p:#168a45;
-      --p2:#0f6d36;
-      --bg:#f5f7f8;
-      --card:#fff;
-      --txt:#172026;
-      --muted:#69757d;
-      --border:#e2e7ea;
-      --shadow:0 4px 18px rgba(0,0,0,.07);
-      --radius:16px;
-    }
-
-
-    *{
-      box-sizing:border-box;
-    }
-
-
-    html{
-      scroll-behavior:smooth;
-    }
-
-
-    body{
-      margin:0;
-      font-family:Arial,Helvetica,sans-serif;
-      background:var(--bg);
-      color:var(--txt);
-      transition:.25s;
-    }
-
-
-    body.dark{
-      --bg:#101417;
-      --card:#171d21;
-      --txt:#f2f5f6;
-      --muted:#aab5ba;
-      --border:#293238;
-    }
-
-
-    body.color-blue{
-      --p:#1976d2;
-      --p2:#1259a4;
-    }
-
-
-    body.color-red{
-      --p:#d62828;
-      --p2:#a61f1f;
-    }
-
-
-    body.color-purple{
-      --p:#7b3fc6;
-      --p2:#5b2c91;
-    }
-
-
-    body.color-orange{
-      --p:#ed7d16;
-      --p2:#b85b0c;
-    }
-
-
-    *{
-      scrollbar-width:thin;
-    }
-
-
-    a{
-      color:inherit;
-    }
-
-
-    button,
-    input,
-    select,
-    textarea{
-      font:inherit;
-    }
-
-
-    button{
-      cursor:pointer;
-    }
-
-
-    img{
-      max-width:100%;
-    }
-
-
-    .container{
-      width:min(1100px,calc(100% - 28px));
-      margin:auto;
-    }
-
-
-    /* ==========================================
-       CABEÇALHO
-    ========================================== */
-
-    header{
-      position:sticky;
-      top:0;
-      z-index:1000;
-      background:var(--card);
-      border-bottom:1px solid var(--border);
-      box-shadow:0 2px 12px rgba(0,0,0,.05);
-    }
-
-
-    .topbar{
-      min-height:68px;
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:10px;
-    }
-
-
-    .brand{
-      display:flex;
-      align-items:center;
-      gap:9px;
-      text-decoration:none;
-      min-width:0;
-    }
-
-
-    .brand-logo{
-      width:42px;
-      height:42px;
-      display:grid;
-      place-items:center;
-      border-radius:13px;
-      background:var(--p);
-      color:#fff;
-      font-size:23px;
-      flex:none;
-    }
-
-
-    .brand-title{
-      font-size:20px;
-      font-weight:900;
-      line-height:1;
-    }
-
-
-    .brand-subtitle{
-      margin-top:4px;
-      color:var(--muted);
-      font-size:10px;
-      white-space:nowrap;
-    }
-
-
-    /* ==========================================
-       BOTÕES
-    ========================================== */
-
-    .header-actions{
-      display:flex;
-      align-items:center;
-      gap:5px;
-    }
-
-
-    .icon-btn{
-      width:40px;
-      height:40px;
-      border:1px solid var(--border);
-      border-radius:12px;
-      background:var(--card);
-      color:var(--txt);
-      display:grid;
-      place-items:center;
-      font-size:18px;
-      position:relative;
-    }
-
-
-    .icon-btn:hover{
-      border-color:var(--p);
-      color:var(--p);
-    }
-
-
-    .notification-count{
-      position:absolute;
-      top:-5px;
-      right:-5px;
-      min-width:18px;
-      height:18px;
-      padding:0 4px;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      border-radius:20px;
-      background:#e53935;
-      color:#fff;
-      border:2px solid var(--card);
-      font-size:9px;
-      font-weight:900;
-    }
-
-
-    /* ==========================================
-       MENU
-    ========================================== */
-
-    .menu{
-      border-top:1px solid var(--border);
-      overflow-x:auto;
-      scrollbar-width:none;
-    }
-
-
-    .menu::-webkit-scrollbar{
-      display:none;
-    }
-
-
-    .menu-inner{
-      display:flex;
-      gap:6px;
-      padding:8px 0;
-      white-space:nowrap;
-    }
-
-
-    .menu a{
-      padding:9px 12px;
-      border-radius:10px;
-      text-decoration:none;
-      font-size:12px;
-      font-weight:800;
-      background:var(--bg);
-    }
-
-
-    .menu a:hover{
-      color:var(--p);
-      outline:1px solid var(--p);
-    }
-
-
-    /* ==========================================
-       CONTEÚDO
-    ========================================== */
-
-    main{
-      padding-bottom:40px;
-    }
-
-
-    .search-area{
-      padding:20px 0 4px;
-    }
-
-
-    .search-box{
-      display:flex;
-      gap:8px;
-    }
-
-
-    .search-input{
-      flex:1;
-      min-width:0;
-      height:46px;
-      padding:0 14px;
-      border:1px solid var(--border);
-      border-radius:13px;
-      background:var(--card);
-      color:var(--txt);
-      outline:none;
-    }
-
-
-    .search-input:focus{
-      border-color:var(--p);
-    }
-
-
-    .search-btn{
-      height:46px;
-      padding:0 18px;
-      border:0;
-      border-radius:13px;
-      background:var(--p);
-      color:#fff;
-      font-weight:900;
-    }
-
-
-    .search-results{
-      margin-top:10px;
-    }
-
-
-    /* ==========================================
-       REDES
-    ========================================== */
-
-    .quick-actions{
-      display:flex;
-      flex-wrap:wrap;
-      gap:7px;
-      margin-top:10px;
-    }
-
-
-    .quick-btn{
-      padding:8px 12px;
-      border:1px solid var(--border);
-      border-radius:10px;
-      background:var(--card);
-      color:var(--txt);
-      font-size:11px;
-      font-weight:800;
-    }
-
-
-    .quick-btn:hover{
-      border-color:var(--p);
-      color:var(--p);
-    }
-
-  </style>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="AfricanMundo — A informação que liga África ao mundo.">
+<meta name="theme-color" content="#168a45">
+<title>AfricanMundo</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+:root{
+ --p:#168a45;--bg:#f5f7f8;--card:#fff;--txt:#172026;
+ --muted:#69757d;--border:#e2e7ea;--radius:15px;
+}
+body.dark{--bg:#101417;--card:#171d21;--txt:#f2f5f6;--muted:#aab5ba;--border:#293238}
+body.blue{--p:#1976d2}
+body.red{--p:#d62828}
+body.purple{--p:#7b3fc6}
+body.orange{--p:#ed7d16}
+
+*{box-sizing:border-box}
+body{
+ margin:0;background:var(--bg);color:var(--txt);
+ font-family:Arial,sans-serif;transition:.2s
+}
+button,input{font:inherit}
+button{cursor:pointer}
+.container{width:min(1100px,calc(100% - 24px));margin:auto}
+
+header{
+ position:sticky;top:0;z-index:1000;
+ background:var(--card);border-bottom:1px solid var(--border)
+}
+.top{
+ min-height:62px;display:flex;align-items:center;
+ justify-content:space-between;gap:8px
+}
+.logo{
+ display:flex;align-items:center;gap:8px;
+ font-weight:900;font-size:19px
+}
+.actions{display:flex;gap:4px}
+.icon{
+ width:37px;height:37px;border:1px solid var(--border);
+ border-radius:11px;background:var(--card);color:var(--txt)
+}
+.menu{
+ display:flex;gap:6px;overflow:auto;padding:8px 0
+}
+.menu a{
+ flex:none;text-decoration:none;padding:8px 10px;
+ border-radius:9px;background:var(--bg);
+ font-size:11px;font-weight:800
+}
+.search{padding:18px 0 8px;display:flex;gap:7px}
+.search input{
+ flex:1;min-width:0;padding:12px;border:1px solid var(--border);
+ border-radius:11px;background:var(--card);color:var(--txt)
+}
+.search button{
+ border:0;border-radius:11px;padding:0 15px;
+ background:var(--p);color:white;font-weight:900
+}
+.social{
+ display:flex;flex-wrap:wrap;gap:6px;margin:8px 0
+}
+.social a{
+ text-decoration:none;padding:8px 10px;border-radius:9px;
+ background:var(--card);border:1px solid var(--border);
+ font-size:11px;font-weight:800
+}
+.ad{
+ margin:18px 0;padding:18px;text-align:center;
+ background:var(--card);border:1px solid var(--border);
+ border-radius:16px
+}
+.ad strong{font-size:20px}
+.section{margin:25px 0}
+.section-head{
+ display:flex;justify-content:space-between;
+ align-items:center;margin-bottom:10px
+}
+.section h2{margin:0;font-size:19px}
+.section-head a{
+ color:var(--p);text-decoration:none;font-size:11px;font-weight:900
+}
+.grid{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px
+}
+.card{
+ background:var(--card);border:1px solid var(--border);
+ border-radius:var(--radius);overflow:hidden;
+ box-shadow:0 3px 12px #0000000b
+}
+.card img{
+ width:100%;height:145px;object-fit:cover;display:block
+}
+.card-body{padding:11px}
+.cat{color:var(--p);font-size:9px;font-weight:900;text-transform:uppercase}
+.card h3{margin:5px 0 0;font-size:14px;line-height:1.35}
+.loading,.empty{
+ grid-column:1/-1;padding:25px;text-align:center;
+ color:var(--muted);background:var(--card);
+ border:1px solid var(--border);border-radius:14px
+}
+.featured{
+ background:var(--card);border:1px solid var(--border);
+ border-radius:17px;overflow:hidden
+}
+.featured img{width:100%;height:250px;object-fit:cover}
+.featured-body{padding:15px}
+.featured h1{font-size:22px;margin:6px 0}
+.featured p{color:var(--muted);line-height:1.5;margin:0}
+footer{
+ margin-top:35px;padding:28px 0 70px;
+ text-align:center;background:var(--card);
+ border-top:1px solid var(--border);color:var(--muted);font-size:11px
+}
+@media(max-width:400px){
+ .actions{gap:2px}.icon{width:34px;height:34px}
+ .search{flex-direction:column}.search button{padding:11px}
+ .grid{grid-template-columns:1fr}
+}
+</style>
 </head>
-
 
 <body>
 
-
-  <!-- ==========================================
-       CABEÇALHO
-  ========================================== -->
-
-  <header>
-
-    <div class="container topbar">
-
-      <a href="index.html" class="brand">
-
-        <div class="brand-logo">
-          🌍
-        </div>
-
-        <div>
-
-          <div class="brand-title">
-            AfricanMundo
-          </div>
-
-          <div class="brand-subtitle">
-            A informação que liga África ao mundo
-          </div>
-
-        </div>
-
-      </a>
-
-
-      <div class="header-actions">
-
-        <button
-          id="notificationBtn"
-          class="icon-btn"
-          type="button"
-          aria-label="Notificações">
-          🔔
-        </button>
-
-
-        <button
-          id="toolsBtn"
-          class="icon-btn"
-          type="button"
-          aria-label="Ferramentas">
-          🛠️
-        </button>
-
-
-        <button
-          id="userBtn"
-          class="icon-btn"
-          type="button"
-          aria-label="Minha área">
-          👤
-        </button>
-
-
-        <button
-          id="themeBtn"
-          class="icon-btn"
-          type="button"
-          aria-label="Modo escuro">
-          🌙
-        </button>
-
-
-        <button
-          id="colorBtn"
-          class="icon-btn"
-          type="button"
-          aria-label="Escolher cor">
-          🎨
-        </button>
-
-      </div>
-
-    </div>
-
-
-    <!-- ========================================
-         MENU PRINCIPAL
-    ========================================= -->
-
-    <nav class="menu">
-
-      <div class="container menu-inner">
-
-        <a href="index.html">
-          🏠 INÍCIO
-        </a>
-
-        <a href="categoria.html?categoria=noticias">
-          📰 NOTÍCIAS
-        </a>
-
-        <a href="categoria.html?categoria=futebol">
-          ⚽ FUTEBOL
-        </a>
-
-        <a href="categoria.html?categoria=africa">
-          🌍 ÁFRICA
-        </a>
-
-        <a href="categoria.html?categoria=mocambique">
-          🇲🇿 MOÇAMBIQUE
-        </a>
-
-        <a href="categoria.html?categoria=negocios">
-          💼 NEGÓCIOS
-        </a>
-
-        <a href="categoria.html?categoria=entretenimento">
-          🎬 ENTRETENIMENTO
-        </a>
-
-        <a href="categoria.html?categoria=desporto">
-          🏆 DESPORTO
-        </a>
-
-      </div>
-
-    </nav>
-
-  </header>
-
-
-  <!-- ==========================================
-       CONTEÚDO
-  ========================================== -->
-
-  <main>
-
-    <div class="container">
-
-
-      <!-- ========================================
-           PESQUISA
-      ========================================= -->
-
-      <section class="search-area">
-
-        <form
-          id="searchForm"
-          class="search-box">
-
-          <input
-            id="searchInput"
-            class="search-input"
-            type="search"
-            placeholder="🔎 Pesquisar notícias..."
-            autocomplete="off">
-
-          <button
-            class="search-btn"
-            type="submit">
-            PESQUISAR
-          </button>
-
-        </form>
-
-
-        <div
-          id="searchResults"
-          class="search-results">
-        </div>
-
-      </section>
-
-
-      <!-- ========================================
-           AÇÕES RÁPIDAS
-      ========================================= -->
-
-      <div class="quick-actions">
-
-        <button
-          class="quick-btn"
-          type="button"
-          onclick="abrirRedes()">
-          🌐 Redes sociais
-        </button>
-
-        <button
-          class="quick-btn"
-          type="button"
-          onclick="abrirFerramentas()">
-          🛠️ Ferramentas
-        </button>
-
-      </div>
-
-
-            <!-- ÚLTIMAS NOTÍCIAS -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>📰 Últimas notícias</h2>
-          <a href="categoria.html?categoria=noticias">VER TODAS →</a>
-        </div>
-
-        <div id="ultimas" class="news-grid">
-          <div class="loading">⏳ A carregar notícias...</div>
-        </div>
-
-      </section>
-
-
-      <!-- FUTEBOL -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>⚽ Futebol</h2>
-          <a href="categoria.html?categoria=futebol">VER TODAS →</a>
-        </div>
-
-        <div id="futebol" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- MOÇAMBIQUE -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>🇲🇿 Moçambique</h2>
-          <a href="categoria.html?categoria=mocambique">VER TODAS →</a>
-        </div>
-
-        <div id="mocambique" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- ÁFRICA -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>🌍 África</h2>
-          <a href="categoria.html?categoria=africa">VER TODAS →</a>
-        </div>
-
-        <div id="africa" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- NEGÓCIOS -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>💼 Negócios</h2>
-          <a href="categoria.html?categoria=negocios">VER TODAS →</a>
-        </div>
-
-        <div id="negocios" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- ENTRETENIMENTO -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>🎬 Entretenimento</h2>
-          <a href="categoria.html?categoria=entretenimento">VER TODAS →</a>
-        </div>
-
-        <div id="entretenimento" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- DESPORTO -->
-      <section class="section">
-
-        <div class="section-head">
-          <h2>🏆 Desporto</h2>
-          <a href="categoria.html?categoria=desporto">VER TODAS →</a>
-        </div>
-
-        <div id="desporto" class="news-grid">
-          <div class="loading">⏳ A carregar...</div>
-        </div>
-
-      </section>
-
-
-      <!-- PUBLICIDADE -->
-      <a href="contacto.html" class="advertisement">
-
-        <strong>📢 ANUNCIE NO AFRICANMUNDO</strong>
-
-        <span>
-          Divulgue a sua empresa, marca, produto,
-          serviço ou evento.
-        </span>
-
-        <b>QUERO ANUNCIAR →</b>
-
-      </a>
-
-    </div>
-
-  </main>
-    <!-- RODAPÉ -->
-  <footer>
-
-    <div class="container footer-grid">
-
-      <div>
-        <strong>AfricanMundo</strong>
-        <p>
-          A informação que liga África ao mundo.
-        </p>
-      </div>
-
-      <div>
-        <strong>Explorar</strong>
-
-        <a href="index.html">Início</a>
-        <a href="categoria.html?categoria=noticias">Notícias</a>
-        <a href="categoria.html?categoria=futebol">Futebol</a>
-        <a href="categoria.html?categoria=africa">África</a>
-        <a href="categoria.html?categoria=mocambique">Moçambique</a>
-
-      </div>
-
-      <div>
-        <strong>Informações</strong>
-
-        <a href="javascript:mostrarInfo('Quem Somos')">
-          Quem Somos
-        </a>
-
-        <a href="javascript:mostrarInfo('Anuncie')">
-          Anuncie
-        </a>
-
-        <a href="javascript:mostrarInfo('Contacto')">
-          Contacto
-        </a>
-
-        <a href="javascript:abrirRedes()">
-          🌐 Redes sociais
-        </a>
-
-      </div>
-
-    </div>
-
-    <div class="container copyright">
-      © 2026 AfricanMundo — Todos os direitos reservados.
-    </div>
-
-  </footer>
-
-
-  <!-- MODAL -->
-  <div
-    id="modalOverlay"
-    class="modal-overlay"
-    onclick="fecharModal(event)"
-  >
-
-    <div
-      class="modal"
-      onclick="event.stopPropagation()"
-    >
-
-      <div class="modal-head">
-
-        <strong id="modalTitle">
-          AfricanMundo
-        </strong>
-
-        <button
-          type="button"
-          onclick="fecharModal()"
-        >
-          ✕
-        </button>
-
-      </div>
-
-      <div
-        id="modalBody"
-        class="modal-body"
-      ></div>
-
-    </div>
-
+<header>
+<div class="container top">
+ <div class="logo">🌍 AfricanMundo</div>
+
+ <div class="actions">
+  <button class="icon" id="notificationBtn">🔔</button>
+  <button class="icon" id="toolsBtn">🛠️</button>
+  <button class="icon" id="userBtn">👤</button>
+  <button class="icon" id="themeBtn">🌙</button>
+  <button class="icon" id="colorBtn">🎨</button>
+ </div>
+</div>
+
+<nav class="container menu">
+ <a href="index.html">🏠 INÍCIO</a>
+ <a href="categoria.html?categoria=noticias">📰 NOTÍCIAS</a>
+ <a href="categoria.html?categoria=futebol">⚽ FUTEBOL</a>
+ <a href="categoria.html?categoria=mocambique">🇲🇿 MOÇAMBIQUE</a>
+ <a href="categoria.html?categoria=africa">🌍 ÁFRICA</a>
+ <a href="categoria.html?categoria=negocios">💼 NEGÓCIOS</a>
+ <a href="categoria.html?categoria=entretenimento">🎬 ENTRETENIMENTO</a>
+ <a href="categoria.html?categoria=desporto">🏆 DESPORTO</a>
+</nav>
+</header>
+
+<main class="container">
+
+<form class="search" id="searchForm">
+ <input id="searchInput" type="search" placeholder="🔎 Pesquisar notícias...">
+ <button>PESQUISAR</button>
+</form>
+
+<div id="searchResults"></div>
+
+<div class="social">
+ <a href="https://www.google.com" target="_blank">🌐 Google</a>
+ <a href="https://www.facebook.com" target="_blank">Facebook</a>
+ <a href="https://www.youtube.com" target="_blank">▶️ YouTube</a>
+ <a href="https://wa.me/" target="_blank">🟢 WhatsApp</a>
+ <a href="https://www.instagram.com" target="_blank">📷 Instagram</a>
+ <a href="https://www.tiktok.com" target="_blank">🎵 TikTok</a>
+</div>
+<!-- CONTEÚDO -->
+
+<div class="ad">
+  📢 <strong>ANUNCIE AQUI</strong>
+  <div style="color:var(--muted);margin:6px 0 12px">
+    Divulgue a sua empresa, marca, produto ou serviço.
+  </div>
+  <a href="contacto.html" style="color:var(--p);font-weight:900">
+    QUERO ANUNCIAR →
+  </a>
+</div>
+
+
+<!-- DESTAQUE -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>🌟 DESTAQUE</h2>
+    <a href="categoria.html?categoria=noticias">VER TODAS →</a>
   </div>
 
+  <div id="destaque">
+    <div class="loading">⏳ A carregar destaque...</div>
+  </div>
+</section>
 
-  <!-- SUPABASE -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <!-- APLICAÇÃO -->
-  <script src="app.js"></script>
+<!-- ÚLTIMAS NOTÍCIAS -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>📰 ÚLTIMAS NOTÍCIAS</h2>
+    <a href="categoria.html?categoria=noticias">VER TODAS →</a>
+  </div>
+
+  <div id="ultimas" class="grid">
+    <div class="loading">⏳ A carregar notícias...</div>
+  </div>
+</section>
+
+
+<!-- FUTEBOL -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>⚽ FUTEBOL</h2>
+    <a href="categoria.html?categoria=futebol">VER TODAS →</a>
+  </div>
+
+  <div id="futebol" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+
+
+<!-- MOÇAMBIQUE -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>🇲🇿 MOÇAMBIQUE</h2>
+    <a href="categoria.html?categoria=mocambique">VER TODAS →</a>
+  </div>
+
+  <div id="mocambique" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+<!-- ÁFRICA -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>🌍 ÁFRICA</h2>
+    <a href="categoria.html?categoria=africa">VER TODAS →</a>
+  </div>
+
+  <div id="africa" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+
+
+<!-- NEGÓCIOS -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>💼 NEGÓCIOS</h2>
+    <a href="categoria.html?categoria=negocios">VER TODAS →</a>
+  </div>
+
+  <div id="negocios" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+
+
+<!-- ENTRETENIMENTO -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>🎬 ENTRETENIMENTO</h2>
+    <a href="categoria.html?categoria=entretenimento">VER TODAS →</a>
+  </div>
+
+  <div id="entretenimento" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+
+
+<!-- DESPORTO -->
+
+<section class="section">
+  <div class="section-head">
+    <h2>🏆 DESPORTO</h2>
+    <a href="categoria.html?categoria=desporto">VER TODAS →</a>
+  </div>
+
+  <div id="desporto" class="grid">
+    <div class="loading">⏳ A carregar...</div>
+  </div>
+</section>
+</main>
+
+
+<!-- RODAPÉ -->
+
+<footer>
+  <div class="container">
+    <strong style="color:var(--txt);font-size:16px">
+      🌍 AfricanMundo
+    </strong>
+
+    <div style="margin-top:6px">
+      A informação que liga África ao mundo
+    </div>
+
+    <div style="margin-top:12px">
+      © 2026 AfricanMundo — Todos os direitos reservados.
+    </div>
+  </div>
+</footer>
+
+
+<!-- MODAL -->
+
+<div id="modal" class="modal" style="
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:#0008;
+  padding:15px;
+  align-items:center;
+  justify-content:center;
+">
+  <div style="
+    width:min(500px,100%);
+    max-height:90vh;
+    overflow:auto;
+    background:var(--card);
+    color:var(--txt);
+    border-radius:16px;
+    padding:18px;
+  ">
+    <div style="
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+    ">
+      <strong id="modalTitle"></strong>
+      <button onclick="fecharModal()" class="icon">✕</button>
+    </div>
+
+    <div id="modalBody" style="margin-top:15px"></div>
+  </div>
+</div>
+
+
+<script src="app.js"></script>
 
 </body>
 </html>
