@@ -1,21 +1,15 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
-
 <head>
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
-<meta name="theme-color"
-content="#168a45">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#168a45">
 
 <title>AfricanMundo — Notícia</title>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 :root{
   --p:#168a45;
   --bg:#f5f7f8;
@@ -25,9 +19,7 @@ content="#168a45">
   --border:#e2e7ea;
 }
 
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -37,7 +29,7 @@ body{
 }
 
 .container{
-  width:min(900px,calc(100% - 24px));
+  width:min(1000px,calc(100% - 24px));
   margin:auto;
 }
 
@@ -54,12 +46,13 @@ header{
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:10px;
 }
 
 .logo{
+  color:var(--p);
   font-size:19px;
   font-weight:900;
-  color:var(--p);
 }
 
 .actions{
@@ -73,8 +66,8 @@ button{
   color:var(--txt);
   border-radius:10px;
   padding:9px 12px;
-  cursor:pointer;
   font-weight:800;
+  cursor:pointer;
 }
 
 main{
@@ -90,13 +83,13 @@ main{
 
 .article img{
   width:100%;
-  max-height:430px;
+  max-height:480px;
   object-fit:cover;
   display:block;
 }
 
-.article-content{
-  padding:20px;
+.content{
+  padding:22px;
 }
 
 .category{
@@ -108,47 +101,114 @@ main{
 
 h1{
   margin:8px 0;
-  font-size:30px;
+  font-size:32px;
   line-height:1.2;
 }
 
 .date{
   color:var(--muted);
-  font-size:11px;
-  margin-bottom:18px;
+  font-size:12px;
+  margin:10px 0 20px;
 }
 
 .text{
-  font-size:16px;
-  line-height:1.75;
+  font-size:17px;
+  line-height:1.8;
   white-space:pre-line;
 }
 
 .loading{
-  padding:30px;
+  padding:35px 20px;
   text-align:center;
   color:var(--muted);
 }
 
-@media(max-width:600px){
-
-  h1{
-    font-size:23px;
-  }
-
-  .text{
-    font-size:15px;
-  }
-
+.section{
+  margin-top:30px;
 }
 
+.section-title{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:14px;
+}
+
+.section-title h2{
+  margin:0;
+  font-size:20px;
+}
+
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:14px;
+}
+
+.news-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:15px;
+  overflow:hidden;
+  cursor:pointer;
+}
+
+.news-card img,
+.no-image{
+  width:100%;
+  height:170px;
+  object-fit:cover;
+  display:block;
+}
+
+.no-image{
+  display:grid;
+  place-items:center;
+  background:var(--bg);
+  font-size:42px;
+}
+
+.news-content{
+  padding:13px;
+}
+
+.news-category{
+  color:var(--p);
+  font-size:10px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+.news-title{
+  margin:5px 0;
+  font-size:16px;
+  line-height:1.35;
+}
+
+.news-date{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:8px;
+}
+
+@media(max-width:600px){
+  h1{font-size:24px}
+  .text{font-size:15px}
+  .news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .news-card img,.no-image{height:130px}
+  .news-title{font-size:14px}
+  .content{padding:16px}
+}
+
+@media(max-width:380px){
+  .news-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 
 <body>
 
 <header>
-
   <div class="container top">
 
     <div class="logo">
@@ -157,37 +217,42 @@ h1{
 
     <div class="actions">
 
-      <button
-        type="button"
-        onclick="history.back()">
+      <button onclick="history.back()">
         ← Voltar
       </button>
 
-      <button
-        type="button"
-        onclick="partilhar()">
+      <button onclick="partilhar()">
         📤 Partilhar
       </button>
 
     </div>
 
   </div>
-
 </header>
 
 <main>
 
   <div class="container">
 
-    <article
-      id="noticia"
-      class="article">
-
+    <article id="noticia" class="article">
       <div class="loading">
         ⏳ A carregar notícia...
       </div>
-
     </article>
+
+    <section class="section">
+
+      <div class="section-title">
+        <h2>📰 Mais notícias</h2>
+      </div>
+
+      <div id="maisNoticias" class="news-grid">
+        <div class="loading">
+          ⏳ A carregar...
+        </div>
+      </div>
+
+    </section>
 
   </div>
 
@@ -208,22 +273,335 @@ window.supabase.createClient(
 );
 
 const id =
-new URLSearchParams(
-  location.search
-).get("id");
+new URLSearchParams(location.search).get("id");
 
 let noticiaAtual = null;
+let todasNoticias = [];
+
+
+/* SEGURANÇA */
 
 function esc(v){
-
   return String(v ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+}
+
+
+/* CAMPOS */
+
+function titulo(n){
+  return n?.titulo ||
+         n?.title ||
+         "Sem título";
+}
+
+function texto(n){
+  return n?.texto ||
+         n?.conteudo ||
+         n?.content ||
+         n?.descricao ||
+         "";
+}
+
+function imagem(n){
+  return n?.imagem ||
+         n?.imagem_url ||
+         n?.image ||
+         n?.image_url ||
+         n?.url_imagem ||
+         "";
+}
+
+function cat(n){
+  return n?.categoria ||
+         n?.category ||
+         "Notícias";
+}
+
+function data(n){
+
+  const valor =
+    n?.created_at ||
+    n?.data ||
+    n?.createdAt;
+
+  if(!valor) return "";
+
+  const d = new Date(valor);
+
+  if(isNaN(d.getTime())) return "";
+
+  return d.toLocaleDateString(
+    "pt-MZ",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric"
+    }
+  );
+}
+
+
+/* CARREGAR */
+
+async function carregar(){
+
+  const area =
+    document.getElementById("noticia");
+
+  const mais =
+    document.getElementById("maisNoticias");
+
+  if(!id){
+
+    area.innerHTML =
+      `<div class="loading">
+        ❌ Notícia não encontrada.
+      </div>`;
+
+    return;
+  }
+
+  try{
+
+    const resultado =
+      await db
+        .from("noticias")
+        .select("*")
+        .order("id",{ascending:false});
+
+    if(resultado.error)
+      throw resultado.error;
+
+    todasNoticias =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+    noticiaAtual =
+      todasNoticias.find(
+        n => String(n.id) === String(id)
+      );
+
+    if(!noticiaAtual){
+
+      area.innerHTML =
+        `<div class="loading">
+          ❌ Esta notícia não existe.
+        </div>`;
+
+      return;
+    }
+
+    mostrarNoticia(
+      noticiaAtual
+    );
+
+    mostrarMaisNoticias();
+
+  }catch(error){
+
+    console.error(error);
+
+    area.innerHTML =
+      `<div class="loading">
+        ⚠️ Não foi possível carregar a notícia.
+        <br><br>
+        ${esc(error.message)}
+      </div>`;
+
+  }
 
 }
+
+
+/* MOSTRAR NOTÍCIA */
+
+function mostrarNoticia(n){
+
+  const area =
+    document.getElementById("noticia");
+
+  const img =
+    imagem(n);
+
+  area.innerHTML = `
+
+    ${
+      img
+      ? `<img
+          src="${esc(img)}"
+          alt="${esc(titulo(n))}"
+          onerror="this.style.display='none'"
+        >`
+      : ""
+    }
+
+    <div class="content">
+
+      <div class="category">
+        ${esc(cat(n))}
+      </div>
+
+      <h1>
+        ${esc(titulo(n))}
+      </h1>
+
+      <div class="date">
+        📅 ${esc(data(n))}
+      </div>
+
+      <div class="text">
+        ${esc(texto(n))}
+      </div>
+
+    </div>
+  `;
+
+}
+
+
+/* MAIS NOTÍCIAS */
+
+function mostrarMaisNoticias(){
+
+  const area =
+    document.getElementById(
+      "maisNoticias"
+    );
+
+  const outras =
+    todasNoticias
+      .filter(
+        n =>
+          String(n.id) !==
+          String(id)
+      )
+      .slice(0,6);
+
+  area.innerHTML = "";
+
+  if(!outras.length){
+
+    area.innerHTML =
+      `<div class="loading">
+        Não existem outras notícias.
+      </div>`;
+
+    return;
+  }
+
+  outras.forEach(n => {
+
+    const card =
+      document.createElement("article");
+
+    card.className =
+      "news-card";
+
+    card.onclick = () =>
+      abrirNoticia(n.id);
+
+    const img =
+      imagem(n);
+
+    card.innerHTML = `
+
+      ${
+        img
+        ? `<img
+            src="${esc(img)}"
+            alt="${esc(titulo(n))}"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          >`
+        : `<div class="no-image">🌍</div>`
+      }
+
+      <div class="news-content">
+
+        <div class="news-category">
+          ${esc(cat(n))}
+        </div>
+
+        <div class="news-title">
+          ${esc(titulo(n))}
+        </div>
+
+        <div class="news-date">
+          ${esc(data(n))}
+        </div>
+
+      </div>
+    `;
+
+    area.appendChild(card);
+
+  });
+
+}
+
+
+/* ABRIR OUTRA */
+
+function abrirNoticia(novoId){
+
+  if(!novoId) return;
+
+  location.href =
+    "noticia.html?id=" +
+    encodeURIComponent(novoId);
+
+}
+
+
+/* PARTILHAR */
+
+async function partilhar(){
+
+  if(!noticiaAtual) return;
+
+  const dados = {
+    title: titulo(noticiaAtual),
+    text: "Leia esta notícia no AfricanMundo.",
+    url: location.href
+  };
+
+  try{
+
+    if(navigator.share){
+
+      await navigator.share(dados);
+
+    }else{
+
+      await navigator.clipboard.writeText(
+        location.href
+      );
+
+      alert("🔗 Link copiado!");
+
+    }
+
+  }catch(e){
+
+    console.log("Partilha cancelada.");
+
+  }
+
+}
+
+
+/* INICIAR */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  carregar
+);
 
 </script>
 
