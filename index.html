@@ -922,7 +922,7 @@ document.getElementById("notificationBtn")
 
 
 /* ==========================================
-   FERRAMENTAS — PAINEL PROFISSIONAL
+   FERRAMENTAS — AFRICANMUNDO
 ========================================== */
 
 function abrirFerramentas(){
@@ -930,151 +930,69 @@ function abrirFerramentas(){
   abrirModal(
     "🛠️ Ferramentas",
     `
-    <div style="
-      display:grid;
-      gap:10px;
-    ">
+    <div style="display:grid;gap:10px;">
 
-      <button onclick="location.reload()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="location.reload()" class="ferramentaBtn">
         🔄 Atualizar notícias
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Verificar as notícias mais recentes
-        </small>
+        <small>Verificar as notícias mais recentes</small>
       </button>
 
-
-      <button onclick="alternarModoEscuro()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="alternarModoEscuro()" class="ferramentaBtn">
         🌙 Modo escuro
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Alternar entre modo claro e escuro
-        </small>
+        <small>Alternar entre modo claro e escuro</small>
       </button>
 
-
-      <button onclick="compartilharSite()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="compartilharSite()" class="ferramentaBtn">
         📤 Partilhar AfricanMundo
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Enviar o site para outras pessoas
-        </small>
+        <small>Enviar o site para outras pessoas</small>
       </button>
 
-
-      <button onclick="copiarLinkSite()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="copiarLinkSite()" class="ferramentaBtn">
         🔗 Copiar link
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Copiar o endereço do AfricanMundo
-        </small>
+        <small>Copiar o endereço do AfricanMundo</small>
       </button>
 
-
-      <button onclick="salvarSite()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="salvarSite()" class="ferramentaBtn">
         ⭐ Adicionar aos favoritos
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Guardar o AfricanMundo no navegador
-        </small>
+        <small>Guardar o AfricanMundo no navegador</small>
       </button>
 
-
-      <button onclick="alterarTamanhoTexto()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="alterarTamanhoTexto()" class="ferramentaBtn">
         🔠 Tamanho do texto
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Aumentar ou diminuir o tamanho das letras
-        </small>
+        <small>Aumentar ou diminuir o tamanho das letras</small>
       </button>
 
-
-      <button onclick="window.print()" style="
-        padding:14px;
-        border:1px solid var(--border);
-        border-radius:12px;
-        background:var(--bg);
-        color:var(--txt);
-        text-align:left;
-        font-weight:800;
-        cursor:pointer;">
+      <button onclick="window.print()" class="ferramentaBtn">
         🖨️ Imprimir página
-        <small style="
-          display:block;
-          margin-top:4px;
-          color:var(--muted);
-          font-weight:400;">
-          Preparar a página para impressão
-        </small>
+        <small>Preparar a página para impressão</small>
       </button>
 
     </div>
+
+    <style>
+      .ferramentaBtn{
+        width:100%;
+        padding:14px;
+        border:1px solid var(--border);
+        border-radius:12px;
+        background:var(--bg);
+        color:var(--txt);
+        text-align:left;
+        font-weight:800;
+        cursor:pointer;
+      }
+
+      .ferramentaBtn small{
+        display:block;
+        margin-top:4px;
+        color:var(--muted);
+        font-weight:400;
+      }
+
+      .ferramentaBtn:active{
+        transform:scale(.98);
+      }
+    </style>
     `
   );
 
@@ -1101,7 +1019,7 @@ function alternarModoEscuro(){
 
 
 /* ==========================================
-   RECUPERAR MODO ESCURO
+   CARREGAR MODO ESCURO
 ========================================== */
 
 function carregarModoEscuro(){
@@ -1112,9 +1030,7 @@ function carregarModoEscuro(){
     );
 
   if(modo === "1"){
-
     document.body.classList.add("dark");
-
   }
 
 }
@@ -1124,42 +1040,19 @@ function carregarModoEscuro(){
    PARTILHAR SITE
 ========================================== */
 
-async function compartilharSite(){
+function compartilharSite(){
 
-  const url =
-    window.location.href;
+  if(navigator.share){
 
-  try{
+    navigator.share({
+      title:"AfricanMundo",
+      text:"Confira as últimas notícias no AfricanMundo.",
+      url:window.location.href
+    }).catch(()=>{});
 
-    if(navigator.share){
+  }else{
 
-      await navigator.share({
-
-        title:
-          "AfricanMundo",
-
-        text:
-          "🌍 A informação que liga África ao mundo",
-
-        url:url
-
-      });
-
-    }else{
-
-      await navigator.clipboard.writeText(url);
-
-      alert(
-        "🔗 Link do AfricanMundo copiado!"
-      );
-
-    }
-
-  }catch(e){
-
-    console.log(
-      "Partilha cancelada."
-    );
+    copiarLinkSite();
 
   }
 
@@ -1167,41 +1060,22 @@ async function compartilharSite(){
 
 
 /* ==========================================
-   COPIAR LINK DO SITE
+   COPIAR LINK
 ========================================== */
 
-async function copiarLinkSite(){
+function copiarLinkSite(){
 
-  try{
+  navigator.clipboard.writeText(
+    window.location.href
+  ).then(()=>{
 
-    await navigator.clipboard.writeText(
-      window.location.href
-    );
+    alert("🔗 Link do AfricanMundo copiado!");
 
-    alert(
-      "🔗 Link do AfricanMundo copiado!"
-    );
+  }).catch(()=>{
 
-  }catch(e){
+    alert("Não foi possível copiar o link.");
 
-    alert(
-      "Não foi possível copiar o link."
-    );
-
-  }
-
-}
-
-
-/* ==========================================
-   FAVORITOS
-========================================== */
-
-function salvarSite(){
-
-  alert(
-    "⭐ Para adicionar aos favoritos, use o menu do navegador e escolha Adicionar aos favoritos."
-  );
+  });
 
 }
 
@@ -1213,87 +1087,57 @@ function salvarSite(){
 function alterarTamanhoTexto(){
 
   const atual =
-    document.documentElement.style
-      .getPropertyValue("--tamanho-texto");
+    Number(localStorage.getItem(
+      "africanmundo_tamanho_texto"
+    )) || 100;
 
-  if(!atual){
+  let novo = atual + 10;
 
-    document.documentElement.style
-      .setProperty(
-        "--tamanho-texto",
-        "1.1"
-      );
-
-    alert(
-      "🔠 Texto aumentado."
-    );
-
-  }else if(atual === "1.1"){
-
-    document.documentElement.style
-      .setProperty(
-        "--tamanho-texto",
-        "1.2"
-      );
-
-    alert(
-      "🔠 Texto aumentado novamente."
-    );
-
-  }else{
-
-    document.documentElement.style
-      .setProperty(
-        "--tamanho-texto",
-        "1"
-      );
-
-    alert(
-      "🔠 Tamanho normal restaurado."
-    );
-
+  if(novo > 130){
+    novo = 80;
   }
+
+  document.documentElement.style.fontSize =
+    novo + "%";
+
+  localStorage.setItem(
+    "africanmundo_tamanho_texto",
+    novo
+  );
+
+  alert("🔠 Tamanho do texto: " + novo + "%");
 
 }
 
 
 /* ==========================================
-   INICIAR MODO ESCURO
+   RECUPERAR TAMANHO DO TEXTO
 ========================================== */
 
-document.addEventListener(
-  "DOMContentLoaded",
-  function(){
+function carregarTamanhoTexto(){
 
-    carregarModoEscuro();
+  const tamanho =
+    Number(localStorage.getItem(
+      "africanmundo_tamanho_texto"
+    )) || 100;
 
-  }
-);
+  document.documentElement.style.fontSize =
+    tamanho + "%";
+
+}
 
 
 /* ==========================================
-   COPIAR LINK
+   FAVORITOS
 ========================================== */
 
-async function copiarLinkSite(){
+function salvarSite(){
 
-  try{
+  alert(
+    "⭐ Para guardar o AfricanMundo, adicione esta página aos favoritos do seu navegador."
+  );
 
-    await navigator.clipboard.writeText(
-      window.location.href
-    );
-
-    alert("🔗 Link copiado com sucesso!");
-
-  }catch(e){
-
-    alert(
-      "Não foi possível copiar o link automaticamente."
-    );
-
-  }
-
-}
+ }
 
 
 /* ==========================================
