@@ -1407,11 +1407,19 @@ function abrirConfiguracoesUsuario(){
 }
 
 
-document.getElementById("userBtn")
-.addEventListener(
-  "click",
-  abrirUsuario
-);
+/* ==========================================
+   BOTÃO EU
+========================================== */
+
+document.addEventListener("DOMContentLoaded", function(){
+
+  const userBtn = document.getElementById("userBtn");
+
+  if(userBtn){
+    userBtn.addEventListener("click", abrirUsuario);
+  }
+
+});
 
 
 /* ==========================================
