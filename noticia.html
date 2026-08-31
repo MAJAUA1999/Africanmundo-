@@ -1,784 +1,231 @@
-<!DOCTYPE html>  <html lang="pt">  
-<head>  <meta charset="UTF-8">  <meta name="viewport"  
+<!DOCTYPE html>
+<html lang="pt-MZ">
+
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
 content="width=device-width,initial-scale=1">
 
-<meta name="theme-color"  
-content="#087f5b">
+<meta name="theme-color"
+content="#168a45">
 
-<title>Notícia — AfricanMundo</title>  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>  
-  
-:root{  
- --p:#087f5b;  
- --pd:#056044;  
- --bg:#f5f7f8;  
- --card:#fff;  
- --txt:#172026;  
- --muted:#6b7679;  
- --border:#e1e6e8;  
- --r:15px;  
-}  
-  
-*{  
- box-sizing:border-box;  
- margin:0;  
- padding:0;  
-}  
-  
-body{  
- font-family:Arial,sans-serif;  
- background:var(--bg);  
- color:var(--txt);  
- padding-bottom:40px;  
-}  
-  
-body.dark{  
- --bg:#101617;  
- --card:#182123;  
- --txt:#f3f6f6;  
- --muted:#aab5b8;  
- --border:#303b3e;  
-}  
-  
-button{  
- font:inherit;  
- cursor:pointer;  
-}  
-  
-header{  
- position:sticky;  
- top:0;  
- z-index:50;  
- background:var(--card);  
- border-bottom:1px solid var(--border);  
- box-shadow:0 2px 10px #0000000d;  
-}  
-  
-.head{  
- max-width:1000px;  
- margin:auto;  
- min-height:62px;  
- padding:8px 12px;  
- display:flex;  
- align-items:center;  
- justify-content:space-between;  
- gap:10px;  
-}  
-  
-.logo{  
- display:flex;  
- align-items:center;  
- gap:8px;  
- text-decoration:none;  
- color:inherit;  
-}  
-  
-.logo-icon{  
- width:40px;  
- height:40px;  
- border-radius:50%;  
- background:var(--p);  
- color:white;  
- display:grid;  
- place-items:center;  
- font-size:21px;  
-}  
-  
-.logo-name{  
- font-size:20px;  
- font-weight:900;  
- color:var(--p);  
-}  
-  
-.logo-name span{  
- color:var(--txt);  
-}  
-  
-.logo small{  
- display:block;  
- color:var(--muted);  
- font-size:9px;  
- margin-top:3px;  
-}  
-  
-.voltar{  
- border:0;  
- background:var(--bg);  
- color:var(--txt);  
- padding:9px 13px;  
- border-radius:9px;  
- font-weight:bold;  
-}  
-  
-main{  
- max-width:900px;  
- margin:20px auto;  
- padding:0 12px;  
-}  
-  
-.estado{  
- background:var(--card);  
- border:1px solid var(--border);  
- border-radius:var(--r);  
- min-height:120px;  
- padding:30px 18px;  
- display:grid;  
- place-items:center;  
- text-align:center;  
- color:var(--muted);  
- font-size:14px;  
-}  
-  
-.erro{  
- color:#b42318;  
-}  
-  
-.noticia{  
- background:var(--card);  
- border:1px solid var(--border);  
- border-radius:var(--r);  
- overflow:hidden;  
-}  
-  
-.categoria{  
- display:inline-block;  
- margin:20px 20px 8px;  
- padding:6px 10px;  
- background:#e8f6f1;  
- color:var(--p);  
- border-radius:20px;  
- font-size:12px;  
- font-weight:900;  
- text-transform:uppercase;  
-}  
-  
-.titulo{  
- padding:0 20px;  
- font-size:34px;  
- line-height:1.2;  
- font-weight:900;  
-}  
-  
-.data{  
- padding:12px 20px 18px;  
- color:var(--muted);  
- font-size:13px;  
-}  
-  
-.imagem{  
- width:100%;  
- max-height:520px;  
- object-fit:cover;  
- display:block;  
-}  
-  
-.texto{  
- padding:25px 20px 35px;  
- font-size:18px;  
- line-height:1.75;  
- white-space:pre-wrap;  
-}  
-  
-.acoes{  
- display:flex;  
- gap:8px;  
- padding:0 20px 20px;  
- flex-wrap:wrap;  
-}  
-  
-.acao{  
- border:1px solid var(--border);  
- background:var(--bg);  
- color:var(--txt);  
- border-radius:9px;  
- padding:9px 12px;  
- font-size:13px;  
- font-weight:bold;  
-}  
-  
-@media(max-width:600px){  
-  
- .logo small{  
-  display:none;  
- }  
-  
- .logo-name{  
-  font-size:18px;  
- }  
-  
- .titulo{  
-  font-size:27px;  
- }  
-  
- .texto{  
-  font-size:17px;  
-  line-height:1.7;  
- }  
-  
- .imagem{  
-  max-height:380px;  
- }  
-  
-}  
-  
-</style>  </head>  <body>  <header>  <div class="head">  <a href="index.html"  
-class="logo">
+<title>AfricanMundo — Notícia</title>
 
-<div class="logo-icon">  
-🌍  
-</div>  <div>  <div class="logo-name">  
-African<span>Mundo</span>  
-</div>  <small>  
-A informação que liga África ao mundo  
-</small>  </div>  </a>  <button  
-class="voltar"  
-onclick="voltar()">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-← Voltar
+<style>
 
-</button>  </div>  </header>  
-<main>  <div  
-id="estado"  
-class="estado">  ⏳ A carregar notícia...
+:root{
+  --p:#168a45;
+  --bg:#f5f7f8;
+  --card:#fff;
+  --txt:#172026;
+  --muted:#69757d;
+  --border:#e2e7ea;
+}
 
-</div>  <article  
-id="noticia"  
-class="noticia"  
-style="display:none;">  <div  
-id="categoria"  
-class="categoria">  
-</div>  <h1  
-id="titulo"  
-class="titulo">  
-</h1>  <div  
-id="data"  
-class="data">  
-</div>  <img
-id="imagem"
-class="imagem"
-alt="Imagem da notícia"
-style="display:none;"
+*{
+  box-sizing:border-box;
+}
 
-> 
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+}
 
-<div  
-id="texto"  
-class="texto">  
-</div>  <div class="acoes">  <button  
-class="acao"  
-onclick="partilhar()">
+.container{
+  width:min(900px,calc(100% - 24px));
+  margin:auto;
+}
 
-📤 Partilhar
+header{
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+}
 
-</button>  <button  
-class="acao"  
-onclick="voltar()">
+.top{
+  min-height:62px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
 
-← Voltar
+.logo{
+  font-size:19px;
+  font-weight:900;
+  color:var(--p);
+}
 
-</button>  </div>  </article>  </main>  <script>  
-  
-/* ==========================================  
-   CONFIGURAÇÃO SUPABASE  
-========================================== */  
-  
-const SUPABASE_URL =  
-"https://sonzwfhepjfvzltuxxne.supabase.co";  
-  
-const SUPABASE_KEY =  
-"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";  
-  
-/* ==========================================  
-   CLIENTE SUPABASE  
-========================================== */  
-  
-let db = null;  
-  
-try{  
-  
- if(  
-   window.supabase &&  
-   SUPABASE_URL.startsWith("http") &&  
-   SUPABASE_KEY.length > 20  
- ){  
-  
-   db =  
-     window.supabase.createClient(  
-       SUPABASE_URL,  
-       SUPABASE_KEY  
-     );  
-  
- }  
-  
-}catch(e){  
-  
- console.error(  
-   "Erro ao iniciar Supabase:",  
-   e  
- );  
-  
-}  
-  
-  
-/* ==========================================  
-   OBTER ID DA NOTÍCIA  
-========================================== */  
-  
-function obterId(){  
-  
- const params =  
-   new URLSearchParams(  
-     window.location.search  
-   );  
-  
- return (  
-   params.get("id") ||  
-   params.get("noticia") ||  
-   params.get("news")  
- );  
-  
-}  
-  
-  
-/* ==========================================  
-   ESCAPAR TEXTO  
-========================================== */  
-  
-function esc(valor){  
-  
- if(  
-   valor === null ||  
-   valor === undefined  
- ){  
-  
-   return "";  
-  
- }  
-  
- return String(valor)  
-   .replace(/&/g,"&amp;")  
-   .replace(/</g,"&lt;")  
-   .replace(/>/g,"&gt;")  
-   .replace(/"/g,"&quot;")  
-   .replace(/'/g,"&#039;");  
-  
-}  
-/* ==========================================  
-   FORMATAR DATA  
-========================================== */  
-  
-function formatarData(valor){  
-  
- if(!valor){  
-   return "";  
- }  
-  
- try{  
-  
-   const d =  
-     new Date(valor);  
-  
-   if(isNaN(d.getTime())){  
-     return "";  
-   }  
-  
-   return d.toLocaleDateString(  
-     "pt-PT",  
-     {  
-       day:"2-digit",  
-       month:"2-digit",  
-       year:"numeric"  
-     }  
-   );  
-  
- }catch(e){  
-  
-   return "";  
-  
- }  
-  
-}  
-  
-  
-/* ==========================================  
-   VOLTAR  
-========================================== */  
-  
-function voltar(){  
-  
- if(  
-   document.referrer &&  
-   document.referrer.includes(  
-     window.location.hostname  
-   )  
- ){  
-  
-   history.back();  
-  
- }else{  
-  
-   window.location.href =  
-     "index.html";  
-  
- }  
-  
-}  
-  
-  
-/* ==========================================  
-   MOSTRAR ERRO  
-========================================== */  
-  
-function mostrarErro(msg){  
-  
- const estado =  
-   document.getElementById("estado");  
-  
- estado.className =  
-   "estado erro";  
-  
- estado.innerHTML =  
-   "❌ " + esc(msg);  
-  
-}  
-  
-/* ==========================================  
-   MOSTRAR NOTÍCIA  
-========================================== */  
-  
-function mostrarNoticia(n) {  
-  
-  const estado =  
-    document.getElementById("estado");  
-  
-  const artigo =  
-    document.getElementById("noticia");  
-  
-  const titulo =  
-    document.getElementById("titulo");  
-  
-  const categoria =  
-    document.getElementById("categoria");  
-  
-  const data =  
-    document.getElementById("data");  
-  
-  const texto =  
-    document.getElementById("texto");  
-  
-  const imagem =  
-    document.getElementById("imagem");  
-  
-  
-  /* ==========================================  
-     TÍTULO  
-  ========================================== */  
-  
-  titulo.textContent =  
-    n.titulo ||  
-    n.title ||  
-    "Sem título";  
-  
-  
-  /* ==========================================  
-     CATEGORIA  
-  ========================================== */  
-  
-  categoria.textContent =  
-    n.categoria ||  
-    n.category ||  
-    "Notícias";  
-  
-  
-  /* ==========================================  
-     DATA  
-  ========================================== */  
-  
-  data.textContent =  
-    formatarData(  
-      n.created_at ||  
-      n.data ||  
-      n.createdAt ||  
-      n.publicado_em  
-    );  
-  
-  
-  /* ==========================================  
-     TEXTO  
-  ========================================== */  
-  
-  texto.textContent =  
-    n.texto ||  
-    n.conteudo ||  
-    n.content ||  
-    n.descricao ||  
-    "";  
-  
-  
-  /* ==========================================  
-     IMAGEM DA NOTÍCIA  
-  ========================================== */  
-  
-  const foto =  
-    n.imagem ||  
-    n.imagem_url ||  
-    n.image ||  
-    n.image_url ||  
-    n.foto ||  
-    n.foto_url ||  
-    n.url_imagem ||  
-    n.urlImagem ||  
-    n.capa ||  
-    n.capa_url ||  
-    "";  
-  
-  
-  console.log(  
-    "🖼️ Imagem encontrada:",  
-    foto  
-  );  
-  
-  
-  if (foto) {  
-  
-    imagem.src = foto;  
-  
-    imagem.alt =  
-      n.titulo ||  
-      n.title ||  
-      "Imagem da notícia";  
-  
-  
-    imagem.style.display =  
-      "block";  
-  
-    imagem.style.width =  
-      "100%";  
-  
-    imagem.style.height =  
-      "auto";  
-  
-    imagem.style.maxHeight =  
-      "600px";  
-  
-    imagem.style.objectFit =  
-      "cover";  
-  
-  
-    /* ======================================  
-       ABRIR IMAGEM GRANDE  
-    ====================================== */  
-  
-    imagem.style.cursor =  
-      "zoom-in";  
-  
-  
-    imagem.onclick =  
-      function () {  
-  
-        window.open(  
-          foto,  
-          "_blank"  
-        );  
-  
-      };  
-  
-  
-    imagem.onerror =  
-      function () {  
-  
-        console.error(  
-          "❌ Não foi possível carregar a imagem:",  
-          foto  
-        );  
-  
-        imagem.style.display =  
-          "none";  
-  
-      };  
-  
-  
-  } else {  
-  
-    console.log(  
-      "⚠️ Esta notícia não possui imagem."  
-    );  
-  
-    imagem.style.display =  
-      "none";  
-  
-  }  
-  
-  
-  /* ==========================================  
-     MOSTRAR NOTÍCIA  
-  ========================================== */  
-  
-  estado.style.display =  
-    "none";  
-  
-  artigo.style.display =  
-    "block";  
-  
-   }  
-   
-/* ==========================================  
-   CARREGAR NOTÍCIA  
-========================================== */  
-  
-async function carregarNoticia(){  
-  
-  const id = obterId();  
-  
-  if(!id){  
-  
-    mostrarErro(  
-      "Não foi encontrado o ID da notícia."  
-    );  
-  
-    return;  
-  }  
-  
-  if(!db){  
-  
-    mostrarErro(  
-      "A ligação com o Supabase não está configurada."  
-    );  
-  
-    return;  
-  }  
-  
-  try{  
-  
-    console.log(  
-      "🔎 Procurando notícia ID:",  
-      id  
-    );  
-  
-    const resposta =  
-      await db  
-      .from("noticias")  
-      .select("*")  
-      .eq("id", id)  
-      .limit(1);  
-  
-    if(resposta.error){  
-  
-      console.error(  
-        "❌ Erro Supabase:",  
-        resposta.error  
-      );  
-  
-      mostrarErro(  
-        "Erro ao consultar a notícia."  
-      );  
-  
-      return;  
-    }  
-  
-    const noticias =  
-      resposta.data || [];  
-  
-    if(!noticias.length){  
-  
-      mostrarErro(  
-        "A notícia não foi encontrada."  
-      );  
-  
-      return;  
-    }  
-  
-    console.log(  
-      "✅ Notícia encontrada:",  
-      noticias[0]  
-    );  
-  
-    mostrarNoticia(  
-      noticias[0]  
-    );  
-  
-  }catch(e){  
-  
-    console.error(  
-      "❌ Erro ao carregar notícia:",  
-      e  
-    );  
-  
-    mostrarErro(  
-      "Ocorreu um erro ao carregar a notícia."  
-    );  
-  
-  }  
-  
-}  
-  
-  
-/* ==========================================  
-   PARTILHAR NOTÍCIA  
-========================================== */  
-  
-async function partilhar(){  
-  
-  const titulo =  
-    document.getElementById("titulo")  
-    .textContent;  
-  
-  const url =  
-    window.location.href;  
-  
-  try{  
-  
-    if(navigator.share){  
-  
-      await navigator.share({  
-        title:titulo,  
-        url:url  
-      });  
-  
-    }else{  
-  
-      await navigator.clipboard  
-      .writeText(url);  
-  
-      alert(  
-        "🔗 Link da notícia copiado!"  
-      );  
-  
-    }  
-  
-  }catch(e){  
-  
-    console.log(  
-      "Partilha cancelada."  
-    );  
-  
-  }  
-  
-}  
-/* ==========================================  
-   COMPATIBILIDADE  
-========================================== */  
-  
-function carregarMaisNoticias(){  
-  
-  console.log(  
-    "Função não necessária na página da notícia."  
-  );  
-  
-}  
-  
-  
-/* ==========================================  
-   INICIAR PÁGINA  
-========================================== */  
-  
-document.addEventListener(  
-  "DOMContentLoaded",  
-  function(){  
-  
-    carregarNoticia();  
-  
-  }  
-);  
-  
-</script>  </body>  
+.actions{
+  display:flex;
+  gap:7px;
+}
+
+button{
+  border:1px solid var(--border);
+  background:var(--card);
+  color:var(--txt);
+  border-radius:10px;
+  padding:9px 12px;
+  cursor:pointer;
+  font-weight:800;
+}
+
+main{
+  padding:22px 0 50px;
+}
+
+.article{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  overflow:hidden;
+}
+
+.article img{
+  width:100%;
+  max-height:430px;
+  object-fit:cover;
+  display:block;
+}
+
+.article-content{
+  padding:20px;
+}
+
+.category{
+  color:var(--p);
+  font-size:11px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+
+h1{
+  margin:8px 0;
+  font-size:30px;
+  line-height:1.2;
+}
+
+.date{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:18px;
+}
+
+.text{
+  font-size:16px;
+  line-height:1.75;
+  white-space:pre-line;
+}
+
+.loading{
+  padding:30px;
+  text-align:center;
+  color:var(--muted);
+}
+
+@media(max-width:600px){
+
+  h1{
+    font-size:23px;
+  }
+
+  .text{
+    font-size:15px;
+  }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+  <div class="container top">
+
+    <div class="logo">
+      🌍 AfricanMundo
+    </div>
+
+    <div class="actions">
+
+      <button
+        type="button"
+        onclick="history.back()">
+        ← Voltar
+      </button>
+
+      <button
+        type="button"
+        onclick="partilhar()">
+        📤 Partilhar
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+<main>
+
+  <div class="container">
+
+    <article
+      id="noticia"
+      class="article">
+
+      <div class="loading">
+        ⏳ A carregar notícia...
+      </div>
+
+    </article>
+
+  </div>
+
+</main>
+
+<script>
+
+const SUPABASE_URL =
+"https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+const db =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const id =
+new URLSearchParams(
+  location.search
+).get("id");
+
+let noticiaAtual = null;
+
+function esc(v){
+
+  return String(v ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+</script>
+
+</body>
 </html>
