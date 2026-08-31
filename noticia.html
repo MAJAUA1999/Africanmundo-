@@ -454,6 +454,8 @@ function mostrarNoticia(n){
         id="fotoNoticia"
         src="${esc(img)}"
         alt="${esc(titulo(n))}"
+        onclick="abrirFotoGrande('${esc(img)}')"
+  style="cursor:zoom-in"
         onerror="this.style.display='none'"
       >
 
