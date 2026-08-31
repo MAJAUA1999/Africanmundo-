@@ -1,400 +1,324 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-MZ">
 
 <head>
+<meta charset="UTF-8">
 
-  <meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+<meta name="theme-color"
+content="#168a45">
 
-  <title>Contacto — AfricanMundo</title>
+<meta name="description"
+content="Entre em contacto com o AfricanMundo.">
 
-  <meta
-    name="description"
-    content="Entre em contacto com o AfricanMundo para informações, sugestões, correções, publicidade e parcerias."
-  >
+<title>Contacto — AfricanMundo</title>
 
-  <link
-    rel="stylesheet"
-    href="estilo.css"
-  >
+<style>
 
-  <style>
+:root{
+  --p:#168a45;
+  --bg:#f5f7f8;
+  --card:#fff;
+  --txt:#172026;
+  --muted:#69757d;
+  --border:#e2e7ea;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+*{
+  box-sizing:border-box;
+}
 
-    body {
-      margin: 0;
-      background: #f4f4f4;
-      color: #111;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--txt);
+}
 
-    .topo {
-      background: #050505;
-      color: #fff;
-      padding: 20px 15px;
-    }
+body.dark{
+  --bg:#101417;
+  --card:#171d21;
+  --txt:#f2f5f6;
+  --muted:#aab5ba;
+  --border:#293238;
+}
 
-    .topo-inner {
-      max-width: 1100px;
-      margin: auto;
-    }
+.container{
+  width:min(850px,calc(100% - 24px));
+  margin:auto;
+}
 
-    .logo {
-      font-size: 32px;
-      font-weight: 900;
-    }
+header{
+  background:var(--card);
+  border-bottom:1px solid var(--border);
+}
 
-    .logo span {
-      color: #45c226;
-    }
+.top{
+  min-height:65px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
 
-    .slogan {
-      margin-top: 5px;
-      color: #ddd;
-      font-size: 13px;
-    }
+.logo{
+  color:var(--p);
+  font-size:19px;
+  font-weight:900;
+}
 
-    main {
-      max-width: 900px;
-      margin: auto;
-      padding: 25px 15px 60px;
-    }
+.back{
+  padding:9px 12px;
+  border:1px solid var(--border);
+  border-radius:10px;
+  background:var(--card);
+  color:var(--txt);
+  text-decoration:none;
+  font-size:12px;
+  font-weight:900;
+}
 
-    .voltar {
-      display: inline-block;
-      margin-bottom: 20px;
-      padding: 10px 16px;
-      background: #111;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 9px;
-      font-weight: 700;
-    }
+main{
+  padding:25px 0 50px;
+}
 
-    .pagina {
-      background: #fff;
-      padding: 30px;
-      border-radius: 18px;
-      box-shadow: 0 4px 18px rgba(0,0,0,0.08);
-    }
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:22px;
+  box-shadow:0 4px 18px #0000000b;
+}
 
-    h1 {
-      margin-top: 0;
-      font-size: 34px;
-    }
+h1{
+  margin:0 0 10px;
+  font-size:27px;
+}
 
-    h2 {
-      margin-top: 32px;
-      font-size: 22px;
-      border-left: 4px solid #45c226;
-      padding-left: 10px;
-    }
+h2{
+  margin-top:28px;
+  font-size:19px;
+}
 
-    p {
-      font-size: 16px;
-      line-height: 1.8;
-      color: #333;
-    }
+p{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
 
-    .contact-box {
-      margin-top: 20px;
-      padding: 20px;
-      background: #f5f5f5;
-      border-radius: 14px;
-      border-left: 4px solid #45c226;
-    }
+.contact{
+  display:block;
+  margin:18px 0;
+  padding:15px;
+  border-radius:13px;
+  background:var(--bg);
+  border:1px solid var(--border);
+  color:var(--p);
+  text-decoration:none;
+  font-weight:900;
+  text-align:center;
+}
 
-    .contact-box p {
-      margin: 8px 0;
-    }
+.ad-button{
+  display:block;
+  margin-top:15px;
+  padding:13px;
+  border-radius:12px;
+  background:var(--p);
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  font-weight:900;
+}
 
-    .anuncio {
-      margin-top: 20px;
-      padding: 22px;
-      background: #050505;
-      color: #fff;
-      border-radius: 16px;
-      text-align: center;
-    }
+.topic{
+  margin-top:15px;
+  padding:14px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background:var(--bg);
+}
 
-    .anuncio h2 {
-      border: 0;
-      padding: 0;
-      margin-top: 0;
-      color: #fff;
-    }
+.topic strong{
+  display:block;
+  margin-bottom:5px;
+}
 
-    .anuncio p {
-      color: #ddd;
-    }
+footer{
+  margin-top:30px;
+  padding:25px 0 60px;
+  background:var(--card);
+  border-top:1px solid var(--border);
+  text-align:center;
+}
 
-    .botao {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 13px 22px;
-      background: #45c226;
-      color: #fff;
-      text-decoration: none;
-      border-radius: 10px;
-      font-weight: 900;
-    }
+footer strong{
+  color:var(--p);
+}
 
-    .info {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
+footer p{
+  font-size:11px;
+}
 
-    .info-item {
-      padding: 15px;
-      background: #f5f5f5;
-      border-radius: 12px;
-    }
+@media(max-width:600px){
 
-    footer {
-      background: #050505;
-      color: #ddd;
-      text-align: center;
-      padding: 25px 15px;
-      font-size: 14px;
-    }
+  h1{
+    font-size:23px;
+  }
 
-    footer a {
-      color: #fff;
-      text-decoration: none;
-      margin: 0 6px;
-    }
+  .card{
+    padding:17px;
+  }
 
-    @media (max-width: 600px) {
+  p{
+    font-size:13px;
+  }
 
-      .logo {
-        font-size: 27px;
-      }
+}
 
-      .pagina {
-        padding: 20px;
-      }
-
-      h1 {
-        font-size: 28px;
-      }
-
-      h2 {
-        font-size: 20px;
-      }
-
-      p {
-        font-size: 15px;
-      }
-
-    }
-
-  </style>
-
+</style>
 </head>
-
 
 <body>
 
+<header>
 
-  <!-- ==========================================
-       CABEÇALHO
-  ========================================== -->
+  <div class="container top">
 
-  <header class="topo">
-
-    <div class="topo-inner">
-
-      <div class="logo">
-        African<span>Mundo</span>
-      </div>
-
-      <div class="slogan">
-        A informação que liga África ao mundo
-      </div>
-
+    <div class="logo">
+      🌍 AfricanMundo
     </div>
 
-  </header>
-
-
-  <!-- ==========================================
-       CONTEÚDO
-  ========================================== -->
-
-  <main>
-
     <a
-      class="voltar"
       href="index.html"
-    >
+      class="back">
       ← Voltar ao início
     </a>
 
+  </div>
 
-    <section class="pagina">
+</header>
 
 
-      <h1>
-        Contacto
-      </h1>
+<main>
 
+  <div class="container">
+
+    <div class="card">
+
+      <h1>📩 Contacto</h1>
 
       <p>
-        Tem uma sugestão, encontrou algum erro numa
-        notícia ou deseja entrar em contacto com o
-        AfricanMundo?
+        Tem uma sugestão, encontrou algum erro numa notícia
+        ou deseja entrar em contacto com o AfricanMundo?
+      </p>
+
+      <p>
+        Estamos abertos a receber sugestões, informações,
+        correções, propostas de publicidade e oportunidades
+        de parceria.
       </p>
 
 
+      <h2>📩 Fale connosco</h2>
+
       <p>
-        Estamos abertos a receber sugestões,
-        informações, correções, propostas de
-        publicidade e oportunidades de parceria.
+        Para entrar em contacto com a equipa do AfricanMundo,
+        utilize o nosso endereço oficial:
       </p>
 
+      <a
+        class="contact"
+        href="mailto:pauloluisantoniom@gmail.com">
 
-      <!-- ========================================
-           CONTACTO
-      ========================================= -->
+        📧 pauloluisantoniom@gmail.com
 
-      <h2>
-        📩 Fale connosco
-      </h2>
+      </a>
 
-      <div class="contact-box">
+
+      <h2>📢 Publicidade</h2>
+
+      <p>
+        <strong>ANUNCIE NO AFRICANMUNDO</strong>
+      </p>
+
+      <p>
+        Divulgue a sua empresa, marca, produto, serviço
+        ou evento para o público do AfricanMundo.
+      </p>
+
+      <a
+        class="ad-button"
+        href="mailto:pauloluisantoniom@gmail.com?subject=Publicidade%20no%20AfricanMundo">
+
+        QUERO ANUNCIAR →
+
+      </a>
+
+
+      <h2>📌 Assuntos</h2>
+
+
+      <div class="topic">
+
+        <strong>📰 Correções de notícias</strong>
 
         <p>
-          Para entrar em contacto com o AfricanMundo,
-          utilize os canais oficiais disponibilizados
-          pela nossa equipa.
-        </p>
-
-        <p>
-          <strong>Contacto:</strong>
-          Informação de contacto será disponibilizada
-          em breve.
+          Informe-nos sobre informações que precisam
+          de correção ou atualização.
         </p>
 
       </div>
 
 
-      <!-- ========================================
-           PUBLICIDADE
-      ========================================= -->
+      <div class="topic">
 
-      <h2>
-        📢 Publicidade
-      </h2>
-
-      <div class="anuncio">
-
-        <h2>
-          ANUNCIE NO AFRICANMUNDO
-        </h2>
+        <strong>💡 Sugestões</strong>
 
         <p>
-          Divulgue a sua empresa, marca, produto,
-          serviço ou evento para o público do
-          AfricanMundo.
+          Envie sugestões para ajudar a melhorar
+          o AfricanMundo.
         </p>
-
-        <p>
-          Entre em contacto connosco para conhecer
-          as oportunidades de publicidade disponíveis.
-        </p>
-
-        <a
-          class="botao"
-          href="#contacto"
-        >
-          QUERO ANUNCIAR →
-        </a>
 
       </div>
 
 
-      <!-- ========================================
-           INFORMAÇÕES
-      ========================================= -->
+      <div class="topic">
 
-      <h2>
-        📌 Assuntos
-      </h2>
+        <strong>🤝 Parcerias</strong>
 
-      <div class="info">
-
-        <div class="info-item">
-          📰 <strong>Correções de notícias</strong>
-          <br>
-          <small>
-            Informe-nos sobre informações que precisam
-            de correção ou atualização.
-          </small>
-        </div>
-
-        <div class="info-item">
-          💡 <strong>Sugestões</strong>
-          <br>
-          <small>
-            Envie sugestões para ajudar a melhorar
-            o AfricanMundo.
-          </small>
-        </div>
-
-        <div class="info-item">
-          🤝 <strong>Parcerias</strong>
-          <br>
-          <small>
-            Estamos abertos a propostas de colaboração
-            e parceria.
-          </small>
-        </div>
-
-        <div
-          class="info-item"
-          id="contacto"
-        >
-          📢 <strong>Publicidade</strong>
-          <br>
-          <small>
-            Entre em contacto para solicitar informações
-            sobre anúncios no AfricanMundo.
-          </small>
-        </div>
+        <p>
+          Estamos abertos a propostas de colaboração
+          e parceria.
+        </p>
 
       </div>
 
 
-      <!-- ========================================
-           CORREÇÕES
-      ========================================= -->
+      <div class="topic">
 
-      <h2>
-        📰 Correções de conteúdo
-      </h2>
+        <strong>📢 Publicidade</strong>
+
+        <p>
+          Entre em contacto para solicitar informações
+          sobre anúncios no AfricanMundo.
+        </p>
+
+      </div>
+
+
+      <h2>📰 Correções de conteúdo</h2>
 
       <p>
         Se encontrar uma informação incorreta ou
-        desatualizada, pode comunicar o problema
-        à equipa do AfricanMundo para análise.
+        desatualizada, pode comunicar o problema à
+        equipa do AfricanMundo para análise.
       </p>
 
 
-      <!-- ========================================
-           PARCERIAS
-      ========================================= -->
-
-      <h2>
-        🤝 Parcerias
-      </h2>
+      <h2>🤝 Parcerias</h2>
 
       <p>
         O AfricanMundo está aberto a propostas de
@@ -404,42 +328,64 @@
       </p>
 
 
-    </section>
+      <a
+        class="contact"
+        href="mailto:pauloluisantoniom@gmail.com">
 
-  </main>
+        📧 Contactar o AfricanMundo
 
+      </a>
 
-  <!-- ==========================================
-       RODAPÉ
-  ========================================== -->
-
-  <footer>
-
-    <div>
-      © 2026 AfricanMundo — Todos os direitos reservados.
     </div>
 
-    <br>
+  </div>
 
-    <a href="index.html">
-      Início
-    </a>
+</main>
 
-    <a href="quem-somos.html">
-      Quem Somos
-    </a>
 
-    <a href="contacto.html">
-      Contacto
-    </a>
+<footer>
 
-    <a href="termos.html">
-      Termos
-    </a>
+  <div class="container">
 
-  </footer>
+    <strong>
+      🌍 AfricanMundo
+    </strong>
+
+    <p>
+      A informação que liga África ao mundo
+    </p>
+
+    <p>
+      <a href="index.html">Início</a> ·
+      <a href="sobre.html">Quem Somos</a> ·
+      <a href="contacto.html">Contacto</a> ·
+      <a href="termos.html">Termos</a>
+    </p>
+
+    <p>
+      © 2026 AfricanMundo — Todos os direitos reservados.
+    </p>
+
+  </div>
+
+</footer>
+
+
+<script>
+
+/* MODO ESCURO */
+
+if(
+  localStorage.getItem("am_dark")
+  === "true"
+){
+
+  document.body.classList.add("dark");
+
+}
+
+</script>
 
 
 </body>
-
-</html>
+        </html>
