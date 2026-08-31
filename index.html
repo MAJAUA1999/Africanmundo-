@@ -1585,30 +1585,54 @@ function abrirFavoritos(){
 
 }
 
-/* ==========================================
-   MODO ESCURO
+ /* ==========================================
+   MODO ESCURO — AFRICANMUNDO
 ========================================== */
 
 function alternarTema(){
 
   document.body.classList.toggle("dark");
 
+  const ativado =
+    document.body.classList.contains("dark");
+
   localStorage.setItem(
     "africanmundo_dark",
-    document.body.classList.contains("dark")
+    ativado ? "true" : "false"
   );
 
 }
 
-document.getElementById("darkBtn")
-.addEventListener("click",alternarTema);
 
-if(localStorage.getItem("africanmundo_dark")==="true"){
+/* ==========================================
+   INICIAR MODO ESCURO
+========================================== */
 
-  document.body.classList.add("dark");
+document.addEventListener("DOMContentLoaded", function(){
 
-}
+  const darkBtn =
+    document.getElementById("darkBtn");
 
+  if(darkBtn){
+
+    darkBtn.addEventListener(
+      "click",
+      alternarTema
+    );
+
+  }
+
+  if(
+    localStorage.getItem(
+      "africanmundo_dark"
+    ) === "true"
+  ){
+
+    document.body.classList.add("dark");
+
+  }
+
+});
 
  /* ==========================================
    CORES
