@@ -342,6 +342,13 @@ function data(n){
       month:"2-digit",
       year:"numeric"
     }
+  ) + " • " +
+  d.toLocaleTimeString(
+    "pt-MZ",
+    {
+      hour:"2-digit",
+      minute:"2-digit"
+    }
   );
 }
 
@@ -432,13 +439,24 @@ function mostrarNoticia(n){
   area.innerHTML = `
 
     ${
-      img
-      ? `<img
-          src="${esc(img)}"
-          alt="${esc(titulo(n))}"
-          onerror="this.style.display='none'"
-        >`
-      : ""
+  img
+  ? `
+    <div class="photo-box">
+      <img
+        id="fotoNoticia"
+        src="${esc(img)}"
+        alt="${esc(titulo(n))}"
+        onerror="this.style.display='none'"
+      >
+
+      <button
+        class="save-photo"
+        onclick="guardarFoto()">
+        ⬇️ Guardar foto
+      </button>
+    </div>
+  `
+  : ""
     }
 
     <div class="content">
@@ -595,6 +613,43 @@ async function partilhar(){
 
 }
 
+  async function guardarFoto(){
+
+  const foto =
+    document.getElementById("fotoNoticia");
+
+  if(!foto?.src) return;
+
+  try{
+
+    const resposta =
+      await fetch(foto.src);
+
+    const blob =
+      await resposta.blob();
+
+    const url =
+      URL.createObjectURL(blob);
+
+    const a =
+      document.createElement("a");
+
+    a.href = url;
+    a.download = "africanmundo-foto.jpg";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+  }catch(e){
+
+    window.open(foto.src,"_blank");
+
+  }
+
+  }
 
 /* INICIAR */
 
