@@ -149,26 +149,20 @@ function abrirNoticiaPorId(id){
 
 
 /* ==========================================
-   CARD
+   CARD COMPACTO — PÁGINA INICIAL
 ========================================== */
 
 function criarCard(n){
 
-  const card =
-    document.createElement("article");
+  const card = document.createElement("article");
 
-  card.className = "news-card";
+  card.className = "compact-card";
 
-  card.onclick = () =>
-    abrirNoticia(n);
+  card.onclick = () => abrirNoticia(n);
 
   const img = obterImagem(n);
-  const titulo = obterTitulo(n);
-  const texto = obterTexto(n);
+  const tit = obterTitulo(n);
   const cat = n?.categoria || "Notícias";
-  const data = formatarData(
-    n?.created_at || n?.data
-  );
 
   card.innerHTML = `
 
@@ -176,59 +170,35 @@ function criarCard(n){
       img
       ? `
         <img
-          class="news-image"
           src="${esc(img)}"
-          alt="${esc(titulo)}"
+          alt="${esc(tit)}"
           loading="lazy"
           onerror="this.style.display='none'"
         >
       `
       : `
-        <div class="news-no-image">
+        <div class="compact-img">
           🌍
         </div>
       `
     }
 
-    <div class="news-content">
+    <div class="compact-body">
 
-      <div class="news-category">
+      <div class="compact-cat">
         ${esc(cat)}
       </div>
 
-      <h3 class="news-title">
-        ${esc(titulo)}
-      </h3>
-
-      ${
-        texto
-        ? `
-          <p class="news-description">
-            ${esc(texto.slice(0,100))}
-            ${texto.length>100 ? "..." : ""}
-          </p>
-        `
-        : ""
-      }
-
-      <div class="news-footer">
-
-        <span>
-          ${esc(data)}
-        </span>
-
-        <span>
-          LER →
-        </span>
-
+      <div class="compact-title">
+        ${esc(tit)}
       </div>
 
     </div>
+
   `;
 
   return card;
 }
-
 
 /* ==========================================
    RENDERIZAR LISTA
