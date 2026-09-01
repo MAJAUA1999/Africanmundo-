@@ -1471,7 +1471,8 @@ async function carregarPedidosAnuncios() {
   error
 } = await supabaseClient
   .from("anuncios")
-  .select("*");
+  .select("*")
+  .limit(50);
 
 console.log("PEDIDOS DE ANÚNCIOS:", data);
 console.log("ERRO DOS ANÚNCIOS:", error);
