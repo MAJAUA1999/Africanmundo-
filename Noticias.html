@@ -85,6 +85,22 @@
   border-radius: 10px;
 }
 
+  body.dark .news-card,
+body.dark .loading,
+body.dark .error {
+  background: var(--card);
+  color: var(--txt);
+}
+
+body.dark .news-date {
+  color: var(--muted);
+}
+
+body.dark .read-more {
+  background: var(--p);
+  color: #fff;
+}
+  
 </style>
 
 </head>
@@ -355,7 +371,10 @@ async function carregarNoticias() {
   }
 
 }
-
+  
+if(localStorage.getItem("am_dark") === "true"){
+  document.body.classList.add("dark");
+          }
 
 carregarNoticias();
 
