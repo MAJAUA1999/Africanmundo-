@@ -1639,6 +1639,8 @@ console.log("ERRO DOS ANÚNCIOS:", error);
 
 async function marcarAnuncio(id, novoEstado) {
 
+  novoEstado = Boolean(novoEstado);
+
   const { error } =
     await supabaseClient
       .from("anuncios")
@@ -1662,8 +1664,7 @@ async function marcarAnuncio(id, novoEstado) {
     return;
   }
 
-  await render();
-await carregarPedidosAnuncios();
+  await carregarPedidosAnuncios();
 
   alert(
     novoEstado
@@ -1671,14 +1672,4 @@ await carregarPedidosAnuncios();
       : "🔴 Anúncio desativado."
   );
 
-               }
-
-document.addEventListener("DOMContentLoaded", function() {
-
-  verificarSessao();
-
-  setTimeout(function() {
-    carregarPedidosAnuncios();
-  }, 500);
-
-});
+}
