@@ -1288,72 +1288,55 @@ async function excluirNoticia(id) {
   }
 
 
-  /* =====================================
-     CONFIRMAR SESSÃO
-  ===================================== */
+/* =========================================
+   EXCLUIR NOTÍCIA
+========================================= */
 
-  const {
-    data: sessaoData
-  } =
-    await supabaseClient
-      .auth
-      .getSession();
+async function excluirNoticia(id) {
 
+  id = Number(id);
 
-  if (
-    !sessaoData ||
-    !sessaoData.session ||
-    !sessaoData.session.user
-  ) {
-
-    alert(
-      "🔐 A sua sessão terminou. Entre novamente."
-    );
-
-    location.reload();
-
+  if (!confirm("⚠️ Tem certeza que deseja excluir esta notícia?")) {
     return;
-
   }
 
+  try {
 
-  const { error } =
-    await supabaseClient
+    const {
+      error
+    } = await supabaseClient
       .from("noticias")
       .delete()
-      .eq(
-        "id",
-        id
-      );
+      .eq("id", id);
 
+    if (error) {
+      throw error;
+    }
 
-  if (error) {
+    await render();
 
-    console.error(
-      "Erro ao excluir:",
-      error
+    alert(
+      "✅ Notícia excluída com sucesso!"
     );
 
+  } catch (erro) {
+
+    console.error(
+      "Erro ao excluir notícia:",
+      erro
+    );
 
     alert(
       "❌ Não foi possível excluir a notícia:\n\n" +
-      error.message
+      (
+        erro.message ||
+        "Erro desconhecido."
+      )
     );
-
-
-    return;
 
   }
 
-
-  await render();
-
-
-  alert(
-    "✅ Notícia excluída com sucesso!"
-  );
-
-}
+       }
 
 
 /* =========================================
