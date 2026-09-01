@@ -59,3 +59,43 @@
   }
 
 }
+
+/* ==========================================
+   MODO ESCURO — AFRICANMUNDO
+========================================== */
+
+body.dark {
+  background: #101417;
+  color: #f2f5f6;
+}
+
+body.dark .news,
+body.dark .feature,
+body.dark .matches,
+body.dark .panel,
+body.dark .cards > div {
+  background: #171d21;
+  color: #f2f5f6;
+  box-shadow: none;
+}
+
+body.dark .section-title {
+  color: #f2f5f6;
+}
+
+body.dark .news p,
+body.dark .post-item {
+  color: #d5dde1;
+}
+
+body.dark input,
+body.dark select,
+body.dark textarea {
+  background: #171d21;
+  color: #f2f5f6;
+  border-color: #293238;
+}
+
+body.dark a {
+  color: #70c95a;
+}
