@@ -1467,15 +1467,18 @@ async function carregarPedidosAnuncios() {
   try {
 
     const {
-      data,
-      error
-    } = await supabaseClient
-      .from("anuncios")
-      .select("*")
-      .order("id", {
-        ascending: false
-      })
-      .limit(50);
+  data,
+  error
+} = await supabaseClient
+  .from("anuncios")
+  .select("*");
+
+console.log("ANUNCIOS:", data);
+console.log("ERRO:", error);
+
+if (error) {
+  throw error;
+}
 
 
     console.log(
