@@ -1467,15 +1467,14 @@ async function carregarPedidosAnuncios() {
   try {
 
     const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .from("anuncios")
-        .select("*")
-        .order("id", {
-          ascending: false
-        });
+  data,
+  error
+} = await supabaseClient
+  .from("anuncios")
+  .select("*");
+
+console.log("PEDIDOS DE ANÚNCIOS:", data);
+console.log("ERRO DOS ANÚNCIOS:", error);
 
     if (error) {
 
