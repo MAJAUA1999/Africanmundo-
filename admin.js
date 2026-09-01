@@ -1518,7 +1518,13 @@ console.log("ERRO DOS ANÚNCIOS:", error);
 
     area.innerHTML = data.map(function(p) {
 
-      return `
+      const ativo =
+  p.ativo === true ||
+  p.ativo === "true" ||
+  p.ativo === 1 ||
+  p.ativo === "1";
+       
+       return `
         <div style="
           margin-bottom:16px;
           padding:16px;
@@ -1555,13 +1561,7 @@ console.log("ERRO DOS ANÚNCIOS:", error);
             ${esc(p.mensagem || "Sem mensagem")}
           </p>
 
-const ativo =
-  p.ativo === true ||
-  p.ativo === "true" ||
-  p.ativo === 1 ||
-  p.ativo === "1";
-
-  <p>
+<p>
   📌 <strong>Estado:</strong>
 
   <button
