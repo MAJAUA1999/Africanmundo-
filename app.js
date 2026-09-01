@@ -1238,6 +1238,136 @@ function carregarCor(){
 
 }
 
+/* =========================================
+   CARREGAR ANÚNCIOS ATIVOS
+========================================= */
+
+async function carregarAnunciosAtivos() {
+
+  if (!db && !iniciarSupabase()) {
+    return;
+  }
+
+  const area =
+    document.getElementById("anunciosAtivos");
+
+  const secao =
+    document.getElementById("anunciosAtivosSection");
+
+  if (!area || !secao) {
+    return;
+  }
+
+  try {
+
+    const {
+      data,
+      error
+    } = await db
+      .from("anuncios")
+      .select("*")
+      .eq("ativo", true)
+      .order("id", {
+        ascending: false
+      });
+
+    if (error) {
+      throw error;
+    }
+
+    if (!data || data.length === 0) {
+
+      secao.style.display = "none";
+
+      return;
+    }
+
+    secao.style.display = "block";
+
+    area.innerHTML = data.map(function(anuncio) {
+
+      return `
+        <div style="
+          padding:18px;
+          margin-bottom:15px;
+          border:1px solid var(--border);
+          border-radius:12px;
+          background:var(--card);
+        ">
+
+          <h3 style="margin-top:0;">
+            📢 ${esc(anuncio.empresa || "Publicidade")}
+          </h3>
+
+          ${
+            anuncio.imagem
+            ? `
+              <img
+                src="${esc(anuncio.imagem)}"
+                alt="${esc(anuncio.empresa || "Publicidade")}"
+                style="
+                  width:100%;
+                  max-height:260px;
+                  object-fit:cover;
+                  border-radius:10px;
+                  margin-bottom:12px;
+                "
+              >
+            `
+            : ""
+          }
+
+          ${
+            anuncio.mensagem
+            ? `
+              <p>
+                ${esc(anuncio.mensagem)}
+              </p>
+            `
+            : ""
+          }
+
+          ${
+            anuncio.link
+            ? `
+              <a
+                href="${esc(anuncio.link)}"
+                target="_blank"
+                rel="noopener"
+                style="
+                  display:inline-block;
+                  padding:10px 16px;
+                  border-radius:8px;
+                  background:#168a45;
+                  color:#fff;
+                  text-decoration:none;
+                  font-weight:700;
+                "
+              >
+                Ver anúncio
+              </a>
+            `
+            : ""
+          }
+
+        </div>
+      `;
+
+    }).join("");
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao carregar anúncios:",
+      erro
+    );
+
+    secao.style.display = "none";
+
+  }
+
+}
+
 
 /* ==========================================
    EVENTOS + INICIALIZAÇÃO
