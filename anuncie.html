@@ -457,12 +457,15 @@ formulario.addEventListener(
 
     }catch(error){
 
-      console.error(error);
+  console.error("ERRO COMPLETO:", error);
 
-      mostrarResultado(
-  "❌ Erro: " + (error.message || "Erro desconhecido"),
-  "erro"
-);
+  mostrarResultado(
+    "❌ ERRO AO ENVIAR:<br><br>" +
+    (error?.message || "Erro desconhecido"),
+    "erro"
+  );
+
+    }
 
     }finally{
 
