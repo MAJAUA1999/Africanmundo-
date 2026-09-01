@@ -1260,42 +1260,6 @@ async function excluirNoticia(id) {
 
   id = Number(id);
 
-
-  if (!Number.isFinite(id)) {
-
-    alert(
-      "❌ ID da notícia inválido."
-    );
-
-    return;
-
-  }
-
-
-  const confirmar =
-    confirm(
-
-      "⚠️ Tem certeza que deseja excluir esta notícia?\n\n" +
-      "Esta ação não pode ser desfeita."
-
-    );
-
-
-  if (!confirmar) {
-
-    return;
-
-  }
-
-
-/* =========================================
-   EXCLUIR NOTÍCIA
-========================================= */
-
-async function excluirNoticia(id) {
-
-  id = Number(id);
-
   if (!confirm("⚠️ Tem certeza que deseja excluir esta notícia?")) {
     return;
   }
