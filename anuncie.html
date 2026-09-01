@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt">
+<html lang="pt-MZ">
 <head>
 
 <meta charset="utf-8">
@@ -12,6 +12,59 @@
 <title>Anuncie — AfricanMundo</title>
 
 <link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+.anuncio-form{
+  display:grid;
+  gap:12px;
+  margin-top:20px;
+}
+
+.anuncio-form label{
+  font-weight:800;
+  margin-top:5px;
+}
+
+.anuncio-form input,
+.anuncio-form select,
+.anuncio-form textarea{
+  width:100%;
+  padding:13px;
+  border:1px solid #ccc;
+  border-radius:8px;
+  font:inherit;
+}
+
+.anuncio-form textarea{
+  min-height:140px;
+  resize:vertical;
+}
+
+.anuncio-form button{
+  margin-top:10px;
+}
+
+#resultadoAnuncio{
+  margin-top:15px;
+  padding:14px;
+  border-radius:8px;
+  display:none;
+}
+
+.sucesso{
+  background:#e8f7ed;
+  color:#176b36;
+}
+
+.erro{
+  background:#fdeaea;
+  color:#a11;
+}
+
+</style>
 
 </head>
 
@@ -49,13 +102,153 @@
     <h2>📣 Publicidade</h2>
 
     <p>
-      O AfricanMundo oferece oportunidades de divulgação
-      para empresas, marcas e organizações que desejam
-      alcançar novos públicos através da nossa plataforma.
+      Envie o seu pedido através do formulário abaixo.
+      A nossa equipa analisará a proposta e entrará em
+      contacto consigo para informar os valores,
+      formatos e condições de publicidade.
     </p>
 
 
-    <h2>🤝 Parcerias</h2>
+    <h2>📝 Solicitar publicidade</h2>
+
+
+    <form
+      id="anuncioForm"
+      class="anuncio-form"
+    >
+
+      <label for="nome">
+        👤 Nome
+      </label>
+
+      <input
+        id="nome"
+        type="text"
+        placeholder="Seu nome"
+        required
+      >
+
+
+      <label for="empresa">
+        🏢 Empresa ou marca
+      </label>
+
+      <input
+        id="empresa"
+        type="text"
+        placeholder="Nome da empresa ou marca"
+      >
+
+
+      <label for="email">
+        📧 E-mail
+      </label>
+
+      <input
+        id="email"
+        type="email"
+        placeholder="seuemail@exemplo.com"
+        required
+      >
+
+
+      <label for="telefone">
+        📞 Telefone / WhatsApp
+      </label>
+
+      <input
+        id="telefone"
+        type="tel"
+        placeholder="+258 ..."
+        required
+      >
+
+
+      <label for="tipo">
+        📢 Tipo de publicidade
+      </label>
+
+      <select
+        id="tipo"
+        required
+      >
+
+        <option value="">
+          Selecione uma opção
+        </option>
+
+        <option value="Banner">
+          🖼️ Banner no site
+        </option>
+
+        <option value="Publicidade">
+          📢 Publicidade
+        </option>
+
+        <option value="Evento">
+          📅 Divulgação de evento
+        </option>
+
+        <option value="Parceria">
+          🤝 Parceria
+        </option>
+
+        <option value="Outro">
+          📌 Outro
+        </option>
+
+      </select>
+
+
+      <label for="data_inicio">
+        📅 Data pretendida para início
+      </label>
+
+      <input
+        id="data_inicio"
+        type="date"
+        required
+      >
+
+
+      <label for="data_fim">
+        📅 Data pretendida para terminar
+      </label>
+
+      <input
+        id="data_fim"
+        type="date"
+        required
+      >
+
+
+      <label for="mensagem">
+        📝 Mensagem
+      </label>
+
+      <textarea
+        id="mensagem"
+        placeholder="Explique o que pretende anunciar..."
+        required
+      ></textarea>
+
+
+      <button
+        type="submit"
+        class="btn"
+      >
+        📤 Enviar pedido de publicidade
+      </button>
+
+    </form>
+
+
+    <div id="resultadoAnuncio"></div>
+
+
+    <h2 style="margin-top:30px;">
+      🤝 Parcerias
+    </h2>
 
     <p>
       Também estamos abertos a propostas de parceria,
@@ -64,37 +257,14 @@
     </p>
 
 
-    <h2>📩 Entre em contacto</h2>
-
-    <p>
-      Para solicitar informações sobre publicidade,
-      valores, formatos de anúncio ou propostas de
-      parceria, entre em contacto connosco.
-    </p>
-
-
-    <p style="margin-top:20px;">
-
-      <a
-        href="mailto:pauloluisantoniom@gmail.com"
-        class="btn"
-        style="
-          display:inline-block;
-          text-decoration:none;
-        "
-      >
-        📩 Contactar o AfricanMundo
-      </a>
-
-    </p>
-
-
     <p style="margin-top:25px;">
 
       <strong>
         🌍 AfricanMundo
       </strong>
+
       <br>
+
       A informação que liga África ao mundo.
 
     </p>
@@ -134,12 +304,6 @@
 
       ·
 
-      <a href="privacidade.html">
-        Privacidade
-      </a>
-
-      ·
-
       <a href="termos.html">
         Termos
       </a>
@@ -155,5 +319,187 @@
 </footer>
 
 
+<script>
+
+const SUPABASE_URL =
+"https://sonzwfhepjfvzltuxxne.supabase.co";
+
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+
+
+const db =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+
+const formulario =
+document.getElementById("anuncioForm");
+
+const resultado =
+document.getElementById("resultadoAnuncio");
+
+
+formulario.addEventListener(
+  "submit",
+  async function(e){
+
+    e.preventDefault();
+
+
+    const nome =
+      document.getElementById("nome").value.trim();
+
+    const empresa =
+      document.getElementById("empresa").value.trim();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const telefone =
+      document.getElementById("telefone").value.trim();
+
+    const tipo =
+      document.getElementById("tipo").value;
+
+    const data_inicio =
+      document.getElementById("data_inicio").value;
+
+    const data_fim =
+      document.getElementById("data_fim").value;
+
+    const mensagem =
+      document.getElementById("mensagem").value.trim();
+
+
+    if(!nome || !email || !telefone ||
+       !tipo || !data_inicio ||
+       !data_fim || !mensagem){
+
+      mostrarResultado(
+        "❌ Preencha todos os campos obrigatórios.",
+        "erro"
+      );
+
+      return;
+    }
+
+
+    if(data_fim < data_inicio){
+
+      mostrarResultado(
+        "❌ A data final não pode ser anterior à data inicial.",
+        "erro"
+      );
+
+      return;
+    }
+
+
+    const botao =
+      formulario.querySelector("button");
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "⏳ A enviar pedido...";
+
+
+    try{
+
+      const { error } =
+        await db
+          .from("anuncios")
+          .insert({
+
+            nome: nome,
+
+            empresa: empresa,
+
+            email: email,
+
+            telefone: telefone,
+
+            tipo: tipo,
+
+            mensagem: mensagem,
+
+            data_inicio: data_inicio,
+
+            data_fim: data_fim,
+
+            ativo: false
+
+          });
+
+
+      if(error){
+
+        console.error(
+          "Erro Supabase:",
+          error
+        );
+
+        throw error;
+      }
+
+
+      formulario.reset();
+
+
+      mostrarResultado(
+        "✅ Pedido enviado com sucesso! O AfricanMundo irá analisar a sua proposta e entrar em contacto consigo.",
+        "sucesso"
+      );
+
+
+    }catch(error){
+
+      console.error(error);
+
+      mostrarResultado(
+        "❌ Não foi possível enviar o pedido. Tente novamente.",
+        "erro"
+      );
+
+    }finally{
+
+      botao.disabled = false;
+
+      botao.textContent =
+        "📤 Enviar pedido de publicidade";
+
+    }
+
+  }
+);
+
+
+function mostrarResultado(
+  mensagem,
+  tipo
+){
+
+  resultado.textContent =
+    mensagem;
+
+  resultado.className =
+    tipo;
+
+  resultado.style.display =
+    "block";
+
+  resultado.scrollIntoView({
+    behavior:"smooth",
+    block:"center"
+  });
+
+}
+
+</script>
+
+
 </body>
-</html>
+  </html>
