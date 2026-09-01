@@ -1449,3 +1449,208 @@ supabaseClient
 
     }
   );
+
+/* =========================================
+   PEDIDOS DE PUBLICIDADE
+========================================= */
+
+async function carregarPedidosAnuncios() {
+
+  const area =
+    document.getElementById("pedidosAnuncios");
+
+  if (!area) return;
+
+  area.innerHTML =
+    "<p>🔄 A carregar pedidos...</p>";
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("anuncios")
+        .select("*")
+        .order("id", {
+          ascending: false
+        });
+
+    if (error) {
+
+      console.error(
+        "Erro ao carregar anúncios:",
+        error
+      );
+
+      area.innerHTML = `
+        <div style="
+          padding:15px;
+          border-radius:10px;
+          background:#fff3f3;
+          border:1px solid #e57373;
+        ">
+          ❌ Não foi possível carregar os pedidos.
+          <br><br>
+          <small>${esc(error.message)}</small>
+        </div>
+      `;
+
+      return;
+    }
+
+    if (!data || data.length === 0) {
+
+      area.innerHTML = `
+        <div style="
+          padding:15px;
+          border-radius:10px;
+          background:var(--card);
+          border:1px solid var(--border);
+        ">
+          📭 Ainda não existem pedidos de publicidade.
+        </div>
+      `;
+
+      return;
+    }
+
+    area.innerHTML = data.map(function(p) {
+
+      return `
+        <div style="
+          margin-bottom:16px;
+          padding:16px;
+          border:1px solid var(--border);
+          border-radius:12px;
+          background:var(--card);
+        ">
+
+          <h3 style="margin-top:0;">
+            📢 ${esc(
+              p.empresa ||
+              p.nome ||
+              "Pedido de publicidade"
+            )}
+          </h3>
+
+          <p>
+            👤 <strong>Nome:</strong>
+            ${esc(p.nome || "Não informado")}
+          </p>
+
+          <p>
+            📧 <strong>Email:</strong>
+            ${esc(p.email || "Não informado")}
+          </p>
+
+          <p>
+            📞 <strong>Telefone:</strong>
+            ${esc(p.telefone || "Não informado")}
+          </p>
+
+          <p>
+            📝 <strong>Mensagem:</strong><br>
+            ${esc(p.mensagem || "Sem mensagem")}
+          </p>
+
+          <p>
+            📌 <strong>Estado:</strong>
+            ${
+              p.ativo
+              ? "🟢 Ativo"
+              : "🔴 Inativo"
+            }
+          </p>
+
+          <button
+            onclick="marcarAnuncio(${Number(p.id)}, ${!p.ativo})"
+            style="
+              padding:9px 14px;
+              border:0;
+              border-radius:8px;
+              background:#168a45;
+              color:#fff;
+              font-weight:700;
+              cursor:pointer;
+            "
+          >
+            ${
+              p.ativo
+              ? "🔴 Desativar"
+              : "🟢 Ativar"
+            }
+          </button>
+
+        </div>
+      `;
+
+    }).join("");
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+    area.innerHTML = `
+      <div style="
+        padding:15px;
+        border-radius:10px;
+        background:#fff3f3;
+        border:1px solid #e57373;
+      ">
+        ❌ Erro ao carregar pedidos.
+        <br><br>
+        <small>${esc(erro.message)}</small>
+      </div>
+    `;
+
+  }
+
+}
+
+
+/* =========================================
+   ATIVAR / DESATIVAR ANÚNCIO
+========================================= */
+
+async function marcarAnuncio(id, novoEstado) {
+
+  const { error } =
+    await supabaseClient
+      .from("anuncios")
+      .update({
+        ativo: novoEstado
+      })
+      .eq("id", id);
+
+  if (error) {
+
+    console.error(
+      "Erro ao alterar anúncio:",
+      error
+    );
+
+    alert(
+      "❌ Não foi possível alterar o anúncio.\n\n" +
+      error.message
+    );
+
+    return;
+  }
+
+  await render();
+await carregarPedidosAnuncios();
+
+  alert(
+    novoEstado
+      ? "✅ Anúncio ativado."
+      : "🔴 Anúncio desativado."
+  );
+
+               }
