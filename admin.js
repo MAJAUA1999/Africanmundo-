@@ -1459,48 +1459,121 @@ async function carregarPedidosAnuncios() {
   const area =
     document.getElementById("pedidosAnuncios");
 
-  if (!area) return;
+  if (!area) {
+    console.log("Área pedidosAnuncios não encontrada.");
+    return;
+  }
 
   area.innerHTML =
-    "<p>🔄 A carregar pedidos...</p>";
+    "<p>⏳ A carregar pedidos...</p>";
 
   try {
 
+    /* ================================
+       VERIFICAR SESSÃO
+    ================================= */
+
     const {
-  data,
-  error
-} = await supabaseClient
-  .from("anuncios")
-  .select("*");
+      data: sessao,
+      error: erroSessao
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
 
-console.log("ANUNCIOS:", data);
-console.log("ERRO:", error);
+    if (erroSessao) {
+      throw erroSessao;
+    }
 
-if (error) {
-  throw error;
-}
+    if (
+      !sessao ||
+      !sessao.session ||
+      !sessao.session.user
+    ) {
+
+      area.innerHTML = `
+        <div style="
+          padding:15px;
+          border-radius:10px;
+          background:#fff3f3;
+          border:1px solid #e57373;
+        ">
+          🔐 Sessão de administrador não encontrada.
+        </div>
+      `;
+
+      return;
+    }
+
+
+    /* ================================
+       BUSCAR ANÚNCIOS
+    ================================= */
+
+    const consulta =
+      supabaseClient
+        .from("anuncios")
+        .select("*")
+        .order("id", {
+          ascending:false
+        })
+        .limit(50);
+
+
+    const limite =
+      new Promise(function(_, reject) {
+
+        setTimeout(function() {
+
+          reject(
+            new Error(
+              "O Supabase demorou demasiado tempo para responder."
+            )
+          );
+
+        }, 10000);
+
+      });
+
+
+    const resultado =
+      await Promise.race([
+        consulta,
+        limite
+      ]);
+
+
+    const data =
+      resultado.data;
+
+    const error =
+      resultado.error;
 
 
     console.log(
-      "PEDIDOS DE ANÚNCIOS:",
+      "PEDIDOS:",
       data
     );
 
-
     console.log(
-      "ERRO DOS ANÚNCIOS:",
+      "ERRO:",
       error
     );
 
 
     if (error) {
-
       throw error;
-
     }
 
 
-    if (!data || data.length === 0) {
+    /* ================================
+       SEM PEDIDOS
+    ================================= */
+
+    if (
+      !data ||
+      data.length === 0
+    ) {
 
       area.innerHTML = `
         <div style="
@@ -1514,17 +1587,16 @@ if (error) {
       `;
 
       return;
-
     }
 
+
+    /* ================================
+       MOSTRAR PEDIDOS
+    ================================= */
 
     area.innerHTML =
       data.map(function(p) {
 
-
-        /* =====================================
-           CONVERTER ATIVO PARA BOOLEANO
-        ===================================== */
 
         const ativo =
           p.ativo === true ||
@@ -1546,146 +1618,76 @@ if (error) {
 
             <h3 style="
               margin-top:0;
-              margin-bottom:15px;
             ">
-
               📢 ${esc(
                 p.empresa ||
-                p.nome ||
-                "Pedido de publicidade"
+                "Publicidade"
               )}
-
             </h3>
 
 
             <p>
-
               👤 <strong>Nome:</strong><br>
-
               ${esc(
                 p.nome ||
                 "Não informado"
               )}
-
             </p>
 
 
             <p>
-
               📧 <strong>Email:</strong><br>
-
               ${esc(
                 p.email ||
                 "Não informado"
               )}
-
             </p>
 
 
             <p>
-
               📞 <strong>Telefone:</strong><br>
-
               ${esc(
                 p.telefone ||
                 "Não informado"
               )}
-
             </p>
 
 
             <p>
-
               📝 <strong>Mensagem:</strong><br>
-
               ${esc(
                 p.mensagem ||
                 "Sem mensagem"
               )}
-
             </p>
 
 
-            ${
-              p.link
-              ? `
-                <p>
-
-                  🔗 <strong>Link:</strong><br>
-
-                  <a
-                    href="${esc(p.link)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    ${esc(p.link)}
-                  </a>
-
-                </p>
-              `
-              : ""
-            }
-
-
-            ${
-              p.imagem
-              ? `
-                <p>
-
-                  🖼️ <strong>Imagem:</strong><br>
-
-                  <img
-                    src="${esc(p.imagem)}"
-                    alt="Imagem do anúncio"
-                    style="
-                      width:100%;
-                      max-width:400px;
-                      border-radius:10px;
-                      margin-top:8px;
-                    "
-                  >
-
-                </p>
-              `
-              : ""
-            }
-
-
-            <!-- ESTADO -->
-
-            <p style="
-              margin-top:18px;
-            ">
-
+            <p>
               📌 <strong>Estado:</strong>
 
-              <span style="
-                font-weight:700;
-                margin-left:5px;
-              ">
-
-                ${
-                  ativo
-                  ? "🟢 Ativo"
-                  : "🔴 Inativo"
-                }
-
-              </span>
+              ${
+                ativo
+                ? "🟢 Ativo"
+                : "🔴 Inativo"
+              }
 
             </p>
 
-
-            <!-- BOTÃO -->
 
             <button
               type="button"
-              onclick="marcarAnuncio(${Number(p.id)}, ${!ativo})"
+              onclick="
+                marcarAnuncio(
+                  ${Number(p.id)},
+                  ${!ativo}
+                )
+              "
               style="
                 padding:10px 16px;
                 border:0;
                 border-radius:8px;
                 background:#168a45;
-                color:#fff;
+                color:white;
                 font-weight:700;
                 cursor:pointer;
               "
@@ -1712,13 +1714,12 @@ if (error) {
   catch (erro) {
 
     console.error(
-      "Erro ao carregar pedidos:",
+      "ERRO FINAL DOS ANÚNCIOS:",
       erro
     );
 
 
     area.innerHTML = `
-
       <div style="
         padding:15px;
         border-radius:10px;
@@ -1726,9 +1727,7 @@ if (error) {
         border:1px solid #e57373;
       ">
 
-        <strong>
-          ❌ Erro ao carregar pedidos.
-        </strong>
+        ❌ <strong>Erro ao carregar pedidos.</strong>
 
         <br><br>
 
@@ -1740,7 +1739,6 @@ if (error) {
         </small>
 
       </div>
-
     `;
 
   }
@@ -1760,21 +1758,6 @@ async function marcarAnuncio(
   id = Number(id);
 
 
-  if (!Number.isFinite(id)) {
-
-    alert(
-      "❌ ID do anúncio inválido."
-    );
-
-    return;
-
-  }
-
-
-  /* =====================================
-     GARANTIR BOOLEANO
-  ===================================== */
-
   novoEstado =
     novoEstado === true ||
     novoEstado === "true" ||
@@ -1784,29 +1767,32 @@ async function marcarAnuncio(
 
   try {
 
-
     const {
-      data: sessaoData
+      data: sessao,
+      error: erroSessao
     } =
       await supabaseClient
         .auth
         .getSession();
 
 
+    if (erroSessao) {
+      throw erroSessao;
+    }
+
+
     if (
-      !sessaoData ||
-      !sessaoData.session ||
-      !sessaoData.session.user
+      !sessao ||
+      !sessao.session
     ) {
 
       alert(
-        "🔐 A sua sessão terminou. Entre novamente."
+        "🔐 A sessão terminou. Entre novamente."
       );
 
       location.reload();
 
       return;
-
     }
 
 
@@ -1822,42 +1808,18 @@ async function marcarAnuncio(
 
 
     if (error) {
-
-      console.error(
-        "Erro ao alterar anúncio:",
-        error
-      );
-
-      alert(
-        "❌ Não foi possível alterar o anúncio.\n\n" +
-        error.message
-      );
-
-      return;
-
+      throw error;
     }
 
-
-    /* =====================================
-       RECARREGAR PEDIDOS
-    ===================================== */
 
     await carregarPedidosAnuncios();
 
 
-    if (novoEstado) {
-
-      alert(
-        "✅ Anúncio ativado."
-      );
-
-    } else {
-
-      alert(
-        "🔴 Anúncio desativado."
-      );
-
-    }
+    alert(
+      novoEstado
+      ? "✅ Anúncio ativado."
+      : "🔴 Anúncio desativado."
+    );
 
 
   }
@@ -1871,7 +1833,7 @@ async function marcarAnuncio(
 
 
     alert(
-      "❌ Ocorreu um erro.\n\n" +
+      "❌ Não foi possível alterar o anúncio.\n\n" +
       (
         erro.message ||
         "Erro desconhecido."
@@ -1880,13 +1842,4 @@ async function marcarAnuncio(
 
   }
 
-}
-
-document.addEventListener(
-  "DOMContentLoaded",
-  function() {
-
-    verificarSessao();
-
-  }
-);
+             }
