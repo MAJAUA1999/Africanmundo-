@@ -1654,3 +1654,13 @@ await carregarPedidosAnuncios();
   );
 
                }
+
+document.addEventListener("DOMContentLoaded", function() {
+
+  verificarSessao();
+
+  setTimeout(function() {
+    carregarPedidosAnuncios();
+  }, 500);
+
+});
