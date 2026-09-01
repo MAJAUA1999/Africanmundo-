@@ -172,10 +172,20 @@ async function show() {
   }
 
 
+  /* =====================================
+     CARREGAR NOTÍCIAS
+  ===================================== */
+
   await render();
 
-}
 
+  /* =====================================
+     CARREGAR PEDIDOS DE PUBLICIDADE
+  ===================================== */
+
+  await carregarPedidosAnuncios();
+
+}
 
 /* =========================================
    VERIFICAR SESSÃO
