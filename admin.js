@@ -1555,14 +1555,26 @@ console.log("ERRO DOS ANÚNCIOS:", error);
             ${esc(p.mensagem || "Sem mensagem")}
           </p>
 
-          <p>
-            📌 <strong>Estado:</strong>
-            ${
-              p.ativo
-              ? "🟢 Ativo"
-              : "🔴 Inativo"
-            }
-          </p>
+         <p>
+  📌 <strong>Estado:</strong>
+
+  <button
+    onclick="marcarAnuncio(${Number(p.id)}, ${!p.ativo})"
+    style="
+      border:0;
+      background:none;
+      padding:0;
+      cursor:pointer;
+      font-weight:700;
+    "
+  >
+    ${
+      p.ativo
+      ? "🟢 Ativo"
+      : "🔴 Inativo"
+    }
+  </button>
+</p>
 
           <button
             onclick="marcarAnuncio(${Number(p.id)}, ${!p.ativo})"
