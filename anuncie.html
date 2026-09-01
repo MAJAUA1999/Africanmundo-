@@ -460,9 +460,9 @@ formulario.addEventListener(
       console.error(error);
 
       mostrarResultado(
-        "❌ Não foi possível enviar o pedido. Tente novamente.",
-        "erro"
-      );
+  "❌ Erro: " + (error.message || "Erro desconhecido"),
+  "erro"
+);
 
     }finally{
 
