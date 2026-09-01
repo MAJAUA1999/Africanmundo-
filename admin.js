@@ -1656,15 +1656,26 @@ async function carregarPedidosAnuncios() {
 
 
             <p>
-              📌 <strong>Estado:</strong>
+  📌 <strong>Estado:</strong>
 
-              ${
-                ativo
-                ? "🟢 Ativo"
-                : "🔴 Inativo"
-              }
+  <button
+    type="button"
+    onclick="marcarAnuncio(${Number(p.id)}, ${!ativo})"
+    style="
+      margin-left:6px;
+      padding:8px 14px;
+      border:0;
+      border-radius:8px;
+      background:${ativo ? "#168a45" : "#c62828"};
+      color:#fff;
+      font-weight:700;
+      cursor:pointer;
+    "
+  >
+    ${ativo ? "🟢 Ativo" : "🔴 Inativo"}
+  </button>
 
-            </p>
+</p>
 
 
             <button
