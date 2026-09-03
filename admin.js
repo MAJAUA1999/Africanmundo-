@@ -1922,8 +1922,8 @@ async function carregarPedidosAnuncios() {
             <p>
               📅 <strong>Início:</strong><br>
               ${esc(
-                p["data-inicio"] ||
-                "Não definido"
+               p.data_inicio ||
+"Não definido"
               )}
             </p>
 
@@ -1931,8 +1931,8 @@ async function carregarPedidosAnuncios() {
             <p>
               📅 <strong>Fim:</strong><br>
               ${esc(
-                p["data-fim"] ||
-                "Não definido"
+                p.data_fim ||
+"Não definido"
               )}
             </p>
 
