@@ -1687,8 +1687,11 @@ async function carregarPedidosAnuncios() {
        BUSCAR ANÚNCIOS
     ================================= */
 
-    const consulta =
-      supabaseClient
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
         .from("anuncios")
         .select("*")
         .order("id", {
@@ -1697,50 +1700,15 @@ async function carregarPedidosAnuncios() {
         .limit(50);
 
 
-    const limite =
-      new Promise(function(_, reject) {
-
-        setTimeout(function() {
-
-          reject(
-            new Error(
-              "O Supabase demorou demasiado tempo para responder."
-            )
-          );
-
-        }, 10000);
-
-      });
-
-
-    const resultado =
-      await Promise.race([
-        consulta,
-        limite
-      ]);
-
-
-    const data =
-      resultado.data;
-
-    const error =
-      resultado.error;
-
-
-    console.log(
-      "PEDIDOS:",
-      data
-    );
-
-    console.log(
-      "ERRO:",
-      error
-    );
-
-
     if (error) {
       throw error;
     }
+
+
+    console.log(
+      "📢 PEDIDOS DE ANÚNCIOS:",
+      data
+    );
 
 
     /* ================================
@@ -1774,7 +1742,6 @@ async function carregarPedidosAnuncios() {
     area.innerHTML =
       data.map(function(p) {
 
-
         const ativo =
           p.ativo === true ||
           p.ativo === "true" ||
@@ -1782,19 +1749,34 @@ async function carregarPedidosAnuncios() {
           p.ativo === "1";
 
 
+        const imagem =
+          p.imagem || "";
+
+
+        const video =
+          p.video ||
+          p["vídeo"] ||
+          "";
+
+
+        const link =
+          p.link || "";
+
+
         return `
 
           <div style="
-            margin-bottom:18px;
+            margin-bottom:20px;
             padding:18px;
             border:1px solid var(--border);
-            border-radius:12px;
+            border-radius:14px;
             background:var(--card);
           ">
 
 
             <h3 style="
               margin-top:0;
+              margin-bottom:15px;
             ">
               📢 ${esc(
                 p.empresa ||
@@ -1831,6 +1813,15 @@ async function carregarPedidosAnuncios() {
 
 
             <p>
+              🏷️ <strong>Tipo:</strong><br>
+              ${esc(
+                p.tipo ||
+                "Não informado"
+              )}
+            </p>
+
+
+            <p>
               📝 <strong>Mensagem:</strong><br>
               ${esc(
                 p.mensagem ||
@@ -1839,55 +1830,197 @@ async function carregarPedidosAnuncios() {
             </p>
 
 
+            ${
+              imagem
+              ? `
+                <div style="
+                  margin:15px 0;
+                ">
+
+                  <strong>
+                    🖼️ Imagem:
+                  </strong>
+
+                  <br><br>
+
+                  <img
+                    src="${esc(imagem)}"
+                    alt="Imagem do anúncio"
+                    style="
+                      width:100%;
+                      max-width:500px;
+                      max-height:280px;
+                      object-fit:cover;
+                      border-radius:10px;
+                      display:block;
+                    "
+                  >
+
+                </div>
+              `
+              : ""
+            }
+
+
+            ${
+              video
+              ? `
+                <div style="
+                  margin:15px 0;
+                ">
+
+                  <strong>
+                    🎬 Vídeo:
+                  </strong>
+
+                  <br><br>
+
+                  <video
+                    controls
+                    playsinline
+                    style="
+                      width:100%;
+                      max-width:500px;
+                      border-radius:10px;
+                      display:block;
+                    "
+                  >
+                    <source
+                      src="${esc(video)}"
+                    >
+                    O seu navegador não suporta vídeo.
+                  </video>
+
+                </div>
+              `
+              : ""
+            }
+
+
+            ${
+              link
+              ? `
+                <p>
+                  🔗 <strong>Link:</strong><br>
+
+                  <a
+                    href="${esc(link)}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="
+                      word-break:break-all;
+                    "
+                  >
+                    ${esc(link)}
+                  </a>
+                </p>
+              `
+              : ""
+            }
+
+
             <p>
-  📌 <strong>Estado:</strong>
-
-  <button
-    type="button"
-    onclick="marcarAnuncio(${Number(p.id)}, ${!ativo})"
-    style="
-      margin-left:6px;
-      padding:8px 14px;
-      border:0;
-      border-radius:8px;
-      background:${ativo ? "#168a45" : "#c62828"};
-      color:#fff;
-      font-weight:700;
-      cursor:pointer;
-    "
-  >
-    ${ativo ? "🟢 Ativo" : "🔴 Inativo"}
-  </button>
-
-</p>
+              📅 <strong>Início:</strong><br>
+              ${esc(
+                p["data-inicio"] ||
+                "Não definido"
+              )}
+            </p>
 
 
-            <button
-              type="button"
-              onclick="
-                marcarAnuncio(
-                  ${Number(p.id)},
-                  ${!ativo}
-                )
-              "
-              style="
-                padding:10px 16px;
-                border:0;
-                border-radius:8px;
-                background:#168a45;
-                color:white;
+            <p>
+              📅 <strong>Fim:</strong><br>
+              ${esc(
+                p["data-fim"] ||
+                "Não definido"
+              )}
+            </p>
+
+
+            <p>
+              📌 <strong>Estado:</strong>
+
+              <span style="
+                display:inline-block;
+                margin-left:6px;
+                padding:5px 10px;
+                border-radius:20px;
+                background:${ativo
+                  ? "#d9f7e5"
+                  : "#fde0e0"};
+                color:${ativo
+                  ? "#168a45"
+                  : "#c62828"};
                 font-weight:700;
-                cursor:pointer;
-              "
-            >
+              ">
+                ${
+                  ativo
+                  ? "🟢 Ativo"
+                  : "🔴 Inativo"
+                }
+              </span>
 
-              ${
-                ativo
-                ? "🔴 Desativar"
-                : "🟢 Ativar"
-              }
+            </p>
 
-            </button>
+
+            <div style="
+              margin-top:15px;
+              display:flex;
+              gap:8px;
+              flex-wrap:wrap;
+            ">
+
+
+              <button
+                type="button"
+                onclick="
+                  marcarAnuncio(
+                    ${Number(p.id)},
+                    ${!ativo}
+                  )
+                "
+                style="
+                  padding:10px 16px;
+                  border:0;
+                  border-radius:8px;
+                  background:${ativo
+                    ? "#c62828"
+                    : "#168a45"};
+                  color:white;
+                  font-weight:700;
+                  cursor:pointer;
+                "
+              >
+                ${
+                  ativo
+                  ? "🔴 Desativar"
+                  : "🟢 Ativar"
+                }
+              </button>
+
+
+              <button
+                type="button"
+                onclick="
+                  excluirAnuncio(
+                    ${Number(p.id)}
+                  )
+                "
+                style="
+                  padding:10px 16px;
+                  border:0;
+                  border-radius:8px;
+                  background:#d32f2f;
+                  color:white;
+                  font-weight:700;
+                  cursor:pointer;
+                "
+              >
+                🗑️ Excluir
+              </button>
+
+
+            </div>
 
 
           </div>
@@ -1902,7 +2035,7 @@ async function carregarPedidosAnuncios() {
   catch (erro) {
 
     console.error(
-      "ERRO FINAL DOS ANÚNCIOS:",
+      "❌ ERRO FINAL DOS ANÚNCIOS:",
       erro
     );
 
@@ -1915,7 +2048,9 @@ async function carregarPedidosAnuncios() {
         border:1px solid #e57373;
       ">
 
-        ❌ <strong>Erro ao carregar pedidos.</strong>
+        ❌ <strong>
+          Erro ao carregar pedidos.
+        </strong>
 
         <br><br>
 
@@ -1932,7 +2067,6 @@ async function carregarPedidosAnuncios() {
   }
 
 }
-
 
 /* =========================================
    ATIVAR / DESATIVAR ANÚNCIO
