@@ -1239,7 +1239,7 @@ function carregarCor(){
 }
 
 /* =========================================
-   CARREGAR ANÚNCIOS ATIVOS
+   📢 CARREGAR ANÚNCIOS ATIVOS
 ========================================= */
 
 async function carregarAnunciosAtivos() {
@@ -1275,7 +1275,7 @@ async function carregarAnunciosAtivos() {
       throw error;
     }
 
-    if (!data || data.length === 0) {
+    if (!data || !data.length) {
 
       secao.style.display = "none";
 
@@ -1286,71 +1286,149 @@ async function carregarAnunciosAtivos() {
 
     area.innerHTML = data.map(function(anuncio) {
 
+      const empresa =
+        esc(
+          anuncio.empresa ||
+          "Publicidade"
+        );
+
+      const mensagem =
+        esc(
+          anuncio.mensagem || ""
+        );
+
+      const imagem =
+        anuncio.imagem
+          ? esc(anuncio.imagem)
+          : "";
+
+      const link =
+        anuncio.link
+          ? esc(anuncio.link)
+          : "";
+
       return `
-        <div style="
-          padding:18px;
-          margin-bottom:15px;
+
+        <article style="
+          position:relative;
+          overflow:hidden;
+          margin-bottom:18px;
           border:1px solid var(--border);
-          border-radius:12px;
+          border-radius:18px;
           background:var(--card);
+          box-shadow:0 6px 20px rgba(0,0,0,.08);
         ">
 
-          <h3 style="margin-top:0;">
-            📢 ${esc(anuncio.empresa || "Publicidade")}
-          </h3>
+          <div style="
+            padding:10px 14px;
+            font-size:12px;
+            font-weight:700;
+            color:var(--muted);
+            text-transform:uppercase;
+            letter-spacing:.5px;
+          ">
+            📢 Publicidade
+          </div>
 
           ${
-            anuncio.imagem
+            imagem
             ? `
-              <img
-                src="${esc(anuncio.imagem)}"
-                alt="${esc(anuncio.empresa || "Publicidade")}"
-                style="
-                  width:100%;
-                  max-height:260px;
-                  object-fit:cover;
-                  border-radius:10px;
-                  margin-bottom:12px;
-                "
-              >
+
+              ${
+                link
+                ? `
+                  <a
+                    href="${link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style="
+                      display:block;
+                    "
+                  >
+                    <img
+                      src="${imagem}"
+                      alt="${empresa}"
+                      loading="lazy"
+                      style="
+                        display:block;
+                        width:100%;
+                        max-height:300px;
+                        object-fit:cover;
+                      "
+                    >
+                  </a>
+                `
+                : `
+                  <img
+                    src="${imagem}"
+                    alt="${empresa}"
+                    loading="lazy"
+                    style="
+                      display:block;
+                      width:100%;
+                      max-height:300px;
+                      object-fit:cover;
+                    "
+                  >
+                `
+              }
+
             `
             : ""
           }
 
-          ${
-            anuncio.mensagem
-            ? `
-              <p>
-                ${esc(anuncio.mensagem)}
-              </p>
-            `
-            : ""
-          }
+          <div style="
+            padding:16px;
+          ">
 
-          ${
-            anuncio.link
-            ? `
-              <a
-                href="${esc(anuncio.link)}"
-                target="_blank"
-                rel="noopener"
-                style="
-                  display:inline-block;
-                  padding:10px 16px;
-                  border-radius:8px;
-                  background:#168a45;
-                  color:#fff;
-                  text-decoration:none;
-                  font-weight:700;
-                "
-              >
-                Ver anúncio
-              </a>
-            `
-            : ""
-          }
+            <h3 style="
+              margin:0 0 8px;
+              font-size:20px;
+            ">
+              ${empresa}
+            </h3>
 
-        </div>
+            ${
+              mensagem
+              ? `
+                <p style="
+                  margin:0 0 14px;
+                  line-height:1.6;
+                  color:var(--txt);
+                ">
+                  ${mensagem}
+                </p>
+              `
+              : ""
+            }
+
+            ${
+              link
+              ? `
+                <a
+                  href="${link}"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style="
+                    display:inline-block;
+                    padding:11px 18px;
+                    border-radius:10px;
+                    background:var(--primary,#168a45);
+                    color:#fff;
+                    text-decoration:none;
+                    font-weight:700;
+                  "
+                >
+                  Ver anúncio →
+                </a>
+              `
+              : ""
+            }
+
+          </div>
+
+        </article>
+
       `;
 
     }).join("");
@@ -1358,7 +1436,7 @@ async function carregarAnunciosAtivos() {
   } catch (erro) {
 
     console.error(
-      "Erro ao carregar anúncios:",
+      "❌ Erro ao carregar anúncios:",
       erro
     );
 
