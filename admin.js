@@ -2165,3 +2165,121 @@ async function marcarAnuncio(
   }
 
              }
+
+/* =========================================
+   EXCLUIR ANÚNCIO
+========================================= */
+
+async function excluirAnuncio(id) {
+
+  id = Number(id);
+
+  if (!Number.isFinite(id)) {
+
+    alert(
+      "❌ ID do anúncio inválido."
+    );
+
+    return;
+  }
+
+
+  const confirmar =
+    confirm(
+      "⚠️ Tem certeza que deseja excluir este anúncio?\n\n" +
+      "Esta ação não poderá ser desfeita."
+    );
+
+
+  if (!confirmar) {
+    return;
+  }
+
+
+  try {
+
+    /* ================================
+       VERIFICAR SESSÃO
+    ================================= */
+
+    const {
+      data: sessao,
+      error: erroSessao
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+
+    if (erroSessao) {
+      throw erroSessao;
+    }
+
+
+    if (
+      !sessao ||
+      !sessao.session ||
+      !sessao.session.user
+    ) {
+
+      alert(
+        "🔐 A sessão terminou. Entre novamente."
+      );
+
+      location.reload();
+
+      return;
+    }
+
+
+    /* ================================
+       EXCLUIR ANÚNCIO
+    ================================= */
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("anuncios")
+        .delete()
+        .eq("id", id);
+
+
+    if (error) {
+      throw error;
+    }
+
+
+    /* ================================
+       ATUALIZAR LISTA
+    ================================= */
+
+    await carregarPedidosAnuncios();
+
+
+    alert(
+      "✅ Anúncio excluído com sucesso!"
+    );
+
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro ao excluir anúncio:",
+      erro
+    );
+
+
+    alert(
+      "❌ Não foi possível excluir o anúncio.\n\n" +
+      (
+        erro.message ||
+        "Erro desconhecido."
+      )
+    );
+
+  }
+
+}
