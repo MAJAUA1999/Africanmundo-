@@ -1413,9 +1413,11 @@ document.addEventListener("DOMContentLoaded", () => {
     );
   }
 
-  iniciarEventos();
+    iniciarEventos();
 
   carregarNoticias();
+
+  carregarAnunciosAtivos();
 
 });
 
