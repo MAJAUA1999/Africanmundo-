@@ -1384,7 +1384,7 @@ async function carregarAnunciosAtivos() {
                     style="
                       display:block;
                       width:100%;
-                      max-height:180px;
+                      max-height:100px;
                       object-fit:contain;
                       background:#000;
                     "
@@ -1424,7 +1424,7 @@ async function carregarAnunciosAtivos() {
                           style="
                             display:block;
                             width:100%;
-                            max-height:180px;
+                            max-height:100px;
                             object-fit:cover;
                           "
                         >
@@ -1440,7 +1440,7 @@ async function carregarAnunciosAtivos() {
                         style="
                           display:block;
                           width:100%;
-                          max-height:180px;
+                          max-height:100px;
                           object-fit:cover;
                         "
                       >
