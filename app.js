@@ -1281,14 +1281,20 @@ async function carregarAnunciosAtivos() {
       (data || []).filter(function(anuncio) {
 
         const inicio =
-          anuncio["data-inicio"]
-            ? new Date(anuncio["data-inicio"])
-            : null;
+  anuncio.data_inicio
+    ? new Date(
+        anuncio.data_inicio +
+        "T00:00:00"
+      )
+    : null;
 
-        const fim =
-          anuncio["data-fim"]
-            ? new Date(anuncio["data-fim"])
-            : null;
+const fim =
+  anuncio.data_fim
+    ? new Date(
+        anuncio.data_fim +
+        "T23:59:59"
+      )
+    : null;
 
         if (inicio && agora < inicio) {
           return false;
