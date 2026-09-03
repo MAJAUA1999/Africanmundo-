@@ -528,8 +528,10 @@ function mostrarNoticia(n){
       </h1>
 
       <div class="date">
-        📅 ${esc(data(n))}
-      </div>
+  📅 ${esc(data(n))}
+  &nbsp; • &nbsp;
+  👁️ ${Number(n.visualizacoes || 0)} visualizações
+</div>
 
       <div class="text">
         ${esc(texto(n))}
