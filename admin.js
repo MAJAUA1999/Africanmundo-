@@ -1463,6 +1463,11 @@ async function carregarMetricas() {
         0
       );
 
+     const mediaVisualizacoes =
+  totalNoticias > 0
+    ? (totalVisualizacoes / totalNoticias).toFixed(1)
+    : "0";
+     
     const maisLidas =
       noticias.slice(0,5);
 
@@ -1504,26 +1509,45 @@ async function carregarMetricas() {
           border-radius:12px;
           background:var(--card);
         ">
-          <div style="font-size:25px;">
-            👁️
-          </div>
+  <div style="font-size:25px;">
+    👁️
+  </div>
 
-          <strong style="font-size:24px;">
-            ${totalVisualizacoes}
-          </strong>
+  <strong style="font-size:24px;">
+    ${totalVisualizacoes}
+  </strong>
 
-          <div style="color:var(--muted);">
-            Visualizações
-          </div>
-        </div>
+  <div style="color:var(--muted);">
+    Visualizações
+  </div>
+</div>
 
-      </div>
+<div style="
+  padding:18px;
+  border:1px solid var(--border);
+  border-radius:12px;
+  background:var(--card);
+">
+  <div style="font-size:25px;">
+    📈
+  </div>
 
-      <div style="margin-top:20px;">
+  <strong style="font-size:24px;">
+    ${mediaVisualizacoes}
+  </strong>
 
-        <h3>
-          🔥 Notícias mais lidas
-        </h3>
+  <div style="color:var(--muted);">
+    Média por notícia
+  </div>
+</div>
+
+</div>
+
+<div style="margin-top:20px;">
+
+  <h3>
+    🔥 Notícias mais lidas
+  </h3>
 
         ${
           maisLidas.length
