@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="pt-MZ">
+
 <head>
 
 <meta charset="utf-8">
@@ -36,6 +37,7 @@
   border:1px solid #ccc;
   border-radius:8px;
   font:inherit;
+  box-sizing:border-box;
 }
 
 .anuncio-form textarea{
@@ -45,6 +47,12 @@
 
 .anuncio-form button{
   margin-top:10px;
+}
+
+.arquivo-info{
+  font-size:13px;
+  color:#666;
+  line-height:1.5;
 }
 
 #resultadoAnuncio{
@@ -64,11 +72,27 @@
   color:#a11;
 }
 
+.preview{
+  margin-top:5px;
+}
+
+.preview img,
+.preview video{
+  width:100%;
+  max-width:500px;
+  max-height:300px;
+  object-fit:contain;
+  border-radius:10px;
+  display:block;
+}
+
 </style>
 
 </head>
 
+
 <body>
+
 
 <header>
 
@@ -116,6 +140,7 @@
       id="anuncioForm"
       class="anuncio-form"
     >
+
 
       <label for="nome">
         👤 Nome
@@ -181,6 +206,14 @@
           🖼️ Banner no site
         </option>
 
+        <option value="Video">
+          🎬 Vídeo publicitário
+        </option>
+
+        <option value="Banner + Video">
+          🖼️🎬 Banner + Vídeo
+        </option>
+
         <option value="Publicidade">
           📢 Publicidade
         </option>
@@ -220,6 +253,62 @@
         type="date"
         required
       >
+
+
+      <label for="imagem">
+        🖼️ Banner / Imagem
+      </label>
+
+      <input
+        id="imagem"
+        type="file"
+        accept="image/jpeg,image/png,image/webp"
+      >
+
+      <div class="arquivo-info">
+        Formatos aceites: JPG, PNG ou WebP.
+      </div>
+
+      <div
+        id="previewImagem"
+        class="preview"
+      ></div>
+
+
+      <label for="video">
+        🎬 Vídeo publicitário
+      </label>
+
+      <input
+        id="video"
+        type="file"
+        accept="video/mp4,video/webm"
+      >
+
+      <div class="arquivo-info">
+        Formatos aceites: MP4 ou WebM.
+      </div>
+
+      <div
+        id="previewVideo"
+        class="preview"
+      ></div>
+
+
+      <label for="link">
+        🔗 Link de destino
+      </label>
+
+      <input
+        id="link"
+        type="url"
+        placeholder="https://exemplo.com"
+      >
+
+      <div class="arquivo-info">
+        Quando o visitante clicar no anúncio,
+        poderá ser levado para este endereço.
+      </div>
 
 
       <label for="mensagem">
@@ -321,12 +410,15 @@
 
 <script>
 
+/* =========================================
+   SUPABASE
+========================================= */
+
 const SUPABASE_URL =
 "https://sonzwfhepjfvzltuxxne.supabase.co";
 
 const SUPABASE_KEY =
 "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
 
 const db =
 window.supabase.createClient(
@@ -335,12 +427,178 @@ window.supabase.createClient(
 );
 
 
+/* =========================================
+   ELEMENTOS
+========================================= */
+
 const formulario =
 document.getElementById("anuncioForm");
 
 const resultado =
 document.getElementById("resultadoAnuncio");
 
+const imagemInput =
+document.getElementById("imagem");
+
+const videoInput =
+document.getElementById("video");
+
+const previewImagem =
+document.getElementById("previewImagem");
+
+const previewVideo =
+document.getElementById("previewVideo");
+
+
+/* =========================================
+   PRÉ-VISUALIZAR IMAGEM
+========================================= */
+
+imagemInput.addEventListener(
+  "change",
+  function(){
+
+    const arquivo =
+      this.files &&
+      this.files[0];
+
+    previewImagem.innerHTML = "";
+
+    if(!arquivo){
+      return;
+    }
+
+    const url =
+      URL.createObjectURL(arquivo);
+
+    previewImagem.innerHTML = `
+      <img
+        src="${url}"
+        alt="Pré-visualização do banner"
+      >
+    `;
+
+  }
+);
+
+
+/* =========================================
+   PRÉ-VISUALIZAR VÍDEO
+========================================= */
+
+videoInput.addEventListener(
+  "change",
+  function(){
+
+    const arquivo =
+      this.files &&
+      this.files[0];
+
+    previewVideo.innerHTML = "";
+
+    if(!arquivo){
+      return;
+    }
+
+    const url =
+      URL.createObjectURL(arquivo);
+
+    previewVideo.innerHTML = `
+      <video
+        src="${url}"
+        controls
+        muted
+        playsinline
+      ></video>
+    `;
+
+  }
+);
+
+
+/* =========================================
+   ENVIAR ARQUIVO PARA STORAGE
+========================================= */
+
+async function enviarArquivo(
+  arquivo,
+  pasta
+){
+
+  if(!arquivo){
+    return null;
+  }
+
+
+  const extensao =
+    arquivo.name
+      .split(".")
+      .pop()
+      .toLowerCase()
+      .replace(
+        /[^a-z0-9]/g,
+        ""
+      );
+
+
+  const nomeArquivo =
+    Date.now() +
+    "-" +
+    Math.random()
+      .toString(36)
+      .substring(2,10) +
+    "." +
+    extensao;
+
+
+  const caminho =
+    "anuncios/" +
+    pasta +
+    "/" +
+    nomeArquivo;
+
+
+  const resultadoUpload =
+    await db
+      .storage
+      .from("noticias")
+      .upload(
+        caminho,
+        arquivo,
+        {
+          cacheControl:"3600",
+          upsert:false,
+          contentType:arquivo.type
+        }
+      );
+
+
+  if(resultadoUpload.error){
+
+    throw resultadoUpload.error;
+
+  }
+
+
+  const resultadoURL =
+    db
+      .storage
+      .from("noticias")
+      .getPublicUrl(
+        caminho
+      );
+
+
+  return resultadoURL
+    .data
+    .publicUrl;
+
+}
+
+
+/* =========================================
+   ENVIAR PEDIDO
+========================================= */
 
 formulario.addEventListener(
   "submit",
@@ -350,33 +608,88 @@ formulario.addEventListener(
 
 
     const nome =
-      document.getElementById("nome").value.trim();
+      document
+        .getElementById("nome")
+        .value
+        .trim();
+
 
     const empresa =
-      document.getElementById("empresa").value.trim();
+      document
+        .getElementById("empresa")
+        .value
+        .trim();
+
 
     const email =
-      document.getElementById("email").value.trim();
+      document
+        .getElementById("email")
+        .value
+        .trim();
+
 
     const telefone =
-      document.getElementById("telefone").value.trim();
+      document
+        .getElementById("telefone")
+        .value
+        .trim();
+
 
     const tipo =
-      document.getElementById("tipo").value;
+      document
+        .getElementById("tipo")
+        .value;
+
 
     const data_inicio =
-      document.getElementById("data_inicio").value;
+      document
+        .getElementById("data_inicio")
+        .value;
+
 
     const data_fim =
-      document.getElementById("data_fim").value;
+      document
+        .getElementById("data_fim")
+        .value;
+
 
     const mensagem =
-      document.getElementById("mensagem").value.trim();
+      document
+        .getElementById("mensagem")
+        .value
+        .trim();
 
 
-    if(!nome || !email || !telefone ||
-       !tipo || !data_inicio ||
-       !data_fim || !mensagem){
+    const link =
+      document
+        .getElementById("link")
+        .value
+        .trim();
+
+
+    const imagemArquivo =
+      imagemInput.files &&
+      imagemInput.files[0];
+
+
+    const videoArquivo =
+      videoInput.files &&
+      videoInput.files[0];
+
+
+    /* ================================
+       VALIDAÇÃO
+    ================================= */
+
+    if(
+      !nome ||
+      !email ||
+      !telefone ||
+      !tipo ||
+      !data_inicio ||
+      !data_fim ||
+      !mensagem
+    ){
 
       mostrarResultado(
         "❌ Preencha todos os campos obrigatórios.",
@@ -384,6 +697,7 @@ formulario.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -395,11 +709,63 @@ formulario.addEventListener(
       );
 
       return;
+
+    }
+
+
+    /* ================================
+       TAMANHO DOS ARQUIVOS
+    ================================= */
+
+    if(imagemArquivo){
+
+      const limiteImagem =
+        10 * 1024 * 1024;
+
+      if(
+        imagemArquivo.size >
+        limiteImagem
+      ){
+
+        mostrarResultado(
+          "❌ A imagem deve ter no máximo 10 MB.",
+          "erro"
+        );
+
+        return;
+
+      }
+
+    }
+
+
+    if(videoArquivo){
+
+      const limiteVideo =
+        50 * 1024 * 1024;
+
+      if(
+        videoArquivo.size >
+        limiteVideo
+      ){
+
+        mostrarResultado(
+          "❌ O vídeo deve ter no máximo 50 MB.",
+          "erro"
+        );
+
+        return;
+
+      }
+
     }
 
 
     const botao =
-      formulario.querySelector("button");
+      formulario.querySelector(
+        "button"
+      );
+
 
     botao.disabled = true;
 
@@ -409,28 +775,97 @@ formulario.addEventListener(
 
     try{
 
-      const { error } =
+      let imagemURL = null;
+
+      let videoURL = null;
+
+
+      /* ================================
+         ENVIAR IMAGEM
+      ================================= */
+
+      if(imagemArquivo){
+
+        botao.textContent =
+          "⏳ A enviar banner...";
+
+        imagemURL =
+          await enviarArquivo(
+            imagemArquivo,
+            "imagens"
+          );
+
+      }
+
+
+      /* ================================
+         ENVIAR VÍDEO
+      ================================= */
+
+      if(videoArquivo){
+
+        botao.textContent =
+          "⏳ A enviar vídeo...";
+
+        videoURL =
+          await enviarArquivo(
+            videoArquivo,
+            "videos"
+          );
+
+      }
+
+
+      /* ================================
+         GUARDAR PEDIDO
+      ================================= */
+
+      botao.textContent =
+        "⏳ A guardar pedido...";
+
+
+      const {
+        error
+      } =
         await db
           .from("anuncios")
           .insert({
 
-            nome: nome,
+            nome:
+              nome,
 
-            empresa: empresa,
+            empresa:
+              empresa,
 
-            email: email,
+            email:
+              email,
 
-            telefone: telefone,
+            telefone:
+              telefone,
 
-            tipo: tipo,
+            tipo:
+              tipo,
 
-            mensagem: mensagem,
+            mensagem:
+              mensagem,
 
-            data_inicio: data_inicio,
+            data_inicio:
+              data_inicio,
 
-            data_fim: data_fim,
+            data_fim:
+              data_fim,
 
-            ativo: false
+            imagem:
+              imagemURL,
+
+            video:
+              videoURL,
+
+            link:
+              link || null,
+
+            ativo:
+              false
 
           });
 
@@ -443,10 +878,15 @@ formulario.addEventListener(
         );
 
         throw error;
+
       }
 
 
       formulario.reset();
+
+      previewImagem.innerHTML = "";
+
+      previewVideo.innerHTML = "";
 
 
       mostrarResultado(
@@ -455,19 +895,29 @@ formulario.addEventListener(
       );
 
 
-    }catch(error){
+    }
 
-  console.error("ERRO COMPLETO:", error);
+    catch(error){
 
-  mostrarResultado(
-    "❌ ERRO AO ENVIAR:<br><br>" +
-    (error?.message || "Erro desconhecido"),
-    "erro"
-  );
+      console.error(
+        "ERRO COMPLETO:",
+        error
+      );
+
+
+      mostrarResultado(
+        "❌ ERRO AO ENVIAR:<br><br>" +
+        (
+          error?.message ||
+          "Erro desconhecido"
+        ),
+        "erro"
+      );
 
     }
 
-    }finally{
+
+    finally{
 
       botao.disabled = false;
 
@@ -480,12 +930,16 @@ formulario.addEventListener(
 );
 
 
+/* =========================================
+   RESULTADO
+========================================= */
+
 function mostrarResultado(
   mensagem,
   tipo
 ){
 
-  resultado.textContent =
+  resultado.innerHTML =
     mensagem;
 
   resultado.className =
@@ -505,4 +959,5 @@ function mostrarResultado(
 
 
 </body>
+
   </html>
