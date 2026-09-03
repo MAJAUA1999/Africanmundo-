@@ -180,6 +180,8 @@ async function show() {
 
   await render();
 
+   await carregarMetricas();
+
 
   /* =====================================
      CARREGAR PEDIDOS DE PUBLICIDADE
@@ -1408,6 +1410,198 @@ supabaseClient
 
     }
   );
+
+/* =========================================
+   MÉTRICAS
+========================================= */
+
+async function carregarMetricas() {
+
+  const area =
+    document.getElementById("metricas");
+
+  if (!area) return;
+
+  area.innerHTML =
+    "<p>⏳ A carregar métricas...</p>";
+
+  try {
+
+    const {
+      data,
+      error
+    } =
+      await supabaseClient
+        .from("noticias")
+        .select("id,titulo,categoria,visualizacoes")
+        .order(
+          "visualizacoes",
+          {
+            ascending: false
+          }
+        );
+
+    if (error)
+      throw error;
+
+    const noticias =
+      data || [];
+
+    const totalNoticias =
+      noticias.length;
+
+    const totalVisualizacoes =
+      noticias.reduce(
+        function(total, noticia) {
+
+          return total +
+            Number(
+              noticia.visualizacoes || 0
+            );
+
+        },
+        0
+      );
+
+    const maisLidas =
+      noticias.slice(0,5);
+
+    area.innerHTML = `
+
+      <div style="
+        display:grid;
+        grid-template-columns:
+          repeat(
+            auto-fit,
+            minmax(180px,1fr)
+          );
+        gap:12px;
+        margin-top:15px;
+      ">
+
+        <div style="
+          padding:18px;
+          border:1px solid var(--border);
+          border-radius:12px;
+          background:var(--card);
+        ">
+          <div style="font-size:25px;">
+            📰
+          </div>
+
+          <strong style="font-size:24px;">
+            ${totalNoticias}
+          </strong>
+
+          <div style="color:var(--muted);">
+            Notícias
+          </div>
+        </div>
+
+        <div style="
+          padding:18px;
+          border:1px solid var(--border);
+          border-radius:12px;
+          background:var(--card);
+        ">
+          <div style="font-size:25px;">
+            👁️
+          </div>
+
+          <strong style="font-size:24px;">
+            ${totalVisualizacoes}
+          </strong>
+
+          <div style="color:var(--muted);">
+            Visualizações
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px;">
+
+        <h3>
+          🔥 Notícias mais lidas
+        </h3>
+
+        ${
+          maisLidas.length
+          ? maisLidas.map(
+              function(n, i) {
+
+                return `
+                  <div style="
+                    padding:12px 0;
+                    border-bottom:
+                      1px solid var(--border);
+                  ">
+
+                    <strong>
+                      ${i + 1}. 
+                      ${esc(n.titulo)}
+                    </strong>
+
+                    <br>
+
+                    <small
+                      style="
+                        color:var(--muted);
+                      "
+                    >
+                      🏷️ ${esc(
+                        n.categoria ||
+                        "Notícias"
+                      )}
+                      &nbsp; • &nbsp;
+                      👁️ ${
+                        Number(
+                          n.visualizacoes || 0
+                        )
+                      } visualizações
+                    </small>
+
+                  </div>
+                `;
+
+              }
+            ).join("")
+          : "<p>Nenhuma notícia encontrada.</p>"
+        }
+
+      </div>
+
+    `;
+
+  }
+
+  catch (erro) {
+
+    console.error(
+      "Erro nas métricas:",
+      erro
+    );
+
+    area.innerHTML = `
+      <div style="
+        padding:15px;
+        border-radius:10px;
+        border:1px solid #e57373;
+      ">
+        ❌ Não foi possível carregar as métricas.
+        <br><br>
+        <small>
+          ${esc(
+            erro.message ||
+            "Erro desconhecido."
+          )}
+        </small>
+      </div>
+    `;
+
+  }
+
+}
 
 /* =========================================
    PEDIDOS DE PUBLICIDADE
