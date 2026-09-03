@@ -413,10 +413,14 @@ async function carregar(){
     }
 
     mostrarNoticia(
-      noticiaAtual
-    );
+  noticiaAtual
+);
 
-    mostrarMaisNoticias();
+contarVisualizacao(
+  noticiaAtual.id
+);
+
+mostrarMaisNoticias();
 
   }catch(error){
 
@@ -433,6 +437,50 @@ async function carregar(){
 
 }
 
+  /* CONTAR VISUALIZAÇÃO */
+
+async function contarVisualizacao(noticiaId){
+
+  if(!noticiaId) return;
+
+  try{
+
+    const noticia =
+      await db
+        .from("noticias")
+        .select("visualizacoes")
+        .eq("id", noticiaId)
+        .single();
+
+    if(noticia.error)
+      throw noticia.error;
+
+    const atual =
+      Number(noticia.data?.visualizacoes || 0);
+
+    await db
+      .from("noticias")
+      .update({
+        visualizacoes: atual + 1
+      })
+      .eq("id", noticiaId);
+
+    console.log(
+      "Visualização registrada:",
+      atual + 1
+    );
+
+  }catch(error){
+
+    console.error(
+      "Erro ao contar visualização:",
+      error
+    );
+
+  }
+
+     }
+  
 
 /* MOSTRAR NOTÍCIA */
 
