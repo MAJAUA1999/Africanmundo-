@@ -752,10 +752,63 @@ function abrirNotificacoes(){
       ? window.__noticias.slice(0,10)
       : [];
 
+  let botaoPush = "";
+
+  if(
+    "Notification" in window &&
+    "serviceWorker" in navigator &&
+    "PushManager" in window
+  ){
+
+    if(Notification.permission !== "granted"){
+
+      botaoPush = `
+
+        <button
+          onclick="ativarNotificacoesPush()"
+          style="
+            width:100%;
+            margin-bottom:14px;
+            padding:13px;
+            border:0;
+            border-radius:12px;
+            background:var(--primary);
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+          "
+        >
+          🔔 Ativar notificações
+        </button>
+
+      `;
+
+    }else{
+
+      botaoPush = `
+
+        <div style="
+          margin-bottom:14px;
+          padding:12px;
+          border-radius:12px;
+          background:var(--card);
+          border:1px solid var(--border);
+          text-align:center;
+        ">
+          🟢 Notificações ativadas
+        </div>
+
+      `;
+
+    }
+
+  }
+
   if(!noticias.length){
 
     abrirModal(
       "🔔 Notificações",
+      botaoPush +
       "<p>Nenhuma novidade.</p>"
     );
 
@@ -788,10 +841,162 @@ function abrirNotificacoes(){
 
   abrirModal(
     "🔔 Últimas novidades",
-    html
+    botaoPush + html
   );
 
-     }
+}
+
+/* ==========================================
+   🔔 ATIVAR NOTIFICAÇÕES PUSH
+========================================== */
+
+function urlBase64ToUint8Array(base64String){
+
+  const padding =
+    "=".repeat(
+      (4 - base64String.length % 4) % 4
+    );
+
+  const base64 =
+    (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+  const rawData =
+    window.atob(base64);
+
+  return Uint8Array.from(
+    [...rawData].map(char => char.charCodeAt(0))
+  );
+
+}
+
+
+async function ativarNotificacoesPush(){
+
+  try{
+
+    if(
+      !("Notification" in window) ||
+      !("serviceWorker" in navigator) ||
+      !("PushManager" in window)
+    ){
+
+      alert(
+        "❌ Este navegador não suporta notificações push."
+      );
+
+      return;
+    }
+
+
+    const permissao =
+      await Notification.requestPermission();
+
+
+    if(permissao !== "granted"){
+
+      alert(
+        "⚠️ As notificações não foram autorizadas."
+      );
+
+      return;
+    }
+
+
+    const registro =
+      await navigator.serviceWorker.ready;
+
+
+    let subscription =
+      await registro.pushManager.getSubscription();
+
+
+    if(!subscription){
+
+      subscription =
+        await registro.pushManager.subscribe({
+
+          userVisibleOnly: true,
+
+          applicationServerKey:
+            urlBase64ToUint8Array(
+              VAPID_PUBLIC_KEY
+            )
+
+        });
+
+    }
+
+
+    const dados =
+      subscription.toJSON();
+
+
+    const resposta =
+      await fetch(
+        "https://sonzwfhepjfvzltuxxne.supabase.co/functions/v1/salvar-push",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            endpoint:
+              dados.endpoint,
+
+            p256dh:
+              dados.keys?.p256dh,
+
+            auth:
+              dados.keys?.auth
+
+          })
+
+        }
+      );
+
+
+    const resultado =
+      await resposta.json();
+
+
+    if(!resposta.ok || !resultado.sucesso){
+
+      throw new Error(
+        resultado.erro ||
+        "Não foi possível guardar a inscrição."
+      );
+
+    }
+
+
+    alert(
+      "🟢 Notificações ativadas com sucesso!"
+    );
+
+
+    abrirNotificacoes();
+
+
+  }catch(erro){
+
+    console.error(
+      "❌ Erro ao ativar notificações:",
+      erro
+    );
+
+    alert(
+      "❌ Não foi possível ativar as notificações."
+    );
+
+  }
+
+}
 
 
 /* ==========================================
