@@ -1288,10 +1288,11 @@ async function carregarAnunciosAtivos() {
 
     area.innerHTML = `
       <div style="
-        display:grid;
-        grid-template-columns:repeat(2,minmax(0,1fr));
-        gap:10px;
-      ">
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  width:100%;
+">
 
         ${anunciosValidos.map(anuncio => {
 
@@ -1316,7 +1317,7 @@ async function carregarAnunciosAtivos() {
                 style="
                   display:block;
                   width:100%;
-                  height:95px;
+                  height:85px;
                   object-fit:cover;
                   background:#000;
                   pointer-events:none;
@@ -1334,7 +1335,7 @@ async function carregarAnunciosAtivos() {
                   style="
                     display:block;
                     width:100%;
-                    height:95px;
+                    height:85px;
                     object-fit:cover;
                   "
                 >
