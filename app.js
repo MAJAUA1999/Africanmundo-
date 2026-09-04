@@ -820,7 +820,8 @@ async function carregarAnunciosAtivos(){
               background:var(--card);
               box-shadow:0 3px 10px rgba(0,0,0,.08);
             ">
-                                      <div style="
+
+                          <div style="
                 padding:8px;
                 min-width:0;
                 box-sizing:border-box;
