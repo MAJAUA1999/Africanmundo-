@@ -744,10 +744,6 @@ function atualizarNotificacoes(){
 }
 
 
-/* ==========================================
-   🔔 NOTIFICAÇÕES
-========================================== */
-
 function abrirNotificacoes(){
 
   const noticias =
@@ -757,6 +753,7 @@ function abrirNotificacoes(){
 
 
   let botaoPush = "";
+
 
   if(
     "Notification" in window &&
@@ -771,17 +768,21 @@ function abrirNotificacoes(){
       botaoPush = `
 
         <button
+          type="button"
           onclick="ativarNotificacoesPush()"
           style="
+            display:block;
             width:100%;
             margin-bottom:14px;
-            padding:13px;
+            padding:14px;
             border:0;
             border-radius:12px;
             background:var(--primary);
             color:white;
             font-weight:bold;
             cursor:pointer;
+            position:relative;
+            z-index:9999;
           "
         >
           🔔 Ativar notificações
@@ -827,6 +828,7 @@ function abrirNotificacoes(){
     noticias.map(n => `
 
       <button
+        type="button"
         onclick="abrirNoticiaPorId('${esc(n.id)}')"
         style="
           width:100%;
