@@ -377,19 +377,31 @@ async function carregarNoticias(){
 }
 
 
-/* ==========================================
-   RENDERIZAR PÁGINA
-========================================== */
-
 function renderizarPagina(){
 
-  const noticias =
-    window.__noticias;
+  const noticias = Array.isArray(window.__noticias)
+    ? [...window.__noticias]
+    : [];
 
-  renderizarDestaque(
-    noticias[0]
-  );
+  if(!noticias.length) return;
 
+  // Embaralhar notícias
+  function embaralhar(lista){
+
+    return lista
+      .map(n => ({ n, ordem: Math.random() }))
+      .sort((a,b) => a.ordem - b.ordem)
+      .map(x => x.n);
+
+  }
+
+  // 🌟 Destaque aleatório
+  const destaque =
+    noticias[Math.floor(Math.random() * noticias.length)];
+
+  renderizarDestaque(destaque);
+
+  // 📰 Últimas notícias continuam recentes
   renderizarLista(
     "ultimas",
     noticias.slice(0,4)
@@ -406,19 +418,23 @@ function renderizarPagina(){
 
   categorias.forEach(cat => {
 
+    const listaCategoria =
+      noticias.filter(n =>
+        normalizarCategoria(n.categoria) === cat
+      );
+
+    // 🔀 Mudar a seleção a cada atualização
+    const selecionadas =
+      embaralhar(listaCategoria);
+
     renderizarLista(
       cat,
-      noticias.filter(n =>
-        normalizarCategoria(
-          n.categoria
-        ) === cat
-      )
+      selecionadas
     );
 
   });
 
 }
-
 
 /* ==========================================
    ERRO
