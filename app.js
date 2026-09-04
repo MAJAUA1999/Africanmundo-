@@ -390,6 +390,99 @@ function renderizarDestaque(n){
 
 }
 
+/* ==========================================
+   ANIMAÇÃO PROFISSIONAL DAS NOTÍCIAS
+========================================== */
+
+const estiloNoticias =
+  document.createElement("style");
+
+estiloNoticias.textContent = `
+
+  .carregandoNoticias
+  #ultimas,
+  .carregandoNoticias
+  #futebol,
+  .carregandoNoticias
+  #mocambique,
+  .carregandoNoticias
+  #africa,
+  .carregandoNoticias
+  #negocios,
+  .carregandoNoticias
+  #entretenimento,
+  .carregandoNoticias
+  #desporto{
+
+    opacity:0;
+
+  }
+
+  #ultimas,
+  #futebol,
+  #mocambique,
+  #africa,
+  #negocios,
+  #entretenimento,
+  #desporto{
+
+    transition:
+      opacity .15s ease,
+      transform .15s ease;
+
+  }
+
+  .noticiasProntas{
+
+    opacity:1 !important;
+    transform:translateY(0);
+
+  }
+
+`;
+
+document.head.appendChild(
+  estiloNoticias
+);
+
+/* ==========================================
+   EFEITO RÁPIDO DAS NOTÍCIAS
+========================================== */
+
+const estiloNoticias =
+  document.createElement("style");
+
+estiloNoticias.textContent = `
+
+  .carregandoNoticias #ultimas,
+  .carregandoNoticias #futebol,
+  .carregandoNoticias #mocambique,
+  .carregandoNoticias #africa,
+  .carregandoNoticias #negocios,
+  .carregandoNoticias #entretenimento,
+  .carregandoNoticias #desporto {
+    opacity: 0;
+  }
+
+  #ultimas,
+  #futebol,
+  #mocambique,
+  #africa,
+  #negocios,
+  #entretenimento,
+  #desporto {
+    transition: opacity .15s ease;
+  }
+
+  .noticiasProntas {
+    opacity: 1 !important;
+  }
+
+`;
+
+document.head.appendChild(
+  estiloNoticias
+);
 
 /* ==========================================
 CARREGAR NOTÍCIAS — MAIS RÁPIDO
@@ -410,38 +503,8 @@ async function carregarNoticias(){
 
   }
 
-  /* MOSTRAR ESTADO DE CARREGAMENTO */
-
-  const areas = [
-    "ultimas",
-    "futebol",
-    "mocambique",
-    "africa",
-    "negocios",
-    "entretenimento",
-    "desporto"
-  ];
-
-  areas.forEach(id => {
-
-    const el =
-      document.getElementById(id);
-
-    if(el){
-
-      el.innerHTML =
-        `<div style="
-          padding:18px;
-          text-align:center;
-          opacity:.7;
-        ">
-          ⏳ A carregar...
-        </div>`;
-
-    }
-
-  });
-
+/* CARREGAMENTO VISUAL */
+document.body.classList.add("carregandoNoticias");
   try{
 
     /*
@@ -486,7 +549,33 @@ async function carregarNoticias(){
 
     renderizarPagina();
 
+document.body.classList.remove(
+  "carregandoNoticias"
+);
 
+[
+  "ultimas",
+  "futebol",
+  "mocambique",
+  "africa",
+  "negocios",
+  "entretenimento",
+  "desporto"
+].forEach(id => {
+
+  const el =
+    document.getElementById(id);
+
+  if(el){
+
+    el.classList.add(
+      "noticiasProntas"
+    );
+
+  }
+
+});
+    
     /*
       NOTIFICAÇÕES FICAM DEPOIS
       DO CARREGAMENTO VISUAL
