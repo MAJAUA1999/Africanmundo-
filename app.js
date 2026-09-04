@@ -976,81 +976,23 @@ function atualizarNotificacoes(){
 
 function abrirNotificacoes(){
 
-  if(
-    "Notification" in window &&
-    "serviceWorker" in navigator &&
-    "PushManager" in window
-  ){
+  navigator.serviceWorker.ready
+    .then(async registro => {
 
-    if(
-      Notification.permission !== "granted"
-    ){
+      try{
 
-      abrirModal(
-
-        "🔔 Notificações",
-
-        `
-
-        <div style="text-align:center">
-
-          <div style="font-size:45px">
-            🔔
-          </div>
-
-          <h3>
-            Receba novidades do AfricanMundo
-          </h3>
-
-          <p style="color:var(--muted)">
-            Ative as notificações para receber
-            novidades e novas notícias.
-          </p>
-
-          <button
-            onclick="ativarNotificacoesPush()"
-            style="
-              width:100%;
-              padding:14px;
-              border:0;
-              border-radius:12px;
-              background:var(--primary);
-              color:white;
-              font-weight:bold;
-              cursor:pointer;
-            "
-          >
-            🔔 Ativar notificações
-          </button>
-
-        </div>
-
-        `
-
-      );
-
-      return;
-
-    }
-
-
-    /* PERMISSÃO JÁ EXISTE.
-       AGORA VERIFICAR A INSCRIÇÃO PUSH. */
-
-    navigator.serviceWorker.ready
-      .then(async registro => {
-
-        const subscription =
+        let subscription =
           await registro.pushManager.getSubscription();
+
+        /* =================================
+           SE NÃO EXISTE INSCRIÇÃO
+        ================================= */
 
         if(!subscription){
 
           abrirModal(
-
             "🔔 Notificações",
-
             `
-
             <div style="text-align:center">
 
               <div style="font-size:45px">
@@ -1062,72 +1004,149 @@ function abrirNotificacoes(){
               </h3>
 
               <p style="color:var(--muted)">
-                A permissão já foi concedida,
-                mas este dispositivo ainda não
-                está registado no AfricanMundo.
+                Ative as notificações para receber
+                novidades do AfricanMundo.
               </p>
 
               <button
                 onclick="ativarNotificacoesPush()"
-                style="
-                  width:100%;
-                  padding:14px;
-                  border:0;
-                  border-radius:12px;
-                  background:var(--primary);
-                  color:white;
-                  font-weight:bold;
-                  cursor:pointer;
-                "
               >
-                🔔 Registar este dispositivo
+                🔔 Ativar notificações
               </button>
 
             </div>
-
             `
-
           );
 
           return;
+        }
+
+
+        /* =================================
+           PEGAR DADOS DA INSCRIÇÃO
+        ================================= */
+
+        const dados =
+          subscription.toJSON();
+
+
+        if(
+          !dados.endpoint ||
+          !dados.keys?.p256dh ||
+          !dados.keys?.auth
+        ){
+
+          throw new Error(
+            "Dados da inscrição Push incompletos."
+          );
 
         }
 
 
-        abrirModal(
+        /* =================================
+           ENVIAR NOVAMENTE PARA SUPABASE
+        ================================= */
 
-          "🟢 Notificações",
+        const resposta =
+          await fetch(
 
-          `
+            SUPABASE_URL +
+            "/functions/v1/salvar-push",
 
-          <div style="text-align:center">
+            {
 
-            <div style="font-size:45px">
-              🟢
-            </div>
+              method:"POST",
 
-            <h3>
-              Notificações ativadas
-            </h3>
+              headers:{
+                "Content-Type":
+                  "application/json"
+              },
 
-            <p style="color:var(--muted)">
-              Este dispositivo está registado
-              para receber novidades do AfricanMundo.
-            </p>
+              body:JSON.stringify({
 
-          </div>
+                endpoint:
+                  dados.endpoint,
 
-          `
+                p256dh:
+                  dados.keys.p256dh,
 
-        );
+                auth:
+                  dados.keys.auth
 
-      })
-      .catch(erro => {
+              })
 
-        console.error(
-          "Erro ao verificar Push:",
-          erro
-        );
+            }
+
+          );
+
+
+        const resultado =
+          await resposta.json();
+
+
+        if(
+          !resposta.ok ||
+          !resultado.sucesso
+        ){
+
+          throw new Error(
+            resultado.erro ||
+            "Não foi possível guardar a inscrição."
+          );
+
+        }
+
+
+        /* =================================
+           NOTÍCIAS
+        ================================= */
+
+        const noticias =
+          Array.isArray(
+            window.__noticias
+          )
+          ? window.__noticias.slice(0,10)
+          : [];
+
+
+        const html =
+          noticias.length
+
+          ?
+
+          noticias.map(n => `
+
+            <button
+              type="button"
+              onclick="
+                abrirNoticiaPorId(
+                  '${esc(n.id)}'
+                )
+              "
+              style="
+                width:100%;
+                text-align:left;
+                margin-bottom:8px;
+                padding:12px;
+                border:1px solid var(--border);
+                border-radius:12px;
+                background:var(--bg);
+                color:var(--txt);
+              "
+            >
+
+              <strong>
+                ${esc(obterTitulo(n))}
+              </strong>
+
+            </button>
+
+          `).join("")
+
+          :
+
+          "<p>Nenhuma novidade.</p>";
+
 
         abrirModal(
 
@@ -1135,57 +1154,86 @@ function abrirNotificacoes(){
 
           `
 
-          <p>
-            Não foi possível verificar
-            o estado das notificações.
-          </p>
+          <div style="
+            margin-bottom:14px;
+            padding:12px;
+            border-radius:12px;
+            background:var(--card);
+            border:1px solid var(--border);
+            text-align:center;
+          ">
 
-          <button
-            onclick="ativarNotificacoesPush()"
-          >
-            🔔 Tentar ativar novamente
-          </button>
+            🟢 Notificações ativadas
+
+            <div style="
+              margin-top:5px;
+              color:var(--muted);
+              font-size:13px;
+            ">
+
+              Este dispositivo está registado
+              para receber novidades do AfricanMundo.
+
+            </div>
+
+          </div>
+
+          ${html}
 
           `
 
         );
 
-      });
 
-    return;
+      }catch(erro){
 
-  }
+        console.error(
+          "❌ Erro ao sincronizar Push:",
+          erro
+        );
 
 
-  abrirModal(
+        abrirModal(
 
-    "🔔 Notificações",
+          "⚠️ Notificações",
 
-    `
+          `
 
-    <div style="text-align:center">
+          <p>
+            Não foi possível registar
+            este dispositivo.
+          </p>
 
-      <div style="font-size:45px">
-        ⚠️
-      </div>
+          <small style="color:var(--muted)">
+            ${esc(
+              erro.message ||
+              "Erro desconhecido."
+            )}
+          </small>
 
-      <h3>
-        Notificações não disponíveis
-      </h3>
+          `
 
-      <p style="color:var(--muted)">
-        Este navegador não suporta
-        notificações Push.
-      </p>
+        );
 
-    </div>
+      }
 
-    `
+    })
 
-  );
+    .catch(erro => {
+
+      console.error(
+        "❌ Service Worker:",
+        erro
+      );
+
+      abrirModal(
+        "⚠️ Notificações",
+        "<p>O Service Worker ainda não está disponível.</p>"
+      );
+
+    });
 
 }
-
 
 /* ==========================================
 CONVERTER CHAVE VAPID
