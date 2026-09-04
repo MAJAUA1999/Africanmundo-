@@ -524,7 +524,7 @@ document.body.classList.add("carregandoNoticias");
             ascending:false
           }
         )
-        .limit(60);
+        
 
 
     if(resultado.error){
