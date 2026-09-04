@@ -392,7 +392,7 @@ function renderizarDestaque(n){
 
 
 /* ==========================================
-CARREGAR NOTÍCIAS
+CARREGAR NOTÍCIAS — MAIS RÁPIDO
 ========================================== */
 
 async function carregarNoticias(){
@@ -410,24 +410,66 @@ async function carregarNoticias(){
 
   }
 
+  /* MOSTRAR ESTADO DE CARREGAMENTO */
+
+  const areas = [
+    "ultimas",
+    "futebol",
+    "mocambique",
+    "africa",
+    "negocios",
+    "entretenimento",
+    "desporto"
+  ];
+
+  areas.forEach(id => {
+
+    const el =
+      document.getElementById(id);
+
+    if(el){
+
+      el.innerHTML =
+        `<div style="
+          padding:18px;
+          text-align:center;
+          opacity:.7;
+        ">
+          ⏳ A carregar...
+        </div>`;
+
+    }
+
+  });
+
   try{
+
+    /*
+      LIMITAMOS A QUANTIDADE
+      PARA O SITE ABRIR MAIS RÁPIDO
+    */
 
     const resultado =
       await db
         .from("noticias")
-        .select("*")
+        .select(
+          "id,titulo,texto,imagem,categoria,data,fonte,url_original"
+        )
         .order(
           "id",
           {
             ascending:false
           }
-        );
+        )
+        .limit(60);
+
 
     if(resultado.error){
 
       throw resultado.error;
 
     }
+
 
     window.__noticias =
       Array.isArray(
@@ -436,16 +478,45 @@ async function carregarNoticias(){
       ? resultado.data
       : [];
 
+
+    /*
+      RENDERIZA IMEDIATAMENTE
+      ASSIM QUE OS DADOS CHEGAM
+    */
+
     renderizarPagina();
 
-    atualizarNotificacoes(
-      window.__noticias
-    );
+
+    /*
+      NOTIFICAÇÕES FICAM DEPOIS
+      DO CARREGAMENTO VISUAL
+    */
+
+    setTimeout(() => {
+
+      try{
+
+        atualizarNotificacoes(
+          window.__noticias
+        );
+
+      }catch(e){
+
+        console.warn(
+          "Aviso notificações:",
+          e
+        );
+
+      }
+
+    },100);
+
 
     console.log(
       "✅ Notícias carregadas:",
       window.__noticias.length
     );
+
 
   }catch(e){
 
@@ -461,7 +532,7 @@ async function carregarNoticias(){
 
   }
 
-}
+    }
 
 function renderizarPagina(){
 
