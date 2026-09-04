@@ -744,6 +744,10 @@ function atualizarNotificacoes(){
 }
 
 
+/* ==========================================
+   🔔 NOTIFICAÇÕES
+========================================== */
+
 function abrirNotificacoes(){
 
   const noticias =
@@ -752,10 +756,66 @@ function abrirNotificacoes(){
       : [];
 
 
+  let botaoPush = "";
+
+  if(
+    "Notification" in window &&
+    "serviceWorker" in navigator &&
+    "PushManager" in window
+  ){
+
+    if(
+      Notification.permission !== "granted"
+    ){
+
+      botaoPush = `
+
+        <button
+          onclick="ativarNotificacoesPush()"
+          style="
+            width:100%;
+            margin-bottom:14px;
+            padding:13px;
+            border:0;
+            border-radius:12px;
+            background:var(--primary);
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+          "
+        >
+          🔔 Ativar notificações
+        </button>
+
+      `;
+
+    }else{
+
+      botaoPush = `
+
+        <div style="
+          margin-bottom:14px;
+          padding:12px;
+          border-radius:12px;
+          background:var(--card);
+          border:1px solid var(--border);
+          text-align:center;
+        ">
+          🟢 Notificações ativadas
+        </div>
+
+      `;
+
+    }
+
+  }
+
+
   if(!noticias.length){
 
     abrirModal(
       "🔔 Notificações",
+      botaoPush +
       "<p>Nenhuma novidade.</p>"
     );
 
@@ -790,7 +850,7 @@ function abrirNotificacoes(){
 
   abrirModal(
     "🔔 Últimas novidades",
-    html
+    botaoPush + html
   );
 
 }
