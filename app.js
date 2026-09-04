@@ -856,6 +856,182 @@ function abrirNotificacoes(){
 }
 
 /* ==========================================
+   🔔 ATIVAR NOTIFICAÇÕES PUSH
+========================================== */
+
+async function ativarNotificacoesPush(){
+
+  try{
+
+    if(!("Notification" in window)){
+      alert("❌ Este navegador não suporta notificações.");
+      return;
+    }
+
+    if(!("serviceWorker" in navigator)){
+      alert("❌ Service Worker não disponível.");
+      return;
+    }
+
+    if(!("PushManager" in window)){
+      alert("❌ Push não disponível neste navegador.");
+      return;
+    }
+
+
+    const permissao =
+      await Notification.requestPermission();
+
+
+    if(permissao !== "granted"){
+
+      alert(
+        "⚠️ As notificações não foram autorizadas."
+      );
+
+      return;
+    }
+
+
+    const registro =
+      await navigator.serviceWorker.ready;
+
+
+    let subscription =
+      await registro.pushManager.getSubscription();
+
+
+    if(!subscription){
+
+      subscription =
+        await registro.pushManager.subscribe({
+
+          userVisibleOnly: true,
+
+          applicationServerKey:
+            urlBase64ToUint8Array(
+              VAPID_PUBLIC_KEY
+            )
+
+        });
+
+    }
+
+
+    const dados =
+      subscription.toJSON();
+
+
+    if(
+      !dados.endpoint ||
+      !dados.keys?.p256dh ||
+      !dados.keys?.auth
+    ){
+
+      throw new Error(
+        "Inscrição push incompleta."
+      );
+
+    }
+
+
+    const resposta =
+      await fetch(
+        "https://sonzwfhepjfvzltuxxne.supabase.co/functions/v1/salvar-push",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type":
+              "application/json"
+          },
+
+          body: JSON.stringify({
+
+            endpoint:
+              dados.endpoint,
+
+            p256dh:
+              dados.keys.p256dh,
+
+            auth:
+              dados.keys.auth
+
+          })
+
+        }
+      );
+
+
+    const resultado =
+      await resposta.json();
+
+
+    if(
+      !resposta.ok ||
+      !resultado.sucesso
+    ){
+
+      throw new Error(
+        resultado.erro ||
+        "Erro ao guardar inscrição."
+      );
+
+    }
+
+
+    alert(
+      "🟢 Notificações ativadas com sucesso!"
+    );
+
+
+    abrirNotificacoes();
+
+
+  }catch(erro){
+
+    console.error(
+      "❌ Erro nas notificações:",
+      erro
+    );
+
+    alert(
+      "❌ Não foi possível ativar as notificações."
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   CONVERTER CHAVE VAPID
+========================================== */
+
+function urlBase64ToUint8Array(base64String){
+
+  const padding =
+    "=".repeat(
+      (4 - base64String.length % 4) % 4
+    );
+
+  const base64 =
+    (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+  const rawData =
+    window.atob(base64);
+
+  return Uint8Array.from(
+    [...rawData].map(
+      char => char.charCodeAt(0)
+    )
+  );
+
+}
+
+/* ==========================================
    MODAL
 ========================================== */
 
