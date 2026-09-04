@@ -857,6 +857,210 @@ function abrirNotificacoes(){
 
 }
 
+function urlBase64ToUint8Array(base64String){
+
+  const padding =
+    "=".repeat(
+      (4 - base64String.length % 4) % 4
+    );
+
+  const base64 =
+    (base64String + padding)
+      .replace(/-/g, "+")
+      .replace(/_/g, "/");
+
+  const rawData =
+    window.atob(base64);
+
+  return Uint8Array.from(
+    [...rawData].map(
+      char => char.charCodeAt(0)
+    )
+  );
+
+}
+
+
+async function ativarNotificacoesPush(){
+
+  try{
+
+    /* ================================
+       VERIFICAR SUPORTE
+    ================================= */
+
+    if(
+      !("Notification" in window) ||
+      !("serviceWorker" in navigator) ||
+      !("PushManager" in window)
+    ){
+
+      alert(
+        "❌ Este navegador não suporta notificações."
+      );
+
+      return;
+
+    }
+
+
+    /* ================================
+       PEDIR PERMISSÃO
+    ================================= */
+
+    const permissao =
+      await Notification.requestPermission();
+
+
+    if(permissao !== "granted"){
+
+      alert(
+        "⚠️ As notificações não foram autorizadas."
+      );
+
+      return;
+
+    }
+
+
+    /* ================================
+       SERVICE WORKER
+    ================================= */
+
+    const registro =
+      await navigator.serviceWorker.ready;
+
+
+    /* ================================
+       INSCRIÇÃO
+    ================================= */
+
+    let subscription =
+      await registro.pushManager
+        .getSubscription();
+
+
+    if(!subscription){
+
+      subscription =
+        await registro.pushManager
+          .subscribe({
+
+            userVisibleOnly:true,
+
+            applicationServerKey:
+              urlBase64ToUint8Array(
+                VAPID_PUBLIC_KEY
+              )
+
+          });
+
+    }
+
+
+    /* ================================
+       PREPARAR DADOS
+    ================================= */
+
+    const dados =
+      subscription.toJSON();
+
+
+    if(
+      !dados.endpoint ||
+      !dados.keys?.p256dh ||
+      !dados.keys?.auth
+    ){
+
+      throw new Error(
+        "Inscrição inválida."
+      );
+
+    }
+
+
+    /* ================================
+       GUARDAR NO SUPABASE
+    ================================= */
+
+    const resposta =
+      await fetch(
+
+        "https://sonzwfhepjfvzltuxxne.supabase.co/functions/v1/salvar-push",
+
+        {
+
+          method:"POST",
+
+          headers:{
+            "Content-Type":
+              "application/json"
+          },
+
+          body:JSON.stringify({
+
+            endpoint:
+              dados.endpoint,
+
+            p256dh:
+              dados.keys.p256dh,
+
+            auth:
+              dados.keys.auth
+
+          })
+
+        }
+
+      );
+
+
+    const resultado =
+      await resposta.json();
+
+
+    if(
+      !resposta.ok ||
+      !resultado.sucesso
+    ){
+
+      throw new Error(
+        resultado.erro ||
+        "Erro ao guardar inscrição."
+      );
+
+    }
+
+
+    /* ================================
+       SUCESSO
+    ================================= */
+
+    alert(
+      "🟢 Notificações ativadas com sucesso!"
+    );
+
+
+    abrirNotificacoes();
+
+
+  }catch(erro){
+
+    console.error(
+      "❌ Erro nas notificações:",
+      erro
+    );
+
+
+    alert(
+      "❌ Não foi possível ativar as notificações.\n\n" +
+      "O site continua funcionando normalmente."
+    );
+
+  }
+
+}
+
 /* ==========================================
    🔔 ATIVAR NOTIFICAÇÕES PUSH
 ========================================== */
