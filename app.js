@@ -721,7 +721,7 @@ function removerFavorito(i){
    NOTIFICAÇÕES
 ========================================== */
 
-function atualizarNotificacoes(noticias){
+function atualizarNotificacoes(){
 
   const btn =
     document.getElementById(
@@ -730,33 +730,14 @@ function atualizarNotificacoes(noticias){
 
   if(!btn) return;
 
-  let contador =
+  const contador =
     btn.querySelector(
       ".notification-count"
     );
 
-  if(!contador){
-
-    contador =
-      document.createElement("span");
-
-    contador.className =
-      "notification-count";
-
-    btn.appendChild(contador);
-
+  if(contador){
+    contador.remove();
   }
-
-  const total =
-    noticias.length;
-
-  contador.textContent =
-    total > 99
-      ? "99+"
-      : total;
-
-  contador.style.display =
-    total ? "flex" : "none";
 
 }
 
@@ -764,7 +745,9 @@ function atualizarNotificacoes(noticias){
 function abrirNotificacoes(){
 
   const noticias =
-    window.__noticias.slice(0,10);
+    Array.isArray(window.__noticias)
+      ? window.__noticias.slice(0,10)
+      : [];
 
   if(!noticias.length){
 
@@ -790,6 +773,7 @@ function abrirNotificacoes(){
           border-radius:12px;
           background:var(--bg);
           color:var(--txt);
+          cursor:pointer;
         "
       >
         <strong>
@@ -804,7 +788,7 @@ function abrirNotificacoes(){
     html
   );
 
-}
+     }
 
 
 /* ==========================================
