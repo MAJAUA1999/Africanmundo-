@@ -1317,7 +1317,7 @@ async function carregarAnunciosAtivos() {
                 style="
                   display:block;
                   width:100%;
-                  height:75px;
+                  height:60px;
                   object-fit:cover;
                   background:#000;
                   pointer-events:none;
@@ -1335,7 +1335,7 @@ async function carregarAnunciosAtivos() {
                   style="
                     display:block;
                     width:100%;
-                    height:75px;
+                    height:60px;
                     object-fit:cover;
                   "
                 >
@@ -1361,7 +1361,7 @@ async function carregarAnunciosAtivos() {
               }
 
               <div style="
-                padding:7px 8px;
+                padding:5px 6px;
               ">
 
                 <div style="
