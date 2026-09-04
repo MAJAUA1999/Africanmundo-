@@ -1466,6 +1466,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
 });
 
+/* ==========================================
+   REGISTAR SERVICE WORKER
+========================================== */
+
+if ("serviceWorker" in navigator) {
+
+  window.addEventListener("load", () => {
+
+    navigator.serviceWorker
+      .register("/Africanmundo-/service-worker.js")
+      .then(() => {
+
+        console.log(
+          "✅ Service Worker registado."
+        );
+
+      })
+      .catch((erro) => {
+
+        console.error(
+          "❌ Erro ao registar Service Worker:",
+          erro
+        );
+
+      });
+
+  });
+
+}
+
 function abrirRede(rede) {
 
   const links = {
