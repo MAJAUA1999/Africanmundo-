@@ -691,13 +691,21 @@ function renderizarPagina(){
   categorias.forEach(cat => {
 
     const listaCategoria =
-      noticias.filter(n =>
+  noticias.filter(n => {
 
-        normalizarCategoria(
-          n.categoria
-        ) === cat
-
+    const categoria =
+      normalizarCategoria(
+        n.categoria
       );
+
+    return categoria
+      .trim()
+      .toLowerCase()
+      === cat
+        .trim()
+        .toLowerCase();
+
+  });
 
 
     const selecionadas =
