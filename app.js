@@ -1239,284 +1239,170 @@ function carregarCor(){
 }
 
 /* =========================================
-   📢 CARREGAR ANÚNCIOS ATIVOS
+   📢 ANÚNCIOS ATIVOS — GRADE COMPACTA
 ========================================= */
 
 async function carregarAnunciosAtivos() {
 
-  if (!db && !iniciarSupabase()) {
-    return;
-  }
+  if (!db && !iniciarSupabase()) return;
 
-  const area =
-    document.getElementById("anunciosAtivos");
+  const area = document.getElementById("anunciosAtivos");
+  const secao = document.getElementById("anunciosAtivosSection");
 
-  const secao =
-    document.getElementById("anunciosAtivosSection");
-
-  if (!area || !secao) {
-    return;
-  }
+  if (!area || !secao) return;
 
   try {
 
-    const {
-      data,
-      error
-    } = await db
+    const { data, error } = await db
       .from("anuncios")
       .select("*")
       .eq("ativo", true)
-      .order("id", {
-        ascending: false
-      });
+      .order("id", { ascending: false });
 
-    if (error) {
-      throw error;
-    }
+    if (error) throw error;
 
     const agora = new Date();
 
-    const anunciosValidos =
-      (data || []).filter(function(anuncio) {
+    const anunciosValidos = (data || []).filter(anuncio => {
 
-        const inicio =
-  anuncio.data_inicio
-    ? new Date(
-        anuncio.data_inicio +
-        "T00:00:00"
-      )
-    : null;
+      const inicio = anuncio.data_inicio
+        ? new Date(anuncio.data_inicio + "T00:00:00")
+        : null;
 
-const fim =
-  anuncio.data_fim
-    ? new Date(
-        anuncio.data_fim +
-        "T23:59:59"
-      )
-    : null;
+      const fim = anuncio.data_fim
+        ? new Date(anuncio.data_fim + "T23:59:59")
+        : null;
 
-        if (inicio && agora < inicio) {
-          return false;
-        }
+      if (inicio && agora < inicio) return false;
+      if (fim && agora > fim) return false;
 
-        if (fim && agora > fim) {
-          return false;
-        }
-
-        return true;
-
-      });
+      return true;
+    });
 
     if (!anunciosValidos.length) {
-
       secao.style.display = "none";
-
       return;
     }
 
     secao.style.display = "block";
 
-    area.innerHTML =
-      anunciosValidos.map(function(anuncio) {
+    area.innerHTML = `
+      <div style="
+        display:grid;
+        grid-template-columns:repeat(2,minmax(0,1fr));
+        gap:10px;
+      ">
 
-        const empresa =
-          esc(
-            anuncio.empresa ||
-            "Publicidade"
+        ${anunciosValidos.map(anuncio => {
+
+          const empresa = esc(anuncio.empresa || "Publicidade");
+          const mensagem = esc(anuncio.mensagem || "");
+          const imagem = anuncio.imagem ? esc(anuncio.imagem) : "";
+          const video = esc(
+            anuncio.video ||
+            anuncio["vídeo"] ||
+            ""
           );
+          const link = anuncio.link ? esc(anuncio.link) : "";
 
-        const mensagem =
-          esc(
-            anuncio.mensagem || ""
-          );
-
-        const imagem =
-          anuncio.imagem
-            ? esc(anuncio.imagem)
-            : "";
-
-        const video =
-          anuncio.video ||
-          anuncio["vídeo"] ||
-          "";
-
-        const videoSeguro =
-          video
-            ? esc(video)
-            : "";
-
-        const link =
-          anuncio.link
-            ? esc(anuncio.link)
-            : "";
-
-        return `
-
-          <article style="
-            position:relative;
-            overflow:hidden;
-            margin-bottom:18px;
-            border:1px solid var(--border);
-            border-radius:18px;
-            background:var(--card);
-            box-shadow:0 6px 20px rgba(0,0,0,.08);
-          ">
-
-            <div style="
-              padding:10px 14px;
-              font-size:12px;
-              font-weight:700;
-              color:var(--muted);
-              text-transform:uppercase;
-              letter-spacing:.5px;
-            ">
-              📢 Publicidade
-            </div>
-
-            ${
-              videoSeguro
+          const conteudo = video
+            ? `
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="auto"
+                style="
+                  display:block;
+                  width:100%;
+                  height:95px;
+                  object-fit:cover;
+                  background:#000;
+                  pointer-events:none;
+                "
+              >
+                <source src="${video}" type="video/mp4">
+              </video>
+            `
+            : imagem
               ? `
+                <img
+                  src="${imagem}"
+                  alt="${empresa}"
+                  loading="lazy"
+                  style="
+                    display:block;
+                    width:100%;
+                    height:95px;
+                    object-fit:cover;
+                  "
+                >
+              `
+              : "";
+
+          return `
+            <article style="
+              overflow:hidden;
+              border:1px solid var(--border);
+              border-radius:12px;
+              background:var(--card);
+              box-shadow:0 3px 10px rgba(0,0,0,.08);
+            ">
+
+              ${link
+                ? `<a href="${link}" target="_blank"
+                     rel="noopener noreferrer"
+                     style="display:block;">
+                     ${conteudo}
+                   </a>`
+                : conteudo
+              }
+
+              <div style="
+                padding:7px 8px;
+              ">
 
                 <div style="
-                  width:100%;
-                  background:#000;
+                  font-size:11px;
+                  font-weight:700;
+                  white-space:nowrap;
+                  overflow:hidden;
+                  text-overflow:ellipsis;
                 ">
-
-                  <video
-                    controls
-                    playsinline
-                    preload="metadata"
-                    style="
-                      display:block;
-                      width:100%;
-                      max-height:100px;
-                      object-fit:contain;
-                      background:#000;
-                    "
-                  >
-
-                    <source
-                      src="${videoSeguro}"
-                      type="video/mp4"
-                    >
-
-                    O seu navegador não suporta vídeo.
-
-                  </video>
-
+                  📢 ${empresa}
                 </div>
 
-              `
-              : imagem
-                ? `
+                ${
+                  mensagem
+                  ? `
+                    <div style="
+                      margin-top:3px;
+                      font-size:11px;
+                      line-height:1.3;
+                      color:var(--muted);
+                      display:-webkit-box;
+                      -webkit-line-clamp:2;
+                      -webkit-box-orient:vertical;
+                      overflow:hidden;
+                    ">
+                      ${mensagem}
+                    </div>
+                  `
+                  : ""
+                }
 
-                  ${
-                    link
-                    ? `
-                      <a
-                        href="${link}"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style="
-                          display:block;
-                        "
-                      >
+              </div>
 
-                        <img
-                          src="${imagem}"
-                          alt="${empresa}"
-                          loading="lazy"
-                          style="
-                            display:block;
-                            width:100%;
-                            max-height:100px;
-                            object-fit:cover;
-                          "
-                        >
+            </article>
+          `;
 
-                      </a>
-                    `
-                    : `
+        }).join("")}
 
-                      <img
-                        src="${imagem}"
-                        alt="${empresa}"
-                        loading="lazy"
-                        style="
-                          display:block;
-                          width:100%;
-                          max-height:100px;
-                          object-fit:cover;
-                        "
-                      >
+      </div>
+    `;
 
-                    `
-                  }
-
-                `
-                : ""
-            }
-
-            <div style="
-              padding:16px;
-            ">
-
-              <h3 style="
-                margin:0 0 8px;
-                font-size:20px;
-              ">
-                ${empresa}
-              </h3>
-
-              ${
-                mensagem
-                ? `
-                  <p style="
-                    margin:0 0 14px;
-                    line-height:1.6;
-                    color:var(--txt);
-                  ">
-                    ${mensagem}
-                  </p>
-                `
-                : ""
-              }
-
-              ${
-                link
-                ? `
-                  <a
-                    href="${link}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="
-                      display:inline-block;
-                      padding:11px 18px;
-                      border-radius:10px;
-                      background:var(--primary,#168a45);
-                      color:#fff;
-                      text-decoration:none;
-                      font-weight:700;
-                    "
-                  >
-                    Ver anúncio →
-                  </a>
-                `
-                : ""
-              }
-
-            </div>
-
-          </article>
-
-        `;
-
-      }).join("");
-
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "❌ Erro ao carregar anúncios:",
@@ -1524,9 +1410,7 @@ const fim =
     );
 
     secao.style.display = "none";
-
   }
-
 }
 
 /* ==========================================
