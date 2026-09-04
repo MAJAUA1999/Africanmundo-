@@ -976,17 +976,6 @@ function atualizarNotificacoes(){
 
 function abrirNotificacoes(){
 
-  const noticias =
-    Array.isArray(
-      window.__noticias
-    )
-    ? window.__noticias.slice(0,10)
-    : [];
-
-
-  let botaoPush = "";
-
-
   if(
     "Notification" in window &&
     "serviceWorker" in navigator &&
@@ -994,116 +983,204 @@ function abrirNotificacoes(){
   ){
 
     if(
-      Notification.permission !==
-      "granted"
+      Notification.permission !== "granted"
     ){
 
-      botaoPush = `
+      abrirModal(
 
-        <button
-          type="button"
-          onclick="
-            ativarNotificacoesPush()
-          "
-          style="
-            display:block;
-            width:100%;
-            margin-bottom:14px;
-            padding:14px;
-            border:0;
-            border-radius:12px;
-            background:var(--primary);
-            color:white;
-            font-weight:bold;
-            cursor:pointer;
-            position:relative;
-            z-index:9999;
-          "
-        >
-          🔔 Ativar notificações
-        </button>
+        "🔔 Notificações",
 
-      `;
+        `
 
-    }else{
+        <div style="text-align:center">
 
-      botaoPush = `
+          <div style="font-size:45px">
+            🔔
+          </div>
 
-        <div style="
-          margin-bottom:14px;
-          padding:12px;
-          border-radius:12px;
-          background:var(--card);
-          border:1px solid var(--border);
-          text-align:center;
-        ">
-          🟢 Notificações ativadas
+          <h3>
+            Receba novidades do AfricanMundo
+          </h3>
+
+          <p style="color:var(--muted)">
+            Ative as notificações para receber
+            novidades e novas notícias.
+          </p>
+
+          <button
+            onclick="ativarNotificacoesPush()"
+            style="
+              width:100%;
+              padding:14px;
+              border:0;
+              border-radius:12px;
+              background:var(--primary);
+              color:white;
+              font-weight:bold;
+              cursor:pointer;
+            "
+          >
+            🔔 Ativar notificações
+          </button>
+
         </div>
 
-      `;
+        `
+
+      );
+
+      return;
 
     }
 
-  }
+
+    /* PERMISSÃO JÁ EXISTE.
+       AGORA VERIFICAR A INSCRIÇÃO PUSH. */
+
+    navigator.serviceWorker.ready
+      .then(async registro => {
+
+        const subscription =
+          await registro.pushManager.getSubscription();
+
+        if(!subscription){
+
+          abrirModal(
+
+            "🔔 Notificações",
+
+            `
+
+            <div style="text-align:center">
+
+              <div style="font-size:45px">
+                🔔
+              </div>
+
+              <h3>
+                Ativar notificações
+              </h3>
+
+              <p style="color:var(--muted)">
+                A permissão já foi concedida,
+                mas este dispositivo ainda não
+                está registado no AfricanMundo.
+              </p>
+
+              <button
+                onclick="ativarNotificacoesPush()"
+                style="
+                  width:100%;
+                  padding:14px;
+                  border:0;
+                  border-radius:12px;
+                  background:var(--primary);
+                  color:white;
+                  font-weight:bold;
+                  cursor:pointer;
+                "
+              >
+                🔔 Registar este dispositivo
+              </button>
+
+            </div>
+
+            `
+
+          );
+
+          return;
+
+        }
 
 
-  if(!noticias.length){
+        abrirModal(
 
-    abrirModal(
+          "🟢 Notificações",
 
-      "🔔 Notificações",
+          `
 
-      botaoPush +
-      "<p>Nenhuma novidade.</p>"
+          <div style="text-align:center">
 
-    );
+            <div style="font-size:45px">
+              🟢
+            </div>
+
+            <h3>
+              Notificações ativadas
+            </h3>
+
+            <p style="color:var(--muted)">
+              Este dispositivo está registado
+              para receber novidades do AfricanMundo.
+            </p>
+
+          </div>
+
+          `
+
+        );
+
+      })
+      .catch(erro => {
+
+        console.error(
+          "Erro ao verificar Push:",
+          erro
+        );
+
+        abrirModal(
+
+          "🔔 Notificações",
+
+          `
+
+          <p>
+            Não foi possível verificar
+            o estado das notificações.
+          </p>
+
+          <button
+            onclick="ativarNotificacoesPush()"
+          >
+            🔔 Tentar ativar novamente
+          </button>
+
+          `
+
+        );
+
+      });
 
     return;
 
   }
 
 
-  const html =
-    noticias
-      .map(n => `
-
-        <button
-          type="button"
-          onclick="
-            abrirNoticiaPorId(
-              '${esc(n.id)}'
-            )
-          "
-          style="
-            width:100%;
-            text-align:left;
-            margin-bottom:8px;
-            padding:12px;
-            border:1px solid var(--border);
-            border-radius:12px;
-            background:var(--bg);
-            color:var(--txt);
-            cursor:pointer;
-          "
-        >
-
-          <strong>
-            ${esc(
-              obterTitulo(n)
-            )}
-          </strong>
-
-        </button>
-
-      `)
-      .join("");
-
-
   abrirModal(
 
-    "🔔 Últimas novidades",
+    "🔔 Notificações",
 
-    botaoPush + html
+    `
+
+    <div style="text-align:center">
+
+      <div style="font-size:45px">
+        ⚠️
+      </div>
+
+      <h3>
+        Notificações não disponíveis
+      </h3>
+
+      <p style="color:var(--muted)">
+        Este navegador não suporta
+        notificações Push.
+      </p>
+
+    </div>
+
+    `
 
   );
 
