@@ -10,7 +10,7 @@ const SUPABASE_KEY =
 "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
 const VAPID_PUBLIC_KEY =
-   BE5MvLpgL_DxACi7xsukJpfGwlK-z4PMzCfGxkn1L68d8gdfKg8Udfs7-GDHe4L6hRVBWadsQfqYMolTAEeJezQ
+  "BE5MvLpgL_DxACi7xsukJpfGwlK-z4PMzCfGxkn1L68d8gdfKg8Udfs7-GDHe4L6hRVBWadsQfqYMolTAEeJezQ";
 
 let db = null;
 
