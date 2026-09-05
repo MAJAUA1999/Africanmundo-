@@ -13,6 +13,112 @@
 
 <link rel="stylesheet" href="style.css">
 
+  <style>
+
+/* ==========================================
+   PAINEL ADMIN — RESPONSIVO
+========================================== */
+
+html,
+body{
+  width:100%;
+  max-width:100%;
+  overflow-x:hidden;
+}
+
+.admin-wrap{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+  padding:12px;
+}
+
+.panel{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.admin-grid{
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.admin-grid > div{
+  min-width:0;
+  max-width:100%;
+}
+
+input,
+select,
+textarea,
+button{
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+textarea{
+  width:100%;
+  min-height:180px;
+}
+
+input[type="file"]{
+  width:100%;
+  max-width:100%;
+}
+
+@media(max-width:700px){
+
+  .admin-wrap{
+    padding:8px;
+  }
+
+  .panel{
+    padding:14px !important;
+  }
+
+  .admin-grid{
+    display:block !important;
+  }
+
+  .admin-grid > div{
+    width:100%;
+    margin-bottom:20px;
+  }
+
+  .section-title{
+    flex-wrap:wrap;
+    gap:8px;
+  }
+
+  .section-title h1{
+    font-size:21px;
+  }
+
+  h1{
+    font-size:22px;
+  }
+
+  h2{
+    font-size:18px;
+  }
+
+  input,
+  select,
+  textarea{
+    width:100%;
+    font-size:16px;
+  }
+
+  button{
+    max-width:100%;
+  }
+
+}
+
+  </style>
+  
 </head>
 
 <body>
