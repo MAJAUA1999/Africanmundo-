@@ -682,37 +682,26 @@ async function partilhar(){
 
   try{
 
-    const resposta =
-      await fetch(foto.src);
+    let url = foto.src;
 
-    if(!resposta.ok)
-      throw new Error(
-        "Falha ao obter a imagem"
-      );
+    const separador =
+      url.includes("?") ? "&" : "?";
 
-    const blob =
-      await resposta.blob();
-
-    const url =
-      URL.createObjectURL(blob);
+    url +=
+      separador +
+      "download=africanmundo-foto.jpg";
 
     const a =
       document.createElement("a");
 
     a.href = url;
-
-    a.download =
-      "africanmundo-foto.jpg";
+    a.download = "africanmundo-foto.jpg";
 
     document.body.appendChild(a);
 
     a.click();
 
     a.remove();
-
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 1000);
 
   }catch(e){
 
@@ -722,7 +711,7 @@ async function partilhar(){
     );
 
     alert(
-      "⚠️ Não foi possível guardar a foto automaticamente."
+      "⚠️ Não foi possível guardar a foto."
     );
 
   }
