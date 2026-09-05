@@ -713,32 +713,19 @@ function renderizarPagina(){
     const categoria =
       normalizarCategoria(
         n.categoria
-      )
-      .trim()
-      .toLowerCase();
+      );
 
     const categoriaNormalizada =
-      cat
-        .trim()
-        .toLowerCase();
+      normalizarCategoria(
+        cat
+      );
 
     return (
-      categoria === categoriaNormalizada ||
-
-      (
-        categoriaNormalizada === "mocambique" &&
-        categoria === "moçambique"
-      ) ||
-
-      (
-        categoriaNormalizada === "moçambique" &&
-        categoria === "mocambique"
-      )
+      categoria ===
+      categoriaNormalizada
     );
 
   });
-
-
       const selecionadas =
         embaralhar(
           listaCategoria
