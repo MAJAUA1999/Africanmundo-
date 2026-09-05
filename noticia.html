@@ -387,20 +387,14 @@ async function carregar(){
       await db
         .from("noticias")
         .select("*")
-        .order("id",{ascending:false});
+        .eq("id", id)
+        .single();
 
     if(resultado.error)
       throw resultado.error;
 
-    todasNoticias =
-      Array.isArray(resultado.data)
-        ? resultado.data
-        : [];
-
     noticiaAtual =
-      todasNoticias.find(
-        n => String(n.id) === String(id)
-      );
+      resultado.data;
 
     if(!noticiaAtual){
 
@@ -413,14 +407,14 @@ async function carregar(){
     }
 
     mostrarNoticia(
-  noticiaAtual
-);
+      noticiaAtual
+    );
 
-contarVisualizacao(
-  noticiaAtual.id
-);
+    contarVisualizacao(
+      noticiaAtual.id
+    );
 
-mostrarMaisNoticias();
+    mostrarMaisNoticias();
 
   }catch(error){
 
