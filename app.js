@@ -707,22 +707,35 @@ function renderizarPagina(){
     categorias.forEach(cat => {
 
       const listaCategoria =
-        noticias.filter(n => {
+  noticias.filter(n => {
 
-          const categoria =
-            normalizarCategoria(
-              n.categoria
-            );
+    const categoria =
+      normalizarCategoria(
+        n.categoria
+      )
+      .trim()
+      .toLowerCase();
 
-          return categoria
-            .trim()
-            .toLowerCase()
-            ===
-            cat
-              .trim()
-              .toLowerCase();
+    const categoriaNormalizada =
+      cat
+        .trim()
+        .toLowerCase();
 
-        });
+    return (
+      categoria === categoriaNormalizada ||
+
+      (
+        categoriaNormalizada === "mocambique" &&
+        categoria === "moçambique"
+      ) ||
+
+      (
+        categoriaNormalizada === "moçambique" &&
+        categoria === "mocambique"
+      )
+    );
+
+  });
 
 
       const selecionadas =
