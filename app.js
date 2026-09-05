@@ -399,43 +399,40 @@ const estiloNoticias =
 
 estiloNoticias.textContent = `
 
-  .carregandoNoticias
   #ultimas,
-  .carregandoNoticias
   #futebol,
-  .carregandoNoticias
   #mocambique,
-  .carregandoNoticias
   #africa,
-  .carregandoNoticias
   #negocios,
-  .carregandoNoticias
   #entretenimento,
-  .carregandoNoticias
+  #desporto{
+
+    transition:opacity .15s ease;
+
+  }
+
+  body.carregandoNoticias
+  #ultimas,
+  body.carregandoNoticias
+  #futebol,
+  body.carregandoNoticias
+  #mocambique,
+  body.carregandoNoticias
+  #africa,
+  body.carregandoNoticias
+  #negocios,
+  body.carregandoNoticias
+  #entretenimento,
+  body.carregandoNoticias
   #desporto{
 
     opacity:0;
 
   }
 
-  #ultimas,
-  #futebol,
-  #mocambique,
-  #africa,
-  #negocios,
-  #entretenimento,
-  #desporto{
-
-    transition:
-      opacity .15s ease,
-      transform .15s ease;
-
-  }
-
   .noticiasProntas{
 
     opacity:1 !important;
-    transform:translateY(0);
 
   }
 
@@ -445,71 +442,43 @@ document.head.appendChild(
   estiloNoticias
 );
 
-/* ==========================================
-   EFEITO RÁPIDO DAS NOTÍCIAS
-========================================== */
-
-const estiloNoticias =
-  document.createElement("style");
-
-estiloNoticias.textContent = `
-
-  .carregandoNoticias #ultimas,
-  .carregandoNoticias #futebol,
-  .carregandoNoticias #mocambique,
-  .carregandoNoticias #africa,
-  .carregandoNoticias #negocios,
-  .carregandoNoticias #entretenimento,
-  .carregandoNoticias #desporto {
-    opacity: 0;
-  }
-
-  #ultimas,
-  #futebol,
-  #mocambique,
-  #africa,
-  #negocios,
-  #entretenimento,
-  #desporto {
-    transition: opacity .15s ease;
-  }
-
-  .noticiasProntas {
-    opacity: 1 !important;
-  }
-
-`;
-
-document.head.appendChild(
-  estiloNoticias
-);
 
 /* ==========================================
-CARREGAR NOTÍCIAS — MAIS RÁPIDO
+   CARREGAR NOTÍCIAS — RÁPIDO
 ========================================== */
 
 async function carregarNoticias(){
 
-  if(
-    !db &&
-    !iniciarSupabase()
-  ){
+  /* CARREGAMENTO VISUAL */
+  document.body.classList.add(
+    "carregandoNoticias"
+  );
 
-    mostrarErro(
-      "Supabase não disponível."
-    );
-
-    return;
-
-  }
-
-/* CARREGAMENTO VISUAL */
-document.body.classList.add("carregandoNoticias");
   try{
 
+    /* GARANTIR SUPABASE */
+
+    if(!db){
+
+      const iniciado =
+        iniciarSupabase();
+
+      if(!iniciado || !db){
+
+        throw new Error(
+          "Supabase não disponível."
+        );
+
+      }
+
+    }
+
+
     /*
-      LIMITAMOS A QUANTIDADE
-      PARA O SITE ABRIR MAIS RÁPIDO
+      BUSCAR SOMENTE O NECESSÁRIO
+
+      30 notícias são suficientes
+      para a página inicial.
     */
 
     const resultado =
@@ -524,7 +493,7 @@ document.body.classList.add("carregandoNoticias");
             ascending:false
           }
         )
-        
+        .limit(30);
 
 
     if(resultado.error){
@@ -534,60 +503,78 @@ document.body.classList.add("carregandoNoticias");
     }
 
 
+    /* GUARDAR NOTÍCIAS */
+
     window.__noticias =
-      Array.isArray(
-        resultado.data
-      )
+      Array.isArray(resultado.data)
       ? resultado.data
       : [];
 
 
     /*
-      RENDERIZA IMEDIATAMENTE
-      ASSIM QUE OS DADOS CHEGAM
+      RENDERIZAR IMEDIATAMENTE
     */
 
     renderizarPagina();
 
-document.body.classList.remove(
-  "carregandoNoticias"
-);
 
-[
-  "ultimas",
-  "futebol",
-  "mocambique",
-  "africa",
-  "negocios",
-  "entretenimento",
-  "desporto"
-].forEach(id => {
+    /*
+      MOSTRAR CONTEÚDO
+    */
 
-  const el =
-    document.getElementById(id);
-
-  if(el){
-
-    el.classList.add(
-      "noticiasProntas"
+    document.body.classList.remove(
+      "carregandoNoticias"
     );
 
-  }
 
-});
-    
+    [
+      "ultimas",
+      "futebol",
+      "mocambique",
+      "africa",
+      "negocios",
+      "entretenimento",
+      "desporto"
+    ].forEach(id => {
+
+      const el =
+        document.getElementById(id);
+
+      if(el){
+
+        el.classList.add(
+          "noticiasProntas"
+        );
+
+      }
+
+    });
+
+
+    console.log(
+      "✅ Notícias carregadas:",
+      window.__noticias.length
+    );
+
+
     /*
-      NOTIFICAÇÕES FICAM DEPOIS
-      DO CARREGAMENTO VISUAL
+      NOTIFICAÇÕES DEPOIS
     */
 
     setTimeout(() => {
 
       try{
 
-        atualizarNotificacoes(
-          window.__noticias
-        );
+        if(
+          typeof atualizarNotificacoes ===
+          "function"
+        ){
+
+          atualizarNotificacoes(
+            window.__noticias
+          );
+
+        }
 
       }catch(e){
 
@@ -598,13 +585,7 @@ document.body.classList.remove(
 
       }
 
-    },100);
-
-
-    console.log(
-      "✅ Notícias carregadas:",
-      window.__noticias.length
-    );
+    },50);
 
 
   }catch(e){
@@ -614,6 +595,12 @@ document.body.classList.remove(
       e
     );
 
+
+    document.body.classList.remove(
+      "carregandoNoticias"
+    );
+
+
     mostrarErro(
       e.message ||
       "Não foi possível carregar as notícias."
@@ -621,7 +608,12 @@ document.body.classList.remove(
 
   }
 
-    }
+}
+
+
+/* ==========================================
+   RENDERIZAR PÁGINA
+========================================== */
 
 function renderizarPagina(){
 
@@ -630,28 +622,35 @@ function renderizarPagina(){
     ? [...window.__noticias]
     : [];
 
-  if(!noticias.length)return;
 
+  if(!noticias.length){
 
-  /* EMBARALHAR */
+    console.warn(
+      "⚠️ Nenhuma notícia encontrada."
+    );
 
-  function embaralhar(lista){
-
-    return lista
-      .map(n => ({
-        n,
-        ordem:Math.random()
-      }))
-      .sort(
-        (a,b) =>
-          a.ordem-b.ordem
-      )
-      .map(x => x.n);
+    return;
 
   }
 
 
-  /* DESTAQUE ALEATÓRIO */
+  /* ========================================
+     EMBARALHAR
+  ======================================== */
+
+  function embaralhar(lista){
+
+    return [...lista]
+      .sort(
+        () => Math.random() - 0.5
+      );
+
+  }
+
+
+  /* ========================================
+     DESTAQUE ALEATÓRIO
+  ======================================== */
 
   const destaque =
     noticias[
@@ -661,68 +660,87 @@ function renderizarPagina(){
       )
     ];
 
-  renderizarDestaque(
-    destaque
-  );
 
+  if(
+    typeof renderizarDestaque ===
+    "function"
+  ){
 
-  /* ÚLTIMAS NOTÍCIAS */
-
-  renderizarLista(
-    "ultimas",
-    noticias.slice(0,4)
-  );
-
-
-  /* CATEGORIAS */
-
-  const categorias = [
-
-    "futebol",
-    "mocambique",
-    "africa",
-    "negocios",
-    "entretenimento",
-    "desporto"
-
-  ];
-
-
-  categorias.forEach(cat => {
-
-    const listaCategoria =
-  noticias.filter(n => {
-
-    const categoria =
-      normalizarCategoria(
-        n.categoria
-      );
-
-    return categoria
-      .trim()
-      .toLowerCase()
-      === cat
-        .trim()
-        .toLowerCase();
-
-  });
-
-
-    const selecionadas =
-      embaralhar(
-        listaCategoria
-      );
-
-
-    renderizarLista(
-      cat,
-      selecionadas
+    renderizarDestaque(
+      destaque
     );
 
-  });
+  }
+
+
+  /* ========================================
+     ÚLTIMAS NOTÍCIAS
+  ======================================== */
+
+  if(
+    typeof renderizarLista ===
+    "function"
+  ){
+
+    renderizarLista(
+      "ultimas",
+      noticias.slice(0,4)
+    );
+
+
+    /* ======================================
+       CATEGORIAS
+    ====================================== */
+
+    const categorias = [
+
+      "futebol",
+      "mocambique",
+      "africa",
+      "negocios",
+      "entretenimento",
+      "desporto"
+
+    ];
+
+
+    categorias.forEach(cat => {
+
+      const listaCategoria =
+        noticias.filter(n => {
+
+          const categoria =
+            normalizarCategoria(
+              n.categoria
+            );
+
+          return categoria
+            .trim()
+            .toLowerCase()
+            ===
+            cat
+              .trim()
+              .toLowerCase();
+
+        });
+
+
+      const selecionadas =
+        embaralhar(
+          listaCategoria
+        );
+
+
+      renderizarLista(
+        cat,
+        selecionadas.slice(0,4)
+      );
+
+    });
+
+  }
 
 }
-
 
 /* ==========================================
 ERRO
