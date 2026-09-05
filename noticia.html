@@ -439,29 +439,19 @@ async function contarVisualizacao(noticiaId){
 
   try{
 
-    const noticia =
-      await db
-        .from("noticias")
-        .select("visualizacoes")
-        .eq("id", noticiaId)
-        .single();
+    const resultado =
+      await db.rpc(
+        "incrementar_visualizacao",
+        {
+          noticia_id: noticiaId
+        }
+      );
 
-    if(noticia.error)
-      throw noticia.error;
-
-    const atual =
-      Number(noticia.data?.visualizacoes || 0);
-
-    await db
-      .from("noticias")
-      .update({
-        visualizacoes: atual + 1
-      })
-      .eq("id", noticiaId);
+    if(resultado.error)
+      throw resultado.error;
 
     console.log(
-      "Visualização registrada:",
-      atual + 1
+      "Visualização registrada com sucesso."
     );
 
   }catch(error){
@@ -473,8 +463,7 @@ async function contarVisualizacao(noticiaId){
 
   }
 
-     }
-  
+}
 
 /* MOSTRAR NOTÍCIA */
 
