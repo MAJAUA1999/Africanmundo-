@@ -476,25 +476,21 @@ async function carregarNoticias(){
 
 
     /*
-      BUSCAR SOMENTE O NECESSÁRIO
+  BUSCAR NOTÍCIAS
+*/
 
-      30 notícias são suficientes
-      para a página inicial.
-    */
-
-    const resultado =
-      await db
-        .from("noticias")
-        .select(
-          "id,titulo,texto,imagem,categoria,data,fonte,url_original"
-        )
-        .order(
-          "id",
-          {
-            ascending:false
-          }
-        )
-        .limit(30);
+const resultado =
+  await db
+    .from("noticias")
+    .select(
+      "id,titulo,texto,imagem,categoria,data,fonte,url_original"
+    )
+    .order(
+      "id",
+      {
+        ascending:false
+      }
+    );
 
 
     if(resultado.error){
