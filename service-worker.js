@@ -36,31 +36,27 @@ self.addEventListener("push", function(event){
 
   const opcoes = {
 
-    body: texto,
+  body: texto,
 
-    icon:
-      imagem ||
-      "/Africanmundo-/favicon.ico",
+  icon:
+    "/Africanmundo-/favicon.ico",
 
-    badge:
-      "/Africanmundo-/favicon.ico",
+  badge:
+    "/Africanmundo-/favicon.ico",
 
-    image:
-      imagem || undefined,
+  data: {
+    url: url
+  },
 
-    data: {
-      url: url
-    },
+  vibrate: [
+    200,
+    100,
+    200
+  ],
 
-    vibrate: [
-      200,
-      100,
-      200
-    ],
+  requireInteraction: false
 
-    requireInteraction: false
-
-  };
+};
 
   event.waitUntil(
 
