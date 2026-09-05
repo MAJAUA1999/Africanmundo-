@@ -710,32 +710,15 @@ function renderizarPagina(){
 const listaCategoria =
   noticias.filter(n => {
 
-    const categoria =
+    return (
       normalizarCategoria(
         n.categoria
-      );
-
-    if(cat === "mocambique"){
-
-      return (
-        categoria.includes("mocambique") ||
-        categoria.includes("mozambique")
-      );
-
-    }
-
-    if(cat === "africa"){
-
-      return categoria.includes(
-        "africa"
-      );
-
-    }
-
-    return categoria ===
-      normalizarCategoria(cat);
+      ) ===
+      normalizarCategoria(cat)
+    );
 
   });
+      
       const selecionadas =
         embaralhar(
           listaCategoria
