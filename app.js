@@ -173,7 +173,7 @@ function abrirNoticiaPorId(id){
 
 
 /* ==========================================
-CARD COMPACTO
+   CARD COMPACTO
 ========================================== */
 
 function criarCard(n){
@@ -189,6 +189,7 @@ function criarCard(n){
   card.onclick = () =>
     abrirNoticia(n);
 
+
   const img =
     obterImagem(n);
 
@@ -198,6 +199,7 @@ function criarCard(n){
   const cat =
     n?.categoria ||
     "Notícias";
+
 
   card.innerHTML = `
 
@@ -209,9 +211,7 @@ function criarCard(n){
           src="${esc(img)}"
           alt="${esc(tit)}"
           loading="lazy"
-          onerror="
-            this.style.display='none'
-          "
+          onerror="this.outerHTML='<div class=\\'compact-img\\'>🌍</div>'"
         >
       `
       :
@@ -221,6 +221,7 @@ function criarCard(n){
         </div>
       `
     }
+
 
     <div class="compact-body">
 
@@ -236,10 +237,10 @@ function criarCard(n){
 
   `;
 
+
   return card;
 
 }
-
 
 /* ==========================================
 RENDERIZAR LISTA
