@@ -539,84 +539,110 @@ function mostrarNoticia(n){
 
 /* MAIS NOTÍCIAS */
 
-function mostrarMaisNoticias(){
+async function mostrarMaisNoticias(){
 
   const area =
     document.getElementById(
       "maisNoticias"
     );
 
-  const outras =
-    todasNoticias
-      .filter(
-        n =>
-          String(n.id) !==
-          String(id)
-      )
-      .slice(0,6);
+  if(!area) return;
 
-  area.innerHTML = "";
+  try{
 
-  if(!outras.length){
+    const resultado =
+      await db
+        .from("noticias")
+        .select("*")
+        .neq("id", id)
+        .order("id", {
+          ascending:false
+        })
+        .limit(6);
+
+    if(resultado.error)
+      throw resultado.error;
+
+    const outras =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+    area.innerHTML = "";
+
+    if(!outras.length){
+
+      area.innerHTML =
+        `<div class="loading">
+          Não existem outras notícias.
+        </div>`;
+
+      return;
+    }
+
+    outras.forEach(n => {
+
+      const card =
+        document.createElement("article");
+
+      card.className =
+        "news-card";
+
+      card.onclick = () =>
+        abrirNoticia(n.id);
+
+      const img =
+        imagem(n);
+
+      card.innerHTML = `
+
+        ${
+          img
+          ? `<img
+              src="${esc(img)}"
+              alt="${esc(titulo(n))}"
+              loading="lazy"
+              onerror="this.style.display='none'"
+            >`
+          : `<div class="no-image">🌍</div>`
+        }
+
+        <div class="news-content">
+
+          <div class="news-category">
+            ${esc(cat(n))}
+          </div>
+
+          <div class="news-title">
+            ${esc(titulo(n))}
+          </div>
+
+          <div class="news-date">
+            ${esc(data(n))}
+          </div>
+
+        </div>
+      `;
+
+      area.appendChild(card);
+
+    });
+
+  }catch(error){
+
+    console.error(
+      "Erro ao carregar mais notícias:",
+      error
+    );
 
     area.innerHTML =
       `<div class="loading">
-        Não existem outras notícias.
+        ⚠️ Não foi possível carregar mais notícias.
       </div>`;
 
-    return;
   }
 
-  outras.forEach(n => {
-
-    const card =
-      document.createElement("article");
-
-    card.className =
-      "news-card";
-
-    card.onclick = () =>
-      abrirNoticia(n.id);
-
-    const img =
-      imagem(n);
-
-    card.innerHTML = `
-
-      ${
-        img
-        ? `<img
-            src="${esc(img)}"
-            alt="${esc(titulo(n))}"
-            loading="lazy"
-            onerror="this.style.display='none'"
-          >`
-        : `<div class="no-image">🌍</div>`
-      }
-
-      <div class="news-content">
-
-        <div class="news-category">
-          ${esc(cat(n))}
-        </div>
-
-        <div class="news-title">
-          ${esc(titulo(n))}
-        </div>
-
-        <div class="news-date">
-          ${esc(data(n))}
-        </div>
-
-      </div>
-    `;
-
-    area.appendChild(card);
-
-  });
-
 }
-
 
 /* ABRIR OUTRA */
 
