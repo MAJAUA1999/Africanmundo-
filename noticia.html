@@ -673,62 +673,30 @@ async function partilhar(){
 
 }
 
-  async function guardarFoto(){
+  function guardarFoto(){
 
   const foto =
     document.getElementById("fotoNoticia");
 
   if(!foto?.src) return;
 
-  try{
+  const a =
+    document.createElement("a");
 
-    const resposta =
-      await fetch(foto.src);
+  a.href = foto.src;
 
-    if(!resposta.ok){
-      throw new Error(
-        "Falha ao obter a imagem"
-      );
+  a.download =
+    "africanmundo-foto.jpg";
+
+  a.target = "_blank";
+
+  document.body.appendChild(a);
+
+  a.click();
+
+  a.remove();
+
     }
-
-    const blob =
-      await resposta.blob();
-
-    const url =
-      URL.createObjectURL(blob);
-
-    const a =
-      document.createElement("a");
-
-    a.href = url;
-
-    a.download =
-      "africanmundo-foto.jpg";
-
-    document.body.appendChild(a);
-
-    a.click();
-
-    a.remove();
-
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 1500);
-
-  }catch(e){
-
-    console.error(
-      "Erro ao guardar foto:",
-      e
-    );
-
-    alert(
-      "⚠️ Não foi possível guardar esta foto."
-    );
-
-  }
-
-  }
 
  if(localStorage.getItem("am_dark")==="true"){
     document.body.classList.add("dark");
