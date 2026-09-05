@@ -707,7 +707,7 @@ function renderizarPagina(){
 
     categorias.forEach(cat => {
 
-      const listaCategoria =
+const listaCategoria =
   noticias.filter(n => {
 
     const categoria =
@@ -715,15 +715,25 @@ function renderizarPagina(){
         n.categoria
       );
 
-    const categoriaNormalizada =
-      normalizarCategoria(
-        cat
+    if(cat === "mocambique"){
+
+      return (
+        categoria.includes("mocambique") ||
+        categoria.includes("mozambique")
       );
 
-    return (
-      categoria ===
-      categoriaNormalizada
-    );
+    }
+
+    if(cat === "africa"){
+
+      return categoria.includes(
+        "africa"
+      );
+
+    }
+
+    return categoria ===
+      normalizarCategoria(cat);
 
   });
       const selecionadas =
