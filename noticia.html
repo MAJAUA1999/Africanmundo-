@@ -733,6 +733,83 @@ async function partilhar(){
     document.body.classList.add("dark");
   } 
 
+  function abrirFotoGrande(url){
+
+  if(!url) return;
+
+  const fundo =
+    document.createElement("div");
+
+  fundo.id = "fotoGrande";
+
+  fundo.style.cssText = `
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    background:rgba(0,0,0,.92);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:15px;
+    cursor:zoom-out;
+  `;
+
+  fundo.innerHTML = `
+    <button
+      onclick="fecharFotoGrande(event)"
+      style="
+        position:absolute;
+        top:15px;
+        right:15px;
+        width:42px;
+        height:42px;
+        border:0;
+        border-radius:50%;
+        background:#fff;
+        color:#111;
+        font-size:22px;
+        font-weight:bold;
+        z-index:2;
+      "
+    >✕</button>
+
+    <img
+      src="${esc(url)}"
+      style="
+        max-width:100%;
+        max-height:92vh;
+        object-fit:contain;
+        border-radius:8px;
+      "
+    >
+  `;
+
+  fundo.onclick = function(e){
+
+    if(e.target === fundo){
+      fecharFotoGrande();
+    }
+
+  };
+
+  document.body.appendChild(fundo);
+
+}
+
+
+function fecharFotoGrande(e){
+
+  if(e) e.stopPropagation();
+
+  const foto =
+    document.getElementById("fotoGrande");
+
+  if(foto){
+    foto.remove();
+  }
+
+}
+  
 /* INICIAR */
 
 document.addEventListener(
