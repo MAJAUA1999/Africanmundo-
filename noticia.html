@@ -419,6 +419,127 @@ function data(n){
   );
 }
 
+  function atualizarSEO(n){
+
+  if(!n) return;
+
+  const tituloNoticia =
+    n.titulo ||
+    "Notícia";
+
+  const descricao =
+    (n.texto || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 160);
+
+  const imagemNoticia =
+    n.imagem ||
+    "";
+
+  const urlNoticia =
+    window.location.href;
+
+  document.title =
+    tituloNoticia +
+    " — AfricanMundo";
+
+  const metaDescription =
+    document.querySelector(
+      'meta[name="description"]'
+    );
+
+  if(metaDescription){
+    metaDescription.setAttribute(
+      "content",
+      descricao ||
+      "Leia as últimas notícias no AfricanMundo."
+    );
+  }
+
+  const canonical =
+    document.getElementById(
+      "canonical-url"
+    );
+
+  if(canonical){
+    canonical.href =
+      urlNoticia;
+  }
+
+  const ogTitle =
+    document.getElementById(
+      "og-title"
+    );
+
+  if(ogTitle){
+    ogTitle.content =
+      tituloNoticia +
+      " — AfricanMundo";
+  }
+
+  const ogDescription =
+    document.getElementById(
+      "og-description"
+    );
+
+  if(ogDescription){
+    ogDescription.content =
+      descricao;
+  }
+
+  const ogImage =
+    document.getElementById(
+      "og-image"
+    );
+
+  if(ogImage){
+    ogImage.content =
+      imagemNoticia;
+  }
+
+  const ogUrl =
+    document.getElementById(
+      "og-url"
+    );
+
+  if(ogUrl){
+    ogUrl.content =
+      urlNoticia;
+  }
+
+  const twitterTitle =
+    document.getElementById(
+      "twitter-title"
+    );
+
+  if(twitterTitle){
+    twitterTitle.content =
+      tituloNoticia +
+      " — AfricanMundo";
+  }
+
+  const twitterDescription =
+    document.getElementById(
+      "twitter-description"
+    );
+
+  if(twitterDescription){
+    twitterDescription.content =
+      descricao;
+  }
+
+  const twitterImage =
+    document.getElementById(
+      "twitter-image"
+    );
+
+  if(twitterImage){
+    twitterImage.content =
+      imagemNoticia;
+  }
+
+  }
 
 /* CARREGAR */
 
@@ -454,6 +575,10 @@ async function carregar(){
 
     noticiaAtual =
       resultado.data;
+
+    atualizarSEO(
+  noticiaAtual
+);
 
     if(!noticiaAtual){
 
