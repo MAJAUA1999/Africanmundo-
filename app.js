@@ -632,30 +632,28 @@ function renderizarPagina(){
 
 
   /* ========================================
-     EMBARALHAR
+     ORDENAR POR MAIS RECENTES
   ======================================== */
 
-  function embaralhar(lista){
+  noticias.sort((a,b) => {
 
-    return [...lista]
-      .sort(
-        () => Math.random() - 0.5
-      );
+    const idA =
+      Number(a?.id) || 0;
 
-  }
+    const idB =
+      Number(b?.id) || 0;
+
+    return idB - idA;
+
+  });
 
 
   /* ========================================
-     DESTAQUE ALEATÓRIO
+     DESTAQUE
   ======================================== */
 
   const destaque =
-    noticias[
-      Math.floor(
-        Math.random() *
-        noticias.length
-      )
-    ];
+    noticias[0];
 
 
   if(
@@ -686,7 +684,7 @@ function renderizarPagina(){
 
 
     /* ======================================
-       CATEGORIAS
+       TODAS AS CATEGORIAS
     ====================================== */
 
     const categorias = [
@@ -703,27 +701,45 @@ function renderizarPagina(){
 
     categorias.forEach(cat => {
 
-const listaCategoria =
-  noticias.filter(n => {
 
-    return (
-      normalizarCategoria(
-        n.categoria
-      ) ===
-      normalizarCategoria(cat)
-    );
+      /* ====================================
+         FILTRAR PELA CATEGORIA REAL
+      ==================================== */
 
-  });
-      
-      const selecionadas =
-        embaralhar(
-          listaCategoria
-        );
+      const listaCategoria =
+        noticias.filter(n => {
 
+          return (
+            normalizarCategoria(
+              n?.categoria
+            ) ===
+            normalizarCategoria(
+              cat
+            )
+          );
+
+        });
+
+
+      /* ====================================
+         MOSTRAR AS 4 MAIS RECENTES
+      ==================================== */
 
       renderizarLista(
         cat,
-        selecionadas.slice(0,4)
+        listaCategoria.slice(0,4)
+      );
+
+
+      /* ====================================
+         DEBUG
+      ==================================== */
+
+      console.log(
+        "📂 Categoria:",
+        cat,
+        "| Notícias:",
+        listaCategoria.length
       );
 
     });
