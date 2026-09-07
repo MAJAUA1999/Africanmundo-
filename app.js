@@ -716,16 +716,10 @@ function renderizarPagina(){
         });
 
 
-      const selecionadas =
-        embaralhar(
-          listaCategoria
-        );
-
-
       renderizarLista(
-        cat,
-        selecionadas.slice(0,4)
-      );
+  cat,
+  listaCategoria.slice(0,4)
+);
 
     });
 
