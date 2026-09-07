@@ -632,28 +632,30 @@ function renderizarPagina(){
 
 
   /* ========================================
-     ORDENAR POR MAIS RECENTES
+     EMBARALHAR
   ======================================== */
 
-  noticias.sort((a,b) => {
+  function embaralhar(lista){
 
-    const idA =
-      Number(a?.id) || 0;
+    return [...lista]
+      .sort(
+        () => Math.random() - 0.5
+      );
 
-    const idB =
-      Number(b?.id) || 0;
-
-    return idB - idA;
-
-  });
+  }
 
 
   /* ========================================
-     DESTAQUE
+     DESTAQUE ALEATÓRIO
   ======================================== */
 
   const destaque =
-    noticias[0];
+    noticias[
+      Math.floor(
+        Math.random() *
+        noticias.length
+      )
+    ];
 
 
   if(
@@ -684,7 +686,7 @@ function renderizarPagina(){
 
 
     /* ======================================
-       TODAS AS CATEGORIAS
+       CATEGORIAS
     ====================================== */
 
     const categorias = [
@@ -701,45 +703,28 @@ function renderizarPagina(){
 
     categorias.forEach(cat => {
 
-
-      /* ====================================
-         FILTRAR PELA CATEGORIA REAL
-      ==================================== */
-
       const listaCategoria =
         noticias.filter(n => {
 
           return (
             normalizarCategoria(
-              n?.categoria
+              n.categoria
             ) ===
-            normalizarCategoria(
-              cat
-            )
+            normalizarCategoria(cat)
           );
 
         });
 
 
-      /* ====================================
-         MOSTRAR AS 4 MAIS RECENTES
-      ==================================== */
+      const selecionadas =
+        embaralhar(
+          listaCategoria
+        );
+
 
       renderizarLista(
         cat,
-        listaCategoria.slice(0,4)
-      );
-
-
-      /* ====================================
-         DEBUG
-      ==================================== */
-
-      console.log(
-        "📂 Categoria:",
-        cat,
-        "| Notícias:",
-        listaCategoria.length
+        selecionadas.slice(0,4)
       );
 
     });
