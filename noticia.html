@@ -66,6 +66,32 @@
   content=""
 >
 
+<meta name="robots" content="index, follow, max-image-preview:large">
+
+<script id="schema-news" type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "NewsArticle",
+  "headline": "AfricanMundo — Notícia",
+  "description": "Leia as últimas notícias de África e do mundo no AfricanMundo.",
+  "image": [],
+  "datePublished": "",
+  "dateModified": "",
+  "author": {
+    "@type": "Organization",
+    "name": "AfricanMundo"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "AfricanMundo"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": ""
+  }
+}
+</script>
+  
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
 <style>
@@ -536,12 +562,85 @@ document.title =
       "twitter-image"
     );
 
-  if(twitterImage){
+    if(twitterImage){
     twitterImage.content =
       imagemNoticia;
   }
 
+
+  /* SCHEMA NEWSARTICLE */
+
+  const schema =
+    document.getElementById("schema-news");
+
+  if(schema){
+
+    const schemaData = {
+
+      "@context":
+        "https://schema.org",
+
+      "@type":
+        "NewsArticle",
+
+      "headline":
+        tituloNoticia,
+
+      "description":
+        descricao ||
+        "Leia as últimas notícias no AfricanMundo.",
+
+      "image":
+        imagemNoticia
+          ? [imagemNoticia]
+          : [],
+
+      "datePublished":
+        n.created_at ||
+        n.data ||
+        "",
+
+      "dateModified":
+        n.updated_at ||
+        n.created_at ||
+        n.data ||
+        "",
+
+      "author":{
+        "@type":
+          "Organization",
+
+        "name":
+          "AfricanMundo"
+      },
+
+      "publisher":{
+        "@type":
+          "Organization",
+
+        "name":
+          "AfricanMundo"
+      },
+
+      "mainEntityOfPage":{
+        "@type":
+          "WebPage",
+
+        "@id":
+          urlNoticia
+      }
+
+    };
+
+    schema.textContent =
+      JSON.stringify(
+        schemaData
+      );
+
   }
+
+  }
+      
 
 /* CARREGAR */
 
