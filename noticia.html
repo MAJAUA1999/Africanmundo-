@@ -675,21 +675,21 @@ async function carregar(){
       throw resultado.error;
 
     noticiaAtual =
-      resultado.data;
+  resultado.data;
 
-    atualizarSEO(
+if(!noticiaAtual){
+
+  area.innerHTML =
+    `<div class="loading">
+      ❌ Esta notícia não existe.
+    </div>`;
+
+  return;
+}
+
+atualizarSEO(
   noticiaAtual
 );
-
-    if(!noticiaAtual){
-
-      area.innerHTML =
-        `<div class="loading">
-          ❌ Esta notícia não existe.
-        </div>`;
-
-      return;
-    }
 
     mostrarNoticia(
       noticiaAtual
