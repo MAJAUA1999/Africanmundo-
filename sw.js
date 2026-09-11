@@ -1,8 +1,10 @@
-const CACHE_NAME = "africanmundo-v3";
+const CACHE_NAME = "africanmundo-v4";
 
 const ARQUIVOS = [
   "./index.html",
-  "./manifest.json"
+  "./manifest.json",
+  "./estilo.css",
+  "./app.js"
 ];
 
 
@@ -42,8 +44,14 @@ self.addEventListener("activate", event => {
         return Promise.all(
 
           chaves
-            .filter(chave => chave !== CACHE_NAME)
-            .map(chave => caches.delete(chave))
+            .filter(
+              chave =>
+                chave !== CACHE_NAME
+            )
+            .map(
+              chave =>
+                caches.delete(chave)
+            )
 
         );
 
@@ -130,6 +138,8 @@ self.addEventListener(
 
   }
 );
+
+
 /* =========================================
    CLIQUE NA NOTIFICAÇÃO
 ========================================= */
@@ -188,7 +198,7 @@ self.addEventListener(
 
 
 /* =========================================
-   FETCH / INTERNET + CACHE
+   FETCH / CACHE
 ========================================= */
 
 self.addEventListener(
@@ -201,8 +211,11 @@ self.addEventListener(
       );
 
 
-    /* Não interferir no painel
-       nem no Supabase */
+    /*
+      Não interferir no painel,
+      Supabase ou outros pedidos
+      externos.
+    */
 
     if (
       url.pathname.includes("admin") ||
@@ -215,23 +228,65 @@ self.addEventListener(
     }
 
 
+    /*
+      Só tratar pedidos GET.
+    */
+
+    if (
+      event.request.method !== "GET"
+    ) {
+
+      return;
+
+    }
+
+
+    /*
+      Para ficheiros do próprio site:
+      tenta Internet primeiro.
+      Se funcionar, actualiza o cache.
+      Se não houver Internet,
+      usa o cache.
+    */
+
     event.respondWith(
 
-      fetch(
-        event.request
-      )
-      .then(resposta => {
+      fetch(event.request)
+        .then(resposta => {
 
-        return resposta;
+          if (
+            resposta &&
+            resposta.status === 200 &&
+            url.origin === location.origin
+          ) {
 
-      })
-      .catch(() => {
+            const copia =
+              resposta.clone();
 
-        return caches.match(
-          event.request
-        );
+            caches.open(CACHE_NAME)
+              .then(cache => {
 
-      })
+                cache.put(
+                  event.request,
+                  copia
+                );
+
+              });
+
+          }
+
+
+          return resposta;
+
+        })
+
+        .catch(() => {
+
+          return caches.match(
+            event.request
+          );
+
+        })
 
     );
 
