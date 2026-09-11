@@ -2700,10 +2700,9 @@ if(
     () => {
 
       navigator.serviceWorker
-
-        .register(
-          "/Africanmundo-/service-worker.js"
-        )
+  .register(
+    "/Africanmundo-/sw.js"
+  )
 
         .then(
           () => {
