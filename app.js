@@ -2234,16 +2234,13 @@ function carregarCor(){
 /* ==========================================
 ANÚNCIOS
 ========================================== */
-
 async function carregarAnunciosAtivos(){
 
   if(
     !db &&
     !iniciarSupabase()
   ){
-
     return;
-
   }
 
 
@@ -2271,7 +2268,9 @@ async function carregarAnunciosAtivos(){
 
       .from("anuncios")
 
-      .select("*")
+      .select(
+        "id,empresa,mensagem,imagem,video,vídeo,link,data_inicio,data_fim,ativo"
+      )
 
       .eq(
         "ativo",
@@ -2283,7 +2282,9 @@ async function carregarAnunciosAtivos(){
         {
           ascending:false
         }
-      );
+      )
+
+      .limit(10);
 
 
     if(error){
@@ -2404,11 +2405,9 @@ async function carregarAnunciosAtivos(){
 
             const video =
               esc(
-
                 anuncio.video ||
                 anuncio["vídeo"] ||
                 ""
-
               );
 
 
@@ -2434,7 +2433,7 @@ async function carregarAnunciosAtivos(){
                 muted
                 loop
                 playsinline
-                preload="auto"
+                preload="metadata"
                 style="
                   display:block;
                   width:100%;
@@ -2466,6 +2465,7 @@ async function carregarAnunciosAtivos(){
                 src="${imagem}"
                 alt="${empresa}"
                 loading="lazy"
+                decoding="async"
                 style="
                   display:block;
                   width:100%;
@@ -2590,8 +2590,7 @@ async function carregarAnunciosAtivos(){
 
   }
 
-}
-
+              }
 
 /* ==========================================
 EVENTOS
