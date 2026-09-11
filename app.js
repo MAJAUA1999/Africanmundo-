@@ -472,6 +472,11 @@ async function carregarNoticias(){
 
     }
 
+
+    /* ========================================
+       ÚLTIMAS 100 NOTÍCIAS
+    ======================================== */
+
     const resultado =
       await db
         .from("noticias")
@@ -486,22 +491,208 @@ async function carregarNoticias(){
         )
         .limit(100);
 
+
     if(resultado.error){
 
       throw resultado.error;
 
     }
 
-    window.__noticias =
+
+    let noticias =
       Array.isArray(resultado.data)
       ? resultado.data
       : [];
 
+
+    /* ========================================
+       GARANTIR NOTÍCIAS NAS CATEGORIAS
+    ======================================== */
+
+    const categorias = [
+
+      {
+        nome: "futebol",
+        buscas: [
+          "Futebol",
+          "futebol"
+        ]
+      },
+
+      {
+        nome: "mocambique",
+        buscas: [
+          "Moçambique",
+          "mocambique",
+          "MOÇAMBIQUE"
+        ]
+      },
+
+      {
+        nome: "africa",
+        buscas: [
+          "África",
+          "Africa",
+          "ÁFRICA"
+        ]
+      },
+
+      {
+        nome: "negocios",
+        buscas: [
+          "Negócios",
+          "Negocios",
+          "negócios",
+          "negocios"
+        ]
+      },
+
+      {
+        nome: "entretenimento",
+        buscas: [
+          "Entretenimento",
+          "entretenimento"
+        ]
+      },
+
+      {
+        nome: "desporto",
+        buscas: [
+          "Desporto",
+          "desporto"
+        ]
+      }
+
+    ];
+
+
+    for(
+      const categoria of categorias
+    ){
+
+      const existentes =
+        noticias.filter(n => {
+
+          return (
+            normalizarCategoria(
+              n.categoria
+            ) ===
+            normalizarCategoria(
+              categoria.nome
+            )
+          );
+
+        });
+
+
+      if(
+        existentes.length >= 4
+      ){
+
+        continue;
+
+      }
+
+
+      try{
+
+        const condicoes =
+          categoria.buscas
+            .map(
+              valor =>
+                `categoria.eq.${valor}`
+            )
+            .join(",");
+
+
+        const respostaCategoria =
+          await db
+            .from("noticias")
+            .select(
+              "id,titulo,texto,imagem,categoria,data,fonte,url_original"
+            )
+            .or(condicoes)
+            .order(
+              "id",
+              {
+                ascending:false
+              }
+            )
+            .limit(4);
+
+
+        if(
+          respostaCategoria.error
+        ){
+
+          console.warn(
+            "Aviso categoria:",
+            categoria.nome,
+            respostaCategoria.error
+          );
+
+          continue;
+
+        }
+
+
+        const adicionais =
+          respostaCategoria.data || [];
+
+
+        adicionais.forEach(noticia => {
+
+          const jaExiste =
+            noticias.some(
+              n =>
+                String(n.id) ===
+                String(noticia.id)
+            );
+
+
+          if(!jaExiste){
+
+            noticias.push(
+              noticia
+            );
+
+          }
+
+        });
+
+
+      }catch(erroCategoria){
+
+        console.warn(
+          "Erro ao carregar categoria:",
+          categoria.nome,
+          erroCategoria
+        );
+
+      }
+
+    }
+
+
+    /* ========================================
+       GUARDAR NOTÍCIAS
+    ======================================== */
+
+    window.__noticias =
+      noticias;
+
+
+    /* ========================================
+       RENDERIZAR PÁGINA
+    ======================================== */
+
     renderizarPagina();
+
 
     document.body.classList.remove(
       "carregandoNoticias"
     );
+
 
     [
       "ultimas",
@@ -526,10 +717,16 @@ async function carregarNoticias(){
 
     });
 
+
     console.log(
       "✅ Notícias carregadas:",
       window.__noticias.length
     );
+
+
+    /* ========================================
+       NOTIFICAÇÕES
+    ======================================== */
 
     setTimeout(() => {
 
@@ -557,6 +754,7 @@ async function carregarNoticias(){
 
     },50);
 
+
   }catch(e){
 
     console.error(
@@ -564,9 +762,11 @@ async function carregarNoticias(){
       e
     );
 
+
     document.body.classList.remove(
       "carregandoNoticias"
     );
+
 
     mostrarErro(
       e.message ||
@@ -576,7 +776,6 @@ async function carregarNoticias(){
   }
 
       }
-
 /* ==========================================
    RENDERIZAR PÁGINA
 ========================================== */
