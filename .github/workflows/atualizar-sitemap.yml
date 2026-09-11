@@ -6,7 +6,7 @@ on:
 
   workflow_dispatch:
 
-  permissions:
+permissions:
   contents: write
 
 jobs:
@@ -78,12 +78,10 @@ jobs:
 
           urls = []
 
-          # Página inicial
           urls.append(
               "https://majaua1999.github.io/Africanmundo-/"
           )
 
-          # Categorias
           categorias = [
               "noticias",
               "mocambique",
@@ -103,7 +101,6 @@ jobs:
                   + categoria
               )
 
-          # Notícias
           for noticia in noticias:
 
               noticia_id = noticia.get("id")
@@ -180,19 +177,9 @@ jobs:
                   "\n".join(linhas)
               )
 
-          print(
-              "Sitemap atualizado."
-          )
-
-          print(
-              "Notícias encontradas:",
-              len(noticias)
-          )
-
-          print(
-              "URLs no sitemap:",
-              len(urls)
-          )
+          print("Sitemap atualizado.")
+          print("Notícias encontradas:", len(noticias))
+          print("URLs no sitemap:", len(urls))
 
           PY
 
