@@ -444,20 +444,13 @@ document.head.appendChild(
 );
 
 
-/* ==========================================
-   CARREGAR NOTÍCIAS — RÁPIDO
-========================================== */
-
 async function carregarNoticias(){
 
-  /* CARREGAMENTO VISUAL */
   document.body.classList.add(
     "carregandoNoticias"
   );
 
   try{
-
-    /* GARANTIR SUPABASE */
 
     if(!db){
 
@@ -474,24 +467,19 @@ async function carregarNoticias(){
 
     }
 
-
-    /*
-  BUSCAR NOTÍCIAS
-*/
-
-const resultado =
-  await db
-    .from("noticias")
-    .select(
-      "id,titulo,texto,imagem,categoria,data,fonte,url_original"
-    )
-    .order(
-      "id",
-      {
-        ascending:false
-      }
-    );
-
+    const resultado =
+      await db
+        .from("noticias")
+        .select(
+          "id,titulo,texto,imagem,categoria,data,fonte,url_original"
+        )
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        )
+        .limit(100);
 
     if(resultado.error){
 
@@ -499,30 +487,16 @@ const resultado =
 
     }
 
-
-    /* GUARDAR NOTÍCIAS */
-
     window.__noticias =
       Array.isArray(resultado.data)
       ? resultado.data
       : [];
 
-
-    /*
-      RENDERIZAR IMEDIATAMENTE
-    */
-
     renderizarPagina();
-
-
-    /*
-      MOSTRAR CONTEÚDO
-    */
 
     document.body.classList.remove(
       "carregandoNoticias"
     );
-
 
     [
       "ultimas",
@@ -547,16 +521,10 @@ const resultado =
 
     });
 
-
     console.log(
       "✅ Notícias carregadas:",
       window.__noticias.length
     );
-
-
-    /*
-      NOTIFICAÇÕES DEPOIS
-    */
 
     setTimeout(() => {
 
@@ -584,7 +552,6 @@ const resultado =
 
     },50);
 
-
   }catch(e){
 
     console.error(
@@ -592,11 +559,9 @@ const resultado =
       e
     );
 
-
     document.body.classList.remove(
       "carregandoNoticias"
     );
-
 
     mostrarErro(
       e.message ||
@@ -605,8 +570,7 @@ const resultado =
 
   }
 
-}
-
+      }
 
 /* ==========================================
    RENDERIZAR PÁGINA
