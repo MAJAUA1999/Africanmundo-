@@ -211,7 +211,12 @@ function criarCard(n){
           src="${esc(img)}"
           alt="${esc(tit)}"
           loading="lazy"
-          onerror="this.outerHTML='<div class=\\'compact-img\\'>🌍</div>'"
+          decoding="async"
+          fetchpriority="low"
+          onerror="
+            this.outerHTML=
+            '<div class=\\'compact-img\\'>🌍</div>'
+          "
         >
       `
       :
