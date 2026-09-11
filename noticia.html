@@ -1,14 +1,25 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#168a45">
 
-<title>AfricanMundo — Notícia</title>
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1"
+>
+
+<meta
+  name="theme-color"
+  content="#168a45"
+>
+
+<title>A carregar notícia... — AfricanMundo</title>
 
 <meta
   name="description"
+  id="meta-description"
   content="Leia as últimas notícias de África e do mundo no AfricanMundo."
 >
 
@@ -18,14 +29,24 @@
   href=""
 >
 
-<meta property="og:type" content="article">
+<!-- ==============================
+     OPEN GRAPH
+================================ -->
 
-<meta property="og:site_name" content="AfricanMundo">
+<meta
+  property="og:type"
+  content="article"
+>
+
+<meta
+  property="og:site_name"
+  content="AfricanMundo"
+>
 
 <meta
   property="og:title"
   id="og-title"
-  content="AfricanMundo — Notícia"
+  content="AfricanMundo — Notícias de África"
 >
 
 <meta
@@ -46,12 +67,19 @@
   content=""
 >
 
-<meta name="twitter:card" content="summary_large_image">
+<!-- ==============================
+     TWITTER
+================================ -->
+
+<meta
+  name="twitter:card"
+  content="summary_large_image"
+>
 
 <meta
   name="twitter:title"
   id="twitter-title"
-  content="AfricanMundo — Notícia"
+  content="AfricanMundo — Notícias de África"
 >
 
 <meta
@@ -66,752 +94,1526 @@
   content=""
 >
 
-<meta name="robots" content="index, follow, max-image-preview:large">
+<meta
+  name="robots"
+  content="index, follow, max-image-preview:large"
+>
 
-<script id="schema-news" type="application/ld+json">
+<!-- ==============================
+     DADOS ESTRUTURADOS
+================================ -->
+
+<script
+  id="schema-news"
+  type="application/ld+json"
+>
 {
-  "@context": "https://schema.org",
-  "@type": "NewsArticle",
-  "headline": "AfricanMundo — Notícia",
-  "description": "Leia as últimas notícias de África e do mundo no AfricanMundo.",
-  "image": [],
-  "datePublished": "",
-  "dateModified": "",
-  "author": {
-    "@type": "Organization",
-    "name": "AfricanMundo"
+  "@context":"https://schema.org",
+  "@type":"NewsArticle",
+  "headline":"AfricanMundo — Notícia",
+  "description":"Leia as últimas notícias de África e do mundo no AfricanMundo.",
+  "image":[],
+  "datePublished":"",
+  "dateModified":"",
+  "articleSection":"Notícias",
+  "inLanguage":"pt-MZ",
+  "author":{
+    "@type":"Organization",
+    "name":"AfricanMundo"
   },
-  "publisher": {
-    "@type": "Organization",
-    "name": "AfricanMundo"
+  "publisher":{
+    "@type":"Organization",
+    "name":"AfricanMundo",
+    "url":"https://majaua1999.github.io/Africanmundo-/"
   },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": ""
+  "mainEntityOfPage":{
+    "@type":"WebPage",
+    "@id":""
   }
 }
 </script>
-  
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  
-<style>
-:root{
-  --p:#168a45;
-  --bg:#f5f7f8;
-  --card:#fff;
-  --txt:#172026;
-  --muted:#69757d;
-  --border:#e2e7ea;
-}
-  
-  body.dark{
-  --bg:#101417;
-  --card:#171d21;
-  --txt:#f2f5f6;
-  --muted:#aab5ba;
-  --border:#293238;
-  }
 
-*{box-sizing:border-box}
+<!-- ==============================
+     SUPABASE
+================================ -->
+
+<script
+  src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+></script>
+<style>
+
+:root{
+
+  --verde:#168a45;
+  --verde2:#0f7038;
+  --fundo:#f5f7f8;
+  --card:#ffffff;
+  --texto:#18201b;
+  --cinza:#6c746f;
+  --borda:#e3e7e5;
+  --sombra:0 5px 18px rgba(0,0,0,.08);
+
+}
+
+*{
+  box-sizing:border-box;
+}
+
+html{
+  scroll-behavior:smooth;
+}
 
 body{
+
   margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--txt);
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
+
+  background:var(--fundo);
+
+  color:var(--texto);
+
+  line-height:1.65;
+
 }
 
-.container{
-  width:min(1000px,calc(100% - 24px));
-  margin:auto;
-}
+body.dark{
 
-header{
-  position:sticky;
-  top:0;
-  z-index:10;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-}
+  --fundo:#101412;
+  --card:#18201c;
+  --texto:#f2f5f3;
+  --cinza:#adb7b0;
+  --borda:#29342e;
 
-.top{
-  min-height:62px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-}
-
-.logo{
-  color:var(--p);
-  font-size:19px;
-  font-weight:900;
-}
-
-.actions{
-  display:flex;
-  gap:7px;
 }
 
 button{
-  border:1px solid var(--border);
-  background:var(--card);
-  color:var(--txt);
-  border-radius:10px;
-  padding:9px 12px;
-  font-weight:800;
-  cursor:pointer;
+  font:inherit;
 }
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+
+/* ==============================
+   CABEÇALHO
+================================ */
+
+header{
+
+  position:sticky;
+  top:0;
+  z-index:1000;
+
+  background:var(--card);
+
+  border-bottom:
+    1px solid var(--borda);
+
+  box-shadow:
+    0 2px 10px rgba(0,0,0,.06);
+
+}
+
+.header-inner{
+
+  max-width:1100px;
+
+  margin:auto;
+
+  padding:10px 14px;
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:10px;
+
+}
+
+.logo{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:8px;
+
+  min-width:0;
+
+}
+
+.logo-icon{
+
+  width:42px;
+  height:42px;
+
+  border-radius:50%;
+
+  background:var(--verde);
+
+  color:white;
+
+  display:grid;
+
+  place-items:center;
+
+  font-size:23px;
+
+}
+
+.logo-text{
+  min-width:0;
+}
+
+.logo-title{
+
+  font-size:19px;
+
+  font-weight:800;
+
+  color:var(--verde);
+
+  white-space:nowrap;
+
+}
+
+.logo-sub{
+
+  font-size:10px;
+
+  color:var(--cinza);
+
+  white-space:nowrap;
+
+}
+
+.header-buttons{
+
+  display:flex;
+
+  gap:7px;
+
+}
+
+.header-buttons button{
+
+  border:
+    1px solid var(--borda);
+
+  background:var(--card);
+
+  color:var(--texto);
+
+  width:38px;
+  height:38px;
+
+  border-radius:50%;
+
+  cursor:pointer;
+
+}
+
+.header-buttons button:hover{
+
+  background:var(--verde);
+
+  color:white;
+
+}
+
+
+/* ==============================
+   CONTEÚDO
+================================ */
 
 main{
-  padding:22px 0 50px;
+
+  max-width:900px;
+
+  margin:auto;
+
+  padding:18px 14px 50px;
+
 }
+
+
+/* ==============================
+   ARTIGO
+================================ */
 
 .article{
+
   background:var(--card);
-  border:1px solid var(--border);
-  border-radius:18px;
+
+  border:
+    1px solid var(--borda);
+
+  border-radius:16px;
+
   overflow:hidden;
+
+  box-shadow:var(--sombra);
+
 }
 
-.article img{
-  width:100%;
-  max-height:480px;
-  object-fit:cover;
-  display:block;
+.article-content{
+
+  padding:20px;
+
 }
 
-.content{
-  padding:22px;
-}
+.article-category{
 
-.category{
-  color:var(--p);
-  font-size:11px;
-  font-weight:900;
-  text-transform:uppercase;
-}
+  display:inline-block;
 
-h1{
-  margin:8px 0;
-  font-size:32px;
-  line-height:1.2;
-}
+  background:var(--verde);
 
-.date{
-  color:var(--muted);
+  color:white;
+
+  padding:5px 10px;
+
+  border-radius:20px;
+
   font-size:12px;
-  margin:10px 0 20px;
+
+  font-weight:700;
+
+  margin-bottom:12px;
+
 }
 
-.text{
+.article h1{
+
+  font-size:
+    clamp(25px,5vw,42px);
+
+  line-height:1.15;
+
+  margin:0 0 12px;
+
+}
+
+.article-meta{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:8px 15px;
+
+  color:var(--cinza);
+
+  font-size:13px;
+
+  margin-bottom:18px;
+
+}
+
+.article-image{
+
+  width:100%;
+
+  max-height:550px;
+
+  object-fit:cover;
+
+  display:block;
+
+  cursor:zoom-in;
+
+  background:#ddd;
+
+}
+
+.article-text{
+
   font-size:17px;
+
   line-height:1.8;
+
   white-space:pre-line;
+
 }
 
-.loading{
-  padding:35px 20px;
-  text-align:center;
-  color:var(--muted);
+.article-text p{
+
+  margin:0 0 18px;
+
 }
 
-.section{
-  margin-top:30px;
+.article-actions{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:10px;
+
+  margin-top:25px;
+
+  padding-top:20px;
+
+  border-top:
+    1px solid var(--borda);
+
 }
+
+.article-actions button{
+
+  border:0;
+
+  background:var(--verde);
+
+  color:white;
+
+  border-radius:9px;
+
+  padding:10px 15px;
+
+  cursor:pointer;
+
+  font-weight:600;
+
+}
+
+.article-actions button:hover{
+
+  background:var(--verde2);
+
+}
+
+
+/* ==============================
+   MAIS NOTÍCIAS
+================================ */
 
 .section-title{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:14px;
-}
 
-.section-title h2{
-  margin:0;
-  font-size:20px;
+  margin:30px 0 15px;
+
+  font-size:22px;
+
 }
 
 .news-grid{
+
   display:grid;
-  grid-template-columns:repeat(2,minmax(0,1fr));
-  gap:14px;
+
+  grid-template-columns:
+    repeat(2,minmax(0,1fr));
+
+  gap:12px;
+
 }
 
 .news-card{
+
   background:var(--card);
-  border:1px solid var(--border);
-  border-radius:15px;
+
+  border:
+    1px solid var(--borda);
+
+  border-radius:13px;
+
   overflow:hidden;
+
   cursor:pointer;
+
+  transition:
+    transform .15s ease,
+    box-shadow .15s ease;
+
 }
 
-.news-card img,
-.no-image{
+.news-card:hover{
+
+  transform:translateY(-2px);
+
+  box-shadow:var(--sombra);
+
+}
+
+.news-card img{
+
   width:100%;
-  height:170px;
+
+  height:150px;
+
   object-fit:cover;
+
   display:block;
+
 }
 
-.no-image{
-  display:grid;
-  place-items:center;
-  background:var(--bg);
-  font-size:42px;
+.news-card-content{
+
+  padding:12px;
+
 }
 
-.news-content{
-  padding:13px;
-}
+.news-card-category{
 
-.news-category{
-  color:var(--p);
-  font-size:10px;
-  font-weight:900;
+  color:var(--verde);
+
+  font-size:11px;
+
+  font-weight:700;
+
   text-transform:uppercase;
+
 }
 
-.news-title{
-  margin:5px 0;
+.news-card h3{
+
+  margin:5px 0 0;
+
   font-size:16px;
-  line-height:1.35;
+
+  line-height:1.3;
+
 }
 
-.news-date{
-  color:var(--muted);
-  font-size:10px;
-  margin-top:8px;
+
+/* ==============================
+   CARREGAMENTO / ERRO
+================================ */
+
+.loading{
+
+  padding:50px 20px;
+
+  text-align:center;
+
+  color:var(--cinza);
+
 }
+
+.error{
+
+  background:var(--card);
+
+  border:
+    1px solid var(--borda);
+
+  border-radius:14px;
+
+  padding:30px 20px;
+
+  text-align:center;
+
+}
+
+
+/* ==============================
+   VISUALIZADOR DA IMAGEM
+================================ */
+
+.image-viewer{
+
+  position:fixed;
+
+  inset:0;
+
+  z-index:5000;
+
+  background:
+    rgba(0,0,0,.94);
+
+  display:none;
+
+  align-items:center;
+
+  justify-content:center;
+
+  padding:20px;
+
+}
+
+.image-viewer.active{
+
+  display:flex;
+
+}
+
+.image-viewer img{
+
+  max-width:100%;
+
+  max-height:90vh;
+
+  object-fit:contain;
+
+}
+
+.close-image{
+
+  position:absolute;
+
+  top:15px;
+  right:15px;
+
+  width:42px;
+  height:42px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:white;
+
+  color:#111;
+
+  font-size:22px;
+
+  cursor:pointer;
+
+}
+
+
+/* ==============================
+   RODAPÉ
+================================ */
+
+footer{
+
+  text-align:center;
+
+  padding:25px 15px;
+
+  color:var(--cinza);
+
+  font-size:13px;
+
+}
+
+footer a{
+
+  color:var(--verde);
+
+}
+
+
+/* ==============================
+   MOBILE
+================================ */
 
 @media(max-width:600px){
-  h1{font-size:24px}
-  .text{font-size:15px}
-  .news-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
-  .news-card img,.no-image{height:130px}
-  .news-title{font-size:14px}
-  .content{padding:16px}
+
+  .header-inner{
+
+    padding:8px 10px;
+
+  }
+
+  .logo-title{
+
+    font-size:17px;
+
+  }
+
+  .logo-sub{
+
+    font-size:9px;
+
+  }
+
+  .header-buttons button{
+
+    width:35px;
+    height:35px;
+
+  }
+
+  main{
+
+    padding:10px 9px 40px;
+
+  }
+
+  .article{
+
+    border-radius:12px;
+
+  }
+
+  .article-content{
+
+    padding:15px;
+
+  }
+
+  .article h1{
+
+    font-size:27px;
+
+  }
+
+  .article-text{
+
+    font-size:16px;
+
+  }
+
+  .news-grid{
+
+    grid-template-columns:1fr;
+
+  }
+
+  .news-card img{
+
+    height:190px;
+
+  }
+
 }
 
-@media(max-width:380px){
-  .news-grid{grid-template-columns:1fr}
-}
-</style>
-</head>
+    </style>
+    </head>
 
 <body>
 
 <header>
-  <div class="container top">
 
-    <div class="logo">
-      🌍 AfricanMundo
-    </div>
+  <div class="header-inner">
 
-    <div class="actions">
+    <a
+      href="index.html"
+      class="logo"
+      aria-label="Voltar para o AfricanMundo"
+    >
 
-      <button onclick="history.back()">
-        ← Voltar
+      <div class="logo-icon">
+        🌍
+      </div>
+
+      <div class="logo-text">
+
+        <div class="logo-title">
+          AfricanMundo
+        </div>
+
+        <div class="logo-sub">
+          A informação que liga África ao mundo
+        </div>
+
+      </div>
+
+    </a>
+
+
+    <div class="header-buttons">
+
+      <button
+        type="button"
+        onclick="voltar()"
+        aria-label="Voltar"
+        title="Voltar"
+      >
+        ←
       </button>
 
-      <button onclick="partilhar()">
-        📤 Partilhar
+
+      <button
+        type="button"
+        onclick="partilhar()"
+        aria-label="Partilhar"
+        title="Partilhar"
+      >
+        ↗
+      </button>
+
+
+      <button
+        type="button"
+        onclick="alternarTema()"
+        aria-label="Modo escuro"
+        title="Modo escuro"
+      >
+        🌙
       </button>
 
     </div>
 
   </div>
+
 </header>
+
 
 <main>
 
-  <div class="container">
-
-    <article id="noticia" class="article">
-      <div class="loading">
-        ⏳ A carregar notícia...
-      </div>
-    </article>
-
-    <section class="section">
-
-      <div class="section-title">
-        <h2>📰 Mais notícias</h2>
-      </div>
-
-      <div id="maisNoticias" class="news-grid">
-        <div class="loading">
-          ⏳ A carregar...
-        </div>
-      </div>
-
-    </section>
-
+  <div
+    id="noticia"
+    class="loading"
+  >
+    ⏳ A carregar notícia...
   </div>
+
+
+  <h2 class="section-title">
+    📰 Mais notícias
+  </h2>
+
+
+  <div
+    id="maisNoticias"
+    class="news-grid"
+  ></div>
 
 </main>
 
+
+<footer>
+
+  <div>
+    © <span id="ano"></span> AfricanMundo
+  </div>
+
+
+  <div style="margin-top:5px">
+
+    <a href="quem-somos.html">
+      Quem Somos
+    </a>
+
+    ·
+
+    <a href="contacto.html">
+      Contacto
+    </a>
+
+    ·
+
+    <a href="termos.html">
+      Termos
+    </a>
+
+  </div>
+
+</footer>
+
+
+<!-- ==============================
+     VISUALIZADOR DE IMAGEM
+================================ -->
+
+<div
+  id="imageViewer"
+  class="image-viewer"
+  onclick="fecharFotoGrande()"
+>
+
+  <button
+    class="close-image"
+    onclick="fecharFotoGrande(event)"
+    aria-label="Fechar imagem"
+  >
+    ×
+  </button>
+
+
+  <img
+    id="imageViewerImg"
+    src=""
+    alt="Imagem da notícia"
+    onclick="event.stopPropagation()"
+  >
+
+</div>
 <script>
 
+/* ==========================================
+   SUPABASE
+========================================== */
+
 const SUPABASE_URL =
-"https://sonzwfhepjfvzltuxxne.supabase.co";
+  "https://sonzwfhepjfvzltuxxne.supabase.co";
 
 const SUPABASE_KEY =
-"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-const db =
-window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_KEY
-);
-
-const id =
-new URLSearchParams(location.search).get("id");
+let db = null;
 
 let noticiaAtual = null;
-let todasNoticias = [];
 
 
-/* SEGURANÇA */
+/* ==========================================
+   INICIAR SUPABASE
+========================================== */
 
-function esc(v){
-  return String(v ?? "")
+function iniciarSupabase(){
+
+  try{
+
+    if(
+      typeof window.supabase ===
+      "undefined"
+    ){
+
+      throw new Error(
+        "Biblioteca Supabase não carregada."
+      );
+
+    }
+
+    db =
+      window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_KEY
+      );
+
+    return true;
+
+  }catch(e){
+
+    console.error(
+      "Erro Supabase:",
+      e
+    );
+
+    return false;
+
+  }
+
+}
+
+
+/* ==========================================
+   SEGURANÇA
+========================================== */
+
+function esc(valor){
+
+  if(
+    valor === null ||
+    valor === undefined
+  ){
+
+    return "";
+
+  }
+
+  return String(valor)
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
     .replace(/"/g,"&quot;")
     .replace(/'/g,"&#039;");
+
 }
 
 
-/* CAMPOS */
+/* ==========================================
+   CAMPOS
+========================================== */
 
-function titulo(n){
-  return n?.titulo ||
-         n?.title ||
-         "Sem título";
-}
+function obterTitulo(n){
 
-function texto(n){
-  return n?.texto ||
-         n?.conteudo ||
-         n?.content ||
-         n?.descricao ||
-         "";
-}
-
-function imagem(n){
-  return n?.imagem ||
-         n?.imagem_url ||
-         n?.image ||
-         n?.image_url ||
-         n?.url_imagem ||
-         "";
-}
-
-function cat(n){
-  return n?.categoria ||
-         n?.category ||
-         "Notícias";
-}
-
-function data(n){
-
-  const valor =
-    n?.created_at ||
-    n?.data ||
-    n?.createdAt;
-
-  if(!valor) return "";
-
-  const d = new Date(valor);
-
-  if(isNaN(d.getTime())) return "";
-
-  return d.toLocaleDateString(
-    "pt-MZ",
-    {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric"
-    }
-  ) + " • " +
-  d.toLocaleTimeString(
-    "pt-MZ",
-    {
-      hour:"2-digit",
-      minute:"2-digit"
-    }
+  return (
+    n?.titulo ||
+    n?.title ||
+    "Sem título"
   );
+
 }
 
-  function atualizarSEO(n){
 
-  if(!n) return;
+function obterTexto(n){
 
-    console.log("SEO atualizado:", n.titulo);
+  return (
+    n?.texto ||
+    n?.descricao ||
+    n?.description ||
+    ""
+  );
 
-  const tituloNoticia =
-    n.titulo ||
-    "Notícia";
+}
 
-  const descricao =
-    (n.texto || "")
-      .replace(/\s+/g, " ")
-      .trim()
-      .slice(0, 160);
 
-  const imagemNoticia =
-    n.imagem ||
-    "";
+function obterImagem(n){
 
-  const urlNoticia =
-    window.location.href;
+  return (
+    n?.imagem ||
+    n?.image ||
+    n?.foto ||
+    ""
+  );
 
-document.title =
-  tituloNoticia +
-  " — AfricanMundo";
-    
-  const metaDescription =
-    document.querySelector(
-      'meta[name="description"]'
-    );
+}
 
-  if(metaDescription){
-    metaDescription.setAttribute(
-      "content",
-      descricao ||
-      "Leia as últimas notícias no AfricanMundo."
-    );
+
+function obterCategoria(n){
+
+  return (
+    n?.categoria ||
+    "Notícias"
+  );
+
+}
+
+
+function obterData(n){
+
+  return (
+    n?.data ||
+    ""
+  );
+
+}
+
+
+/* ==========================================
+   DATA
+========================================== */
+
+function formatarData(valor){
+
+  if(!valor){
+
+    return "";
+
   }
 
-  const canonical =
-    document.getElementById(
-      "canonical-url"
-    );
+  try{
 
-  if(canonical){
-    canonical.href =
-      urlNoticia;
-  }
+    const data =
+      new Date(valor);
 
-  const ogTitle =
-    document.getElementById(
-      "og-title"
-    );
+    if(
+      Number.isNaN(
+        data.getTime()
+      )
+    ){
 
-  if(ogTitle){
-    ogTitle.content =
-      tituloNoticia +
-      " — AfricanMundo";
-  }
+      return String(valor);
 
-  const ogDescription =
-    document.getElementById(
-      "og-description"
-    );
+    }
 
-  if(ogDescription){
-    ogDescription.content =
-      descricao;
-  }
-
-  const ogImage =
-    document.getElementById(
-      "og-image"
-    );
-
-  if(ogImage){
-    ogImage.content =
-      imagemNoticia;
-  }
-
-  const ogUrl =
-    document.getElementById(
-      "og-url"
-    );
-
-  if(ogUrl){
-    ogUrl.content =
-      urlNoticia;
-  }
-
-  const twitterTitle =
-    document.getElementById(
-      "twitter-title"
-    );
-
-  if(twitterTitle){
-    twitterTitle.content =
-      tituloNoticia +
-      " — AfricanMundo";
-  }
-
-  const twitterDescription =
-    document.getElementById(
-      "twitter-description"
-    );
-
-  if(twitterDescription){
-    twitterDescription.content =
-      descricao;
-  }
-
-  const twitterImage =
-    document.getElementById(
-      "twitter-image"
-    );
-
-    if(twitterImage){
-    twitterImage.content =
-      imagemNoticia;
-  }
-
-
-  /* SCHEMA NEWSARTICLE */
-
-  const schema =
-    document.getElementById("schema-news");
-
-  if(schema){
-
-    const schemaData = {
-
-      "@context":
-        "https://schema.org",
-
-      "@type":
-        "NewsArticle",
-
-      "headline":
-        tituloNoticia,
-
-      "description":
-        descricao ||
-        "Leia as últimas notícias no AfricanMundo.",
-
-      "image":
-        imagemNoticia
-          ? [imagemNoticia]
-          : [],
-
-      "datePublished":
-        n.created_at ||
-        n.data ||
-        "",
-
-      "dateModified":
-        n.updated_at ||
-        n.created_at ||
-        n.data ||
-        "",
-
-      "author":{
-        "@type":
-          "Organization",
-
-        "name":
-          "AfricanMundo"
-      },
-
-      "publisher":{
-        "@type":
-          "Organization",
-
-        "name":
-          "AfricanMundo"
-      },
-
-      "mainEntityOfPage":{
-        "@type":
-          "WebPage",
-
-        "@id":
-          urlNoticia
+    return data.toLocaleDateString(
+      "pt-PT",
+      {
+        day:"2-digit",
+        month:"long",
+        year:"numeric"
       }
+    );
 
-    };
+  }catch(e){
 
-    schema.textContent =
-      JSON.stringify(
-        schemaData
+    return String(valor);
+
+  }
+
+}
+
+
+/* ==========================================
+   SEO
+========================================== */
+
+function atualizarSEO(n){
+
+  try{
+
+    const titulo =
+      obterTitulo(n);
+
+    const texto =
+      obterTexto(n)
+        .replace(/\s+/g," ")
+        .trim();
+
+    const descricao =
+      texto.length > 160
+        ? texto.slice(0,157) + "..."
+        : (
+            texto ||
+            "Leia as últimas notícias de África e do mundo no AfricanMundo."
+          );
+
+    const imagem =
+      obterImagem(n);
+
+    const categoria =
+      obterCategoria(n);
+
+    const dataPublicada =
+      obterData(n);
+
+    const url =
+      window.location.href;
+
+
+    /* TITLE */
+
+    document.title =
+      `${titulo} — AfricanMundo`;
+
+
+    /* DESCRIPTION */
+
+    const metaDescription =
+      document.querySelector(
+        "#meta-description"
       );
 
-  }
+    if(metaDescription){
 
-  }
-      
+      metaDescription.setAttribute(
+        "content",
+        descricao
+      );
 
-/* CARREGAR */
+    }
 
-async function carregar(){
 
-  const area =
-    document.getElementById("noticia");
+    /* CANONICAL */
 
-  const mais =
-    document.getElementById("maisNoticias");
+    const canonical =
+      document.querySelector(
+        "#canonical-url"
+      );
 
-  if(!id){
+    if(canonical){
 
-    area.innerHTML =
-      `<div class="loading">
-        ❌ Notícia não encontrada.
-      </div>`;
+      canonical.setAttribute(
+        "href",
+        url
+      );
 
-    return;
-  }
+    }
 
-  try{
 
-    const resultado =
-      await db
-        .from("noticias")
-        .select("*")
-        .eq("id", id)
-        .single();
+    /* OPEN GRAPH */
 
-    if(resultado.error)
-      throw resultado.error;
+    const ogTitle =
+      document.querySelector(
+        "#og-title"
+      );
 
-    noticiaAtual =
-  resultado.data;
+    const ogDescription =
+      document.querySelector(
+        "#og-description"
+      );
 
-if(!noticiaAtual){
+    const ogImage =
+      document.querySelector(
+        "#og-image"
+      );
 
-  area.innerHTML =
-    `<div class="loading">
-      ❌ Esta notícia não existe.
-    </div>`;
+    const ogUrl =
+      document.querySelector(
+        "#og-url"
+      );
 
-  return;
-}
 
-atualizarSEO(
-  noticiaAtual
-);
+    if(ogTitle){
 
-    mostrarNoticia(
-      noticiaAtual
-    );
+      ogTitle.setAttribute(
+        "content",
+        titulo
+      );
 
-    contarVisualizacao(
-      noticiaAtual.id
-    );
+    }
 
-    mostrarMaisNoticias();
+    if(ogDescription){
 
-  }catch(error){
+      ogDescription.setAttribute(
+        "content",
+        descricao
+      );
 
-    console.error(error);
+    }
 
-    area.innerHTML =
-      `<div class="loading">
-        ⚠️ Não foi possível carregar a notícia.
-        <br><br>
-        ${esc(error.message)}
-      </div>`;
+    if(
+      ogImage &&
+      imagem
+    ){
 
-  }
+      ogImage.setAttribute(
+        "content",
+        imagem
+      );
 
-}
+    }
 
-  /* CONTAR VISUALIZAÇÃO */
+    if(ogUrl){
 
-async function contarVisualizacao(noticiaId){
+      ogUrl.setAttribute(
+        "content",
+        url
+      );
 
-  if(!noticiaId) return;
+    }
 
-  try{
 
-    const resultado =
-      await db.rpc(
-        "incrementar_visualizacao",
-        {
-          noticia_id: noticiaId
+    /* TWITTER */
+
+    const twitterTitle =
+      document.querySelector(
+        "#twitter-title"
+      );
+
+    const twitterDescription =
+      document.querySelector(
+        "#twitter-description"
+      );
+
+    const twitterImage =
+      document.querySelector(
+        "#twitter-image"
+      );
+
+
+    if(twitterTitle){
+
+      twitterTitle.setAttribute(
+        "content",
+        titulo
+      );
+
+    }
+
+    if(twitterDescription){
+
+      twitterDescription.setAttribute(
+        "content",
+        descricao
+      );
+
+    }
+
+    if(
+      twitterImage &&
+      imagem
+    ){
+
+      twitterImage.setAttribute(
+        "content",
+        imagem
+      );
+
+    }
+
+
+    /* NEWSARTICLE */
+
+    const schema =
+      document.querySelector(
+        "#schema-news"
+      );
+
+
+    if(schema){
+
+      const estrutura = {
+
+        "@context":
+          "https://schema.org",
+
+        "@type":
+          "NewsArticle",
+
+        "headline":
+          titulo,
+
+        "description":
+          descricao,
+
+        "image":
+          imagem
+            ? [imagem]
+            : [],
+
+        "datePublished":
+          dataPublicada || "",
+
+        "dateModified":
+          dataPublicada || "",
+
+        "articleSection":
+          categoria,
+
+        "inLanguage":
+          "pt-MZ",
+
+        "author":{
+
+          "@type":
+            "Organization",
+
+          "name":
+            "AfricanMundo"
+
+        },
+
+        "publisher":{
+
+          "@type":
+            "Organization",
+
+          "name":
+            "AfricanMundo",
+
+          "url":
+            "https://majaua1999.github.io/Africanmundo-/"
+
+        },
+
+        "mainEntityOfPage":{
+
+          "@type":
+            "WebPage",
+
+          "@id":
+            url
+
         }
-      );
 
-    if(resultado.error)
-      throw resultado.error;
+      };
+
+
+      schema.textContent =
+        JSON.stringify(
+          estrutura
+        );
+
+    }
+
 
     console.log(
-      "Visualização registrada com sucesso."
+      "✅ SEO atualizado:",
+      titulo
     );
 
-  }catch(error){
+  }catch(e){
 
-    console.error(
-      "Erro ao contar visualização:",
-      error
+    console.warn(
+      "Aviso SEO:",
+      e
     );
 
   }
 
 }
 
-/* MOSTRAR NOTÍCIA */
+
+/* ==========================================
+   MOSTRAR NOTÍCIA
+========================================== */
 
 function mostrarNoticia(n){
 
-  const area =
-    document.getElementById("noticia");
+  noticiaAtual = n;
 
-  const img =
-    imagem(n);
+  const area =
+    document.getElementById(
+      "noticia"
+    );
+
+  if(!area){
+
+    return;
+
+  }
+
+
+  const titulo =
+    obterTitulo(n);
+
+  const texto =
+    obterTexto(n);
+
+  const imagem =
+    obterImagem(n);
+
+  const categoria =
+    obterCategoria(n);
+
+  const data =
+    formatarData(
+      obterData(n)
+    );
+
+  const visualizacoes =
+    Number(
+      n?.visualizacoes || 0
+    );
+
+
+  let imagemHTML = "";
+
+
+  if(imagem){
+
+    imagemHTML = `
+
+      <img
+
+        class="article-image"
+
+        src="${esc(imagem)}"
+
+        alt="${esc(titulo)}"
+
+        loading="eager"
+
+        decoding="async"
+
+        fetchpriority="high"
+
+        onclick="abrirFotoGrande('${esc(imagem)}')"
+
+        onerror="
+          this.style.display='none'
+        "
+
+      >
+
+    `;
+
+  }
+
+
+  const textoSeguro =
+    esc(texto);
+
+
+  const paragrafos =
+    textoSeguro
+      .split(/\n+/)
+      .filter(Boolean)
+      .map(
+        p => `<p>${p}</p>`
+      )
+      .join("");
+
+
+  area.className =
+    "article";
+
 
   area.innerHTML = `
 
-    ${
-  img
-  ? `
-    <div class="photo-box">
-      <img
-        id="fotoNoticia"
-        src="${esc(img)}"
-        alt="${esc(titulo(n))}"
-        onclick="abrirFotoGrande('${esc(img)}')"
-  style="cursor:zoom-in"
-        onerror="this.style.display='none'"
-      >
+    ${imagemHTML}
 
-      <button
-        class="save-photo"
-        onclick="guardarFoto()">
-        ⬇️ Guardar foto
-      </button>
-    </div>
-  `
-  : ""
-    }
+    <div class="article-content">
 
-    <div class="content">
-
-      <div class="category">
-        ${esc(cat(n))}
+      <div class="article-category">
+        ${esc(categoria)}
       </div>
 
       <h1>
-        ${esc(titulo(n))}
+        ${esc(titulo)}
       </h1>
 
-      <div class="date">
-  📅 ${esc(data(n))}
-  &nbsp; • &nbsp;
-  👁️ ${Number(n.visualizacoes || 0)} visualizações
-</div>
+      <div class="article-meta">
 
-      <div class="text">
-        ${esc(texto(n))}
+        ${
+          data
+            ? `<span>📅 ${esc(data)}</span>`
+            : ""
+        }
+
+        <span>
+          👁️ ${visualizacoes} visualizações
+        </span>
+
+      </div>
+
+      <div class="article-text">
+
+        ${paragrafos}
+
+      </div>
+
+      <div class="article-actions">
+
+        <button
+          type="button"
+          onclick="partilhar()"
+        >
+          ↗ Partilhar
+        </button>
+
+        ${
+          imagem
+            ? `
+              <button
+                type="button"
+                onclick="guardarFoto()"
+              >
+                🖼️ Guardar imagem
+              </button>
+            `
+            : ""
+        }
+
       </div>
 
     </div>
+
   `;
 
 }
 
 
-/* MAIS NOTÍCIAS */
+/* ==========================================
+   CONTAR VISUALIZAÇÃO
+========================================== */
+
+async function contarVisualizacao(id){
+
+  try{
+
+    if(!db){
+
+      return;
+
+    }
+
+    const resultado =
+      await db.rpc(
+        "incrementar_visualizacao",
+        {
+          noticia_id:
+            Number(id)
+        }
+      );
+
+
+    if(resultado.error){
+
+      console.warn(
+        "Aviso visualização:",
+        resultado.error
+      );
+
+    }
+
+  }catch(e){
+
+    console.warn(
+      "Erro visualização:",
+      e
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   MAIS NOTÍCIAS
+========================================== */
 
 async function mostrarMaisNoticias(){
 
@@ -820,298 +1622,721 @@ async function mostrarMaisNoticias(){
       "maisNoticias"
     );
 
-  if(!area) return;
+  if(!area){
+
+    return;
+
+  }
+
 
   try{
+
+    if(!db){
+
+      iniciarSupabase();
+
+    }
+
+
+    if(!db){
+
+      return;
+
+    }
+
 
     const resultado =
       await db
         .from("noticias")
-        .select("*")
-        .neq("id", id)
-        .order("id", {
-          ascending:false
-        })
+        .select(
+          "id,titulo,texto,imagem,categoria,data,fonte,url_original"
+        )
+        .neq(
+          "id",
+          noticiaAtual?.id
+        )
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        )
         .limit(6);
 
-    if(resultado.error)
+
+    if(resultado.error){
+
       throw resultado.error;
 
-    const outras =
-      Array.isArray(resultado.data)
-        ? resultado.data
-        : [];
+    }
 
-    area.innerHTML = "";
 
-    if(!outras.length){
+    const noticias =
+      resultado.data || [];
 
-      area.innerHTML =
-        `<div class="loading">
-          Não existem outras notícias.
-        </div>`;
+
+    if(!noticias.length){
+
+      area.innerHTML = "";
 
       return;
+
     }
 
-    outras.forEach(n => {
-
-      const card =
-        document.createElement("article");
-
-      card.className =
-        "news-card";
-
-      card.onclick = () =>
-        abrirNoticia(n.id);
-
-      const img =
-        imagem(n);
-
-      card.innerHTML = `
-
-        ${
-          img
-          ? `<img
-              src="${esc(img)}"
-              alt="${esc(titulo(n))}"
-              loading="lazy"
-              onerror="this.style.display='none'"
-            >`
-          : `<div class="no-image">🌍</div>`
-        }
-
-        <div class="news-content">
-
-          <div class="news-category">
-            ${esc(cat(n))}
-          </div>
-
-          <div class="news-title">
-            ${esc(titulo(n))}
-          </div>
-
-          <div class="news-date">
-            ${esc(data(n))}
-          </div>
-
-        </div>
-      `;
-
-      area.appendChild(card);
-
-    });
-
-  }catch(error){
-
-    console.error(
-      "Erro ao carregar mais notícias:",
-      error
-    );
 
     area.innerHTML =
-      `<div class="loading">
-        ⚠️ Não foi possível carregar mais notícias.
-      </div>`;
+      noticias.map(
+        n => {
 
-  }
+          const imagem =
+            obterImagem(n);
 
-}
+          const titulo =
+            obterTitulo(n);
 
-/* ABRIR OUTRA */
-
-function abrirNoticia(novoId){
-
-  if(!novoId) return;
-
-  location.href =
-    "noticia.html?id=" +
-    encodeURIComponent(novoId);
-
-}
+          const categoria =
+            obterCategoria(n);
 
 
-/* PARTILHAR */
+          return `
 
-async function partilhar(){
+            <article
+              class="news-card"
+              onclick="abrirNoticia('${esc(n.id)}')"
+            >
 
-  if(!noticiaAtual) return;
+              ${
+                imagem
+                  ? `
+                    <img
+                      src="${esc(imagem)}"
+                      alt="${esc(titulo)}"
+                      loading="lazy"
+                      decoding="async"
+                    >
+                  `
+                  : `
+                    <div
+                      style="
+                        height:150px;
+                        display:grid;
+                        place-items:center;
+                        background:#168a45;
+                        color:white;
+                        font-size:38px;
+                      "
+                    >
+                      🌍
+                    </div>
+                  `
+              }
 
-  const dados = {
-    title: titulo(noticiaAtual),
-    text: "Leia esta notícia no AfricanMundo.",
-    url: location.href
-  };
+              <div
+                class="news-card-content"
+              >
 
-  try{
+                <div
+                  class="news-card-category"
+                >
+                  ${esc(categoria)}
+                </div>
 
-    if(navigator.share){
+                <h3>
+                  ${esc(titulo)}
+                </h3>
 
-      await navigator.share(dados);
+              </div>
 
-    }else{
+            </article>
 
-      await navigator.clipboard.writeText(
-        location.href
-      );
+          `;
 
-      alert("🔗 Link copiado!");
+        }
+      ).join("");
 
-    }
 
   }catch(e){
 
-    console.log("Partilha cancelada.");
+    console.warn(
+      "Erro notícias relacionadas:",
+      e
+    );
 
   }
 
 }
 
-  async function guardarFoto(){
 
-  const foto =
-    document.getElementById("fotoNoticia");
+/* ==========================================
+   ABRIR NOTÍCIA
+========================================== */
 
-  if(!foto?.src) return;
+function abrirNoticia(id){
+
+  if(!id){
+
+    return;
+
+  }
+
+  window.location.href =
+    `noticia.html?id=${encodeURIComponent(id)}`;
+
+}
+
+
+/* ==========================================
+   PARTILHAR
+========================================== */
+
+async function partilhar(){
+
+  const titulo =
+    obterTitulo(
+      noticiaAtual || {}
+    );
+
+  const url =
+    window.location.href;
+
+
+  try{
+
+    if(
+      navigator.share
+    ){
+
+      await navigator.share({
+
+        title:
+          titulo,
+
+        text:
+          `${titulo} — AfricanMundo`,
+
+        url:
+          url
+
+      });
+
+      return;
+
+    }
+
+
+    if(
+      navigator.clipboard
+    ){
+
+      await navigator.clipboard.writeText(
+        url
+      );
+
+      alert(
+        "Link copiado! Pode partilhar onde quiser."
+      );
+
+      return;
+
+    }
+
+
+    prompt(
+      "Copie o link da notícia:",
+      url
+    );
+
+
+  }catch(e){
+
+    console.warn(
+      "Partilha cancelada:",
+      e
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   GUARDAR FOTO
+========================================== */
+
+async function guardarFoto(){
+
+  const imagem =
+    obterImagem(
+      noticiaAtual || {}
+    );
+
+
+  if(!imagem){
+
+    alert(
+      "Esta notícia não possui imagem."
+    );
+
+    return;
+
+  }
+
 
   try{
 
     const resposta =
-      await fetch(foto.src);
+      await fetch(imagem);
 
-    if(!resposta.ok)
+
+    if(!resposta.ok){
+
       throw new Error(
-        "Falha ao obter a imagem"
+        "Não foi possível obter a imagem."
       );
+
+    }
+
 
     const blob =
       await resposta.blob();
 
+
     const url =
       URL.createObjectURL(blob);
 
-    const a =
+
+    const link =
       document.createElement("a");
 
-    a.href = url;
 
-    a.download =
-      "africanmundo-foto.jpg";
+    link.href =
+      url;
 
-    document.body.appendChild(a);
+    link.download =
+      "africanmundo-imagem.jpg";
 
-    a.click();
 
-    a.remove();
+    document.body.appendChild(
+      link
+    );
 
-    setTimeout(() => {
-      URL.revokeObjectURL(url);
-    }, 1000);
+
+    link.click();
+
+
+    link.remove();
+
+
+    setTimeout(
+      () =>
+        URL.revokeObjectURL(url),
+      1000
+    );
+
+
+  }catch(e){
+
+    console.warn(
+      "Erro ao guardar imagem:",
+      e
+    );
+
+
+    window.open(
+      imagem,
+      "_blank"
+    );
+
+  }
+
+}
+
+
+/* ==========================================
+   IMAGEM GRANDE
+========================================== */
+
+function abrirFotoGrande(imagem){
+
+  const viewer =
+    document.getElementById(
+      "imageViewer"
+    );
+
+  const img =
+    document.getElementById(
+      "imageViewerImg"
+    );
+
+
+  if(!viewer || !img){
+
+    return;
+
+  }
+
+
+  img.src =
+    imagem;
+
+
+  viewer.classList.add(
+    "active"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+function fecharFotoGrande(event){
+
+  if(event){
+
+    event.stopPropagation();
+
+  }
+
+
+  const viewer =
+    document.getElementById(
+      "imageViewer"
+    );
+
+
+  if(viewer){
+
+    viewer.classList.remove(
+      "active"
+    );
+
+  }
+
+
+  document.body.style.overflow =
+    "";
+
+}
+
+
+/* ==========================================
+   VOLTAR
+========================================== */
+
+function voltar(){
+
+  if(
+    document.referrer &&
+    document.referrer.includes(
+      "majaua1999.github.io"
+    )
+  ){
+
+    history.back();
+
+  }else{
+
+    window.location.href =
+      "index.html";
+
+  }
+
+}
+
+
+/* ==========================================
+   MODO ESCURO
+========================================== */
+
+function aplicarTema(){
+
+  const tema =
+    localStorage.getItem(
+      "am_dark"
+    );
+
+
+  if(
+    tema === "true"
+  ){
+
+    document.body.classList.add(
+      "dark"
+    );
+
+  }else{
+
+    document.body.classList.remove(
+      "dark"
+    );
+
+  }
+
+}
+
+
+function alternarTema(){
+
+  const ativado =
+    document.body.classList.toggle(
+      "dark"
+    );
+
+
+  localStorage.setItem(
+    "am_dark",
+    ativado
+      ? "true"
+      : "false"
+  );
+
+}
+
+
+/* ==========================================
+   CARREGAR NOTÍCIA
+========================================== */
+
+async function carregar(){
+
+  const area =
+    document.getElementById(
+      "noticia"
+    );
+
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+
+  const id =
+    params.get("id");
+
+
+  if(!id){
+
+    area.className =
+      "error";
+
+
+    area.innerHTML = `
+
+      <h2>
+        Notícia não encontrada
+      </h2>
+
+      <p>
+        O endereço desta notícia está incompleto.
+      </p>
+
+      <button
+        onclick="window.location.href='index.html'"
+        style="
+          border:0;
+          background:#168a45;
+          color:white;
+          padding:10px 16px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        Voltar ao início
+      </button>
+
+    `;
+
+    return;
+
+  }
+
+
+  try{
+
+    if(!db){
+
+      const iniciado =
+        iniciarSupabase();
+
+
+      if(
+        !iniciado ||
+        !db
+      ){
+
+        throw new Error(
+          "Supabase não disponível."
+        );
+
+      }
+
+    }
+
+
+    /* ==============================
+       CARREGAR APENAS OS CAMPOS
+       NECESSÁRIOS
+    ============================== */
+
+    const resultado =
+      await db
+        .from("noticias")
+        .select(
+          "id,titulo,texto,imagem,categoria,data,fonte,url_original,visualizacoes"
+        )
+        .eq(
+          "id",
+          id
+        )
+        .single();
+
+
+    if(resultado.error){
+
+      throw resultado.error;
+
+    }
+
+
+    if(!resultado.data){
+
+      throw new Error(
+        "Notícia não encontrada."
+      );
+
+    }
+
+
+    const noticia =
+      resultado.data;
+
+
+    noticiaAtual =
+      noticia;
+
+
+    /* SEO */
+
+    atualizarSEO(
+      noticia
+    );
+
+
+    /* MOSTRAR */
+
+    mostrarNoticia(
+      noticia
+    );
+
+
+    /* VISUALIZAÇÃO */
+
+    contarVisualizacao(
+      noticia.id
+    );
+
+
+    /* RELACIONADAS */
+
+    mostrarMaisNoticias();
+
 
   }catch(e){
 
     console.error(
-      "Erro ao guardar foto:",
+      "❌ Erro ao carregar notícia:",
       e
     );
 
-    alert(
-      "⚠️ Não foi possível guardar a foto automaticamente."
-    );
+
+    area.className =
+      "error";
+
+
+    area.innerHTML = `
+
+      <h2>
+        Não foi possível carregar a notícia
+      </h2>
+
+      <p>
+        Verifique a sua ligação à Internet
+        e tente novamente.
+      </p>
+
+      <button
+        onclick="location.reload()"
+        style="
+          border:0;
+          background:#168a45;
+          color:white;
+          padding:10px 16px;
+          border-radius:8px;
+          cursor:pointer;
+        "
+      >
+        🔄 Tentar novamente
+      </button>
+
+    `;
 
   }
 
-      }
-  
- if(localStorage.getItem("am_dark")==="true"){
-    document.body.classList.add("dark");
-  } 
+}
 
-  function abrirFotoGrande(url){
 
-  if(!url) return;
+/* ==========================================
+   TECLA ESC
+========================================== */
 
-  const fundo =
-    document.createElement("div");
+document.addEventListener(
+  "keydown",
+  function(e){
 
-  fundo.id = "fotoGrande";
+    if(
+      e.key === "Escape"
+    ){
 
-  fundo.style.cssText = `
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    background:rgba(0,0,0,.92);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:15px;
-    cursor:zoom-out;
-  `;
-
-  fundo.innerHTML = `
-    <button
-      onclick="fecharFotoGrande(event)"
-      style="
-        position:absolute;
-        top:15px;
-        right:15px;
-        width:42px;
-        height:42px;
-        border:0;
-        border-radius:50%;
-        background:#fff;
-        color:#111;
-        font-size:22px;
-        font-weight:bold;
-        z-index:2;
-      "
-    >✕</button>
-
-    <img
-      src="${esc(url)}"
-      style="
-        max-width:100%;
-        max-height:92vh;
-        object-fit:contain;
-        border-radius:8px;
-      "
-    >
-  `;
-
-  fundo.onclick = function(e){
-
-    if(e.target === fundo){
       fecharFotoGrande();
+
     }
 
-  };
-
-  document.body.appendChild(fundo);
-
-}
-
-
-function fecharFotoGrande(e){
-
-  if(e) e.stopPropagation();
-
-  const foto =
-    document.getElementById("fotoGrande");
-
-  if(foto){
-    foto.remove();
   }
+);
 
-}
-  
-/* INICIAR */
+
+/* ==========================================
+   ANO
+========================================== */
+
+document.getElementById(
+  "ano"
+).textContent =
+  new Date().getFullYear();
+
+
+/* ==========================================
+   INICIAR
+========================================== */
 
 document.addEventListener(
   "DOMContentLoaded",
-  carregar
+  function(){
+
+    aplicarTema();
+
+    iniciarSupabase();
+
+    carregar();
+
+  }
 );
 
 </script>
 
 </body>
-</html>
+
+  </html>
