@@ -41,6 +41,11 @@
 <priority>0.8</priority>
 </url>
 <url>
+<loc>https://majaua1999.github.io/Africanmundo-/noticia.html?id=7011</loc>
+<changefreq>weekly</changefreq>
+<priority>0.7</priority>
+</url>
+<url>
 <loc>https://majaua1999.github.io/Africanmundo-/noticia.html?id=7010</loc>
 <changefreq>weekly</changefreq>
 <priority>0.7</priority>
@@ -5032,11 +5037,6 @@
 </url>
 <url>
 <loc>https://majaua1999.github.io/Africanmundo-/noticia.html?id=6012</loc>
-<changefreq>weekly</changefreq>
-<priority>0.7</priority>
-</url>
-<url>
-<loc>https://majaua1999.github.io/Africanmundo-/noticia.html?id=6011</loc>
 <changefreq>weekly</changefreq>
 <priority>0.7</priority>
 </url>
