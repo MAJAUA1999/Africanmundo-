@@ -1179,9 +1179,11 @@ function renderizarPagina(){
         cat.includes("atlet")
       );
 
-    })
+        })
     .slice(0,4)
-);
+  );
+
+}
 
 /* ==========================================
 ERRO DE NOTÍCIAS
