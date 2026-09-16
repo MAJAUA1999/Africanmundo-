@@ -99,3 +99,117 @@ body.dark textarea {
 body.dark a {
   color: #70c95a;
 }
+
+/* ==========================================
+   PAINÉIS FLUTUANTES — AFRICANMUNDO
+========================================== */
+
+.afm-modal,
+.modal-africanmundo,
+.notification-panel,
+.tools-panel,
+.user-panel,
+.color-panel {
+  position: fixed !important;
+  top: 80px !important;
+  right: 15px !important;
+  width: min(380px, calc(100% - 30px)) !important;
+  max-height: calc(100vh - 110px) !important;
+  overflow-y: auto !important;
+
+  background: #ffffff !important;
+  color: #151515 !important;
+
+  border-radius: 16px !important;
+  padding: 20px !important;
+
+  box-shadow: 0 10px 35px rgba(0,0,0,.25) !important;
+
+  z-index: 99999 !important;
+}
+
+
+/* Fundo escuro atrás da janela */
+
+.afm-overlay,
+.modal-overlay,
+.notification-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(0,0,0,.45) !important;
+  z-index: 99998 !important;
+}
+
+
+/* Títulos dos painéis */
+
+.afm-modal h2,
+.afm-modal h3,
+.notification-panel h2,
+.tools-panel h2,
+.user-panel h2,
+.color-panel h2 {
+  margin-top: 0 !important;
+  color: #17391e !important;
+}
+
+
+/* Botão fechar */
+
+.afm-modal .close,
+.modal-africanmundo .close,
+.notification-panel .close,
+.tools-panel .close,
+.user-panel .close,
+.color-panel .close {
+  float: right;
+  border: 0 !important;
+  background: transparent !important;
+  color: #555 !important;
+  font-size: 24px !important;
+  padding: 2px 7px !important;
+  cursor: pointer;
+}
+
+
+/* Modo escuro */
+
+body.dark .afm-modal,
+body.dark .modal-africanmundo,
+body.dark .notification-panel,
+body.dark .tools-panel,
+body.dark .user-panel,
+body.dark .color-panel {
+  background: #171d21 !important;
+  color: #f2f5f6 !important;
+}
+
+body.dark .afm-modal h2,
+body.dark .afm-modal h3,
+body.dark .notification-panel h2,
+body.dark .tools-panel h2,
+body.dark .user-panel h2,
+body.dark .color-panel h2 {
+  color: #70c95a !important;
+}
+
+
+/* Telemóvel */
+
+@media(max-width:600px){
+
+  .afm-modal,
+  .modal-africanmundo,
+  .notification-panel,
+  .tools-panel,
+  .user-panel,
+  .color-panel {
+
+    top: 65px !important;
+    right: 8px !important;
+    width: calc(100% - 16px) !important;
+    max-height: calc(100vh - 80px) !important;
+
+  }
+
+}
