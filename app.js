@@ -1162,30 +1162,26 @@ function renderizarPagina(){
   */
 
   renderizarLista(
-    "
-     "desporto",
-noticias
-.filter(n => {
+  "desporto",
+  noticias
+    .filter(n => {
 
-    const cat =
-      normalizarTexto(
-        n.categoria
+      const cat =
+        normalizarTexto(
+          n.categoria
+        );
+
+      return (
+        cat.includes("desporto") ||
+        cat.includes("esporte") ||
+        cat.includes("sports") ||
+        cat.includes("basquet") ||
+        cat.includes("atlet")
       );
 
-    return (
-      cat.includes("desporto") ||
-      cat.includes("esporte") ||
-      cat.includes("sports") ||
-      cat.includes("basquet") ||
-      cat.includes("atlet")
-    );
-
-  })
-  .slice(0,4)
-
+    })
+    .slice(0,4)
 );
-
-}
 
 /* ==========================================
 ERRO DE NOTÍCIAS
