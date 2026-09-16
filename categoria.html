@@ -1,1745 +1,861 @@
-<!doctype html>
-<html lang="pt-MZ">
+<script>
 
-<head>
+/* =====================================
+   SUPABASE
+===================================== */
 
-  <meta charset="utf-8">
+const SUPABASE_URL =
+"https://sonzwfhepjfvzltuxxne.supabase.co";
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-  <title>Categoria — AfricanMundo</title>
+const supabaseClient =
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
-  <meta
-    name="description"
-    content="AfricanMundo — Notícias de África, Moçambique, futebol, negócios e entretenimento."
-  >
 
-  <meta
-    name="theme-color"
-    content="#168a45"
-  >
+/* =====================================
+   NORMALIZAR
+===================================== */
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+function normalizarTexto(valor){
 
-  <style>
+  return String(valor ?? "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .replace(/\s+/g," ")
+    .trim();
 
-    /* =====================================
-       BASE
-    ===================================== */
+}
 
-    :root{
 
-      --verde:#168a45;
-      --verde2:#0f7038;
+function esc(valor){
 
-      --fundo:#f4f7f5;
-      --card:#ffffff;
+  return String(valor ?? "")
+    .replace(/[&<>"']/g,function(m){
 
-      --texto:#18201b;
-      --cinza:#68736d;
+      return {
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
+      }[m];
 
-      --borda:#e0e6e2;
+    });
 
-      --sombra:
-        0 8px 25px rgba(0,0,0,.08);
+}
 
+
+/* =====================================
+   TEXTO COMPLETO
+===================================== */
+
+function textoCompleto(noticia){
+
+  return normalizarTexto([
+
+    noticia?.titulo,
+    noticia?.texto,
+    noticia?.categoria,
+    noticia?.fonte
+
+  ].filter(Boolean).join(" "));
+
+}
+
+
+/* =====================================
+   VERIFICAR TERMOS
+===================================== */
+
+function contem(texto, termos){
+
+  return termos.some(
+    termo => texto.includes(
+      normalizarTexto(termo)
+    )
+  );
+
+}
+
+
+/* =====================================
+   🇲🇿 MOÇAMBIQUE
+===================================== */
+
+function ehMocambique(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "mocambique",
+    "mozambique",
+    "maputo",
+    "maputo cidade",
+    "provincia de maputo",
+    "matola",
+    "beira",
+    "nampula",
+    "chimoio",
+    "tete",
+    "quelimane",
+    "pemba",
+    "nacala",
+    "xai xai",
+    "gaza",
+    "sofala",
+    "manica",
+    "zambezia",
+    "cabo delgado",
+    "niassa",
+    "inhambane",
+    "montepuez",
+    "dondo",
+    "maxixe",
+    "vilanculos",
+    "mocimboa da praia"
+
+  ]);
+
+}
+
+
+/* =====================================
+   🌍 ÁFRICA
+===================================== */
+
+function ehAfrica(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "africa",
+    "africano",
+    "africana",
+    "uniao africana",
+
+    "angola",
+    "argelia",
+    "benim",
+    "botswana",
+    "burkina faso",
+    "burundi",
+    "camaroes",
+    "cabo verde",
+    "chade",
+    "comores",
+    "congo",
+    "costa do marfim",
+    "djibouti",
+    "egito",
+    "egipto",
+    "eritrea",
+    "eswatini",
+    "etiopia",
+    "gabon",
+    "gambia",
+    "gana",
+    "guine",
+    "guine bissau",
+    "guine equatorial",
+    "lesoto",
+    "liberia",
+    "libia",
+    "madagascar",
+    "malawi",
+    "mali",
+    "marrocos",
+    "mauritania",
+    "mauricio",
+    "namibia",
+    "nigeria",
+    "quenia",
+    "republica democratica do congo",
+    "ruanda",
+    "sao tome",
+    "senegal",
+    "seicheles",
+    "serra leoa",
+    "somalia",
+    "africa do sul",
+    "sudao",
+    "sudao do sul",
+    "tanzania",
+    "togo",
+    "tunisia",
+    "uganda",
+    "zambia",
+    "zimbabwe"
+
+  ]);
+
+}
+
+
+/* =====================================
+   ⚽ FUTEBOL
+===================================== */
+
+function ehFutebol(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "futebol",
+    "football",
+    "soccer",
+    "liga dos campeoes",
+    "champions league",
+    "premier league",
+    "la liga",
+    "bundesliga",
+    "serie a",
+    "mundial de clubes",
+    "copa do mundo",
+    "campeonato de futebol",
+    "jogador de futebol",
+    "jogadores de futebol",
+    "treinador de futebol",
+    "golo",
+    "golos",
+    "gol",
+    "gols",
+    "clube de futebol",
+    "clubes de futebol",
+    "selecao de futebol",
+    "transferencia de jogador",
+    "mercado da bola"
+
+  ]);
+
+}
+
+
+/* =====================================
+   🏆 DESPORTO
+===================================== */
+
+function ehDesporto(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "desporto",
+    "esporte",
+    "sports",
+    "basquetebol",
+    "basquete",
+    "basketball",
+    "atletismo",
+    "tenis",
+    "voleibol",
+    "volleyball",
+    "boxe",
+    "boxing",
+    "natacao",
+    "ciclismo",
+    "formula 1",
+    "motogp",
+    "judo",
+    "karate",
+    "olimpiadas",
+    "olimpicos",
+    "medalha",
+    "competicao desportiva",
+    "competicao esportiva"
+
+  ]);
+
+}
+
+
+/* =====================================
+   💼 NEGÓCIOS
+===================================== */
+
+function ehNegocios(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "negocios",
+    "negocio",
+    "economia",
+    "economico",
+    "economica",
+    "empresa",
+    "empresas",
+    "mercado",
+    "mercados",
+    "financas",
+    "financeiro",
+    "financeira",
+    "banco",
+    "bancos",
+    "investimento",
+    "investimentos",
+    "empreendedor",
+    "empreendedorismo",
+    "comercio",
+    "industria",
+    "business",
+    "finance",
+    "economy",
+    "emprego",
+    "empregos",
+    "oportunidade de emprego",
+    "oportunidades de emprego",
+    "vagas",
+    "recrutamento"
+
+  ]);
+
+}
+
+
+/* =====================================
+   🎬 ENTRETENIMENTO
+===================================== */
+
+function ehEntretenimento(noticia){
+
+  const texto =
+    textoCompleto(noticia);
+
+  return contem(texto,[
+
+    "entretenimento",
+    "cultura",
+    "celebridade",
+    "celebridades",
+    "musica",
+    "musicas",
+    "cantor",
+    "cantora",
+    "artista",
+    "artistas",
+    "cinema",
+    "filme",
+    "filmes",
+    "televisao",
+    "televisao",
+    "novela",
+    "festival",
+    "show",
+    "concerto",
+    "ator",
+    "atriz",
+    "famoso",
+    "famosa",
+    "lazer",
+    "teatro",
+    "humor",
+    "comediante"
+
+  ]);
+
+}
+
+
+/* =====================================
+   TÍTULO DA CATEGORIA
+===================================== */
+
+function nomeBonitoCategoria(categoria){
+
+  const nomes = {
+
+    noticias:"📰 Notícias",
+
+    futebol:"⚽ Futebol",
+
+    africa:"🌍 África",
+
+    mocambique:"🇲🇿 Moçambique",
+
+    negocios:"💼 Negócios",
+
+    entretenimento:"🎬 Entretenimento",
+
+    desporto:"🏆 Desporto"
+
+  };
+
+  return nomes[categoria] ||
+         "📰 Notícias";
+
+}
+
+
+/* =====================================
+   DESCRIÇÃO
+===================================== */
+
+function descricaoCategoria(categoria){
+
+  const descricoes = {
+
+    noticias:
+      "Todas as notícias publicadas no AfricanMundo.",
+
+    futebol:
+      "As principais notícias e acontecimentos do futebol.",
+
+    africa:
+      "As principais notícias do continente africano.",
+
+    mocambique:
+      "Notícias e acontecimentos de Moçambique.",
+
+    negocios:
+      "Notícias de negócios, economia, emprego e mercado.",
+
+    entretenimento:
+      "Notícias de entretenimento, cultura e celebridades.",
+
+    desporto:
+      "As principais notícias do mundo do desporto."
+
+  };
+
+  return descricoes[categoria] ||
+         "Notícias do AfricanMundo.";
+
+}
+
+
+/* =====================================
+   DADOS
+===================================== */
+
+function obterTitulo(noticia){
+
+  return String(
+    noticia.titulo ??
+    noticia.title ??
+    "Sem título"
+  );
+
+}
+
+
+function obterTexto(noticia){
+
+  return String(
+    noticia.texto ??
+    noticia.body ??
+    noticia.conteudo ??
+    noticia.content ??
+    ""
+  );
+
+}
+
+
+function obterImagem(noticia){
+
+  return String(
+    noticia.imagem ??
+    noticia.Imagem ??
+    noticia.image ??
+    noticia.imagem_url ??
+    noticia.image_url ??
+    ""
+  ).trim();
+
+}
+
+
+/* =====================================
+   DATA
+===================================== */
+
+function formatarData(valor){
+
+  if(!valor) return "";
+
+  const data =
+    new Date(valor);
+
+  if(Number.isNaN(data.getTime()))
+    return "";
+
+  return data.toLocaleString(
+    "pt-MZ",
+    {
+      day:"2-digit",
+      month:"long",
+      year:"numeric",
+      hour:"2-digit",
+      minute:"2-digit"
     }
+  );
 
-    *{
-      box-sizing:border-box;
-    }
+}
 
-    html{
-      scroll-behavior:smooth;
-    }
 
-    body{
+/* =====================================
+   CARTÃO
+===================================== */
 
-      margin:0;
+function criarCard(noticia){
 
-      background:var(--fundo);
+  const id =
+    noticia.id;
 
-      color:var(--texto);
+  const titulo =
+    obterTitulo(noticia);
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+  const texto =
+    obterTexto(noticia);
 
-      line-height:1.6;
+  const imagem =
+    obterImagem(noticia);
 
-    }
+  const categoria =
+    noticia.categoria ||
+    "Notícias";
 
-    a{
+  const data =
+    formatarData(
+      noticia.data ??
+      noticia.created_at
+    );
 
-      color:inherit;
+  const link =
+    "noticia.html?id=" +
+    encodeURIComponent(id);
 
-    }
 
+  let resumo =
+    texto
+      .replace(/\s+/g," ")
+      .trim();
 
-    /* =====================================
-       CABEÇALHO
-    ===================================== */
+  if(resumo.length > 180){
 
-    header{
+    resumo =
+      resumo.substring(0,177) +
+      "...";
 
-      position:sticky;
+  }
 
-      top:0;
 
-      z-index:1000;
+  let imagemHTML = `
 
-      background:var(--card);
+    <a
+      href="${link}"
+      class="news-card-image-wrap"
+    >
 
-      border-bottom:
-        1px solid var(--borda);
+      <div class="news-card-placeholder">
+        🌍
+      </div>
 
-      box-shadow:
-        0 2px 12px rgba(0,0,0,.06);
+    </a>
 
-    }
+  `;
 
-    .header-main{
 
-      max-width:1200px;
+  if(imagem){
 
-      margin:auto;
-
-      padding:
-        14px 15px;
-
-      display:flex;
-
-      align-items:center;
-
-      justify-content:space-between;
-
-      gap:15px;
-
-    }
-
-    .brand{
-
-      display:flex;
-
-      align-items:center;
-
-      gap:10px;
-
-      min-width:0;
-
-      text-decoration:none;
-
-    }
-
-    .brand-icon{
-
-      width:45px;
-
-      height:45px;
-
-      flex:none;
-
-      display:grid;
-
-      place-items:center;
-
-      border-radius:50%;
-
-      background:var(--verde);
-
-      color:#fff;
-
-      font-size:24px;
-
-      box-shadow:
-        0 4px 12px rgba(22,138,69,.25);
-
-    }
-
-    .brand-text{
-
-      min-width:0;
-
-    }
-
-    .logo{
-
-      font-size:23px;
-
-      line-height:1;
-
-      font-weight:900;
-
-      letter-spacing:-.8px;
-
-      color:var(--verde);
-
-    }
-
-    .tagline{
-
-      margin-top:4px;
-
-      color:var(--cinza);
-
-      font-size:11px;
-
-      white-space:nowrap;
-
-    }
-
-
-    /* =====================================
-       MENU
-    ===================================== */
-
-    .nav{
-
-      border-top:
-        1px solid var(--borda);
-
-      border-bottom:
-        1px solid var(--borda);
-
-      background:var(--card);
-
-    }
-
-    .nav-inner{
-
-      max-width:1200px;
-
-      margin:auto;
-
-      display:flex;
-
-      overflow-x:auto;
-
-      scrollbar-width:none;
-
-    }
-
-    .nav-inner::-webkit-scrollbar{
-
-      display:none;
-
-    }
-
-    .nav a{
-
-      color:var(--texto);
-
-      text-decoration:none;
-
-      padding:
-        12px 17px;
-
-      font-size:12px;
-
-      font-weight:800;
-
-      white-space:nowrap;
-
-      border-bottom:
-        3px solid transparent;
-
-      transition:
-        .2s ease;
-
-    }
-
-    .nav a:hover{
-
-      color:var(--verde);
-
-    }
-
-    .nav a.active{
-
-      color:var(--verde);
-
-      border-bottom-color:
-        var(--verde);
-
-      background:
-        rgba(22,138,69,.06);
-
-    }
-
-
-    /* =====================================
-       CONTEÚDO
-    ===================================== */
-
-    main{
-
-      max-width:1200px;
-
-      margin:auto;
-
-      padding:
-        20px 14px 60px;
-
-    }
-
-
-    /* =====================================
-       PUBLICIDADE
-    ===================================== */
-
-    .advertising{
-
-      min-height:100px;
-
-      margin-bottom:20px;
-
-      border-radius:15px;
-
-      background:
-        linear-gradient(
-          120deg,
-          #101412,
-          #16351f,
-          #101412
-        );
-
-      color:#fff;
-
-      display:flex;
-
-      align-items:center;
-
-      justify-content:center;
-
-      text-align:center;
-
-      padding:20px;
-
-      box-shadow:
-        0 7px 20px rgba(0,0,0,.12);
-
-    }
-
-    .advertising strong{
-
-      display:block;
-
-      color:#63d48a;
-
-      font-size:24px;
-
-      margin-bottom:5px;
-
-      letter-spacing:.5px;
-
-    }
-
-    .advertising span{
-
-      color:#dce8df;
-
-      font-size:13px;
-
-    }
-
-
-    /* =====================================
-       CABEÇALHO DA CATEGORIA
-    ===================================== */
-
-    .category-header{
-
-      position:relative;
-
-      overflow:hidden;
-
-      background:var(--card);
-
-      border:
-        1px solid var(--borda);
-
-      border-radius:16px;
-
-      padding:
-        20px 20px 20px 24px;
-
-      margin-bottom:22px;
-
-      box-shadow:
-        0 5px 18px rgba(0,0,0,.05);
-
-    }
-
-    .category-header::before{
-
-      content:"";
-
-      position:absolute;
-
-      left:0;
-
-      top:0;
-
-      bottom:0;
-
-      width:6px;
-
-      background:var(--verde);
-
-    }
-
-    .category-header h1{
-
-      margin:0;
-
-      font-size:
-        clamp(25px,4vw,34px);
-
-      line-height:1.15;
-
-      font-weight:900;
-
-      letter-spacing:-.5px;
-
-    }
-
-    .category-header p{
-
-      margin:
-        8px 0 0;
-
-      color:var(--cinza);
-
-      font-size:14px;
-
-    }
-
-
-    /* =====================================
-       GRELHA
-    ===================================== */
-
-    .news-grid{
-
-      display:grid;
-
-      grid-template-columns:
-        repeat(3,minmax(0,1fr));
-
-      gap:20px;
-
-    }
-
-
-    /* =====================================
-       CARTÃO
-    ===================================== */
-
-    .news-card{
-
-      background:var(--card);
-
-      border:
-        1px solid var(--borda);
-
-      border-radius:16px;
-
-      overflow:hidden;
-
-      box-shadow:
-        0 5px 18px rgba(0,0,0,.07);
-
-      transition:
-        transform .2s ease,
-        box-shadow .2s ease;
-
-      cursor:pointer;
-
-      -webkit-tap-highlight-color:
-        transparent;
-
-    }
-
-    .news-card:hover{
-
-      transform:
-        translateY(-4px);
-
-      box-shadow:
-        0 12px 30px rgba(0,0,0,.12);
-
-    }
-
-    .news-card:active{
-
-      transform:
-        scale(.985);
-
-    }
-
-
-    /* =====================================
-       IMAGEM
-    ===================================== */
-
-    .news-card-image{
-
-      width:100%;
-
-      height:220px;
-
-      object-fit:cover;
-
-      display:block;
-
-      background:#dfe5e1;
-
-      transition:
-        transform .3s ease;
-
-    }
-
-    .news-card:hover
-    .news-card-image{
-
-      transform:scale(1.02);
-
-    }
-
-    .news-card-image-wrap{
-
-      position:relative;
-
-      overflow:hidden;
-
-      background:#dfe5e1;
-
-    }
-
-    .news-card-placeholder{
-
-      width:100%;
-
-      height:220px;
-
-      display:grid;
-
-      place-items:center;
-
-      background:
-        linear-gradient(
-          135deg,
-          #102016,
-          #286b3d
-        );
-
-      color:#fff;
-
-      font-size:55px;
-
-    }
-
-
-    /* =====================================
-       CONTEÚDO
-    ===================================== */
-
-    .news-card-content{
-
-      padding:17px;
-
-    }
-
-    .news-category{
-
-      display:inline-flex;
-
-      align-items:center;
-
-      padding:
-        5px 9px;
-
-      border-radius:20px;
-
-      background:
-        rgba(22,138,69,.10);
-
-      color:var(--verde);
-
-      font-size:10px;
-
-      font-weight:900;
-
-      text-transform:uppercase;
-
-      letter-spacing:.4px;
-
-      margin-bottom:9px;
-
-    }
-
-    .news-card h2{
-
-      margin:
-        0 0 10px;
-
-      font-size:20px;
-
-      line-height:1.25;
-
-      font-weight:900;
-
-      letter-spacing:-.2px;
-
-    }
-
-    .news-card h2 a{
-
-      text-decoration:none;
-
-      color:inherit;
-
-    }
-
-    .news-card h2 a:hover{
-
-      color:var(--verde);
-
-    }
-
-    .news-card p{
-
-      margin:0;
-
-      color:var(--cinza);
-
-      font-size:14px;
-
-      line-height:1.55;
-
-      display:-webkit-box;
-
-      -webkit-line-clamp:3;
-
-      -webkit-box-orient:vertical;
-
-      overflow:hidden;
-
-    }
-
-
-    /* =====================================
-       DATA
-    ===================================== */
-
-    .news-date{
-
-      margin-top:12px;
-
-      padding-top:11px;
-
-      border-top:
-        1px solid var(--borda);
-
-      color:var(--cinza);
-
-      font-size:11px;
-
-    }
-
-
-    /* =====================================
-       BOTÃO
-    ===================================== */
-
-    .read-more{
-
-      display:flex;
-
-      align-items:center;
-
-      justify-content:center;
-
-      gap:6px;
-
-      margin-top:14px;
-
-      padding:
-        11px 14px;
-
-      background:var(--verde);
-
-      color:#fff;
-
-      text-decoration:none;
-
-      border-radius:9px;
-
-      font-size:12px;
-
-      font-weight:800;
-
-      transition:
-        background .2s ease,
-        transform .2s ease;
-
-    }
-
-    .read-more:hover{
-
-      background:var(--verde2);
-
-      transform:
-        translateY(-1px);
-
-    }
-
-
-    /* =====================================
-       CARREGAMENTO
-    ===================================== */
-
-    .loading{
-
-      background:var(--card);
-
-      padding:50px 20px;
-
-      border:
-        1px solid var(--borda);
-
-      border-radius:16px;
-
-      text-align:center;
-
-      color:var(--cinza);
-
-      font-size:16px;
-
-      grid-column:
-        1 / -1;
-
-    }
-
-
-    /* =====================================
-       ERRO
-    ===================================== */
-
-    .error-message{
-
-      background:var(--card);
-
-      border:
-        1px solid #f0caca;
-
-      padding:35px 20px;
-
-      border-radius:16px;
-
-      text-align:center;
-
-      color:#b00020;
-
-      grid-column:
-        1 / -1;
-
-    }
-
-
-    /* =====================================
-       SEM NOTÍCIAS
-    ===================================== */
-
-    .empty-message{
-
-      background:var(--card);
-
-      border:
-        1px solid var(--borda);
-
-      padding:40px 20px;
-
-      border-radius:16px;
-
-      text-align:center;
-
-      color:var(--cinza);
-
-      font-size:16px;
-
-      grid-column:
-        1 / -1;
-
-    }
-
-
-    /* =====================================
-       RODAPÉ
-    ===================================== */
-
-    footer{
-
-      background:#101412;
-
-      color:#fff;
-
-      padding:35px 15px;
-
-      margin-top:20px;
-
-      text-align:center;
-
-    }
-
-    footer p{
-
-      margin:6px 0;
-
-      color:#aeb9b2;
-
-      font-size:12px;
-
-    }
-
-
-    /* =====================================
-       RESPONSIVO
-    ===================================== */
-
-    @media(max-width:900px){
-
-      .news-grid{
-
-        grid-template-columns:
-          repeat(2,minmax(0,1fr));
-
-        gap:14px;
-
-      }
-
-      .news-card-image,
-      .news-card-placeholder{
-
-        height:190px;
-
-      }
-
-    }
-
-
-    /* =====================================
-       TELEMÓVEL
-    ===================================== */
-
-    @media(max-width:600px){
-
-      .header-main{
-
-        padding:
-          10px 11px;
-
-      }
-
-      .brand-icon{
-
-        width:40px;
-
-        height:40px;
-
-        font-size:21px;
-
-      }
-
-      .logo{
-
-        font-size:20px;
-
-      }
-
-      .tagline{
-
-        font-size:9px;
-
-      }
-
-      .nav a{
-
-        padding:
-          11px 13px;
-
-        font-size:10px;
-
-      }
-
-      main{
-
-        padding:
-          12px 9px 40px;
-
-      }
-
-      .advertising{
-
-        min-height:105px;
-
-        border-radius:13px;
-
-        padding:17px 12px;
-
-      }
-
-      .advertising strong{
-
-        font-size:21px;
-
-      }
-
-      .category-header{
-
-        padding:
-          18px 15px 18px 20px;
-
-        margin-bottom:15px;
-
-      }
-
-      .category-header h1{
-
-        font-size:25px;
-
-      }
-
-      .category-header p{
-
-        font-size:12px;
-
-      }
-
-
-      /* UMA NOTÍCIA POR LINHA */
-
-      .news-grid{
-
-        grid-template-columns:1fr;
-
-        gap:14px;
-
-      }
-
-
-      /* IMAGEM GRANDE */
-
-      .news-card-image,
-      .news-card-placeholder{
-
-        height:215px;
-
-      }
-
-      .news-card-content{
-
-        padding:15px;
-
-      }
-
-      .news-category{
-
-        font-size:9px;
-
-        margin-bottom:8px;
-
-      }
-
-      .news-card h2{
-
-        font-size:20px;
-
-        line-height:1.25;
-
-      }
-
-      .news-card p{
-
-        font-size:14px;
-
-        -webkit-line-clamp:3;
-
-      }
-
-      .news-date{
-
-        font-size:10px;
-
-      }
-
-      .read-more{
-
-        padding:
-          11px 8px;
-
-        font-size:11px;
-
-      }
-
-    }
-
-  </style>
-
-</head>
-</head>
-
-<body>
-
-  <!-- =====================================
-       CABEÇALHO
-  ===================================== -->
-
-  <header>
-
-    <div class="header-main">
+    imagemHTML = `
 
       <a
-        href="index.html"
-        class="brand"
-        aria-label="AfricanMundo — Início"
+        href="${link}"
+        class="news-card-image-wrap"
       >
 
-        <div class="brand-icon">
+        <img
+          class="news-card-image"
+          src="${esc(imagem)}"
+          alt="${esc(titulo)}"
+          loading="lazy"
+          decoding="async"
+          onerror="
+            this.style.display='none';
+            if(this.nextElementSibling)
+              this.nextElementSibling.style.display='grid';
+          "
+        >
+
+        <div
+          class="news-card-placeholder"
+          style="display:none"
+        >
           🌍
-        </div>
-
-        <div class="brand-text">
-
-          <div class="logo">
-            AfricanMundo
-          </div>
-
-          <div class="tagline">
-            A informação que liga África ao mundo
-          </div>
-
         </div>
 
       </a>
 
-    </div>
+    `;
+
+  }
 
 
-    <!-- =====================================
-         MENU
-    ===================================== -->
+  return `
 
-    <nav class="nav">
+    <article class="news-card">
 
-      <div class="nav-inner">
+      ${imagemHTML}
 
-        <a
-          href="index.html"
-          data-categoria=""
-        >
-          🏠 INÍCIO
-        </a>
+      <div class="news-card-content">
 
-        <a
-          href="categoria.html?categoria=noticias"
-          data-categoria="noticias"
-        >
-          📰 NOTÍCIAS
-        </a>
+        <div class="news-category">
+          ${esc(categoria)}
+        </div>
 
-        <a
-          href="categoria.html?categoria=futebol"
-          data-categoria="futebol"
-        >
-          ⚽ FUTEBOL
-        </a>
+        <h2>
+          <a href="${link}">
+            ${esc(titulo)}
+          </a>
+        </h2>
 
-        <a
-          href="categoria.html?categoria=africa"
-          data-categoria="africa"
-        >
-          🌍 ÁFRICA
-        </a>
-
-        <a
-          href="categoria.html?categoria=mocambique"
-          data-categoria="mocambique"
-        >
-          🇲🇿 MOÇAMBIQUE
-        </a>
-
-        <a
-          href="categoria.html?categoria=negocios"
-          data-categoria="negocios"
-        >
-          💼 NEGÓCIOS
-        </a>
-
-        <a
-          href="categoria.html?categoria=entretenimento"
-          data-categoria="entretenimento"
-        >
-          🎬 ENTRETENIMENTO
-        </a>
-
-        <a
-          href="categoria.html?categoria=desporto"
-          data-categoria="desporto"
-        >
-          🏆 DESPORTO
-        </a>
-
-      </div>
-
-    </nav>
-
-  </header>
-
-
-  <!-- =====================================
-       CONTEÚDO PRINCIPAL
-  ===================================== -->
-
-  <main>
-
-
-    <!-- =====================================
-         PUBLICIDADE
-    ===================================== -->
-
-    <div class="advertising">
-
-      <div>
-
-        <strong>
-          ANUNCIE AQUI
-        </strong>
-
-        <span>
-          A sua marca em destaque em todo o continente africano.
-        </span>
-
-      </div>
-
-    </div>
-
-
-    <!-- =====================================
-         CABEÇALHO DA CATEGORIA
-    ===================================== -->
-
-    <div class="category-header">
-
-      <h1 id="categoryTitle">
-        📰 Notícias
-      </h1>
-
-      <p id="categoryDescription">
-        Notícias do AfricanMundo
-      </p>
-
-    </div>
-
-
-    <!-- =====================================
-         GRELHA DE NOTÍCIAS
-    ===================================== -->
-
-    <div
-      id="newsGrid"
-      class="news-grid"
-    >
-
-      <div class="loading">
-
-        ⏳ A preparar as notícias...
-
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <!-- =====================================
-       RODAPÉ
-  ===================================== -->
-
-  <footer>
-
-    <p>
-      🌍 AfricanMundo
-    </p>
-
-    <p>
-      A informação que liga África ao mundo
-    </p>
-
-    <p>
-      © 2026 AfricanMundo. Todos os direitos reservados.
-    </p>
-
-  </footer>
-
-
-  <!-- =====================================
-       JAVASCRIPT
-  ===================================== -->
-
-  <script>
-        /* =====================================
-       SUPABASE
-    ===================================== */
-
-    const SUPABASE_URL =
-      "https://sonzwfhepjfvzltuxxne.supabase.co";
-
-    const SUPABASE_KEY =
-      "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
-
-    const supabaseClient =
-      window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_KEY
-      );
-
-
-    /* =====================================
-       ESCAPAR TEXTO
-    ===================================== */
-
-    function esc(valor){
-
-      return String(
-        valor ?? ""
-      ).replace(
-        /[&<>"']/g,
-        function(m){
-
-          return {
-
-            "&":"&amp;",
-            "<":"&lt;",
-            ">":"&gt;",
-            '"':"&quot;",
-            "'":"&#039;"
-
-          }[m];
-
+        ${
+          resumo
+          ?
+          `
+          <p>
+            ${esc(resumo)}
+          </p>
+          `
+          :
+          ""
         }
-      );
 
-    }
-
-
-    /* =====================================
-       NORMALIZAR CATEGORIA
-    ===================================== */
-
-    function normalizarCategoria(valor){
-
-      return String(
-        valor ?? ""
-      )
-      .toLowerCase()
-      .normalize("NFD")
-      .replace(
-        /[\u0300-\u036f]/g,
-        ""
-      )
-      .trim();
-
-    }
-
-
-    /* =====================================
-       NOME BONITO
-    ===================================== */
-
-    function nomeBonitoCategoria(
-      categoria
-    ){
-
-      const nomes = {
-
-        noticias:
-          "📰 Notícias",
-
-        futebol:
-          "⚽ Futebol",
-
-        africa:
-          "🌍 África",
-
-        mocambique:
-          "🇲🇿 Moçambique",
-
-        negocios:
-          "💼 Negócios",
-
-        entretenimento:
-          "🎬 Entretenimento",
-
-        desporto:
-          "🏆 Desporto"
-
-      };
-
-      return (
-        nomes[categoria] ||
-        "📰 Notícias"
-      );
-
-    }
-
-
-    /* =====================================
-       DESCRIÇÃO
-    ===================================== */
-
-    function descricaoCategoria(
-      categoria
-    ){
-
-      const descricoes = {
-
-        noticias:
-          "Todas as notícias publicadas no AfricanMundo.",
-
-        futebol:
-          "As principais notícias e acontecimentos do futebol.",
-
-        africa:
-          "As principais notícias do continente africano.",
-
-        mocambique:
-          "Notícias e acontecimentos de Moçambique.",
-
-        negocios:
-          "Notícias de negócios, economia e mercado.",
-
-        entretenimento:
-          "Notícias de entretenimento, cultura e celebridades.",
-
-        desporto:
-          "As principais notícias do mundo do desporto."
-
-      };
-
-      return (
-        descricoes[categoria] ||
-        "Notícias do AfricanMundo."
-      );
-
-    }
-
-
-    /* =====================================
-       FORMATAR DATA
-    ===================================== */
-
-    function formatarData(valor){
-
-      if(!valor){
-        return "";
-      }
-
-      const data =
-        new Date(valor);
-
-      if(
-        Number.isNaN(
-          data.getTime()
-        )
-      ){
-
-        return "";
-
-      }
-
-      return data.toLocaleString(
-        "pt-MZ",
-        {
-          day:"2-digit",
-          month:"long",
-          year:"numeric",
-          hour:"2-digit",
-          minute:"2-digit"
+        ${
+          data
+          ?
+          `
+          <div class="news-date">
+            📅 ${esc(data)}
+          </div>
+          `
+          :
+          ""
         }
-      );
-
-    }
-
-
-    /* =====================================
-       OBTER IMAGEM
-    ===================================== */
-
-    function obterImagem(noticia){
-
-      return String(
-
-        noticia.imagem ??
-        noticia.Imagem ??
-        noticia.image ??
-        noticia.imagem_url ??
-        noticia.image_url ??
-        ""
-
-      ).trim();
-
-    }
-
-
-    /* =====================================
-       OBTER TÍTULO
-    ===================================== */
-
-    function obterTitulo(noticia){
-
-      return String(
-
-        noticia.titulo ??
-        noticia.title ??
-        noticia.nome ??
-        "Sem título"
-
-      );
-
-    }
-
-
-    /* =====================================
-       OBTER TEXTO
-    ===================================== */
-
-    function obterTexto(noticia){
-
-      return String(
-
-        noticia.texto ??
-        noticia.body ??
-        noticia.conteudo ??
-        noticia.content ??
-        ""
-
-      );
-
-    }
-
-
-    /* =====================================
-       OBTER CATEGORIA
-    ===================================== */
-
-    function obterCategoria(noticia){
-
-      return normalizarCategoria(
-
-        noticia.categoria ??
-        noticia.category ??
-        noticia.cat ??
-        ""
-
-      );
-
-    }
-
-
-    /* =====================================
-       CRIAR CARTÃO
-    ===================================== */
-
-    function criarCard(noticia){
-
-      const id =
-        noticia.id;
-
-      const titulo =
-        obterTitulo(noticia);
-
-      const texto =
-        obterTexto(noticia);
-
-      const categoriaOriginal =
-        noticia.categoria ??
-        noticia.category ??
-        "Notícias";
-
-      const imagem =
-        obterImagem(noticia);
-
-      const data =
-        formatarData(
-          noticia.data ??
-          noticia.created_at
-        );
-
-      const link =
-        "noticia.html?id=" +
-        encodeURIComponent(id);
-
-
-      /* =================================
-         RESUMO
-      ================================= */
-
-      let resumo =
-        texto
-        .replace(/\s+/g," ")
-        .trim();
-
-      if(
-        resumo.length > 180
-      ){
-
-        resumo =
-          resumo.slice(0,177) +
-          "...";
-
-      }
-
-
-      /* =================================
-         IMAGEM
-      ================================= */
-
-      let imagemHTML = `
 
         <a
           href="${link}"
-          aria-label="Abrir notícia"
-          class="news-card-image-wrap"
-          style="
-            display:block;
-            text-decoration:none;
-          "
+          class="read-more"
         >
-
-          <div class="news-card-placeholder">
-
-            🌍
-
-          </div>
-
+          📖 Ler notícia completa →
         </a>
 
-      `;
+      </div>
 
+    </article>
 
-      if(imagem){
+  `;
 
-        imagemHTML = `
+}
 
-          <a
-            href="${link}"
-            aria-label="Abrir notícia"
-            class="news-card-image-wrap"
-            style="
-              display:block;
-              text-decoration:none;
-            "
-          >
 
-            <img
-              class="news-card-image"
-              src="${esc(imagem)}"
-              alt="${esc(titulo)}"
-              loading="lazy"
-              decoding="async"
-              fetchpriority="low"
-              onerror="
-                this.style.display='none';
-                this.nextElementSibling.style.display='grid';
-              "
-            >
+/* =====================================
+   FILTRAR CATEGORIA
+===================================== */
 
-            <div
-              class="news-card-placeholder"
-              style="display:none;"
-            >
+function filtrarNoticias(
+  noticias,
+  categoria
+){
 
-              🌍
+  if(categoria === "noticias"){
 
-            </div>
+    return noticias;
 
-          </a>
+  }
 
-        `;
 
-      }
+  if(categoria === "mocambique"){
 
+    return noticias.filter(
+      ehMocambique
+    );
 
-      /* =================================
-         CARTÃO
-      ================================= */
+  }
 
-      return `
 
-        <article class="news-card">
+  if(categoria === "africa"){
 
-          ${imagemHTML}
+    return noticias.filter(
+      ehAfrica
+    );
 
-          <div class="news-card-content">
+  }
 
-            <div class="news-category">
 
-              ${esc(
-                categoriaOriginal
-              )}
+  if(categoria === "futebol"){
 
-            </div>
+    return noticias.filter(
+      ehFutebol
+    );
 
+  }
 
-            <h2>
 
-              <a href="${link}">
+  if(categoria === "desporto"){
 
-                ${esc(titulo)}
+    return noticias.filter(
+      noticia =>
+        ehDesporto(noticia) ||
+        ehFutebol(noticia)
+    );
 
-              </a>
+  }
 
-            </h2>
 
+  if(categoria === "negocios"){
 
-            ${
-              resumo
-                ? `
+    return noticias.filter(
+      ehNegocios
+    );
 
-                  <p>
+  }
 
-                    ${esc(resumo)}
 
-                  </p>
+  if(categoria === "entretenimento"){
 
-                `
-                : ""
-            }
+    return noticias.filter(
+      ehEntretenimento
+    );
 
+  }
 
-            ${
-              data
-                ? `
 
-                  <div class="news-date">
+  return noticias;
 
-                    📅 ${esc(data)}
+}
 
-                  </div>
 
-                `
-                : ""
-            }
+/* =====================================
+   CARREGAR
+===================================== */
 
+async function carregarCategoria(){
 
-            <a
-              href="${link}"
-              class="read-more"
-            >
+  const grid =
+    document.getElementById(
+      "newsGrid"
+    );
 
-              📖 Ler notícia completa →
+  const titulo =
+    document.getElementById(
+      "categoryTitle"
+    );
 
-            </a>
+  const descricao =
+    document.getElementById(
+      "categoryDescription"
+    );
 
-          </div>
 
-        </article>
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
 
-      `;
 
-    }
+  let categoria =
+    normalizarTexto(
+      params.get("categoria")
+    );
 
 
-    /* =====================================
-       CARREGAR CATEGORIA
-    ===================================== */
+  if(!categoria){
 
-    async function carregarCategoria(){
+    categoria =
+      "noticias";
 
-      const grid =
-        document.getElementById(
-          "newsGrid"
-        );
+  }
 
-      const titulo =
-        document.getElementById(
-          "categoryTitle"
-        );
 
-      const descricao =
-        document.getElementById(
-          "categoryDescription"
-        );
+  if(titulo){
 
+    titulo.textContent =
+      nomeBonitoCategoria(
+        categoria
+      );
 
-      /* =================================
-         LER URL
-      ================================= */
+  }
 
-      const parametros =
-        new URLSearchParams(
-          window.location.search
-        );
 
-      let categoriaURL =
-        parametros.get(
-          "categoria"
-        );
+  if(descricao){
 
-      categoriaURL =
-        normalizarCategoria(
-          categoriaURL
-        );
+    descricao.textContent =
+      descricaoCategoria(
+        categoria
+      );
 
+  }
 
-      if(!categoriaURL){
 
-        categoriaURL =
-          "noticias";
+  if(grid){
 
-      }
+    grid.innerHTML = `
 
+      <div class="loading">
+        ⏳ A carregar as notícias...
+      </div>
 
-      /* =================================
-         CABEÇALHO
-      ================================= */
+    `;
 
-      if(titulo){
+  }
 
-        titulo.textContent =
-          nomeBonitoCategoria(
-            categoriaURL
-          );
 
-      }
+  try{
 
+    const resposta =
+      await supabaseClient
+      .from("noticias")
+      .select(`
+        id,
+        titulo,
+        texto,
+        imagem,
+        categoria,
+        data,
+        fonte,
+        url_original
+      `)
+      .order(
+        "id",
+        {
+          ascending:false
+        }
+      )
+      .limit(500);
 
-      if(descricao){
 
-        descricao.textContent =
-          descricaoCategoria(
-            categoriaURL
-          );
+    if(resposta.error){
 
-      }
-
-
-      /* =================================
-         LOADING
-      ================================= */
+      console.error(
+        resposta.error
+      );
 
       if(grid){
 
         grid.innerHTML = `
 
-          <div class="loading">
+          <div class="error-message">
 
-            ⏳ A carregar as notícias...
+            ❌ Não foi possível
+            carregar as notícias.
 
           </div>
 
@@ -1747,283 +863,255 @@
 
       }
 
-
-      try{
-
-        /* =================================
-           BUSCAR NOTÍCIAS
-        ================================= */
-
-        const resultado =
-          await supabaseClient
-            .from("noticias")
-            .select(
-              "id,titulo,texto,imagem,categoria,data,fonte,url_original"
-            )
-            .order(
-              "id",
-              {
-                ascending:false
-              }
-            )
-            .limit(150);
-
-
-        /* =================================
-           ERRO
-        ================================= */
-
-        if(resultado.error){
-
-          console.error(
-            "Erro Supabase:",
-            resultado.error
-          );
-
-          if(grid){
-
-            grid.innerHTML = `
-
-              <div class="error-message">
-
-                ❌ Não foi possível
-                carregar as notícias.
-
-                <br><br>
-
-                <small>
-
-                  ${esc(
-                    resultado.error.message ||
-                    "Erro desconhecido."
-                  )}
-
-                </small>
-
-              </div>
-
-            `;
-
-          }
-
-          return;
-
-        }
-
-
-        /* =================================
-           DADOS
-        ================================= */
-
-        let noticias =
-          resultado.data || [];
-
-
-        /* =================================
-           FILTRAR
-        ================================= */
-
-        if(
-          categoriaURL !== "noticias"
-        ){
-
-          noticias =
-            noticias.filter(
-              function(noticia){
-
-                return (
-                  obterCategoria(
-                    noticia
-                  ) ===
-                  categoriaURL
-                );
-
-              }
-            );
-
-        }
-
-
-        /* =================================
-           SEM NOTÍCIAS
-        ================================= */
-
-        if(
-          noticias.length === 0
-        ){
-
-          if(grid){
-
-            grid.innerHTML = `
-
-              <div class="empty-message">
-
-                📰 Nenhuma notícia
-                encontrada nesta categoria.
-
-                <br><br>
-
-                <small>
-
-                  Quando houver novas notícias,
-                  elas aparecerão aqui.
-
-                </small>
-
-              </div>
-
-            `;
-
-          }
-
-          return;
-
-        }
-
-
-        /* =================================
-           RENDERIZAR
-        ================================= */
-
-        if(grid){
-
-          grid.innerHTML =
-            noticias
-              .map(
-                function(noticia){
-
-                  return criarCard(
-                    noticia
-                  );
-
-                }
-              )
-              .join("");
-
-        }
-
-
-        console.log(
-          "✅ Notícias apresentadas:",
-          noticias.length
-        );
-
-      }catch(erro){
-
-        console.error(
-          "Erro ao carregar categoria:",
-          erro
-        );
-
-        if(grid){
-
-          grid.innerHTML = `
-
-            <div class="error-message">
-
-              ❌ Ocorreu um erro ao
-              carregar as notícias.
-
-              <br><br>
-
-              <small>
-
-                Tente novamente mais tarde.
-
-              </small>
-
-            </div>
-
-          `;
-
-        }
-
-      }
+      return;
 
     }
 
 
-    /* =====================================
-       MENU ATIVO
-    ===================================== */
-
-    function marcarMenuAtivo(){
-
-      const parametros =
-        new URLSearchParams(
-          window.location.search
-        );
-
-      let categoria =
-        normalizarCategoria(
-          parametros.get(
-            "categoria"
-          )
-        );
+    let noticias =
+      Array.isArray(
+        resposta.data
+      )
+      ?
+      resposta.data
+      :
+      [];
 
 
-      if(!categoria){
+    /* ===============================
+       REMOVER DUPLICADOS
+    =============================== */
 
-        categoria =
-          "noticias";
+    const ids =
+      new Set();
 
-      }
-
-
-      const links =
-        document.querySelectorAll(
-          ".nav a"
-        );
-
-
-      links.forEach(
-        function(link){
-
-          link.classList.remove(
-            "active"
-          );
-
-
-          const categoriaLink =
-            normalizarCategoria(
-              link.dataset.categoria ||
-              ""
-            );
-
+    noticias =
+      noticias.filter(
+        noticia => {
 
           if(
-            categoriaLink === categoria
+            noticia.id == null ||
+            ids.has(noticia.id)
           ){
 
-            link.classList.add(
-              "active"
-            );
+            return false;
 
           }
+
+          ids.add(noticia.id);
+
+          return true;
 
         }
       );
 
-    }
+
+    /* ===============================
+       FILTRAR
+    =============================== */
+
+    noticias =
+      filtrarNoticias(
+        noticias,
+        categoria
+      );
 
 
-    /* =====================================
-       INICIAR
-    ===================================== */
+    /* ===============================
+       MAIS RECENTES PRIMEIRO
+    =============================== */
 
-    document.addEventListener(
-      "DOMContentLoaded",
-      function(){
+    noticias.sort(
+      function(a,b){
 
-        marcarMenuAtivo();
+        const dataA =
+          new Date(
+            a.data || 0
+          ).getTime();
 
-        carregarCategoria();
+        const dataB =
+          new Date(
+            b.data || 0
+          ).getTime();
+
+        if(dataB !== dataA){
+
+          return dataB - dataA;
+
+        }
+
+        return (
+          Number(b.id || 0) -
+          Number(a.id || 0)
+        );
 
       }
     );
 
+
+    /* ===============================
+       NENHUMA NOTÍCIA
+    =============================== */
+
+    if(!noticias.length){
+
+      if(grid){
+
+        grid.innerHTML = `
+
+          <div class="empty-message">
+
+            📰 Nenhuma notícia
+            encontrada nesta categoria.
+
+            <br><br>
+
+            <small>
+              Quando houver novas notícias,
+              elas aparecerão aqui.
+            </small>
+
+          </div>
+
+        `;
+
+      }
+
+      return;
+
+    }
+
+
+    /* ===============================
+       MOSTRAR NOTÍCIAS
+    =============================== */
+
+    if(grid){
+
+      grid.innerHTML =
+        noticias
+        .map(criarCard)
+        .join("");
+
+    }
+
+
+    console.log(
+      "✅ AfricanMundo:",
+      categoria,
+      noticias.length,
+      "notícias"
+    );
+
+
+  }catch(erro){
+
+    console.error(
+      "Erro:",
+      erro
+    );
+
+
+    if(grid){
+
+      grid.innerHTML = `
+
+        <div class="error-message">
+
+          ❌ Ocorreu um erro ao
+          carregar as notícias.
+
+        </div>
+
+      `;
+
+    }
+
+  }
+
+}
+
+
+/* =====================================
+   MENU ATIVO
+===================================== */
+
+function marcarMenuAtivo(){
+
+  const params =
+    new URLSearchParams(
+      window.location.search
+    );
+
+  let categoria =
+    normalizarTexto(
+      params.get("categoria")
+    );
+
+
+  if(!categoria){
+
+    categoria =
+      "noticias";
+
+  }
+
+
+  document
+  .querySelectorAll(".nav a")
+  .forEach(function(link){
+
+    link.classList.remove(
+      "active"
+    );
+
+
+    const href =
+      link.getAttribute("href") ||
+      "";
+
+
+    const url =
+      new URL(
+        href,
+        window.location.href
+      );
+
+
+    const valor =
+      normalizarTexto(
+        url.searchParams.get(
+          "categoria"
+        )
+      );
+
+
+    if(valor === categoria){
+
+      link.classList.add(
+        "active"
+      );
+
+    }
+
+  });
+
+}
+
+
+/* =====================================
+   INICIAR
+===================================== */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  function(){
+
+    marcarMenuAtivo();
+
+    carregarCategoria();
+
+  }
+);
+
   </script>
-
-</body>
-
-</html>
