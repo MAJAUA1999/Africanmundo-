@@ -2877,6 +2877,9 @@ window.limparPesquisa =
 window.abrirRed =
   abrirRed;
 
+window.abrirRede =
+  abrirRede;
+
 window.abrirModal =
   abrirModal;
 
