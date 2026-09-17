@@ -523,31 +523,23 @@ function escaparHTML(valor){
 }
 
 
+/* ==========================================
+   TEXTO COMPLETO DA NOTÍCIA
+========================================== */
+
 function textoCompleto(noticia){
 
   return normalizarTexto(
     [
+      noticia.categoria,
       noticia.titulo,
       noticia.texto,
-      noticia.categoria,
-      noticia.fonte
-    ].join(" ")
+      noticia.fonte,
+      noticia.url_original
+    ]
+    .filter(Boolean)
+    .join(" ")
   );
-
-}
-
-
-function contem(noticia, termos){
-
-  const texto = textoCompleto(noticia);
-
-  return termos.some(function(termo){
-
-    return texto.includes(
-      normalizarTexto(termo)
-    );
-
-  });
 
 }
 
@@ -558,10 +550,13 @@ function contem(noticia, termos){
 
 function ehMocambique(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "mocambique",
     "mozambique",
+
     "maputo",
     "matola",
     "beira",
@@ -572,6 +567,7 @@ function ehMocambique(noticia){
     "pemba",
     "nacala",
     "xai xai",
+    "xai-xai",
     "inhambane",
     "gaza",
     "sofala",
@@ -579,14 +575,30 @@ function ehMocambique(noticia){
     "zambezia",
     "cabo delgado",
     "niassa",
+
     "montepuez",
     "dondo",
     "maxixe",
     "vilanculos",
-    "mocimboa da praia"
+    "vilankulos",
+    "mocimboa da praia",
 
-  ]);
+    "mocambicano",
+    "mocambicana",
+    "mocambicanos",
+    "mocambicanas",
 
+    "mocambola",
+    "banco de mocambique",
+    "governo de mocambique",
+    "assembleia da republica",
+    "presidente de mocambique"
+
+  ];
+
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
 }
 
 
@@ -596,11 +608,17 @@ function ehMocambique(noticia){
 
 function ehAfrica(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "africa",
-    "african union",
+    "african",
+    "africanos",
+    "africanas",
+
     "uniao africana",
+    "african union",
 
     "angola",
     "botswana",
@@ -609,25 +627,28 @@ function ehAfrica(noticia){
     "camaroes",
     "cameroon",
     "cabo verde",
-    "republica centro africana",
     "chade",
     "comores",
     "congo",
     "republica democratica do congo",
     "djibouti",
     "egipto",
+    "egypt",
     "eritrea",
     "eswatini",
     "etiopia",
+    "ethiopia",
     "gabon",
     "gambia",
     "gana",
+    "ghana",
     "guine",
     "guine bissau",
     "guine equatorial",
     "quenia",
     "kenya",
     "lesoto",
+    "lesotho",
     "liberia",
     "libia",
     "madagascar",
@@ -636,6 +657,7 @@ function ehAfrica(noticia){
     "mauritania",
     "mauricio",
     "marrocos",
+    "morocco",
     "namibia",
     "niger",
     "nigeria",
@@ -652,11 +674,14 @@ function ehAfrica(noticia){
     "uganda",
     "zambia",
     "zimbabwe",
-    "zaire",
-    "africa do sul"
+    "africa do sul",
+    "south africa"
 
-  ]);
+  ];
 
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
 }
 
 
@@ -666,11 +691,17 @@ function ehAfrica(noticia){
 
 function ehFutebol(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "futebol",
     "football",
     "soccer",
+
+    "fifa",
+    "uefa",
+
     "liga dos campeoes",
     "champions league",
     "premier league",
@@ -679,22 +710,35 @@ function ehFutebol(noticia){
     "bundesliga",
     "liga europa",
     "europa league",
+
     "mundial de clubes",
     "copa do mundo",
     "copa africana",
     "afcon",
+
     "selecao nacional",
+    "selecao de futebol",
+
     "jogador de futebol",
     "clube de futebol",
     "treinador de futebol",
+
     "golo",
+    "gols",
     "gol",
     "penalti",
     "transferencia",
-    "mercado da bola"
+    "mercado da bola",
 
-  ]);
+    "campeonato de futebol",
+    "partida de futebol",
+    "jogo de futebol"
 
+  ];
+
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
 }
 
 
@@ -704,37 +748,54 @@ function ehFutebol(noticia){
 
 function ehDesporto(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "desporto",
     "esporte",
+    "sports",
+
     "basketball",
     "basquetebol",
+
     "atletismo",
     "tenis",
     "voleibol",
     "boxe",
+    "boxing",
     "natacao",
     "ciclismo",
+
     "formula 1",
     "f1",
     "motogp",
+
     "judo",
     "karate",
+
     "olimpiadas",
     "olimpico",
     "medalha",
     "maratona",
     "corrida",
-    "campeonato de atletismo",
+
     "rugby",
     "golf",
     "golfe",
     "surf",
-    "luta livre"
+    "luta livre",
 
-  ]);
+    "campeonato de atletismo",
+    "competicao desportiva",
+    "atleta",
+    "atletas"
 
+  ];
+
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
 }
 
 
@@ -744,48 +805,76 @@ function ehDesporto(noticia){
 
 function ehNegocios(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "negocios",
     "negocio",
+
     "economia",
     "economico",
     "economica",
+
     "empresa",
     "empresas",
+
     "mercado",
+    "mercados",
+
     "financas",
     "financeiro",
     "financeira",
+
     "banco",
+    "bancos",
+
     "investimento",
     "investimentos",
+
     "empreendedorismo",
     "empreendedor",
+
     "comercio",
     "industria",
     "industrial",
+
     "business",
+
     "emprego",
     "empregos",
+
     "oportunidade",
     "oportunidades",
+
     "vaga",
     "vagas",
     "recrutamento",
+
     "salario",
     "salarios",
+
     "exportacao",
     "importacao",
+
     "inflacao",
     "precos",
-    "petróleo",
+
     "petroleo",
     "gas",
-    "energia"
+    "energia",
 
-  ]);
+    "fintech",
+    "ipo",
+    "acoes",
+    "bolsa",
+    "stocks"
 
+  ];
+
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
 }
 
 
@@ -795,39 +884,58 @@ function ehNegocios(noticia){
 
 function ehEntretenimento(noticia){
 
-  return contem(noticia, [
+  const texto = textoCompleto(noticia);
+
+  const palavras = [
 
     "entretenimento",
     "cultura",
+
     "celebridade",
     "celebridades",
+
     "musica",
     "cantor",
     "cantora",
+
     "artista",
+    "artistas",
+
     "cinema",
     "filme",
     "filmes",
+
     "televisao",
-    "televisão",
     "novela",
+
     "festival",
     "show",
     "concerto",
+
     "ator",
     "atriz",
+
     "famoso",
     "famosa",
+
     "lazer",
     "teatro",
+
     "humor",
     "comediante",
+
     "influenciador",
-    "influenciadora"
+    "influenciadora",
 
-  ]);
+    "nollywood",
+    "hollywood"
 
-}
+  ];
+
+  return palavras.some(
+    palavra => texto.includes(palavra)
+  );
+      }
 
 
 /* ==========================================
