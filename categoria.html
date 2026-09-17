@@ -1224,23 +1224,26 @@ async function carregarCategoria(){
   }
 
   grid.innerHTML = `
-    <div class="loading">
-      ⏳ A preparar as notícias...
-    </div>
-  `;
+  <div class="loading">
+    ⏳ A preparar as notícias...
+    <br><br>
+    🔎 A iniciar conexão...
+  </div>
+`;
 
-  try{
-
-    console.log("1️⃣ carregarCategoria iniciou");
-    console.log("2️⃣ iniciando Supabase...");
-
+console.log("1️⃣ carregarCategoria iniciou");
+console.log("2️⃣ iniciando Supabase...");
+      
     const conectado =
       iniciarSupabase();
 
-    console.log(
-      "3️⃣ Supabase iniciou:",
-      conectado
-    );
+    grid.innerHTML = `
+  <div class="loading">
+    ⏳ A preparar as notícias...
+    <br><br>
+    🔎 Supabase iniciado...
+  </div>
+`;
 
     if(!conectado){
 
