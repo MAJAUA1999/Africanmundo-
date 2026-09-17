@@ -1197,6 +1197,10 @@ async function carregarCategoria(){
   const descricao =
     document.getElementById("categoryDescription");
 
+  if(!grid){
+    console.error("newsGrid não encontrado.");
+    return;
+  }
 
   const parametros =
     new URLSearchParams(
@@ -1209,36 +1213,49 @@ async function carregarCategoria(){
       "noticias"
     );
 
+  if(titulo){
+    titulo.textContent =
+      nomeBonitoCategoria(categoria);
+  }
 
-  titulo.textContent =
-    nomeBonitoCategoria(categoria);
-
-  descricao.textContent =
-    descricaoCategoria(categoria);
-
+  if(descricao){
+    descricao.textContent =
+      descricaoCategoria(categoria);
+  }
 
   grid.innerHTML = `
     <div class="loading">
-      ⏳ A carregar notícias...
+      ⏳ A preparar as notícias...
     </div>
   `;
 
-  if(!iniciarSupabase()){
-
-    grid.innerHTML = `
-      <div class="error">
-        ❌ Não foi possível ligar ao servidor de notícias.
-        <br><br>
-        Tente atualizar a página.
-      </div>
-    `;
-
-    return;
-
-  }
-
-
   try{
+
+    console.log("1️⃣ carregarCategoria iniciou");
+    console.log("2️⃣ iniciando Supabase...");
+
+    const conectado =
+      iniciarSupabase();
+
+    console.log(
+      "3️⃣ Supabase iniciou:",
+      conectado
+    );
+
+    if(!conectado){
+
+      grid.innerHTML = `
+        <div class="error">
+          ❌ Não foi possível ligar ao servidor de notícias.
+          <br><br>
+          Tente atualizar a página.
+        </div>
+      `;
+
+      return;
+    }
+
+    console.log("4️⃣ A procurar notícias...");
 
     const resposta =
       await supabaseClient
@@ -1256,24 +1273,23 @@ async function carregarCategoria(){
         .order("id",{ascending:false})
         .limit(500);
 
+    console.log(
+      "5️⃣ Resposta Supabase:",
+      resposta
+    );
 
     if(resposta.error){
-
       throw resposta.error;
-
     }
-
 
     let noticias =
       Array.isArray(resposta.data)
-      ? resposta.data
-      : [];
+        ? resposta.data
+        : [];
 
+    /* REMOVER DUPLICADOS */
 
-    /* Remover duplicados */
-
-    const mapa =
-      new Map();
+    const mapa = new Map();
 
     noticias.forEach(function(noticia){
 
@@ -1295,8 +1311,12 @@ async function carregarCategoria(){
     noticias =
       Array.from(mapa.values());
 
+    console.log(
+      "6️⃣ Notícias recebidas:",
+      noticias.length
+    );
 
-    /* Filtrar */
+    /* FILTRAR */
 
     noticias =
       filtrarNoticias(
@@ -1304,35 +1324,41 @@ async function carregarCategoria(){
         categoria
       );
 
+    console.log(
+      "7️⃣ Notícias depois do filtro:",
+      noticias.length
+    );
 
-    /* Ordenar por data e ID */
+    /* ORDENAR */
 
     noticias.sort(function(a,b){
 
       const dataA =
-        new Date(obterData(a)).getTime() || 0;
+        new Date(
+          obterData(a)
+        ).getTime() || 0;
 
       const dataB =
-        new Date(obterData(b)).getTime() || 0;
+        new Date(
+          obterData(b)
+        ).getTime() || 0;
 
       if(dataB !== dataA){
-
         return dataB - dataA;
-
       }
 
-      return Number(b.id || 0) -
-             Number(a.id || 0);
+      return (
+        Number(b.id || 0) -
+        Number(a.id || 0)
+      );
 
     });
 
-
-    /* Mostrar */
+    /* SEM NOTÍCIAS */
 
     if(!noticias.length){
 
       grid.innerHTML = `
-
         <div class="empty">
 
           📰 Nenhuma notícia encontrada
@@ -1344,29 +1370,65 @@ async function carregarCategoria(){
           elas aparecerão aqui.
 
         </div>
-
       `;
 
       return;
-
     }
 
+    /* MOSTRAR NOTÍCIAS */
 
-    grid.innerHTML =
-      noticias
-        .map(criarCard)
-        .join("");
+    grid.innerHTML = "";
 
+    noticias.forEach(function(noticia){
+
+      try{
+
+        const card =
+          criarCard(noticia);
+
+        if(card){
+
+          if(
+            typeof card === "string"
+          ){
+
+            grid.insertAdjacentHTML(
+              "beforeend",
+              card
+            );
+
+          }else{
+
+            grid.appendChild(card);
+
+          }
+
+        }
+
+      }catch(erroCard){
+
+        console.error(
+          "Erro ao criar cartão:",
+          erroCard
+        );
+
+      }
+
+    });
+
+    console.log(
+      "8️⃣ Notícias apresentadas:",
+      grid.children.length
+    );
 
   }catch(erro){
 
     console.error(
-      "Erro ao carregar notícias:",
+      "❌ ERRO AO CARREGAR CATEGORIA:",
       erro
     );
 
     grid.innerHTML = `
-
       <div class="error">
 
         ❌ Ocorreu um erro ao carregar
@@ -1378,12 +1440,11 @@ async function carregarCategoria(){
         e tente novamente.
 
       </div>
-
     `;
 
   }
 
-}
+      }
 
 
 /* ==========================================
