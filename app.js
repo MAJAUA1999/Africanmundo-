@@ -1948,55 +1948,45 @@ function definirCor(cor){
 REDES SOCIAIS
 ========================================== */
 
-function abrirRed(rede){
+function abrirRede(rede){
 
   const links = {
 
-    google:
-      "https://www.google.com/",
+    google: "https://www.google.com/",
 
-    facebook:
-      "https://www.facebook.com/",
+    facebook: "https://www.facebook.com/",
 
-    youtube:
-      "https://www.youtube.com/",
+    youtube: "https://www.youtube.com/",
 
-    whatsapp:
-      "https://www.whatsapp.com/",
+    whatsapp: "https://www.whatsapp.com/",
 
-    instagram:
-      "https://www.instagram.com/",
+    instagram: "https://www.instagram.com/",
 
-    tiktok:
-      "https://www.tiktok.com/"
+    tiktok: "https://www.tiktok.com/"
 
   };
 
-
-  const url =
-    links[rede];
-
+  const url = links[rede];
 
   if(!url){
 
     console.warn(
-      "Rede desconhecida:",
+      "Rede social desconhecida:",
       rede
     );
 
     return;
-
   }
 
+  window.location.href = url;
 
-  /*
-  No telemóvel usamos location.href
-  para evitar que o navegador bloqueie
-  window.open().
-  */
+}
 
-  window.location.href =
-    url;
+
+/* Compatibilidade com código antigo */
+function abrirRed(rede){
+
+  abrirRede(rede);
 
 }
 
