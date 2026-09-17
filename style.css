@@ -342,3 +342,120 @@ body.dark #amModal #amClose{
   }
 
 }
+
+/* ==========================================
+   MODAL AFRICANMUNDO — ABRIR SEMPRE NO TOPO
+========================================== */
+
+#amModal {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  z-index: 2147483647 !important;
+
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+
+  padding: 15px !important;
+
+  margin: 0 !important;
+  transform: none !important;
+}
+
+#amModal .am-back {
+  position: fixed !important;
+
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+
+  width: 100vw !important;
+  height: 100vh !important;
+
+  background: rgba(0,0,0,.65) !important;
+  z-index: 1 !important;
+}
+
+#amModal .am-box {
+  position: relative !important;
+
+  z-index: 2 !important;
+
+  width: min(430px, 100%) !important;
+  max-height: 85vh !important;
+
+  overflow-y: auto !important;
+
+  margin: auto !important;
+
+  background: #fff !important;
+  color: #151515 !important;
+
+  border-radius: 16px !important;
+
+  box-shadow: 0 15px 50px rgba(0,0,0,.4) !important;
+}
+
+#amModal .am-head {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+
+  padding: 16px 18px !important;
+
+  border-bottom: 1px solid #ddd !important;
+}
+
+#amModal #amBody {
+  padding: 20px !important;
+}
+
+#amModal #amClose {
+  width: 36px !important;
+  height: 36px !important;
+
+  padding: 0 !important;
+  margin: 0 !important;
+
+  border-radius: 50% !important;
+
+  background: #eee !important;
+  color: #222 !important;
+
+  font-size: 18px !important;
+}
+
+/* MODO ESCURO */
+
+body.dark #amModal .am-box {
+  background: #171d21 !important;
+  color: #f2f5f6 !important;
+}
+
+body.dark #amModal #amClose {
+  background: #293238 !important;
+  color: white !important;
+}
+
+/* TELEMÓVEL */
+
+@media(max-width:600px) {
+
+  #amModal {
+    padding: 10px !important;
+  }
+
+  #amModal .am-box {
+    width: 100% !important;
+    max-height: 88vh !important;
+  }
+
+  }
