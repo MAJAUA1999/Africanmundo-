@@ -213,3 +213,132 @@ body.dark .color-panel h2 {
   }
 
 }
+
+/* ==========================================
+   MODAIS AFRICANMUNDO
+========================================== */
+
+#amModal{
+  position:fixed !important;
+  inset:0 !important;
+  z-index:999999 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:15px !important;
+}
+
+#amModal .am-back{
+  position:absolute !important;
+  inset:0 !important;
+  background:rgba(0,0,0,.60) !important;
+}
+
+#amModal .am-box{
+  position:relative !important;
+  z-index:2 !important;
+
+  width:min(430px,100%) !important;
+  max-height:85vh !important;
+  overflow-y:auto !important;
+
+  background:#fff !important;
+  color:#151515 !important;
+
+  border-radius:16px !important;
+  box-shadow:0 12px 40px rgba(0,0,0,.30) !important;
+}
+
+#amModal .am-head{
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+
+  padding:16px 18px !important;
+
+  border-bottom:1px solid #e5e5e5 !important;
+
+  font-size:18px !important;
+}
+
+#amModal #amClose{
+  width:36px !important;
+  height:36px !important;
+
+  padding:0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+
+  background:#f1f1f1 !important;
+  color:#333 !important;
+
+  font-size:18px !important;
+  cursor:pointer !important;
+}
+
+#amModal #amBody{
+  padding:20px !important;
+  line-height:1.6 !important;
+}
+
+#amModal .am-action,
+#amModal .am-color{
+  display:block !important;
+
+  width:100% !important;
+
+  margin:10px 0 !important;
+  padding:13px 15px !important;
+
+  border:0 !important;
+  border-radius:8px !important;
+
+  background:#58b52d !important;
+  color:#fff !important;
+
+  cursor:pointer !important;
+  font-weight:bold !important;
+}
+
+#amModal .am-action:hover,
+#amModal .am-color:hover{
+  opacity:.9 !important;
+}
+
+
+/* ==========================================
+   MODO ESCURO
+========================================== */
+
+body.dark #amModal .am-box{
+  background:#171d21 !important;
+  color:#f2f5f6 !important;
+}
+
+body.dark #amModal .am-head{
+  border-color:#293238 !important;
+}
+
+body.dark #amModal #amClose{
+  background:#293238 !important;
+  color:#fff !important;
+}
+
+
+/* ==========================================
+   TELEMÓVEL
+========================================== */
+
+@media(max-width:600px){
+
+  #amModal{
+    padding:10px !important;
+  }
+
+  #amModal .am-box{
+    width:100% !important;
+    max-height:88vh !important;
+    border-radius:14px !important;
+  }
+
+}
