@@ -1068,120 +1068,7 @@ function filtrarNoticias(noticias,categoria){
   return noticias;
       }
 
-  /* ==========================================
-     TODAS AS NOTÍCIAS
-  ========================================== */
-
-  if(
-    cat === "noticias" ||
-    cat === "noticia"
-  ){
-
-    return noticias;
-
-  }
-
-
-  /* ==========================================
-     MOÇAMBIQUE
-  ========================================== */
-
-  if(cat === "mocambique"){
-
-    return noticias.filter(function(noticia){
-
-      return ehMocambique(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     ÁFRICA
-  ========================================== */
-
-  if(cat === "africa"){
-
-    return noticias.filter(function(noticia){
-
-      return ehAfrica(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     FUTEBOL
-  ========================================== */
-
-  if(cat === "futebol"){
-
-    return noticias.filter(function(noticia){
-
-      return ehFutebol(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     DESPORTO
-  ========================================== */
-
-  if(cat === "desporto"){
-
-    return noticias.filter(function(noticia){
-
-      return ehDesporto(noticia) ||
-             ehFutebol(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     NEGÓCIOS
-  ========================================== */
-
-  if(cat === "negocios"){
-
-    return noticias.filter(function(noticia){
-
-      return ehNegocios(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     ENTRETENIMENTO
-  ========================================== */
-
-  if(cat === "entretenimento"){
-
-    return noticias.filter(function(noticia){
-
-      return ehEntretenimento(noticia);
-
-    });
-
-  }
-
-
-  /* ==========================================
-     SEGURANÇA
-  ========================================== */
-
-  return noticias;
-
-     }
-
-
+  
 /* ==========================================
    CARREGAR NOTÍCIAS
 ========================================== */
@@ -1197,10 +1084,20 @@ async function carregarCategoria(){
   const descricao =
     document.getElementById("categoryDescription");
 
+
   if(!grid){
-    console.error("newsGrid não encontrado.");
+
+    console.error(
+      "newsGrid não encontrado."
+    );
+
     return;
   }
+
+
+  /* ==========================================
+     CATEGORIA DA URL
+  ========================================== */
 
   const parametros =
     new URLSearchParams(
@@ -1213,52 +1110,109 @@ async function carregarCategoria(){
       "noticias"
     );
 
+
+  /* ==========================================
+     TÍTULO
+  ========================================== */
+
   if(titulo){
+
     titulo.textContent =
       nomeBonitoCategoria(categoria);
+
   }
+
 
   if(descricao){
+
     descricao.textContent =
       descricaoCategoria(categoria);
+
   }
 
-  grid.innerHTML = `
-  <div class="loading">
-    ⏳ A preparar as notícias...
-    <br><br>
-    🔎 A iniciar conexão...
-  </div>
-`;
 
-console.log("1️⃣ carregarCategoria iniciou");
-console.log("2️⃣ iniciando Supabase...");
-      
+  /* ==========================================
+     CARREGAMENTO
+  ========================================== */
+
+  grid.innerHTML = `
+    <div class="loading">
+
+      ⏳ A preparar as notícias...
+
+      <br><br>
+
+      🔎 A iniciar conexão...
+
+    </div>
+  `;
+
+
+  console.log(
+    "1️⃣ carregarCategoria iniciou"
+  );
+
+
+  /* ==========================================
+     SUPABASE
+  ========================================== */
+
+  try{
+
+    console.log(
+      "2️⃣ Iniciando Supabase..."
+    );
+
+
     const conectado =
       iniciarSupabase();
 
-    grid.innerHTML = `
-  <div class="loading">
-    ⏳ A preparar as notícias...
-    <br><br>
-    🔎 Supabase iniciado...
-  </div>
-`;
 
     if(!conectado){
 
       grid.innerHTML = `
         <div class="error">
-          ❌ Não foi possível ligar ao servidor de notícias.
+
+          ❌ Não foi possível ligar
+          ao servidor de notícias.
+
           <br><br>
+
           Tente atualizar a página.
+
         </div>
       `;
 
       return;
     }
 
-    console.log("4️⃣ A procurar notícias...");
+
+    console.log(
+      "3️⃣ Supabase iniciado"
+    );
+
+
+    /* ========================================
+       BUSCAR NOTÍCIAS
+    ======================================== */
+
+    grid.innerHTML = `
+      <div class="loading">
+
+        ⏳ A preparar as notícias...
+
+        <br><br>
+
+        🔎 A procurar notícias...
+
+      </div>
+    `;
+
+
+    console.log(
+      "4️⃣ A procurar notícias..."
+    );
+
 
     const resposta =
       await supabaseClient
@@ -1273,53 +1227,85 @@ console.log("2️⃣ iniciando Supabase...");
           fonte,
           url_original
         `)
-        .order("id",{ascending:false})
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        )
         .limit(500);
+
 
     console.log(
       "5️⃣ Resposta Supabase:",
       resposta
     );
 
+
+    /* ========================================
+       ERRO SUPABASE
+    ======================================== */
+
     if(resposta.error){
+
       throw resposta.error;
+
     }
+
+
+    /* ========================================
+       RECEBER DADOS
+    ======================================== */
 
     let noticias =
       Array.isArray(resposta.data)
         ? resposta.data
         : [];
 
-    /* REMOVER DUPLICADOS */
-
-    const mapa = new Map();
-
-    noticias.forEach(function(noticia){
-
-      if(
-        noticia &&
-        noticia.id !== undefined &&
-        noticia.id !== null
-      ){
-
-        mapa.set(
-          String(noticia.id),
-          noticia
-        );
-
-      }
-
-    });
-
-    noticias =
-      Array.from(mapa.values());
 
     console.log(
       "6️⃣ Notícias recebidas:",
       noticias.length
     );
 
-    /* FILTRAR */
+
+    /* ========================================
+       REMOVER DUPLICADOS
+    ======================================== */
+
+    const mapa =
+      new Map();
+
+
+    noticias.forEach(
+      function(noticia){
+
+        if(
+          noticia &&
+          noticia.id !== undefined &&
+          noticia.id !== null
+        ){
+
+          mapa.set(
+            String(noticia.id),
+            noticia
+          );
+
+        }
+
+      }
+    );
+
+
+    noticias =
+      Array.from(
+        mapa.values()
+      );
+
+
+    /* ========================================
+       FILTRAR
+    ======================================== */
 
     noticias =
       filtrarNoticias(
@@ -1327,37 +1313,51 @@ console.log("2️⃣ iniciando Supabase...");
         categoria
       );
 
+
     console.log(
       "7️⃣ Notícias depois do filtro:",
       noticias.length
     );
 
-    /* ORDENAR */
 
-    noticias.sort(function(a,b){
+    /* ========================================
+       ORDENAR
+    ======================================== */
 
-      const dataA =
-        new Date(
-          obterData(a)
-        ).getTime() || 0;
+    noticias.sort(
+      function(a,b){
 
-      const dataB =
-        new Date(
-          obterData(b)
-        ).getTime() || 0;
+        const dataA =
+          new Date(
+            obterData(a)
+          ).getTime() || 0;
 
-      if(dataB !== dataA){
-        return dataB - dataA;
+
+        const dataB =
+          new Date(
+            obterData(b)
+          ).getTime() || 0;
+
+
+        if(dataB !== dataA){
+
+          return dataB - dataA;
+
+        }
+
+
+        return (
+          Number(b.id || 0) -
+          Number(a.id || 0)
+        );
+
       }
+    );
 
-      return (
-        Number(b.id || 0) -
-        Number(a.id || 0)
-      );
 
-    });
-
-    /* SEM NOTÍCIAS */
+    /* ========================================
+       SEM NOTÍCIAS
+    ======================================== */
 
     if(!noticias.length){
 
@@ -1378,51 +1378,62 @@ console.log("2️⃣ iniciando Supabase...");
       return;
     }
 
-    /* MOSTRAR NOTÍCIAS */
+
+    /* ========================================
+       MOSTRAR NOTÍCIAS
+    ======================================== */
 
     grid.innerHTML = "";
 
-    noticias.forEach(function(noticia){
 
-      try{
+    noticias.forEach(
+      function(noticia){
 
-        const card =
-          criarCard(noticia);
+        try{
 
-        if(card){
+          const card =
+            criarCard(noticia);
 
-          if(
-            typeof card === "string"
-          ){
 
-            grid.insertAdjacentHTML(
-              "beforeend",
-              card
-            );
+          if(card){
 
-          }else{
+            if(
+              typeof card === "string"
+            ){
 
-            grid.appendChild(card);
+              grid.insertAdjacentHTML(
+                "beforeend",
+                card
+              );
+
+            }else{
+
+              grid.appendChild(
+                card
+              );
+
+            }
 
           }
 
+        }catch(erroCard){
+
+          console.error(
+            "❌ Erro ao criar cartão:",
+            erroCard
+          );
+
         }
 
-      }catch(erroCard){
-
-        console.error(
-          "Erro ao criar cartão:",
-          erroCard
-        );
-
       }
+    );
 
-    });
 
     console.log(
       "8️⃣ Notícias apresentadas:",
       grid.children.length
     );
+
 
   }catch(erro){
 
@@ -1430,6 +1441,7 @@ console.log("2️⃣ iniciando Supabase...");
       "❌ ERRO AO CARREGAR CATEGORIA:",
       erro
     );
+
 
     grid.innerHTML = `
       <div class="error">
@@ -1439,15 +1451,39 @@ console.log("2️⃣ iniciando Supabase...");
 
         <br><br>
 
-        Verifique a ligação à internet
-        e tente novamente.
+        <small>
+          ${
+            escaparHTML(
+              erro.message ||
+              "Erro desconhecido."
+            )
+          }
+        </small>
+
+        <br><br>
+
+        <button
+          type="button"
+          onclick="carregarCategoria()"
+          style="
+            padding:10px 18px;
+            border:0;
+            border-radius:8px;
+            background:var(--p);
+            color:white;
+            font-weight:bold;
+            cursor:pointer;
+          "
+        >
+          🔄 Tentar novamente
+        </button>
 
       </div>
     `;
 
   }
 
-      }
+}
 
 
 /* ==========================================
