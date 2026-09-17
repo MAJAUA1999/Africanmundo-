@@ -1020,31 +1020,77 @@ function criarCard(noticia){
 
 function filtrarNoticias(noticias,categoria){
 
-  if(categoria === "noticias"){
+  const cat = String(categoria || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"")
+    .trim();
+
+
+  /* ==========================================
+     TODAS AS NOTÍCIAS
+  ========================================== */
+
+  if(
+    cat === "noticias" ||
+    cat === "noticia"
+  ){
 
     return noticias;
 
   }
 
-  if(categoria === "mocambique"){
 
-    return noticias.filter(ehMocambique);
+  /* ==========================================
+     MOÇAMBIQUE
+  ========================================== */
 
-  }
+  if(cat === "mocambique"){
 
-  if(categoria === "africa"){
+    return noticias.filter(function(noticia){
 
-    return noticias.filter(ehAfrica);
+      return ehMocambique(noticia);
 
-  }
-
-  if(categoria === "futebol"){
-
-    return noticias.filter(ehFutebol);
+    });
 
   }
 
-  if(categoria === "desporto"){
+
+  /* ==========================================
+     ÁFRICA
+  ========================================== */
+
+  if(cat === "africa"){
+
+    return noticias.filter(function(noticia){
+
+      return ehAfrica(noticia);
+
+    });
+
+  }
+
+
+  /* ==========================================
+     FUTEBOL
+  ========================================== */
+
+  if(cat === "futebol"){
+
+    return noticias.filter(function(noticia){
+
+      return ehFutebol(noticia);
+
+    });
+
+  }
+
+
+  /* ==========================================
+     DESPORTO
+  ========================================== */
+
+  if(cat === "desporto"){
 
     return noticias.filter(function(noticia){
 
@@ -1055,21 +1101,44 @@ function filtrarNoticias(noticias,categoria){
 
   }
 
-  if(categoria === "negocios"){
 
-    return noticias.filter(ehNegocios);
+  /* ==========================================
+     NEGÓCIOS
+  ========================================== */
+
+  if(cat === "negocios"){
+
+    return noticias.filter(function(noticia){
+
+      return ehNegocios(noticia);
+
+    });
 
   }
 
-  if(categoria === "entretenimento"){
 
-    return noticias.filter(ehEntretenimento);
+  /* ==========================================
+     ENTRETENIMENTO
+  ========================================== */
+
+  if(cat === "entretenimento"){
+
+    return noticias.filter(function(noticia){
+
+      return ehEntretenimento(noticia);
+
+    });
 
   }
+
+
+  /* ==========================================
+     SEGURANÇA
+  ========================================== */
 
   return noticias;
 
-}
+     }
 
 
 /* ==========================================
