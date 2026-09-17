@@ -1575,23 +1575,62 @@ function abrirModal(titulo,conteudo){
 
   fecharModal();
 
+  const modal = document.createElement("div");
 
-  const modal =
-    document.createElement("div");
+  modal.id = "amModal";
 
+  /* FORÇA O MODAL A FICAR POR CIMA DA PÁGINA */
+  modal.style.position = "fixed";
+  modal.style.top = "0";
+  modal.style.left = "0";
+  modal.style.right = "0";
+  modal.style.bottom = "0";
 
-  modal.id =
-    "amModal";
+  modal.style.width = "100vw";
+  modal.style.height = "100vh";
 
+  modal.style.zIndex = "2147483647";
+
+  modal.style.display = "flex";
+  modal.style.alignItems = "center";
+  modal.style.justifyContent = "center";
+
+  modal.style.padding = "15px";
+  modal.style.margin = "0";
 
   modal.innerHTML = `
 
     <div
       class="am-back"
       id="amBack"
+      style="
+        position:fixed;
+        top:0;
+        left:0;
+        right:0;
+        bottom:0;
+        width:100vw;
+        height:100vh;
+        background:rgba(0,0,0,.65);
+        z-index:1;
+      "
     ></div>
 
-    <div class="am-box">
+    <div
+      class="am-box"
+      style="
+        position:relative;
+        z-index:2;
+        width:min(430px,100%);
+        max-height:85vh;
+        overflow-y:auto;
+        background:#fff;
+        color:#151515;
+        border-radius:16px;
+        box-shadow:0 15px 50px rgba(0,0,0,.4);
+        margin:auto;
+      "
+    >
 
       <div class="am-head">
 
@@ -1618,22 +1657,17 @@ function abrirModal(titulo,conteudo){
 
   `;
 
+  /* COLOCA O MODAL DIRETAMENTE NO BODY */
+  document.body.appendChild(modal);
 
-  document.body.appendChild(
-    modal
-  );
-
+  /* BLOQUEIA A ROLAGEM DA PÁGINA */
+  document.body.style.overflow = "hidden";
 
   const fechar =
-    document.getElementById(
-      "amClose"
-    );
+    document.getElementById("amClose");
 
   const fundo =
-    document.getElementById(
-      "amBack"
-    );
-
+    document.getElementById("amBack");
 
   if(fechar){
 
@@ -1641,7 +1675,6 @@ function abrirModal(titulo,conteudo){
       fecharModal;
 
   }
-
 
   if(fundo){
 
@@ -1656,16 +1689,16 @@ function abrirModal(titulo,conteudo){
 function fecharModal(){
 
   const modal =
-    document.getElementById(
-      "amModal"
-    );
-
+    document.getElementById("amModal");
 
   if(modal){
 
     modal.remove();
 
   }
+
+  /* DEVOLVE A ROLAGEM NORMAL */
+  document.body.style.overflow = "";
 
 }
 
