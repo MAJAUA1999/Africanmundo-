@@ -1159,8 +1159,21 @@ function filtrarNoticias(noticias,categoria){
 
       }
 
-  
-/* ==========================================
+  /* ==========================================
+   PAGINAÇÃO DAS NOTÍCIAS
+========================================== */
+
+let paginaAtual = 0;
+
+const noticiasPorPagina = 30;
+
+let categoriaAtual = "noticias";
+
+let carregandoMais = false;
+
+let naoHaMaisNoticias = false;
+      
+          /* ==========================================
    CARREGAR NOTÍCIAS
 ========================================== */
 
@@ -1202,6 +1215,15 @@ async function carregarCategoria(){
     );
 
 
+  categoriaAtual = categoria;
+
+  paginaAtual = 0;
+
+  naoHaMaisNoticias = false;
+
+  carregandoMais = false;
+
+
   /* ==========================================
      TÍTULO
   ========================================== */
@@ -1233,27 +1255,23 @@ async function carregarCategoria(){
 
       <br><br>
 
-      🔎 A iniciar conexão...
+      🔎 A procurar notícias...
 
     </div>
   `;
 
 
   console.log(
-    "1️⃣ carregarCategoria iniciou"
+    "1️⃣ Categoria:",
+    categoria
   );
 
 
-  /* ==========================================
-     SUPABASE
-  ========================================== */
-
   try{
 
-    console.log(
-      "2️⃣ Iniciando Supabase..."
-    );
-
+    /* ========================================
+       SUPABASE
+    ======================================== */
 
     const conectado =
       iniciarSupabase();
@@ -1278,68 +1296,125 @@ async function carregarCategoria(){
     }
 
 
-    console.log(
-      "3️⃣ Supabase iniciado"
-    );
+    /* ========================================
+       PRIMEIRA PÁGINA
+    ======================================== */
+
+    const inicio =
+      0;
+
+    const fim =
+      noticiasPorPagina - 1;
+
+
+    let consulta =
+      supabaseClient
+        .from("noticias")
+        .select(`
+          id,
+          titulo,
+          texto,
+          imagem,
+          categoria,
+          subcategoria,
+          data,
+          fonte,
+          url_original
+        `)
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        );
 
 
     /* ========================================
-       BUSCAR NOTÍCIAS
+       FILTRO DA CATEGORIA
     ======================================== */
 
-    grid.innerHTML = `
-      <div class="loading">
+    if(categoria === "mocambique"){
 
-        ⏳ A preparar as notícias...
+      consulta =
+        consulta.eq(
+          "categoria",
+          "Moçambique"
+        );
 
-        <br><br>
-
-        🔎 A procurar notícias...
-
-      </div>
-    `;
+    }
 
 
-    console.log(
-      "4️⃣ A procurar notícias..."
-    );
+    else if(categoria === "africa"){
 
+      consulta =
+        consulta.eq(
+          "categoria",
+          "África"
+        );
+
+    }
+
+
+    else if(categoria === "futebol"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Futebol"
+        );
+
+    }
+
+
+    else if(categoria === "desporto"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Desporto"
+        );
+
+    }
+
+
+    else if(categoria === "negocios"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Economia"
+        );
+
+    }
+
+
+    else if(categoria === "entretenimento"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Cultura"
+        );
+
+    }
+
+
+    /* ========================================
+       PAGINAÇÃO
+    ======================================== */
 
     const resposta =
-  await supabaseClient
-    .from("noticias")
-    .select(`
-      id,
-      titulo,
-      texto,
-      imagem,
-      categoria,
-      subcategoria,
-      data,
-      fonte,
-      url_original
-    `)
-    .order(
-      "id",
-      {
-        ascending: false
-      }
-    )
-    .range(
-      0,
-      29
-    );
+      await consulta.range(
+        inicio,
+        fim
+      );
 
 
     console.log(
-      "5️⃣ Resposta Supabase:",
+      "2️⃣ Resposta Supabase:",
       resposta
     );
 
-
-    /* ========================================
-       ERRO SUPABASE
-    ======================================== */
 
     if(resposta.error){
 
@@ -1348,10 +1423,6 @@ async function carregarCategoria(){
     }
 
 
-    /* ========================================
-       RECEBER DADOS
-    ======================================== */
-
     let noticias =
       Array.isArray(resposta.data)
         ? resposta.data
@@ -1359,9 +1430,23 @@ async function carregarCategoria(){
 
 
     console.log(
-      "6️⃣ Notícias recebidas:",
+      "3️⃣ Notícias recebidas:",
       noticias.length
     );
+
+
+    /* ========================================
+       VERIFICAR SE HÁ MAIS
+    ======================================== */
+
+    if(
+      noticias.length <
+      noticiasPorPagina
+    ){
+
+      naoHaMaisNoticias = true;
+
+    }
 
 
     /* ========================================
@@ -1399,58 +1484,6 @@ async function carregarCategoria(){
 
 
     /* ========================================
-       FILTRAR
-    ======================================== */
-
-    noticias =
-      filtrarNoticias(
-        noticias,
-        categoria
-      );
-
-
-    console.log(
-      "7️⃣ Notícias depois do filtro:",
-      noticias.length
-    );
-
-
-    /* ========================================
-       ORDENAR
-    ======================================== */
-
-    noticias.sort(
-      function(a,b){
-
-        const dataA =
-          new Date(
-            obterData(a)
-          ).getTime() || 0;
-
-
-        const dataB =
-          new Date(
-            obterData(b)
-          ).getTime() || 0;
-
-
-        if(dataB !== dataA){
-
-          return dataB - dataA;
-
-        }
-
-
-        return (
-          Number(b.id || 0) -
-          Number(a.id || 0)
-        );
-
-      }
-    );
-
-
-    /* ========================================
        SEM NOTÍCIAS
     ======================================== */
 
@@ -1469,6 +1502,8 @@ async function carregarCategoria(){
 
         </div>
       `;
+
+      naoHaMaisNoticias = true;
 
       return;
     }
@@ -1490,28 +1525,28 @@ async function carregarCategoria(){
             criarCard(noticia);
 
 
-          if(card){
+          if(
+            typeof card === "string"
+          ){
 
-            if(
-              typeof card === "string"
-            ){
-
-              grid.insertAdjacentHTML(
-                "beforeend",
-                card
-              );
-
-            }else{
-
-              grid.appendChild(
-                card
-              );
-
-            }
+            grid.insertAdjacentHTML(
+              "beforeend",
+              card
+            );
 
           }
 
-        }catch(erroCard){
+          else if(card){
+
+            grid.appendChild(
+              card
+            );
+
+          }
+
+        }
+
+        catch(erroCard){
 
           console.error(
             "❌ Erro ao criar cartão:",
@@ -1524,13 +1559,25 @@ async function carregarCategoria(){
     );
 
 
+    paginaAtual = 1;
+
+
+    /* ========================================
+       BOTÃO CARREGAR MAIS
+    ======================================== */
+
+    criarBotaoCarregarMais();
+
+
     console.log(
-      "8️⃣ Notícias apresentadas:",
-      grid.children.length
+      "4️⃣ Notícias apresentadas:",
+      noticias.length
     );
 
 
-  }catch(erro){
+  }
+
+  catch(erro){
 
     console.error(
       "❌ ERRO AO CARREGAR CATEGORIA:",
@@ -1578,7 +1625,380 @@ async function carregarCategoria(){
 
   }
 
+      }
+
+      /* ==========================================
+   CRIAR BOTÃO CARREGAR MAIS
+========================================== */
+
+function criarBotaoCarregarMais(){
+
+  const grid =
+    document.getElementById("newsGrid");
+
+
+  if(!grid) return;
+
+
+  const antigo =
+    document.getElementById(
+      "carregarMaisNoticias"
+    );
+
+
+  if(antigo){
+
+    antigo.remove();
+
+  }
+
+
+  if(naoHaMaisNoticias){
+
+    return;
+
+  }
+
+
+  const botao =
+    document.createElement("button");
+
+
+  botao.id =
+    "carregarMaisNoticias";
+
+
+  botao.type =
+    "button";
+
+
+  botao.textContent =
+    "⬇️ Carregar mais notícias";
+
+
+  botao.style.cssText = `
+    display:block;
+    width:100%;
+    max-width:420px;
+    margin:30px auto;
+    padding:14px 20px;
+    border:0;
+    border-radius:10px;
+    background:var(--p);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:var(--shadow);
+  `;
+
+
+  botao.addEventListener(
+    "click",
+    carregarMaisNoticias
+  );
+
+
+  grid.appendChild(botao);
+
 }
+
+
+/* ==========================================
+   CARREGAR PRÓXIMAS 30
+========================================== */
+
+async function carregarMaisNoticias(){
+
+  if(
+    carregandoMais ||
+    naoHaMaisNoticias
+  ){
+
+    return;
+
+  }
+
+
+  const grid =
+    document.getElementById("newsGrid");
+
+
+  if(!grid) return;
+
+
+  carregandoMais = true;
+
+
+  const botao =
+    document.getElementById(
+      "carregarMaisNoticias"
+    );
+
+
+  if(botao){
+
+    botao.disabled = true;
+
+    botao.textContent =
+      "⏳ A carregar mais notícias...";
+
+  }
+
+
+  try{
+
+    const inicio =
+      paginaAtual *
+      noticiasPorPagina;
+
+
+    const fim =
+      inicio +
+      noticiasPorPagina -
+      1;
+
+
+    let consulta =
+      supabaseClient
+        .from("noticias")
+        .select(`
+          id,
+          titulo,
+          texto,
+          imagem,
+          categoria,
+          subcategoria,
+          data,
+          fonte,
+          url_original
+        `)
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        );
+
+
+    /* ========================================
+       FILTRO DA CATEGORIA
+    ======================================== */
+
+    if(categoriaAtual === "mocambique"){
+
+      consulta =
+        consulta.eq(
+          "categoria",
+          "Moçambique"
+        );
+
+    }
+
+
+    else if(categoriaAtual === "africa"){
+
+      consulta =
+        consulta.eq(
+          "categoria",
+          "África"
+        );
+
+    }
+
+
+    else if(categoriaAtual === "futebol"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Futebol"
+        );
+
+    }
+
+
+    else if(categoriaAtual === "desporto"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Desporto"
+        );
+
+    }
+
+
+    else if(categoriaAtual === "negocios"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Economia"
+        );
+
+    }
+
+
+    else if(categoriaAtual === "entretenimento"){
+
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Cultura"
+        );
+
+    }
+
+
+    /* ========================================
+       BUSCAR PRÓXIMOS REGISTROS
+    ======================================== */
+
+    const resposta =
+      await consulta.range(
+        inicio,
+        fim
+      );
+
+
+    if(resposta.error){
+
+      throw resposta.error;
+
+    }
+
+
+    const noticias =
+      Array.isArray(resposta.data)
+        ? resposta.data
+        : [];
+
+
+    console.log(
+      "📥 Mais notícias:",
+      noticias.length,
+      "posição:",
+      inicio,
+      "-",
+      fim
+    );
+
+
+    /* ========================================
+       VERIFICAR FIM
+    ======================================== */
+
+    if(
+      noticias.length <
+      noticiasPorPagina
+    ){
+
+      naoHaMaisNoticias = true;
+
+    }
+
+
+    /* ========================================
+       ADICIONAR NOTÍCIAS
+    ======================================== */
+
+    noticias.forEach(
+      function(noticia){
+
+        try{
+
+          const card =
+            criarCard(noticia);
+
+
+          if(
+            typeof card === "string"
+          ){
+
+            grid.insertAdjacentHTML(
+              "beforeend",
+              card
+            );
+
+          }
+
+          else if(card){
+
+            grid.appendChild(
+              card
+            );
+
+          }
+
+        }
+
+        catch(erroCard){
+
+          console.error(
+            "❌ Erro no cartão:",
+            erroCard
+          );
+
+        }
+
+      }
+    );
+
+
+    paginaAtual++;
+
+
+    /* ========================================
+       ATUALIZAR BOTÃO
+    ======================================== */
+
+    if(botao){
+
+      if(naoHaMaisNoticias){
+
+        botao.remove();
+
+      }
+
+      else{
+
+        botao.disabled = false;
+
+        botao.textContent =
+          "⬇️ Carregar mais notícias";
+
+      }
+
+    }
+
+
+  }
+
+  catch(erro){
+
+    console.error(
+      "❌ Erro ao carregar mais:",
+      erro
+    );
+
+
+    if(botao){
+
+      botao.disabled = false;
+
+      botao.textContent =
+        "🔄 Tentar novamente";
+
+    }
+
+  }
+
+
+  carregandoMais = false;
+
+      }
+      
 
 
 /* ==========================================
