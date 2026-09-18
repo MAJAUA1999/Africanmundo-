@@ -1016,56 +1016,147 @@ function filtrarNoticias(noticias,categoria){
 
   categoria = normalizarTexto(categoria);
 
-  /* VER TODAS / NOTÍCIAS */
-  if(categoria === "noticias" || categoria === ""){
+
+  /* ==========================================
+     VER TODAS / NOTÍCIAS
+  ========================================== */
+
+  if(
+    categoria === "noticias" ||
+    categoria === ""
+  ){
+
     return noticias;
+
   }
 
-  /* MOÇAMBIQUE */
+
+  /* ==========================================
+     MOÇAMBIQUE
+     Usa diretamente a coluna categoria
+  ========================================== */
+
   if(categoria === "mocambique"){
+
     return noticias.filter(function(noticia){
-      return ehMocambique(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.categoria
+        ) === "mocambique"
+      );
+
     });
+
   }
 
-  /* ÁFRICA */
+
+  /* ==========================================
+     ÁFRICA
+     Usa diretamente a coluna categoria
+  ========================================== */
+
   if(categoria === "africa"){
+
     return noticias.filter(function(noticia){
-      return ehAfrica(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.categoria
+        ) === "africa"
+      );
+
     });
+
   }
 
-  /* FUTEBOL */
+
+  /* ==========================================
+     FUTEBOL
+     Usa a coluna subcategoria
+  ========================================== */
+
   if(categoria === "futebol"){
+
     return noticias.filter(function(noticia){
-      return ehFutebol(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.subcategoria
+        ) === "futebol"
+      );
+
     });
+
   }
 
-  /* DESPORTO */
+
+  /* ==========================================
+     DESPORTO
+     Usa a coluna subcategoria
+  ========================================== */
+
   if(categoria === "desporto"){
+
     return noticias.filter(function(noticia){
-      return ehDesporto(noticia) || ehFutebol(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.subcategoria
+        ) === "desporto"
+      );
+
     });
+
   }
 
-  /* NEGÓCIOS */
+
+  /* ==========================================
+     NEGÓCIOS
+     Liga à subcategoria ECONOMIA
+  ========================================== */
+
   if(categoria === "negocios"){
+
     return noticias.filter(function(noticia){
-      return ehNegocios(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.subcategoria
+        ) === "economia"
+      );
+
     });
+
   }
 
-  /* ENTRETENIMENTO */
+
+  /* ==========================================
+     ENTRETENIMENTO
+     Liga à subcategoria CULTURA
+  ========================================== */
+
   if(categoria === "entretenimento"){
+
     return noticias.filter(function(noticia){
-      return ehEntretenimento(noticia);
+
+      return (
+        normalizarTexto(
+          noticia.subcategoria
+        ) === "cultura"
+      );
+
     });
+
   }
 
-  /* SE FOR UMA CATEGORIA DESCONHECIDA,
-     NÃO ESCONDER AS NOTÍCIAS */
+
+  /* ==========================================
+     CATEGORIA DESCONHECIDA
+  ========================================== */
+
   return noticias;
+
       }
 
   
@@ -1215,25 +1306,29 @@ async function carregarCategoria(){
 
 
     const resposta =
-      await supabaseClient
-        .from("noticias")
-        .select(`
-          id,
-          titulo,
-          texto,
-          imagem,
-          categoria,
-          data,
-          fonte,
-          url_original
-        `)
-        .order(
-          "id",
-          {
-            ascending:false
-          }
-        )
-        .limit(500);
+  await supabaseClient
+    .from("noticias")
+    .select(`
+      id,
+      titulo,
+      texto,
+      imagem,
+      categoria,
+      subcategoria,
+      data,
+      fonte,
+      url_original
+    `)
+    .order(
+      "id",
+      {
+        ascending: false
+      }
+    )
+    .range(
+      0,
+      29
+    );
 
 
     console.log(
