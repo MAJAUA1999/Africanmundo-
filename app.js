@@ -240,11 +240,6 @@ function criarCard(n){
   const imagem =
     obterImagem(n);
 
-  const data =
-    formatarData(
-      n?.data
-    );
-
 
   let media = "";
 
@@ -286,18 +281,6 @@ function criarCard(n){
       <div class="compact-title">
         ${titulo}
       </div>
-
-      ${
-        data
-        ?
-        `
-        <div class="compact-date">
-          ${esc(data)}
-        </div>
-        `
-        :
-        ""
-      }
 
     </div>
 
@@ -341,7 +324,6 @@ function criarCard(n){
 
   return article;
 }
-
 
 /* =========================================================
    RENDERIZAR LISTA
