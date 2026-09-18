@@ -963,11 +963,6 @@ function criarCard(noticia){
       obterImagem(noticia)
     );
 
-  const data =
-    formatarData(
-      obterData(noticia)
-    );
-
   const id =
     encodeURIComponent(
       noticia.id
@@ -999,10 +994,6 @@ function criarCard(noticia){
           : ""
         }
 
-        <div class="news-meta">
-          ${data ? "📅 " + data : ""}
-        </div>
-
       </div>
 
     </article>
@@ -1010,7 +1001,6 @@ function criarCard(noticia){
   `;
 
 }
-
 
 function filtrarNoticias(noticias,categoria){
 
