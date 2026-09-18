@@ -2405,6 +2405,8 @@ async function copiarLinkSite(){
     );
   }
 }
+
+
 /* =========================================================
    🌍 AFRICANMUNDO — APP.JS
    PARTE 3/3
@@ -2784,6 +2786,216 @@ function iniciarBotoes(){
 
 }
 
+/* =========================================================
+   📢 ANÚNCIOS ATIVOS
+========================================================= */
+
+async function carregarAnunciosAtivos(){
+
+  const secao =
+    document.getElementById(
+      "anunciosAtivosSection"
+    );
+
+  const area =
+    document.getElementById(
+      "anunciosAtivos"
+    );
+
+  if(!secao || !area){
+
+    console.warn(
+      "⚠️ Área de anúncios não encontrada."
+    );
+
+    return;
+  }
+
+  if(!db){
+
+    const iniciou =
+      iniciarSupabase();
+
+    if(!iniciou){
+
+      return;
+    }
+  }
+
+  try{
+
+    const resultado =
+      await db
+        .from("anuncios")
+        .select("*")
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        );
+
+    if(resultado.error){
+
+      console.error(
+        "❌ Erro ao carregar anúncios:",
+        resultado.error
+      );
+
+      secao.style.display =
+        "none";
+
+      return;
+    }
+
+    const anuncios =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
+
+    console.log(
+      "📢 Anúncios encontrados:",
+      anuncios.length
+    );
+
+    if(!anuncios.length){
+
+      secao.style.display =
+        "none";
+
+      return;
+    }
+
+    area.innerHTML = "";
+
+    anuncios.forEach(
+      function(anuncio){
+
+        const titulo =
+          esc(
+            anuncio.titulo ||
+            anuncio.nome ||
+            "Publicidade"
+          );
+
+        const texto =
+          esc(
+            anuncio.texto ||
+            anuncio.descricao ||
+            ""
+          );
+
+        const imagem =
+          anuncio.imagem ||
+          "";
+
+        const link =
+          anuncio.url ||
+          anuncio.link ||
+          "#";
+
+        const card =
+          document.createElement(
+            "div"
+          );
+
+        card.className =
+          "ad";
+
+        card.style.marginBottom =
+          "12px";
+
+        card.innerHTML = `
+
+          ${
+            imagem
+            ?
+            `
+            <img
+              src="${esc(imagem)}"
+              alt="${titulo}"
+              loading="lazy"
+              style="
+                width:100%;
+                max-height:220px;
+                object-fit:cover;
+                border-radius:12px;
+                margin-bottom:10px;
+              "
+              onerror="this.style.display='none'"
+            >
+            `
+            :
+            ""
+          }
+
+          <strong>
+            📢 ${titulo}
+          </strong>
+
+          ${
+            texto
+            ?
+            `
+            <span>
+              ${texto}
+            </span>
+            `
+            :
+            ""
+          }
+
+          ${
+            link &&
+            link !== "#"
+            ?
+            `
+            <br>
+            <a
+              href="${esc(link)}"
+              target="_blank"
+              rel="noopener noreferrer"
+              style="
+                display:inline-block;
+                margin-top:10px;
+                padding:9px 14px;
+                border-radius:9px;
+                background:var(--p);
+                color:white;
+                text-decoration:none;
+                font-weight:bold;
+              "
+            >
+              Ver anúncio →
+            </a>
+            `
+            :
+            ""
+          }
+
+        `;
+
+        area.appendChild(
+          card
+        );
+
+      }
+    );
+
+    secao.style.display =
+      "block";
+
+  }catch(e){
+
+    console.error(
+      "❌ Falha ao carregar anúncios:",
+      e
+    );
+
+    secao.style.display =
+      "none";
+  }
+}
 
 /* =========================================================
    INICIALIZAÇÃO
@@ -2806,6 +3018,8 @@ document.addEventListener(
       await iniciarSupabase();
 
       await carregarNoticias();
+
+       await carregarAnunciosAtivos();
 
     }catch(e){
 
