@@ -2914,7 +2914,9 @@ async function carregarAnunciosAtivos(){
     const resultado =
       await db
         .from("anuncios")
-        .select("*")
+        .select(
+          "id,empresa,video,imagem,texto,url"
+        )
         .order(
           "id",
           {
@@ -2959,19 +2961,21 @@ async function carregarAnunciosAtivos(){
       .forEach(
         function(anuncio){
 
-          const titulo =
+          const empresa =
             esc(
-              anuncio.titulo ||
-              anuncio.nome ||
+              anuncio.empresa ||
               "Publicidade"
             );
 
           const texto =
             esc(
               anuncio.texto ||
-              anuncio.descricao ||
               ""
             );
+
+          const video =
+            anuncio.video ||
+            "";
 
           const imagem =
             anuncio.imagem ||
@@ -2979,7 +2983,6 @@ async function carregarAnunciosAtivos(){
 
           const link =
             anuncio.url ||
-            anuncio.link ||
             "#";
 
           const card =
@@ -2992,12 +2995,26 @@ async function carregarAnunciosAtivos(){
 
           let media = "";
 
-          if(imagem){
+          if(video){
+
+            media = `
+              <video
+                src="${esc(video)}"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster="${esc(imagem)}"
+              ></video>
+            `;
+
+          }else if(imagem){
 
             media = `
               <img
                 src="${esc(imagem)}"
-                alt="${titulo}"
+                alt="${empresa}"
                 loading="lazy"
                 onerror="this.style.display='none'"
               >
@@ -3029,7 +3046,7 @@ async function carregarAnunciosAtivos(){
             </div>
 
             <div class="anuncio-titulo">
-              📢 ${titulo}
+              📢 ${empresa}
             </div>
 
             ${
