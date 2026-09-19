@@ -682,9 +682,18 @@ function ehMocambique(n){
 function ehAfrica(n){
 
   const categoria =
-    normalizarTexto(n?.categoria || "");
+    normalizarTexto(
+      n?.categoria || ""
+    );
 
-  if(categoria === "africa") return true;
+  const sub =
+    normalizarTexto(
+      n?.subcategoria || ""
+    );
+
+  if(categoria === "africa"){
+    return true;
+  }
 
   if(
     categoria === "mocambique" ||
@@ -693,7 +702,7 @@ function ehAfrica(n){
     return false;
   }
 
-  return false;
+  return sub === "africa";
 }
 
 
