@@ -716,21 +716,20 @@ function ehFutebol(n){
 function ehDesporto(n){
 
   const sub =
-    normalizarTexto(n?.subcategoria || "");
+    normalizarTexto(
+      n?.subcategoria || ""
+    );
 
   const categoria =
-    normalizarTexto(n?.categoria || "");
+    normalizarTexto(
+      n?.categoria || ""
+    );
 
-  if(
-    sub === "desporto" ||
-    sub === "futebol"
-  ){
+  if(sub === "desporto"){
     return true;
   }
 
-  if(
-    categoria === "desporto"
-  ){
+  if(categoria === "desporto"){
     return true;
   }
 
