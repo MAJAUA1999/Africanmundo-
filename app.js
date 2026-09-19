@@ -1751,9 +1751,7 @@ function abrirModal(titulo,conteudo){
 
   Object.assign(modal.style,{
     position:"fixed",
-    top:"0",
-    left:"0",
-    width:"100%",
+    inset:"0",
     zIndex:"999999",
     pointerEvents:"none"
   });
@@ -1766,18 +1764,16 @@ function abrirModal(titulo,conteudo){
         position:fixed;
         inset:0;
         background:transparent;
-        z-index:1;
         pointer-events:auto;
       "
     ></div>
 
     <div
-      class="am-box"
+      id="amDropdown"
       style="
-        position:absolute;
-        top:58px;
-        right:10px;
-        width:min(290px,calc(100vw - 20px));
+        position:fixed;
+        width:280px;
+        max-width:calc(100vw - 20px);
         max-height:55vh;
         overflow-y:auto;
         background:var(--card,#fff);
@@ -1792,10 +1788,10 @@ function abrirModal(titulo,conteudo){
 
       <div
         style="
-          padding:10px 12px;
           display:flex;
           align-items:center;
           justify-content:space-between;
+          padding:10px 12px;
           border-bottom:1px solid var(--border,#e2e7ea);
           font-size:13px;
           font-weight:800;
@@ -1815,7 +1811,6 @@ function abrirModal(titulo,conteudo){
             height:27px;
             border-radius:7px;
             font-size:13px;
-            cursor:pointer;
           "
         >
           ✕
@@ -1824,7 +1819,6 @@ function abrirModal(titulo,conteudo){
       </div>
 
       <div
-        id="amBody"
         style="
           padding:10px 12px;
           font-size:12px;
@@ -1839,11 +1833,82 @@ function abrirModal(titulo,conteudo){
 
   document.body.appendChild(modal);
 
+  const painel =
+    document.getElementById("amDropdown");
+
   const fechar =
     document.getElementById("amClose");
 
   const fundo =
     document.getElementById("amBack");
+
+  /*
+    Descobre qual botão abriu o painel
+  */
+
+  const botoes = [
+    "notificationBtn",
+    "toolsBtn",
+    "userBtn",
+    "colorBtn"
+  ];
+
+  let origem=null;
+
+  botoes.some(function(id){
+
+    const botao =
+      document.getElementById(id);
+
+    if(
+      botao &&
+      document.activeElement === botao
+    ){
+
+      origem=botao;
+
+      return true;
+    }
+
+    return false;
+  });
+
+  /*
+    Posiciona o painel junto ao botão
+  */
+
+  if(painel && origem){
+
+    const rect =
+      origem.getBoundingClientRect();
+
+    let esquerda =
+      rect.left;
+
+    const largura =
+      280;
+
+    if(
+      esquerda + largura >
+      window.innerWidth - 10
+    ){
+
+      esquerda =
+        window.innerWidth -
+        largura -
+        10;
+    }
+
+    if(esquerda < 10){
+      esquerda=10;
+    }
+
+    painel.style.top =
+      (rect.bottom + 8) + "px";
+
+    painel.style.left =
+      esquerda + "px";
+  }
 
   if(fechar){
     fechar.onclick=fecharModal;
@@ -1863,7 +1928,7 @@ function fecharModal(){
   if(modal){
     modal.remove();
   }
-}
+         }
 
 /* =========================================================
    NOTIFICAÇÕES
