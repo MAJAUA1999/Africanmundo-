@@ -205,48 +205,30 @@ function abrirNoticiaPorId(id){
 function criarCard(n){
 
   const article =
-    document.createElement(
-      "article"
-    );
+    document.createElement("article");
 
   article.className =
     "compact-card";
 
-  article.style.cursor =
-    "pointer";
+  article.style.cursor="pointer";
 
-  article.setAttribute(
-    "role",
-    "button"
-  );
-
-  article.setAttribute(
-    "tabindex",
-    "0"
-  );
-
+  article.setAttribute("role","button");
+  article.setAttribute("tabindex","0");
 
   const titulo =
-    esc(
-      obterTitulo(n)
-    );
+    esc(obterTitulo(n));
 
   const categoria =
-    esc(
-      n?.categoria ||
-      "Notícias"
-    );
+    esc(n?.categoria || "Notícias");
 
   const imagem =
     obterImagem(n);
 
-
-  let media = "";
-
+  let media="";
 
   if(imagem){
 
-    media = `
+    media=`
       <img
         src="${esc(imagem)}"
         alt="${titulo}"
@@ -258,15 +240,88 @@ function criarCard(n){
 
   }else{
 
-    media = `
-      <div class="compact-img">
-        🌍
-      </div>
+    const cat =
+      normalizarTexto(
+        n?.subcategoria ||
+        n?.categoria ||
+        ""
+      );
+
+    let fallback =
+      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900";
+
+    if(
+      cat.includes("futebol") ||
+      cat.includes("football")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900";
+
+    }else if(
+      cat.includes("desporto") ||
+      cat.includes("esporte")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900";
+
+    }else if(
+      cat.includes("economia") ||
+      cat.includes("negocio")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900";
+
+    }else if(
+      cat.includes("cultura") ||
+      cat.includes("entretenimento")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
+
+    }else if(
+      cat.includes("saude")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900";
+
+    }else if(
+      cat.includes("politica")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900";
+
+    }else if(
+      cat.includes("mocambique")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
+
+    }else if(
+      cat.includes("africa")
+    ){
+
+      fallback =
+        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
+    }
+
+    media=`
+      <img
+        src="${fallback}"
+        alt="${categoria}"
+        loading="lazy"
+        decoding="async"
+      >
     `;
   }
 
-
-  article.innerHTML = `
+  article.innerHTML=`
 
     <div class="compact-media">
       ${media}
@@ -286,41 +341,33 @@ function criarCard(n){
 
   `;
 
-
   article.addEventListener(
     "click",
     function(e){
 
-      if(
-        e.target.closest("a,button")
-      ){
-
+      if(e.target.closest("a,button")){
         return;
       }
 
       abrirNoticia(n);
-
     }
   );
-
 
   article.addEventListener(
     "keydown",
     function(e){
 
       if(
-        e.key === "Enter" ||
-        e.key === " "
+        e.key==="Enter" ||
+        e.key===" "
       ){
 
         e.preventDefault();
 
         abrirNoticia(n);
       }
-
     }
   );
-
 
   return article;
 }
