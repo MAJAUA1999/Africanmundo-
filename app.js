@@ -2923,6 +2923,16 @@ async function carregarAnunciosAtivos(){
             ascending:false
           }
         );
+     
+     console.log(
+  "📢 DADOS DOS ANÚNCIOS:",
+  resultado.data
+);
+
+console.log(
+  "📢 ERRO DOS ANÚNCIOS:",
+  resultado.error
+);
 
     if(resultado.error){
 
