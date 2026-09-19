@@ -1109,16 +1109,9 @@ function renderizarPagina(){
   ========================================== */
 
   const desporto =
-    recentes.filter(
-      function(n){
-
-        return (
-          ehDesporto(n) ||
-          ehFutebol(n)
-        );
-
-      }
-    );
+  recentes.filter(
+    ehDesporto
+  );
 
 
   renderizarLista(
