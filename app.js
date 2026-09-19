@@ -1010,7 +1010,6 @@ function ehEntretenimento(n){
 /* =========================================================
    CARREGAR NOTÍCIAS
 ========================================================= */
-
 async function carregarNoticias(){
 
   console.log(
@@ -1045,6 +1044,7 @@ async function carregarNoticias(){
           texto,
           imagem,
           categoria,
+          subcategoria,
           data,
           fonte,
           url_original
@@ -1055,7 +1055,7 @@ async function carregarNoticias(){
             ascending:false
           }
         )
-        .limit(500);
+        .limit(1000);
 
 
     const data =
@@ -1108,6 +1108,7 @@ async function carregarNoticias(){
             String(n.id),
             n
           );
+
         }
 
       }
@@ -1139,6 +1140,7 @@ async function carregarNoticias(){
     mostrarErro(
       "Erro ao carregar as notícias."
     );
+
   }
 }
 
@@ -1169,19 +1171,82 @@ function renderizarPagina(){
   }
 
 
+  /* ==========================================
+     📰 ORDENAR DAS MAIS NOVAS PARA AS MAIS ANTIGAS
+  ========================================== */
+
+  const recentes =
+    [...noticias].sort(
+      function(a,b){
+
+        const dataA =
+          new Date(
+            a?.data || 0
+          ).getTime();
+
+        const dataB =
+          new Date(
+            b?.data || 0
+          ).getTime();
+
+        if(
+          dataB !== dataA
+        ){
+
+          return dataB - dataA;
+
+        }
+
+        return (
+          Number(b?.id || 0) -
+          Number(a?.id || 0)
+        );
+
+      }
+    );
+
+
+  /* ==========================================
+     ⭐ DESTAQUE
+  ========================================== */
+
+  const quantidadeDestaques =
+    Math.min(
+      5,
+      recentes.length
+    );
+
+
+  const indiceDestaque =
+    Math.floor(
+      Math.random() *
+      quantidadeDestaques
+    );
+
+
   renderizarDestaque(
-    noticias[0]
+    recentes[
+      indiceDestaque
+    ]
   );
 
+
+  /* ==========================================
+     📰 ÚLTIMAS NOTÍCIAS
+  ========================================== */
 
   renderizarLista(
     "ultimas",
-    noticias
+    recentes
   );
 
 
+  /* ==========================================
+     ⚽ FUTEBOL
+  ========================================== */
+
   const futebol =
-    noticias.filter(
+    recentes.filter(
       ehFutebol
     );
 
@@ -1191,8 +1256,12 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     🇲🇿 MOÇAMBIQUE
+  ========================================== */
+
   const mocambique =
-    noticias.filter(
+    recentes.filter(
       ehMocambique
     );
 
@@ -1202,8 +1271,12 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     🌍 ÁFRICA
+  ========================================== */
+
   const africa =
-    noticias.filter(
+    recentes.filter(
       ehAfrica
     );
 
@@ -1213,8 +1286,12 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     💼 NEGÓCIOS
+  ========================================== */
+
   const negocios =
-    noticias.filter(
+    recentes.filter(
       ehNegocios
     );
 
@@ -1224,8 +1301,12 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     🎬 ENTRETENIMENTO
+  ========================================== */
+
   const entretenimento =
-    noticias.filter(
+    recentes.filter(
       ehEntretenimento
     );
 
@@ -1235,8 +1316,12 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     🏆 DESPORTO
+  ========================================== */
+
   const desporto =
-    noticias.filter(
+    recentes.filter(
       function(n){
 
         return (
@@ -1254,9 +1339,18 @@ function renderizarPagina(){
   );
 
 
+  /* ==========================================
+     📊 DEBUG
+  ========================================== */
+
   console.log(
-    "📊 Categorias:",
+    "📊 Categorias recentes:",
     {
+      total:recentes.length,
+      destaque:recentes[
+        indiceDestaque
+      ]?.id,
+
       futebol:futebol.length,
       mocambique:mocambique.length,
       africa:africa.length,
@@ -1265,7 +1359,9 @@ function renderizarPagina(){
       desporto:desporto.length
     }
   );
+
 }
+
 /* =========================================================
    🌍 AFRICANMUNDO — APP.JS
    PARTE 2/3
