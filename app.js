@@ -2919,8 +2919,13 @@ async function carregarAnunciosAtivos(){
       await db
         .from("anuncios")
         .select(
-          "id,empresa,video,imagem,texto,url"
-        )
+  "id,empresa,video,imagem,texto,link"
+)
+       .eq(
+  "ativo",
+  true
+)
+       
         .order(
           "id",
           {
@@ -2996,8 +3001,8 @@ console.log(
             "";
 
           const link =
-            anuncio.url ||
-            "#";
+  anuncio.link ||
+  "#";
 
           const card =
             document.createElement(
