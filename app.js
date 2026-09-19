@@ -790,18 +790,28 @@ function ehNegocios(n){
 
 function ehEntretenimento(n){
 
-  const sub =
-    normalizarTexto(n?.subcategoria || "");
+  const titulo =
+    normalizarTexto(
+      n?.titulo || ""
+    );
+
+  const texto =
+    normalizarTexto(
+      n?.texto || ""
+    );
 
   const categoria =
-    normalizarTexto(n?.categoria || "");
+    normalizarTexto(
+      n?.categoria || ""
+    );
 
-  if(
-    sub === "cultura" ||
-    sub === "entretenimento"
-  ){
-    return true;
-  }
+  const sub =
+    normalizarTexto(
+      n?.subcategoria || ""
+    );
+
+  const conteudo =
+    titulo + " " + texto;
 
   if(
     categoria === "entretenimento"
@@ -809,8 +819,54 @@ function ehEntretenimento(n){
     return true;
   }
 
-  return false;
-}
+  if(
+    sub !== "cultura"
+  ){
+    return false;
+  }
+
+  const palavras =
+    [
+      "musica",
+      "cantor",
+      "cantora",
+      "artista",
+      "ator",
+      "atriz",
+      "cinema",
+      "filme",
+      "televisao",
+      "televisao",
+      "novela",
+      "serie",
+      "festival",
+      "concerto",
+      "show",
+      "espetaculo",
+      "teatro",
+      "celebridade",
+      "famoso",
+      "famosa",
+      "premio",
+      "premios",
+      "album",
+      "cancao",
+      "banda",
+      "humor",
+      "comedia",
+      "cultura pop"
+    ];
+
+  return palavras.some(
+    function(palavra){
+
+      return conteudo.includes(
+        palavra
+      );
+
+    }
+  );
+       }
 
 /* =========================================================
    CARREGAR NOTÍCIAS
