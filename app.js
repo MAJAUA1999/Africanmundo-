@@ -2885,7 +2885,6 @@ function iniciarBotoes(){
 /* =========================================================
    📢 ANÚNCIOS ATIVOS
 ========================================================= */
-
 async function carregarAnunciosAtivos(){
 
   const secao =
@@ -2899,23 +2898,15 @@ async function carregarAnunciosAtivos(){
     );
 
   if(!secao || !area){
-
-    console.warn(
-      "⚠️ Área de anúncios não encontrada."
-    );
-
     return;
   }
 
   if(!db){
 
-    const iniciou =
-      iniciarSupabase();
-
-    if(!iniciou){
-
+    if(!iniciarSupabase()){
       return;
     }
+
   }
 
   try{
@@ -2934,7 +2925,7 @@ async function carregarAnunciosAtivos(){
     if(resultado.error){
 
       console.error(
-        "❌ Erro ao carregar anúncios:",
+        "❌ Erro nos anúncios:",
         resultado.error
       );
 
@@ -2945,14 +2936,13 @@ async function carregarAnunciosAtivos(){
     }
 
     const anuncios =
-      Array.isArray(resultado.data)
-        ? resultado.data
-        : [];
-
-    console.log(
-      "📢 Anúncios encontrados:",
-      anuncios.length
-    );
+      Array.isArray(
+        resultado.data
+      )
+      ?
+      resultado.data
+      :
+      [];
 
     if(!anuncios.length){
 
@@ -2964,122 +2954,133 @@ async function carregarAnunciosAtivos(){
 
     area.innerHTML = "";
 
-    anuncios.forEach(
-      function(anuncio){
+    anuncios
+      .slice(0,4)
+      .forEach(
+        function(anuncio){
 
-        const titulo =
-          esc(
-            anuncio.titulo ||
-            anuncio.nome ||
-            "Publicidade"
-          );
+          const titulo =
+            esc(
+              anuncio.titulo ||
+              anuncio.nome ||
+              "Publicidade"
+            );
 
-        const texto =
-          esc(
-            anuncio.texto ||
-            anuncio.descricao ||
-            ""
-          );
+          const texto =
+            esc(
+              anuncio.texto ||
+              anuncio.descricao ||
+              ""
+            );
 
-        const imagem =
-          anuncio.imagem ||
-          "";
+          const imagem =
+            anuncio.imagem ||
+            "";
 
-        const link =
-          anuncio.url ||
-          anuncio.link ||
-          "#";
+          const link =
+            anuncio.url ||
+            anuncio.link ||
+            "#";
 
-        const card =
-          document.createElement(
-            "div"
-          );
+          const card =
+            document.createElement(
+              "div"
+            );
 
-        card.className =
-          "ad";
+          card.className =
+            "anuncio-card";
 
-        card.style.marginBottom =
-          "12px";
+          let media = "";
 
-        card.innerHTML = `
+          if(imagem){
 
-          ${
-            imagem
-            ?
-            `
-            <img
-              src="${esc(imagem)}"
-              alt="${titulo}"
-              loading="lazy"
-              style="
-                width:100%;
-                max-height:220px;
-                object-fit:cover;
-                border-radius:12px;
-                margin-bottom:10px;
-              "
-              onerror="this.style.display='none'"
-            >
-            `
-            :
-            ""
+            media = `
+              <img
+                src="${esc(imagem)}"
+                alt="${titulo}"
+                loading="lazy"
+                onerror="this.style.display='none'"
+              >
+            `;
+
+          }else{
+
+            media = `
+              <div
+                style="
+                  width:100%;
+                  height:100%;
+                  display:flex;
+                  align-items:center;
+                  justify-content:center;
+                  font-size:22px;
+                "
+              >
+                📢
+              </div>
+            `;
+
           }
 
-          <strong>
-            📢 ${titulo}
-          </strong>
+          card.innerHTML = `
 
-          ${
-            texto
-            ?
-            `
-            <span>
-              ${texto}
-            </span>
-            `
-            :
-            ""
-          }
+            <div class="anuncio-media">
+              ${media}
+            </div>
 
-          ${
-            link &&
-            link !== "#"
-            ?
-            `
-            <br>
-            <a
-              href="${esc(link)}"
-              target="_blank"
-              rel="noopener noreferrer"
-              style="
-                display:inline-block;
-                margin-top:10px;
-                padding:9px 14px;
-                border-radius:9px;
-                background:var(--p);
-                color:white;
-                text-decoration:none;
-                font-weight:bold;
-              "
-            >
-              Ver anúncio →
-            </a>
-            `
-            :
-            ""
-          }
+            <div class="anuncio-titulo">
+              📢 ${titulo}
+            </div>
 
-        `;
+            ${
+              texto
+              ?
+              `
+              <div class="anuncio-texto">
+                ${texto}
+              </div>
+              `
+              :
+              ""
+            }
 
-        area.appendChild(
-          card
-        );
+            ${
+              link &&
+              link !== "#"
+              ?
+              `
+              <a
+                class="anuncio-botao"
+                href="${esc(link)}"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver anúncio →
+              </a>
+              `
+              :
+              ""
+            }
 
-      }
-    );
+          `;
+
+          area.appendChild(
+            card
+          );
+
+        }
+      );
 
     secao.style.display =
       "block";
+
+    console.log(
+      "📢 Anúncios exibidos:",
+      Math.min(
+        anuncios.length,
+        4
+      )
+    );
 
   }catch(e){
 
@@ -3091,6 +3092,7 @@ async function carregarAnunciosAtivos(){
     secao.style.display =
       "none";
   }
+
 }
 
 /* =========================================================
