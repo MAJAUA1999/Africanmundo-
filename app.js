@@ -3144,7 +3144,9 @@ document.addEventListener(
 
       await carregarNoticias();
 
-       await carregarAnunciosAtivos();
+       console.log("📢 INICIANDO ANÚNCIOS...");
+await carregarAnunciosAtivos();
+console.log("📢 FIM DOS ANÚNCIOS...");
 
     }catch(e){
 
