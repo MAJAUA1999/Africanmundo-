@@ -646,59 +646,24 @@ function textoCompleto(n){
 /* =========================================================
    MOÇAMBIQUE
 ========================================================= */
-
 function ehMocambique(n){
 
   const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+    normalizarTexto(n?.categoria || "");
 
+  const sub =
+    normalizarTexto(n?.subcategoria || "");
+
+  if(categoria === "mocambique") return true;
 
   if(
-    categoria.includes("mocambique") ||
-    categoria.includes("mozambique")
+    categoria === "africa" ||
+    categoria === "mundo"
   ){
-
-    return true;
+    return false;
   }
 
-
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "mocambique",
-    "mozambique",
-    "maputo",
-    "matola",
-    "beira",
-    "nampula",
-    "chimoio",
-    "tete",
-    "quelimane",
-    "pemba",
-    "nacala",
-    "xai xai",
-    "inhambane",
-    "gaza",
-    "sofala",
-    "manica",
-    "zambezia",
-    "cabo delgado",
-    "niassa",
-    "maputo cidade",
-    "provincia de maputo"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(palavra)
-  );
+  return sub === "mocambique";
 }
 
 
@@ -709,89 +674,18 @@ function ehMocambique(n){
 function ehAfrica(n){
 
   const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+    normalizarTexto(n?.categoria || "");
 
+  if(categoria === "africa") return true;
 
   if(
-    categoria === "africa" ||
-    categoria.includes("africa")
+    categoria === "mocambique" ||
+    categoria === "mundo"
   ){
-
-    return true;
+    return false;
   }
 
-
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "africa",
-    "africano",
-    "africana",
-    "angola",
-    "argelia",
-    "benim",
-    "botswana",
-    "burkina faso",
-    "burundi",
-    "camaroes",
-    "cabo verde",
-    "republica centro africana",
-    "chade",
-    "comores",
-    "costa do marfim",
-    "djibouti",
-    "egipto",
-    "egito",
-    "eritrea",
-    "eswatini",
-    "etiopia",
-    "gabon",
-    "gambia",
-    "gana",
-    "guine",
-    "guine bissau",
-    "guine equatorial",
-    "lesoto",
-    "liberia",
-    "libia",
-    "madagascar",
-    "malawi",
-    "mali",
-    "marrocos",
-    "mauritania",
-    "mauricio",
-    "namibia",
-    "nigeria",
-    "quenia",
-    "republica democratica do congo",
-    "ruanda",
-    "sao tome",
-    "senegal",
-    "seicheles",
-    "serra leoa",
-    "somalia",
-    "africa do sul",
-    "sudao",
-    "sudao do sul",
-    "tanzania",
-    "togo",
-    "tunisia",
-    "uganda",
-    "zambia",
-    "zimbabwe"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(palavra)
-  );
+  return false;
 }
 
 
@@ -801,63 +695,17 @@ function ehAfrica(n){
 
 function ehFutebol(n){
 
+  const sub =
+    normalizarTexto(n?.subcategoria || "");
+
   const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+    normalizarTexto(n?.categoria || "");
 
+  if(sub === "futebol") return true;
 
-  if(
-    categoria.includes("futebol")
-  ){
+  if(categoria === "futebol") return true;
 
-    return true;
-  }
-
-
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "futebol",
-    "football",
-    "soccer",
-    "liga dos campeoes",
-    "champions league",
-    "premier league",
-    "la liga",
-    "serie a",
-    "bundesliga",
-    "mundial de clubes",
-    "copa do mundo",
-    "campeonato",
-    "jogador",
-    "jogadores",
-    "treinador",
-    "golo",
-    "gol",
-    "golos",
-    "gols",
-    "partida",
-    "jogo",
-    "clube",
-    "clubes",
-    "seleccao",
-    "selecao",
-    "transferencia",
-    "transferencias"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(
-        normalizarTexto(palavra)
-      )
-  );
+  return false;
 }
 
 
@@ -867,63 +715,26 @@ function ehFutebol(n){
 
 function ehDesporto(n){
 
-  const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+  const sub =
+    normalizarTexto(n?.subcategoria || "");
 
+  const categoria =
+    normalizarTexto(n?.categoria || "");
 
   if(
-    categoria.includes("desporto") ||
-    categoria.includes("esporte")
+    sub === "desporto" ||
+    sub === "futebol"
   ){
-
     return true;
   }
 
+  if(
+    categoria === "desporto"
+  ){
+    return true;
+  }
 
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "desporto",
-    "esporte",
-    "sports",
-    "basquetebol",
-    "basquete",
-    "basketball",
-    "atletismo",
-    "tenis",
-    "voleibol",
-    "volleyball",
-    "boxe",
-    "boxing",
-    "natacao",
-    "ciclismo",
-    "corrida",
-    "formula 1",
-    "formula1",
-    "motogp",
-    "luta",
-    "judo",
-    "karate",
-    "olimpiadas",
-    "olimpicos",
-    "medalha",
-    "campeonato",
-    "competicao"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(
-        normalizarTexto(palavra)
-      )
-  );
+  return false;
 }
 
 
@@ -933,63 +744,27 @@ function ehDesporto(n){
 
 function ehNegocios(n){
 
-  const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+  const sub =
+    normalizarTexto(n?.subcategoria || "");
 
+  const categoria =
+    normalizarTexto(n?.categoria || "");
 
   if(
-    categoria.includes("negocio") ||
-    categoria.includes("economia")
+    sub === "economia" ||
+    sub === "negocios" ||
+    sub === "oportunidades"
   ){
-
     return true;
   }
 
+  if(
+    categoria === "negocios"
+  ){
+    return true;
+  }
 
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "negocios",
-    "economia",
-    "economico",
-    "empresa",
-    "empresas",
-    "mercado",
-    "mercados",
-    "financas",
-    "financa",
-    "banco",
-    "bancos",
-    "investimento",
-    "investimentos",
-    "empreendedor",
-    "empreendedorismo",
-    "comercio",
-    "industria",
-    "negocio",
-    "business",
-    "finance",
-    "economy",
-    "emprego",
-    "empregos",
-    "trabalho",
-    "oportunidade",
-    "oportunidades"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(
-        normalizarTexto(palavra)
-      )
-  );
+  return false;
 }
 
 
@@ -999,60 +774,27 @@ function ehNegocios(n){
 
 function ehEntretenimento(n){
 
-  const categoria =
-    normalizarTexto(
-      n?.categoria
-    );
+  const sub =
+    normalizarTexto(n?.subcategoria || "");
 
+  const categoria =
+    normalizarTexto(n?.categoria || "");
 
   if(
-    categoria.includes("entretenimento") ||
-    categoria.includes("cultura")
+    sub === "cultura" ||
+    sub === "entretenimento"
   ){
-
     return true;
   }
 
+  if(
+    categoria === "entretenimento"
+  ){
+    return true;
+  }
 
-  const texto =
-    textoCompleto(n);
-
-
-  const palavras = [
-
-    "entretenimento",
-    "cultura",
-    "celebridade",
-    "celebridades",
-    "musica",
-    "cantor",
-    "cantora",
-    "artista",
-    "cinema",
-    "filme",
-    "filmes",
-    "televisao",
-    "novela",
-    "festival",
-    "show",
-    "concerto",
-    "ator",
-    "atriz",
-    "famoso",
-    "famosa",
-    "lazer"
-
-  ];
-
-
-  return palavras.some(
-    palavra =>
-      texto.includes(
-        normalizarTexto(palavra)
-      )
-  );
+  return false;
 }
-
 
 /* =========================================================
    CARREGAR NOTÍCIAS
