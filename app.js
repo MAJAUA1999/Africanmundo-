@@ -760,25 +760,91 @@ function ehDesporto(n){
 
 function ehNegocios(n){
 
-  const sub =
-    normalizarTexto(n?.subcategoria || "");
+  const titulo =
+    normalizarTexto(
+      n?.titulo || ""
+    );
+
+  const texto =
+    normalizarTexto(
+      n?.texto || ""
+    );
 
   const categoria =
-    normalizarTexto(n?.categoria || "");
+    normalizarTexto(
+      n?.categoria || ""
+    );
 
-  if(
-    sub === "economia" ||
-    sub === "negocios" ||
-    sub === "oportunidades"
-  ){
-    return true;
-  }
+  const sub =
+    normalizarTexto(
+      n?.subcategoria || ""
+    );
+
+  const conteudo =
+    titulo + " " + texto;
+
 
   if(
     categoria === "negocios"
   ){
     return true;
   }
+
+
+  if(
+    sub === "economia"
+  ){
+
+    const palavras =
+      [
+        "empresa",
+        "empresas",
+        "negocio",
+        "negocios",
+        "investimento",
+        "investimentos",
+        "mercado",
+        "banco",
+        "bancos",
+        "financiamento",
+        "empreendedor",
+        "empreendedorismo",
+        "industria",
+        "industria",
+        "comercio",
+        "comercial",
+        "lucro",
+        "receita",
+        "economia",
+        "exportacao",
+        "importacao",
+        "preco",
+        "precos",
+        "emprego",
+        "empregos",
+        "salario",
+        "salarios"
+      ];
+
+    return palavras.some(
+      function(palavra){
+
+        return conteudo.includes(
+          palavra
+        );
+
+      }
+    );
+  }
+
+
+  if(
+    sub === "oportunidades"
+  ){
+
+    return true;
+  }
+
 
   return false;
 }
