@@ -2886,198 +2886,149 @@ function iniciarBotoes(){
    📢 ANÚNCIOS ATIVOS
 ========================================================= */
 
-      async function carregarAnunciosAtivos(){
+async function carregarAnunciosAtivos(){
 
   const secao =
-    document.getElementById(
-      "anunciosAtivosSection"
-    );
+    document.getElementById("anunciosAtivosSection");
 
   const area =
-    document.getElementById(
-      "anunciosAtivos"
-    );
+    document.getElementById("anunciosAtivos");
 
-  if(!secao || !area){
-    return;
-  }
+  if(!secao || !area) return;
 
   if(!db){
-    if(!iniciarSupabase()){
-      return;
-    }
+    if(!iniciarSupabase()) return;
   }
 
   try{
+
+    const hoje =
+      new Date()
+        .toISOString()
+        .slice(0,10);
 
     const resultado =
       await db
         .from("anuncios")
         .select(
-          "id,empresa,video,imagem,texto,link,ativo"
+          "id,empresa,video,imagem,mensagem,link,ativo,data_inicio,data_fim"
         )
-        .eq(
-          "ativo",
-          true
-        )
-        .order(
-          "id",
-          {
-            ascending:false
-          }
-        );
-
-    console.log(
-      "📢 ANÚNCIOS:",
-      resultado.data
-    );
+        .eq("ativo",true)
+        .lte("data_inicio",hoje)
+        .gte("data_fim",hoje)
+        .order("id",{ascending:false});
 
     if(resultado.error){
-
       console.error(
         "❌ ERRO ANÚNCIOS:",
         resultado.error
       );
-
-      secao.style.display =
-        "none";
-
+      secao.style.display="none";
       return;
     }
 
     const anuncios =
-      Array.isArray(
-        resultado.data
-      )
-      ?
-      resultado.data
-      :
-      [];
+      Array.isArray(resultado.data)
+      ? resultado.data
+      : [];
 
     if(!anuncios.length){
-
-      secao.style.display =
-        "none";
-
+      secao.style.display="none";
       return;
     }
 
-    area.innerHTML = "";
+    area.innerHTML="";
 
     anuncios
       .slice(0,4)
-      .forEach(
-        function(anuncio){
+      .forEach(function(anuncio){
 
-          const card =
-            document.createElement(
-              "div"
-            );
+        const card =
+          document.createElement("div");
 
-          card.className =
-            "anuncio-card";
+        card.className="anuncio-card";
 
-          const empresa =
-            esc(
-              anuncio.empresa ||
-              "Publicidade"
-            );
+        const empresa =
+          esc(anuncio.empresa || "Publicidade");
 
-          const texto =
-            esc(
-              anuncio.texto ||
-              ""
-            );
+        const texto =
+          esc(anuncio.mensagem || "");
 
-          const video =
-            anuncio.video ||
-            "";
+        const video =
+          anuncio.video || "";
 
-          const imagem =
-            anuncio.imagem ||
-            "";
+        const imagem =
+          anuncio.imagem || "";
 
-          const link =
-            anuncio.link ||
-            "#";
+        const link =
+          anuncio.link || "";
 
-          let media = "";
+        let media="";
 
-          if(video){
+        if(video){
 
-            media = `
-              <video
-                src="${esc(video)}"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="auto"
-                ${
-                  imagem
-                  ?
-                  `poster="${esc(imagem)}"`
-                  :
-                  ""
-                }
-              ></video>
-            `;
+          media=`
+            <video
+              src="${esc(video)}"
+              autoplay
+              muted
+              loop
+              playsinline
+              preload="auto"
+              ${imagem ? `poster="${esc(imagem)}"` : ""}
+            ></video>
+          `;
 
-          }else if(imagem){
+        }else if(imagem){
 
-            media = `
-              <img
-                src="${esc(imagem)}"
-                alt="${empresa}"
-                loading="lazy"
-              >
-            `;
+          media=`
+            <img
+              src="${esc(imagem)}"
+              alt="${empresa}"
+              loading="lazy"
+            >
+          `;
 
-          }else{
+        }else{
 
-            media = `
-              <div
-                style="
-                  width:100%;
-                  height:100%;
-                  display:flex;
-                  align-items:center;
-                  justify-content:center;
-                  font-size:24px;
-                "
-              >
-                📢
-              </div>
-            `;
-
-          }
-
-          card.innerHTML = `
-
-            <div class="anuncio-media">
-              ${media}
+          media=`
+            <div style="
+              width:100%;
+              height:100%;
+              display:flex;
+              align-items:center;
+              justify-content:center;
+              font-size:24px;
+            ">
+              📢
             </div>
+          `;
 
-            <div class="anuncio-titulo">
-              📢 ${empresa}
-            </div>
+        }
 
-            ${
-              texto
-              ?
-              `
+        card.innerHTML=`
+
+          <div class="anuncio-media">
+            ${media}
+          </div>
+
+          <div class="anuncio-titulo">
+            📢 ${empresa}
+          </div>
+
+          ${
+            texto
+            ? `
               <div class="anuncio-texto">
                 ${texto}
               </div>
-              `
-              :
-              ""
-            }
+            `
+            : ""
+          }
 
-            ${
-              link !== "#"
-              ?
-              `
+          ${
+            link
+            ? `
               <a
                 class="anuncio-botao"
                 href="${esc(link)}"
@@ -3086,22 +3037,17 @@ function iniciarBotoes(){
               >
                 Ver anúncio →
               </a>
-              `
-              :
-              ""
-            }
+            `
+            : ""
+          }
 
-          `;
+        `;
 
-          area.appendChild(
-            card
-          );
+        area.appendChild(card);
 
-        }
-      );
+      });
 
-    secao.style.display =
-      "block";
+    secao.style.display="block";
 
     console.log(
       "📢 Anúncios exibidos:",
@@ -3115,11 +3061,10 @@ function iniciarBotoes(){
       e
     );
 
-    secao.style.display =
-      "none";
+    secao.style.display="none";
   }
 
-        }
+}
 
 /* =========================================================
    INICIALIZAÇÃO
