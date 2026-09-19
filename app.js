@@ -219,8 +219,16 @@ function criarCard(n){
     esc(obterTitulo(n));
 
   const categoria =
-    esc(n?.categoria || "Notícias");
-
+  esc(
+    String(
+      n?.categoria || "Notícias"
+    )
+    .replace(
+      /\b(Mundo)(\s+\1)+\b/gi,
+      "$1"
+    )
+  );
+   
   const imagem =
     obterImagem(n);
 
