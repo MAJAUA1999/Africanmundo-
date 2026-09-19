@@ -1753,12 +1753,8 @@ function abrirModal(titulo,conteudo){
     position:"fixed",
     top:"0",
     left:"0",
-    right:"0",
     width:"100%",
-    zIndex:"2147483647",
-    display:"block",
-    margin:"0",
-    padding:"0",
+    zIndex:"999999",
     pointerEvents:"none"
   });
 
@@ -1769,7 +1765,7 @@ function abrirModal(titulo,conteudo){
       style="
         position:fixed;
         inset:0;
-        background:rgba(0,0,0,.35);
+        background:transparent;
         z-index:1;
         pointer-events:auto;
       "
@@ -1778,40 +1774,35 @@ function abrirModal(titulo,conteudo){
     <div
       class="am-box"
       style="
-        position:relative;
-        z-index:2;
-        width:min(430px,100%);
-        max-height:60vh;
+        position:absolute;
+        top:58px;
+        right:10px;
+        width:min(290px,calc(100vw - 20px));
+        max-height:55vh;
         overflow-y:auto;
         background:var(--card,#fff);
-        color:var(--txt,#151515);
+        color:var(--txt,#172026);
         border:1px solid var(--border,#e2e7ea);
-        border-top:0;
-        border-radius:0 0 14px 14px;
-        box-shadow:0 10px 30px rgba(0,0,0,.25);
-        margin:0 auto;
-        padding:0;
+        border-radius:12px;
+        box-shadow:0 8px 28px rgba(0,0,0,.16);
         pointer-events:auto;
-        animation:amDescer .22s ease-out;
+        animation:amDropdown .18s ease-out;
       "
     >
 
       <div
-        class="am-head"
         style="
+          padding:10px 12px;
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:9px 12px;
           border-bottom:1px solid var(--border,#e2e7ea);
-          font-size:14px;
+          font-size:13px;
           font-weight:800;
         "
       >
 
-        <strong>
-          ${esc(titulo)}
-        </strong>
+        <strong>${esc(titulo)}</strong>
 
         <button
           id="amClose"
@@ -1819,9 +1810,10 @@ function abrirModal(titulo,conteudo){
           style="
             border:0;
             background:var(--bg,#f5f7f8);
-            color:var(--txt,#151515);
+            color:var(--txt,#172026);
+            width:27px;
+            height:27px;
             border-radius:7px;
-            padding:5px 8px;
             font-size:13px;
             cursor:pointer;
           "
@@ -1835,7 +1827,7 @@ function abrirModal(titulo,conteudo){
         id="amBody"
         style="
           padding:10px 12px;
-          font-size:13px;
+          font-size:12px;
           line-height:1.4;
         "
       >
@@ -1846,8 +1838,6 @@ function abrirModal(titulo,conteudo){
   `;
 
   document.body.appendChild(modal);
-
-  document.body.style.overflow="hidden";
 
   const fechar =
     document.getElementById("amClose");
@@ -1873,8 +1863,6 @@ function fecharModal(){
   if(modal){
     modal.remove();
   }
-
-  document.body.style.overflow="";
 }
 
 /* =========================================================
