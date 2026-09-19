@@ -1740,57 +1740,40 @@ function mostrarFavoritos(){
 /* =========================================================
    MODAL
 ========================================================= */
-
-function abrirModal(
-  titulo,
-  conteudo
-){
+function abrirModal(titulo,conteudo){
 
   fecharModal();
 
-
   const modal =
-    document.createElement(
-      "div"
-    );
+    document.createElement("div");
 
+  modal.id="amModal";
 
-  modal.id =
-    "amModal";
+  Object.assign(modal.style,{
+    position:"fixed",
+    top:"0",
+    left:"0",
+    right:"0",
+    width:"100%",
+    zIndex:"2147483647",
+    display:"block",
+    margin:"0",
+    padding:"0",
+    pointerEvents:"none"
+  });
 
-
-  Object.assign(
-    modal.style,
-    {
-      position:"fixed",
-      top:"0",
-      left:"0",
-      right:"0",
-      bottom:"0",
-      width:"100vw",
-      height:"100vh",
-      zIndex:"2147483647",
-      display:"flex",
-      alignItems:"center",
-      justifyContent:"center",
-      padding:"15px",
-      margin:"0"
-    }
-  );
-
-
-  modal.innerHTML = `
+  modal.innerHTML=`
 
     <div
       id="amBack"
       style="
         position:fixed;
         inset:0;
-        background:rgba(0,0,0,.65);
+        background:rgba(0,0,0,.35);
         z-index:1;
+        pointer-events:auto;
       "
     ></div>
-
 
     <div
       class="am-box"
@@ -1798,17 +1781,33 @@ function abrirModal(
         position:relative;
         z-index:2;
         width:min(430px,100%);
-        max-height:85vh;
+        max-height:60vh;
         overflow-y:auto;
-        background:#fff;
-        color:#151515;
-        border-radius:16px;
-        box-shadow:0 15px 50px rgba(0,0,0,.4);
-        margin:auto;
+        background:var(--card,#fff);
+        color:var(--txt,#151515);
+        border:1px solid var(--border,#e2e7ea);
+        border-top:0;
+        border-radius:0 0 14px 14px;
+        box-shadow:0 10px 30px rgba(0,0,0,.25);
+        margin:0 auto;
+        padding:0;
+        pointer-events:auto;
+        animation:amDescer .22s ease-out;
       "
     >
 
-      <div class="am-head">
+      <div
+        class="am-head"
+        style="
+          display:flex;
+          align-items:center;
+          justify-content:space-between;
+          padding:9px 12px;
+          border-bottom:1px solid var(--border,#e2e7ea);
+          font-size:14px;
+          font-weight:800;
+        "
+      >
 
         <strong>
           ${esc(titulo)}
@@ -1817,55 +1816,51 @@ function abrirModal(
         <button
           id="amClose"
           type="button"
+          style="
+            border:0;
+            background:var(--bg,#f5f7f8);
+            color:var(--txt,#151515);
+            border-radius:7px;
+            padding:5px 8px;
+            font-size:13px;
+            cursor:pointer;
+          "
         >
           ✕
         </button>
 
       </div>
 
-
-      <div id="amBody">
-
+      <div
+        id="amBody"
+        style="
+          padding:10px 12px;
+          font-size:13px;
+          line-height:1.4;
+        "
+      >
         ${conteudo}
-
       </div>
 
     </div>
-
   `;
 
+  document.body.appendChild(modal);
 
-  document.body.appendChild(
-    modal
-  );
-
-
-  document.body.style.overflow =
-    "hidden";
-
+  document.body.style.overflow="hidden";
 
   const fechar =
-    document.getElementById(
-      "amClose"
-    );
+    document.getElementById("amClose");
 
   const fundo =
-    document.getElementById(
-      "amBack"
-    );
-
+    document.getElementById("amBack");
 
   if(fechar){
-
-    fechar.onclick =
-      fecharModal;
+    fechar.onclick=fecharModal;
   }
 
-
   if(fundo){
-
-    fundo.onclick =
-      fecharModal;
+    fundo.onclick=fecharModal;
   }
 }
 
@@ -1873,21 +1868,14 @@ function abrirModal(
 function fecharModal(){
 
   const modal =
-    document.getElementById(
-      "amModal"
-    );
-
+    document.getElementById("amModal");
 
   if(modal){
-
     modal.remove();
   }
 
-
-  document.body.style.overflow =
-    "";
+  document.body.style.overflow="";
 }
-
 
 /* =========================================================
    NOTIFICAÇÕES
