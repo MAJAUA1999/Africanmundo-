@@ -970,14 +970,45 @@ footer p{
 <style>
 .modal-overlay{
   position:fixed;
-  inset:0;
+  top:0;
+  left:0;
+  right:0;
   z-index:5000;
   display:none;
-  align-items:center;
   justify-content:center;
-  padding:15px;
-  background:#0008;
+  align-items:flex-start;
+  padding:8px 10px;
+  background:#00000055;
 }
+
+.modal-overlay.active{
+  display:flex;
+}
+
+.modal-box{
+  width:min(520px,100%);
+  max-height:75vh;
+  overflow:auto;
+  margin-top:62px;
+  background:var(--card);
+  color:var(--txt);
+  border:1px solid var(--border);
+  border-radius:0 0 16px 16px;
+  box-shadow:0 12px 35px #0005;
+  animation:esteiraTopo .22s ease-out;
+}
+
+@keyframes esteiraTopo{
+  from{
+    opacity:0;
+    transform:translateY(-25px);
+  }
+
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+ }
 
 .modal-overlay.active{
   display:flex;
