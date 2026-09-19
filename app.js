@@ -2885,12 +2885,9 @@ function iniciarBotoes(){
 /* =========================================================
    📢 ANÚNCIOS ATIVOS
 ========================================================= */
-async function carregarAnunciosAtivos(){
 
-   console.log(
-  "📢 FUNÇÃO DE ANÚNCIOS FOI CHAMADA"
-);
-   
+      async function carregarAnunciosAtivos(){
+
   const secao =
     document.getElementById(
       "anunciosAtivosSection"
@@ -2906,11 +2903,9 @@ async function carregarAnunciosAtivos(){
   }
 
   if(!db){
-
     if(!iniciarSupabase()){
       return;
     }
-
   }
 
   try{
@@ -2919,34 +2914,28 @@ async function carregarAnunciosAtivos(){
       await db
         .from("anuncios")
         .select(
-  "id,empresa,video,imagem,texto,link"
-)
-       .eq(
-  "ativo",
-  true
-)
-       
+          "id,empresa,video,imagem,texto,link,ativo"
+        )
+        .eq(
+          "ativo",
+          true
+        )
         .order(
           "id",
           {
             ascending:false
           }
         );
-     
-     console.log(
-  "📢 DADOS DOS ANÚNCIOS:",
-  resultado.data
-);
 
-console.log(
-  "📢 ERRO DOS ANÚNCIOS:",
-  resultado.error
-);
+    console.log(
+      "📢 ANÚNCIOS:",
+      resultado.data
+    );
 
     if(resultado.error){
 
       console.error(
-        "❌ Erro nos anúncios:",
+        "❌ ERRO ANÚNCIOS:",
         resultado.error
       );
 
@@ -2980,6 +2969,14 @@ console.log(
       .forEach(
         function(anuncio){
 
+          const card =
+            document.createElement(
+              "div"
+            );
+
+          card.className =
+            "anuncio-card";
+
           const empresa =
             esc(
               anuncio.empresa ||
@@ -3001,16 +2998,8 @@ console.log(
             "";
 
           const link =
-  anuncio.link ||
-  "#";
-
-          const card =
-            document.createElement(
-              "div"
-            );
-
-          card.className =
-            "anuncio-card";
+            anuncio.link ||
+            "#";
 
           let media = "";
 
@@ -3023,8 +3012,14 @@ console.log(
                 muted
                 loop
                 playsinline
-                preload="metadata"
-                poster="${esc(imagem)}"
+                preload="auto"
+                ${
+                  imagem
+                  ?
+                  `poster="${esc(imagem)}"`
+                  :
+                  ""
+                }
               ></video>
             `;
 
@@ -3035,7 +3030,6 @@ console.log(
                 src="${esc(imagem)}"
                 alt="${empresa}"
                 loading="lazy"
-                onerror="this.style.display='none'"
               >
             `;
 
@@ -3049,7 +3043,7 @@ console.log(
                   display:flex;
                   align-items:center;
                   justify-content:center;
-                  font-size:22px;
+                  font-size:24px;
                 "
               >
                 📢
@@ -3081,7 +3075,6 @@ console.log(
             }
 
             ${
-              link &&
               link !== "#"
               ?
               `
@@ -3112,16 +3105,13 @@ console.log(
 
     console.log(
       "📢 Anúncios exibidos:",
-      Math.min(
-        anuncios.length,
-        4
-      )
+      anuncios.length
     );
 
   }catch(e){
 
     console.error(
-      "❌ Falha ao carregar anúncios:",
+      "❌ Falha nos anúncios:",
       e
     );
 
@@ -3129,7 +3119,7 @@ console.log(
       "none";
   }
 
-}
+        }
 
 /* =========================================================
    INICIALIZAÇÃO
