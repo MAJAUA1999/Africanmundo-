@@ -2887,6 +2887,10 @@ function iniciarBotoes(){
 ========================================================= */
 async function carregarAnunciosAtivos(){
 
+   console.log(
+  "📢 FUNÇÃO DE ANÚNCIOS FOI CHAMADA"
+);
+   
   const secao =
     document.getElementById(
       "anunciosAtivosSection"
