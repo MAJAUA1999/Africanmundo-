@@ -1772,9 +1772,9 @@ function abrirModal(titulo,conteudo){
       id="amDropdown"
       style="
         position:fixed;
-        width:280px;
+        width:240px;
         max-width:calc(100vw - 20px);
-        max-height:55vh;
+        max-height:35vh;
         overflow-y:auto;
         background:var(--card,#fff);
         color:var(--txt,#172026);
@@ -1791,7 +1791,7 @@ function abrirModal(titulo,conteudo){
           display:flex;
           align-items:center;
           justify-content:space-between;
-          padding:10px 12px;
+          padding:8px 10px;
           border-bottom:1px solid var(--border,#e2e7ea);
           font-size:13px;
           font-weight:800;
@@ -1820,7 +1820,7 @@ function abrirModal(titulo,conteudo){
 
       <div
         style="
-          padding:10px 12px;
+          padding:8px 10px;
           font-size:12px;
           line-height:1.4;
         "
