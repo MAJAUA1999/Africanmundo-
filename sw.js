@@ -1,6 +1,6 @@
-const CACHE_NAME = "africanmundo-v4";
+const CACHE_NAME="africanmundo-v5";
 
-const ARQUIVOS = [
+const ARQUIVOS=[
   "./index.html",
   "./manifest.json",
   "./estilo.css",
@@ -9,19 +9,15 @@ const ARQUIVOS = [
 
 
 /* =========================================
-   INSTALAÇÃO
+   INSTALAR
 ========================================= */
 
-self.addEventListener("install", event => {
+self.addEventListener("install",event=>{
 
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-      .then(cache => {
-
-        return cache.addAll(ARQUIVOS);
-
-      })
+      .then(cache=>cache.addAll(ARQUIVOS))
 
   );
 
@@ -31,31 +27,24 @@ self.addEventListener("install", event => {
 
 
 /* =========================================
-   ATIVAÇÃO
+   ACTIVAR E LIMPAR CACHE ANTIGO
 ========================================= */
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate",event=>{
 
   event.waitUntil(
 
-    caches.keys()
-      .then(chaves => {
+    caches.keys().then(chaves=>{
 
-        return Promise.all(
+      return Promise.all(
 
-          chaves
-            .filter(
-              chave =>
-                chave !== CACHE_NAME
-            )
-            .map(
-              chave =>
-                caches.delete(chave)
-            )
+        chaves
+          .filter(chave=>chave!==CACHE_NAME)
+          .map(chave=>caches.delete(chave))
 
-        );
+      );
 
-      })
+    })
 
   );
 
@@ -65,131 +54,69 @@ self.addEventListener("activate", event => {
 
 
 /* =========================================
-   RECEBER NOTIFICAÇÃO
+   NOTIFICAÇÕES
 ========================================= */
 
-self.addEventListener(
-  "push",
-  event => {
+self.addEventListener("push",event=>{
 
-    let dados = {};
+  let dados={};
 
-    try {
+  try{
 
-      dados =
-        event.data
-          ? event.data.json()
-          : {};
+    dados=event.data
+      ? event.data.json()
+      : {};
 
-    } catch (erro) {
-
-      console.error(
-        "Erro ao ler notificação:",
-        erro
-      );
-
-    }
+  }catch(e){}
 
 
-    const titulo =
-      dados.title ||
-      "AfricanMundo";
+  event.waitUntil(
 
+    self.registration.showNotification(
+      dados.title||"AfricanMundo",
+      {
+        body:
+          dados.body||
+          "Nova notícia publicada no AfricanMundo.",
 
-    const opcoes = {
+        icon:
+          dados.icon||
+          "./icon-192.png",
 
-      body:
-        dados.body ||
-        "Nova notícia publicada no AfricanMundo.",
+        badge:
+          dados.badge||
+          "./icon-192.png",
 
-      icon:
-        dados.icon ||
-        "./icon-192.png",
+        data:{
+          url:
+            dados.url||
+            "./index.html"
+        }
+      }
+    )
 
-      badge:
-        dados.badge ||
-        "./icon-192.png",
+  );
 
-      data: {
-
-        url:
-          dados.url ||
-          "./index.html"
-
-      },
-
-      vibrate: [
-        200,
-        100,
-        200
-      ]
-
-    };
-
-
-    event.waitUntil(
-
-      self.registration.showNotification(
-        titulo,
-        opcoes
-      )
-
-    );
-
-  }
-);
+});
 
 
 /* =========================================
-   CLIQUE NA NOTIFICAÇÃO
+   CLIQUE NOTIFICAÇÃO
 ========================================= */
 
 self.addEventListener(
   "notificationclick",
-  event => {
+  event=>{
 
     event.notification.close();
 
-    const url =
-      event.notification.data &&
-      event.notification.data.url
-        ? event.notification.data.url
-        : "./index.html";
-
+    const url=
+      event.notification.data?.url||
+      "./index.html";
 
     event.waitUntil(
 
-      clients.matchAll({
-        type: "window",
-        includeUncontrolled: true
-      })
-      .then(janelas => {
-
-        for (const janela of janelas) {
-
-          if (
-            janela.url.includes(
-              "index.html"
-            ) &&
-            "focus" in janela
-          ) {
-
-            return janela.focus();
-
-          }
-
-        }
-
-
-        if (clients.openWindow) {
-
-          return clients.openWindow(
-            url
-          );
-
-        }
-
-      })
+      clients.openWindow(url)
 
     );
 
@@ -198,97 +125,71 @@ self.addEventListener(
 
 
 /* =========================================
-   FETCH / CACHE
+   FETCH
 ========================================= */
 
 self.addEventListener(
   "fetch",
-  event => {
+  event=>{
 
-    const url =
-      new URL(
-        event.request.url
+    const req=event.request;
+    const url=new URL(req.url);
+
+    if(req.method!=="GET")return;
+
+    /*
+      Supabase e pedidos externos
+      ficam fora do cache.
+    */
+
+    if(
+      url.hostname.includes("supabase.co")||
+      url.pathname.includes("admin")||
+      url.pathname.includes("painel")
+    ){
+
+      return;
+
+    }
+
+    /*
+      APP.JS, HTML e CSS:
+      Internet primeiro.
+      Cache somente como reserva.
+    */
+
+    if(
+      url.origin===location.origin
+    ){
+
+      event.respondWith(
+
+        fetch(req)
+          .then(res=>{
+
+            if(res.ok){
+
+              const copia=res.clone();
+
+              caches.open(CACHE_NAME)
+                .then(cache=>{
+                  cache.put(req,copia);
+                });
+
+            }
+
+            return res;
+
+          })
+          .catch(()=>{
+
+            return caches.match(req);
+
+          })
+
       );
 
-
-    /*
-      Não interferir no painel,
-      Supabase ou outros pedidos
-      externos.
-    */
-
-    if (
-      url.pathname.includes("admin") ||
-      url.pathname.includes("painel") ||
-      url.hostname.includes("supabase.co")
-    ) {
-
-      return;
-
     }
-
-
-    /*
-      Só tratar pedidos GET.
-    */
-
-    if (
-      event.request.method !== "GET"
-    ) {
-
-      return;
-
-    }
-
-
-    /*
-      Para ficheiros do próprio site:
-      tenta Internet primeiro.
-      Se funcionar, actualiza o cache.
-      Se não houver Internet,
-      usa o cache.
-    */
-
-    event.respondWith(
-
-      fetch(event.request)
-        .then(resposta => {
-
-          if (
-            resposta &&
-            resposta.status === 200 &&
-            url.origin === location.origin
-          ) {
-
-            const copia =
-              resposta.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-
-                cache.put(
-                  event.request,
-                  copia
-                );
-
-              });
-
-          }
-
-
-          return resposta;
-
-        })
-
-        .catch(() => {
-
-          return caches.match(
-            event.request
-          );
-
-        })
-
-    );
 
   }
 );
