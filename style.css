@@ -926,3 +926,114 @@ section:empty{
 /* ===============================
    FIM AFRICANMUNDO CSS
 ================================ */
+
+/* =========================================
+   AFRICANMUNDO — LAYOUT COMPACTO
+========================================= */
+
+.section{
+  margin:14px 4%;
+}
+
+.section-title{
+  margin-bottom:7px;
+}
+
+.section-title h2{
+  font-size:17px;
+}
+
+.grid{
+  gap:7px;
+}
+
+.news-card{
+  height:105px;
+  min-height:105px;
+  max-height:105px;
+  margin-bottom:7px;
+  border-radius:9px;
+}
+
+.news-card .card-image{
+  width:105px;
+  min-width:105px;
+  max-width:105px;
+  height:105px;
+}
+
+.news-card .card-content{
+  padding:7px 9px;
+}
+
+.news-card h3{
+  font-size:14px;
+  line-height:1.2;
+  margin:4px 0;
+}
+
+.news-card p{
+  font-size:11px;
+  line-height:1.3;
+  margin:0 0 3px;
+}
+
+.news-card .news-category{
+  font-size:9px;
+  margin-bottom:2px;
+}
+
+.news-card .news-meta{
+  font-size:8px;
+}
+
+#anunciosAtivosSection{
+  margin:12px 4%;
+}
+
+@media(max-width:600px){
+
+  .section{
+    margin:11px 3%;
+  }
+
+  .section-title h2{
+    font-size:16px;
+  }
+
+  .news-card{
+    height:88px;
+    min-height:88px;
+    max-height:88px;
+  }
+
+  .news-card .card-image{
+    width:88px;
+    min-width:88px;
+    max-width:88px;
+    height:88px;
+  }
+
+  .news-card .card-content{
+    padding:6px 8px;
+  }
+
+  .news-card h3{
+    font-size:13px;
+    margin:3px 0;
+  }
+
+  .news-card p{
+    font-size:10px;
+    -webkit-line-clamp:2;
+  }
+
+  .news-card .news-category{
+    font-size:8px;
+  }
+
+  .news-card .news-meta{
+    font-size:7px;
+  }
+
+}
