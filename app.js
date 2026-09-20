@@ -83,7 +83,143 @@ function normalizarTexto(valor){
 
 
 /* =========================================================
-   DADOS DAS NOTÍCIAS
+   UTILITÁRIOS DE NOTÍCIAS
+========================================================= */
+
+function obterTitulo(n){
+
+  const valor =
+    n?.titulo ??
+    n?.title ??
+    n?.nome ??
+    "";
+
+  const titulo =
+    String(valor).trim();
+
+  return titulo || "Sem título";
+}
+
+
+/* =========================================================
+   OBTER TEXTO
+========================================================= */
+
+function obterTexto(n){
+
+  const valor =
+    n?.texto ??
+    n?.description ??
+    n?.descricao ??
+    n?.resumo ??
+    "";
+
+  return String(valor).trim();
+}
+
+
+/* =========================================================
+   OBTER IMAGEM
+========================================================= */
+
+function obterImagem(n){
+
+  const valor =
+    n?.imagem ??
+    n?.image ??
+    n?.urlToImage ??
+    "";
+
+  const imagem =
+    String(valor).trim();
+
+  if(!imagem){
+    return "";
+  }
+
+  const invalidas=[
+    "none",
+    "null",
+    "undefined",
+    "false",
+    "0"
+  ];
+
+  if(
+    invalidas.includes(
+      imagem.toLowerCase()
+    )
+  ){
+    return "";
+  }
+
+  return imagem;
+}
+
+
+/* =========================================================
+   FORMATAR DATA
+========================================================= */
+
+function formatarData(valor){
+
+  if(!valor){
+    return "";
+  }
+
+  const data =
+    new Date(valor);
+
+  if(
+    Number.isNaN(
+      data.getTime()
+    )
+  ){
+    return "";
+  }
+
+  return data.toLocaleDateString(
+    "pt-MZ",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric"
+    }
+  );
+}
+
+/* =========================================================
+   ABRIR NOTÍCIA
+========================================================= */
+
+function abrirNoticia(n){
+
+  if(!n?.id){
+
+    return;
+  }
+
+  abrirNoticiaPorId(
+    n.id
+  );
+}
+
+
+function abrirNoticiaPorId(id){
+
+  if(id == null){
+
+    return;
+  }
+
+  window.location.href =
+    "noticia.html?id=" +
+    encodeURIComponent(id);
+}
+
+
+/* =========================================================
+   CRIAR CARD
 ========================================================= */
 function criarCard(n){
 
@@ -190,170 +326,6 @@ function criarCard(n){
         e.preventDefault();
         abrirNoticia(n);
 
-      }
-    }
-  );
-
-  return article;
-}
-
-
-/* =========================================================
-   ABRIR NOTÍCIA
-========================================================= */
-
-function abrirNoticia(n){
-
-  if(!n?.id){
-
-    return;
-  }
-
-  abrirNoticiaPorId(
-    n.id
-  );
-}
-
-
-function abrirNoticiaPorId(id){
-
-  if(id == null){
-
-    return;
-  }
-
-  window.location.href =
-    "noticia.html?id=" +
-    encodeURIComponent(id);
-}
-
-
-/* =========================================================
-   CRIAR CARD
-========================================================= */
-function criarCard(n){
-
-  const article=document.createElement("article");
-
-  article.className="compact-card";
-  article.style.cursor="pointer";
-
-  article.setAttribute("role","button");
-  article.setAttribute("tabindex","0");
-
-  const titulo=esc(obterTitulo(n));
-
-  const categoria=esc(
-    String(n?.categoria||"Notícias")
-    .replace(/\b(Mundo)(\s+\1)+\b/gi,"$1")
-  );
-
-  const imagem=obterImagem(n);
-
-  const cat=normalizarTexto(
-    n?.subcategoria||
-    n?.categoria||
-    ""
-  );
-
-  let fallback=
-    "logo-africanmundo.png";
-
-  if(cat.includes("futebol")||cat.includes("football")){
-    fallback=
-      "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900";
-  }
-  else if(cat.includes("desporto")||cat.includes("esporte")){
-    fallback=
-      "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900";
-  }
-  else if(cat.includes("economia")||cat.includes("negocio")){
-    fallback=
-      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900";
-  }
-  else if(cat.includes("cultura")||cat.includes("entretenimento")){
-    fallback=
-      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
-  }
-  else if(cat.includes("saude")){
-    fallback=
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900";
-  }
-  else if(cat.includes("politica")){
-    fallback=
-      "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900";
-  }
-  else if(
-    cat.includes("mocambique")||
-    cat.includes("africa")
-  ){
-    fallback=
-      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
-  }
-
-  const src=imagem||fallback;
-
-  const media=`
-    <img
-      src="${esc(src)}"
-      alt="${titulo}"
-      loading="lazy"
-      decoding="async"
-      onerror="
-        if(this.dataset.fallback!=='1'){
-          this.dataset.fallback='1';
-          this.src='${esc(fallback)}';
-        }else{
-          this.src='logo-africanmundo.png';
-        }
-      "
-    >
-  `;
-
-  article.innerHTML=`
-
-    <div class="compact-media">
-      ${media}
-    </div>
-
-    <div class="compact-body">
-
-      <div class="compact-cat">
-        ${categoria}
-      </div>
-
-      <div class="compact-title">
-        ${titulo}
-      </div>
-
-    </div>
-
-  `;
-
-  article.addEventListener(
-    "click",
-    function(e){
-
-      if(e.target.closest("a,button")){
-        return;
-      }
-
-      abrirNoticia(n);
-    }
-  );
-
-  article.addEventListener(
-    "keydown",
-    function(e){
-
-      if(
-        e.key==="Enter"||
-        e.key===" "
-      ){
-
-        e.preventDefault();
-
-        abrirNoticia(n);
       }
     }
   );
