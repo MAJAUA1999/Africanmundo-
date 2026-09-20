@@ -201,133 +201,84 @@ function abrirNoticiaPorId(id){
 /* =========================================================
    CRIAR CARD
 ========================================================= */
-
 function criarCard(n){
 
-  const article =
-    document.createElement("article");
+  const article=document.createElement("article");
 
-  article.className =
-    "compact-card";
-
+  article.className="compact-card";
   article.style.cursor="pointer";
 
   article.setAttribute("role","button");
   article.setAttribute("tabindex","0");
 
-  const titulo =
-    esc(obterTitulo(n));
+  const titulo=esc(obterTitulo(n));
 
-  const categoria =
-  esc(
-    String(
-      n?.categoria || "Notícias"
-    )
-    .replace(
-      /\b(Mundo)(\s+\1)+\b/gi,
-      "$1"
-    )
+  const categoria=esc(
+    String(n?.categoria||"Notícias")
+    .replace(/\b(Mundo)(\s+\1)+\b/gi,"$1")
   );
-   
-  const imagem =
-    obterImagem(n);
 
-  let media="";
+  const imagem=obterImagem(n);
 
-  if(imagem){
+  const cat=normalizarTexto(
+    n?.subcategoria||
+    n?.categoria||
+    ""
+  );
 
-    media=`
-      <img
-        src="${esc(imagem)}"
-        alt="${titulo}"
-        loading="lazy"
-        decoding="async"
-        onerror="this.style.display='none'"
-      >
-    `;
+  let fallback=
+    "logo-africanmundo.png";
 
-  }else{
-
-    const cat =
-      normalizarTexto(
-        n?.subcategoria ||
-        n?.categoria ||
-        ""
-      );
-
-    let fallback =
-      "https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=900";
-
-    if(
-      cat.includes("futebol") ||
-      cat.includes("football")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900";
-
-    }else if(
-      cat.includes("desporto") ||
-      cat.includes("esporte")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900";
-
-    }else if(
-      cat.includes("economia") ||
-      cat.includes("negocio")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900";
-
-    }else if(
-      cat.includes("cultura") ||
-      cat.includes("entretenimento")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
-
-    }else if(
-      cat.includes("saude")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900";
-
-    }else if(
-      cat.includes("politica")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900";
-
-    }else if(
-      cat.includes("mocambique")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
-
-    }else if(
-      cat.includes("africa")
-    ){
-
-      fallback =
-        "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
-    }
-
-    media=`
-      <img
-        src="${fallback}"
-        alt="${categoria}"
-        loading="lazy"
-        decoding="async"
-      >
-    `;
+  if(cat.includes("futebol")||cat.includes("football")){
+    fallback=
+      "https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900";
   }
+  else if(cat.includes("desporto")||cat.includes("esporte")){
+    fallback=
+      "https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900";
+  }
+  else if(cat.includes("economia")||cat.includes("negocio")){
+    fallback=
+      "https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900";
+  }
+  else if(cat.includes("cultura")||cat.includes("entretenimento")){
+    fallback=
+      "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
+  }
+  else if(cat.includes("saude")){
+    fallback=
+      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900";
+  }
+  else if(cat.includes("politica")){
+    fallback=
+      "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900";
+  }
+  else if(
+    cat.includes("mocambique")||
+    cat.includes("africa")
+  ){
+    fallback=
+      "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
+  }
+
+  const src=imagem||fallback;
+
+  const media=`
+    <img
+      src="${esc(src)}"
+      alt="${titulo}"
+      loading="lazy"
+      decoding="async"
+      onerror="
+        if(this.dataset.fallback!=='1'){
+          this.dataset.fallback='1';
+          this.src='${esc(fallback)}';
+        }else{
+          this.src='logo-africanmundo.png';
+        }
+      "
+    >
+  `;
 
   article.innerHTML=`
 
@@ -366,7 +317,7 @@ function criarCard(n){
     function(e){
 
       if(
-        e.key==="Enter" ||
+        e.key==="Enter"||
         e.key===" "
       ){
 
