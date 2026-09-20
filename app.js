@@ -265,9 +265,18 @@ function criarCard(noticia){
   const id=noticia.id;
   const titulo=obterTitulo(noticia);
   const texto=obterTexto(noticia);
-  const imagem=obterImagem(noticia);
+
+  let imagem=obterImagem(noticia);
+
   const categoria=noticia.categoria||"Mundo";
-  const pais=noticia.pais||"Internacional";
+  let pais=noticia.pais||"Internacional";
+
+  /* Corrigir país visualmente quando o banco ainda está Internacional */
+  if(pais==="Internacional"){
+    if(categoria==="Moçambique")pais="Moçambique";
+    else if(categoria==="África")pais="África";
+  }
+
   const data=formatarData(noticia.data);
 
   const emojis={
@@ -292,10 +301,15 @@ function criarCard(noticia){
     "Alemanha":"🇩🇪",
     "Estados Unidos":"🇺🇸",
     "Taiwan":"🇹🇼",
-    "Internacional":"🌍"
+    "Internacional":"🌍",
+    "África":"🌍"
   };
 
   const emoji=emojis[pais]||"🌍";
+
+  if(!imagem){
+    imagem=imagemFallback(noticia);
+  }
 
   const artigo=document.createElement("article");
 
@@ -304,14 +318,16 @@ function criarCard(noticia){
   artigo.innerHTML=`
 
     <div class="card-image">
-
       <img
-        src="${esc(imagem||imagemFallback(noticia))}"
-        alt="${esc(titulo)}"
+        src="${esc(imagem)}"
+        alt=""
         loading="lazy"
-        onerror="this.onerror=null;this.src='${esc(imagemFallback(noticia))}'"
+        onerror="
+          this.onerror=null;
+          this.style.display='none';
+          this.parentElement.classList.add('sem-imagem');
+        "
       >
-
     </div>
 
     <div class="card-content">
@@ -334,7 +350,6 @@ function criarCard(noticia){
       </div>
 
     </div>
-
   `;
 
   artigo.addEventListener(
@@ -343,7 +358,7 @@ function criarCard(noticia){
   );
 
   return artigo;
-}
+              }
 
 /* =========================================================
    RENDERIZAR LISTA
