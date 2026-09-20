@@ -872,3 +872,129 @@ body.dark #amModal #amClose{
     font-size:8px!important;
   }
 }
+
+/* =========================================================
+   📱 AFRICANMUNDO — AJUSTE DE TELA MOBILE
+========================================================= */
+
+html,
+body{
+  width:100%;
+  max-width:100%;
+  margin:0;
+  padding:0;
+  overflow-x:hidden;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+img{
+  max-width:100%;
+}
+
+main,
+section,
+.container,
+.content,
+.news-grid,
+.news-list{
+  width:100%;
+  max-width:100%;
+}
+
+/* CARTÕES DE NOTÍCIAS */
+
+.news-card{
+  width:100%!important;
+  max-width:100%!important;
+  min-width:0!important;
+  height:105px!important;
+  min-height:105px!important;
+  max-height:105px!important;
+  display:flex!important;
+  overflow:hidden!important;
+}
+
+.news-card .card-image{
+  width:110px!important;
+  min-width:110px!important;
+  max-width:110px!important;
+  height:105px!important;
+  min-height:105px!important;
+  max-height:105px!important;
+  flex-shrink:0!important;
+}
+
+.news-card .card-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+
+.news-card .card-content{
+  min-width:0!important;
+  flex:1!important;
+  padding:8px!important;
+  overflow:hidden!important;
+}
+
+.news-card h3,
+.news-card .card-title{
+  font-size:14px!important;
+  line-height:1.25!important;
+  margin:0 0 5px!important;
+}
+
+.news-card p{
+  font-size:12px!important;
+  line-height:1.3!important;
+  margin:0!important;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+  body{
+    font-size:14px;
+  }
+
+  .container,
+  main,
+  section{
+    padding-left:8px!important;
+    padding-right:8px!important;
+  }
+
+  .news-card{
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+  }
+
+  .news-card .card-image{
+    width:92px!important;
+    min-width:92px!important;
+    max-width:92px!important;
+    height:92px!important;
+    min-height:92px!important;
+    max-height:92px!important;
+  }
+
+  .news-card .card-content{
+    padding:6px!important;
+  }
+
+  .news-card h3,
+  .news-card .card-title{
+    font-size:13px!important;
+    line-height:1.2!important;
+  }
+
+  .news-card p{
+    font-size:11px!important;
+    line-height:1.25!important;
+  }
+  }
