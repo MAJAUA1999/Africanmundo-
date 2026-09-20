@@ -260,79 +260,82 @@ function imagemFallback(n){
 /* =========================================================
    CRIAR CARD
 ========================================================= */
+function criarCard(noticia){
 
-function criarCard(n){
+  const id = noticia.id;
 
-  const article =
-    document.createElement("article");
+  const titulo = obterTitulo(noticia);
 
-  article.className =
-    "compact-card";
+  const texto = obterTexto(noticia);
 
-  article.style.cursor =
-    "pointer";
-
-  article.setAttribute(
-    "role",
-    "button"
-  );
-
-  article.setAttribute(
-    "tabindex",
-    "0"
-  );
-
-
-  const titulo =
-    esc(
-      obterTitulo(n)
-    );
-
+  const imagem = obterImagem(noticia);
 
   const categoria =
-    esc(
-      String(
-        n?.categoria ||
-        "Notícias"
-      )
-      .replace(
-        /\b(Mundo)(\s+\1)+\b/gi,
-        "$1"
-      )
-    );
+    noticia.categoria || "Mundo";
 
+  const pais =
+    noticia.pais || "Internacional";
 
-  const imagem =
-    obterImagem(n);
+  const subcategoria =
+    noticia.subcategoria || "";
 
+  const data =
+    formatarData(noticia.data);
 
-  const fallback =
-    imagemFallback(n);
+  const img =
+    imagem ||
+    imagemFallback(noticia);
 
+  const paisEmoji = {
+    "Moçambique":"🇲🇿",
+    "Portugal":"🇵🇹",
+    "Brasil":"🇧🇷",
+    "Angola":"🇦🇴",
+    "Nigéria":"🇳🇬",
+    "África do Sul":"🇿🇦",
+    "Malawi":"🇲🇼",
+    "Zimbabwe":"🇿🇼",
+    "Zâmbia":"🇿🇲",
+    "Tanzânia":"🇹🇿",
+    "Quénia":"🇰🇪",
+    "Egito":"🇪🇬",
+    "Marrocos":"🇲🇦",
+    "Etiópia":"🇪🇹",
+    "China":"🇨🇳",
+    "Rússia":"🇷🇺",
+    "Espanha":"🇪🇸",
+    "França":"🇫🇷",
+    "Alemanha":"🇩🇪",
+    "Estados Unidos":"🇺🇸",
+    "Taiwan":"🇹🇼",
+    "Internacional":"🌍"
+  };
 
-  const src =
-    imagem || fallback;
+  const emoji =
+    paisEmoji[pais] || "🌍";
 
+  const rotulo =
+    `${emoji} ${pais} · ${categoria}`;
 
-  article.innerHTML = `
+  const artigo =
+    document.createElement("article");
 
-    <div class="compact-media">
+  artigo.className =
+    "news-card compact-media";
+
+  artigo.dataset.id = id;
+
+  artigo.innerHTML = `
+
+    <div class="compact-image">
 
       <img
-        src="${esc(src)}"
-        alt="${titulo}"
+        src="${esc(img)}"
+        alt="${esc(titulo)}"
         loading="lazy"
-        decoding="async"
         onerror="
-          if(this.dataset.fallback!=='1'){
-            this.dataset.fallback='1';
-            this.src='${esc(fallback)}';
-          }else if(this.dataset.logo!=='1'){
-            this.dataset.logo='1';
-            this.src='logo-africanmundo.png';
-          }else{
-            this.style.display='none';
-          }
+          this.onerror=null;
+          this.src='${esc(imagemFallback(noticia))}';
         "
       >
 
@@ -340,57 +343,59 @@ function criarCard(n){
 
     <div class="compact-body">
 
-      <div class="compact-cat">
-        ${categoria}
+      <div class="news-category">
+        ${esc(rotulo)}
       </div>
 
-      <div class="compact-title">
-        ${titulo}
+      <h3>
+        ${esc(titulo)}
+      </h3>
+
+      ${
+        subcategoria
+        ? `
+          <div class="news-subcategory">
+            ${esc(subcategoria)}
+          </div>
+        `
+        : ""
+      }
+
+      ${
+        texto
+        ? `
+          <p>
+            ${esc(texto).slice(0,140)}
+          </p>
+        `
+        : ""
+      }
+
+      <div class="news-meta">
+
+        <span>
+          📅 ${esc(data)}
+        </span>
+
+        <span>
+          👁️ ${Number(noticia.visualizacoes || 0)}
+        </span>
+
       </div>
 
     </div>
 
   `;
 
-
-  article.addEventListener(
+  artigo.addEventListener(
     "click",
-    function(e){
-
-      if(
-        e.target.closest(
-          "a,button"
-        )
-      ){
-        return;
-      }
-
-      abrirNoticia(n);
+    function(){
+      abrirNoticiaPorId(id);
     }
   );
 
-
-  article.addEventListener(
-    "keydown",
-    function(e){
-
-      if(
-        e.key === "Enter" ||
-        e.key === " "
-      ){
-
-        e.preventDefault();
-
-        abrirNoticia(n);
-      }
-
-    }
-  );
-
-
-  return article;
+  return artigo;
 }
-
 
 /* =========================================================
    RENDERIZAR LISTA
