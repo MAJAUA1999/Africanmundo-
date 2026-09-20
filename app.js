@@ -81,23 +81,23 @@ function normalizarTexto(valor){
     .replace(/[\u0300-\u036f]/g,"");
 }
 
-
 /* =========================================================
    UTILITÁRIOS DE NOTÍCIAS
 ========================================================= */
 
 function obterTitulo(n){
 
-  const valor =
-    n?.titulo ??
-    n?.title ??
-    n?.nome ??
-    "";
+  var valor =
+    n && (
+      n.titulo ||
+      n.title ||
+      n.nome
+    );
 
-  const titulo =
-    String(valor).trim();
+  valor =
+    String(valor || "").trim();
 
-  return titulo || "Sem título";
+  return valor || "Sem título";
 }
 
 
@@ -107,14 +107,15 @@ function obterTitulo(n){
 
 function obterTexto(n){
 
-  const valor =
-    n?.texto ??
-    n?.description ??
-    n?.descricao ??
-    n?.resumo ??
-    "";
+  var valor =
+    n && (
+      n.texto ||
+      n.description ||
+      n.descricao ||
+      n.resumo
+    );
 
-  return String(valor).trim();
+  return String(valor || "").trim();
 }
 
 
@@ -124,31 +125,29 @@ function obterTexto(n){
 
 function obterImagem(n){
 
-  const valor =
-    n?.imagem ??
-    n?.image ??
-    n?.urlToImage ??
-    "";
+  var valor =
+    n && (
+      n.imagem ||
+      n.image ||
+      n.urlToImage
+    );
 
-  const imagem =
-    String(valor).trim();
+  var imagem =
+    String(valor || "").trim();
 
   if(!imagem){
     return "";
   }
 
-  const invalidas=[
-    "none",
-    "null",
-    "undefined",
-    "false",
-    "0"
-  ];
+  var invalida =
+    imagem.toLowerCase();
 
   if(
-    invalidas.includes(
-      imagem.toLowerCase()
-    )
+    invalida === "none" ||
+    invalida === "null" ||
+    invalida === "undefined" ||
+    invalida === "false" ||
+    invalida === "0"
   ){
     return "";
   }
@@ -167,11 +166,11 @@ function formatarData(valor){
     return "";
   }
 
-  const data =
+  var data =
     new Date(valor);
 
   if(
-    Number.isNaN(
+    isNaN(
       data.getTime()
     )
   ){
