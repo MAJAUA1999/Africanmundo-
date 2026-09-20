@@ -262,31 +262,15 @@ function imagemFallback(n){
 ========================================================= */
 function criarCard(noticia){
 
-  const id = noticia.id;
+  const id=noticia.id;
+  const titulo=obterTitulo(noticia);
+  const texto=obterTexto(noticia);
+  const imagem=obterImagem(noticia);
+  const categoria=noticia.categoria||"Mundo";
+  const pais=noticia.pais||"Internacional";
+  const data=formatarData(noticia.data);
 
-  const titulo = obterTitulo(noticia);
-
-  const texto = obterTexto(noticia);
-
-  const imagem = obterImagem(noticia);
-
-  const categoria =
-    noticia.categoria || "Mundo";
-
-  const pais =
-    noticia.pais || "Internacional";
-
-  const subcategoria =
-    noticia.subcategoria || "";
-
-  const data =
-    formatarData(noticia.data);
-
-  const img =
-    imagem ||
-    imagemFallback(noticia);
-
-  const paisEmoji = {
+  const emojis={
     "Moçambique":"🇲🇿",
     "Portugal":"🇵🇹",
     "Brasil":"🇧🇷",
@@ -311,76 +295,42 @@ function criarCard(noticia){
     "Internacional":"🌍"
   };
 
-  const emoji =
-    paisEmoji[pais] || "🌍";
+  const emoji=emojis[pais]||"🌍";
 
-  const rotulo =
-    `${emoji} ${pais} · ${categoria}`;
+  const artigo=document.createElement("article");
 
-  const artigo =
-    document.createElement("article");
+  artigo.className="news-card";
 
-  artigo.className =
-    "news-card compact-media";
+  artigo.innerHTML=`
 
-  artigo.dataset.id = id;
-
-  artigo.innerHTML = `
-
-    <div class="compact-image">
+    <div class="card-image">
 
       <img
-        src="${esc(img)}"
+        src="${esc(imagem||imagemFallback(noticia))}"
         alt="${esc(titulo)}"
         loading="lazy"
-        onerror="
-          this.onerror=null;
-          this.src='${esc(imagemFallback(noticia))}';
-        "
+        onerror="this.onerror=null;this.src='${esc(imagemFallback(noticia))}'"
       >
 
     </div>
 
-    <div class="compact-body">
+    <div class="card-content">
 
       <div class="news-category">
-        ${esc(rotulo)}
+        ${esc(emoji+" "+pais+" · "+categoria)}
       </div>
 
-      <h3>
-        ${esc(titulo)}
-      </h3>
-
-      ${
-        subcategoria
-        ? `
-          <div class="news-subcategory">
-            ${esc(subcategoria)}
-          </div>
-        `
-        : ""
-      }
+      <h3>${esc(titulo)}</h3>
 
       ${
         texto
-        ? `
-          <p>
-            ${esc(texto).slice(0,140)}
-          </p>
-        `
+        ? `<p>${esc(texto).slice(0,120)}</p>`
         : ""
       }
 
       <div class="news-meta">
-
-        <span>
-          📅 ${esc(data)}
-        </span>
-
-        <span>
-          👁️ ${Number(noticia.visualizacoes || 0)}
-        </span>
-
+        📅 ${esc(data)}
+        &nbsp; 👁️ ${Number(noticia.visualizacoes||0)}
       </div>
 
     </div>
@@ -389,9 +339,7 @@ function criarCard(noticia){
 
   artigo.addEventListener(
     "click",
-    function(){
-      abrirNoticiaPorId(id);
-    }
+    ()=>abrirNoticiaPorId(id)
   );
 
   return artigo;
