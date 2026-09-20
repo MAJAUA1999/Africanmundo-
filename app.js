@@ -299,7 +299,7 @@ function criarCard(noticia){
 
   const artigo=document.createElement("article");
 
-  artigo.className="news-card compacto";
+  artigo.className="news-card";
 
   artigo.innerHTML=`
 
