@@ -1037,3 +1037,57 @@ section:empty{
   }
 
 }
+
+ /* =========================================
+    AJUSTE DE TAMANHO — MOBILE
+ ========================================= */
+
+#destaque{
+  width:auto !important;
+  max-width:900px;
+  margin:10px auto !important;
+}
+
+#destaque .featured-card{
+  width:100% !important;
+  min-height:200px !important;
+  max-height:220px !important;
+}
+
+#destaque .featured-card > img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+
+@media(max-width:600px){
+
+  #destaque{
+    width:94% !important;
+    margin:8px auto !important;
+  }
+
+  #destaque .featured-card{
+    min-height:185px !important;
+    max-height:200px !important;
+    border-radius:10px !important;
+  }
+
+  #destaque .featured-card > div:last-child{
+    min-height:185px !important;
+    padding:10px !important;
+  }
+
+  #destaque .featured-card h2{
+    font-size:16px !important;
+    line-height:1.15 !important;
+    margin:4px 0 !important;
+  }
+
+  #destaque .featured-card p{
+    font-size:10px !important;
+    line-height:1.25 !important;
+    margin-bottom:3px !important;
+  }
+
+}
