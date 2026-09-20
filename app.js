@@ -78,131 +78,147 @@ function data(n){
 /* =========================================================
 🖼️ IMAGEM AUTOMÁTICA
 ========================================================= */
-
 function imagemGerada(n){
 
   const assunto =
-    titulo(n).slice(0,55);
+    titulo(n).slice(0,70);
 
   const categoria =
-    n?.categoria || "Notícias";
+    n?.categoria ||
+    n?.subcategoria ||
+    "Notícias";
 
-  const textoSvg = `
-    <svg xmlns="http://www.w3.org/2000/svg"
-         width="1200"
-         height="700"
-         viewBox="0 0 1200 700">
+  const textoSvg=`
+  <svg xmlns="http://www.w3.org/2000/svg"
+       width="1200"
+       height="700"
+       viewBox="0 0 1200 700">
 
-      <defs>
+    <defs>
 
-        <linearGradient
-          id="g"
-          x1="0"
-          y1="0"
-          x2="1"
-          y2="1">
+      <linearGradient
+        id="g"
+        x1="0"
+        y1="0"
+        x2="1"
+        y2="1">
 
-          <stop
-            offset="0%"
-            stop-color="#168a45"/>
+        <stop
+          offset="0%"
+          stop-color="#168a45"/>
 
-          <stop
-            offset="100%"
-            stop-color="#073b20"/>
+        <stop
+          offset="100%"
+          stop-color="#073b20"/>
 
-        </linearGradient>
+      </linearGradient>
 
-      </defs>
+    </defs>
 
-      <rect
-        width="1200"
-        height="700"
-        fill="url(#g)"/>
+    <rect
+      width="1200"
+      height="700"
+      fill="url(#g)"/>
 
-      <circle
-        cx="1030"
-        cy="110"
-        r="170"
-        fill="rgba(255,255,255,.08)"/>
+    <circle
+      cx="1030"
+      cy="110"
+      r="170"
+      fill="rgba(255,255,255,.08)"/>
 
-      <circle
-        cx="150"
-        cy="600"
-        r="240"
-        fill="rgba(255,255,255,.05)"/>
+    <circle
+      cx="150"
+      cy="600"
+      r="240"
+      fill="rgba(255,255,255,.05)"/>
 
-      <text
-        x="70"
-        y="100"
-        fill="#ffffff"
-        font-family="Arial"
-        font-size="32"
-        font-weight="bold">
-        AFRICANMUNDO
-      </text>
+    <text
+      x="70"
+      y="100"
+      fill="#fff"
+      font-family="Arial"
+      font-size="32"
+      font-weight="bold">
+      AFRICANMUNDO
+    </text>
 
-      <text
-        x="70"
-        y="175"
-        fill="#d8ffe8"
-        font-family="Arial"
-        font-size="25">
-        ${esc(categoria)}
-      </text>
+    <text
+      x="70"
+      y="175"
+      fill="#d8ffe8"
+      font-family="Arial"
+      font-size="25">
+      ${esc(categoria)}
+    </text>
 
-      <foreignObject
-        x="70"
-        y="230"
-        width="1060"
-        height="280">
+    <foreignObject
+      x="70"
+      y="230"
+      width="1060"
+      height="280">
 
-        <div xmlns="http://www.w3.org/1999/xhtml"
-          style="
-            color:white;
-            font-family:Arial,sans-serif;
-            font-size:48px;
-            font-weight:bold;
-            line-height:1.15;
-          ">
+      <div
+        xmlns="http://www.w3.org/1999/xhtml"
+        style="
+          color:white;
+          font-family:Arial,sans-serif;
+          font-size:48px;
+          font-weight:bold;
+          line-height:1.15;
+        ">
 
-          ${esc(assunto)}
+        ${esc(assunto)}
 
-        </div>
+      </div>
 
-      </foreignObject>
+    </foreignObject>
 
-      <text
-        x="70"
-        y="635"
-        fill="#ffffff"
-        font-family="Arial"
-        font-size="24">
-        A informação que liga África ao mundo
-      </text>
+    <text
+      x="70"
+      y="635"
+      fill="#fff"
+      font-family="Arial"
+      font-size="24">
+      A informação que liga África ao mundo
+    </text>
 
-    </svg>
-  `;
+  </svg>`;
 
-  return "data:image/svg+xml;charset=UTF-8," +
-    encodeURIComponent(textoSvg);
+  return(
+    "data:image/svg+xml;charset=UTF-8,"+
+    encodeURIComponent(textoSvg)
+  );
 
 }
 
+
 function imagem(n){
 
-  const img =
-    n?.imagem ||
-    n?.imagem_url ||
-    n?.image ||
-    n?.image_url ||
-    "";
+  const campos=[
 
-  if(
-    img &&
-    /^https?:\/\//i.test(img)
+    n?.imagem,
+    n?.imagem_url,
+    n?.image,
+    n?.image_url,
+    n?.url_imagem,
+    n?.foto
+
+  ];
+
+  for(
+    const img of campos
   ){
 
-    return img;
+    if(
+      img &&
+      /^https?:\/\//i.test(
+        String(img).trim()
+      )
+    ){
+
+      return String(img).trim();
+
+    }
 
   }
 
@@ -251,106 +267,62 @@ function iniciarSupabase(){
 /* =========================================================
 📰 CARD
 ========================================================= */
-
 function card(n){
 
-  const el =
-    document.createElement("article");
+  const el=document.createElement("article");
 
-  el.className = "news-card";
+  el.className="news-card";
 
-  el.style.cssText = `
-    display:flex;
-    width:100%;
-    min-height:135px;
-    overflow:hidden;
-    border-radius:14px;
-    margin-bottom:12px;
-    background:var(--card,#fff);
-    box-shadow:0 2px 10px rgba(0,0,0,.08);
-    cursor:pointer;
-  `;
+  const img=imagem(n);
+  const tit=titulo(n);
+  const txt=texto(n);
+  const cat=n?.pais||n?.categoria||n?.subcategoria||"Notícias";
 
-  const img = imagem(n);
+  el.innerHTML=`
 
-  el.innerHTML = `
+    <div class="card-image">
 
-    <img
-      src="${esc(img)}"
-      alt="${esc(titulo(n))}"
-      style="
-        width:180px;
-        min-width:180px;
-        height:135px;
-        object-fit:cover;
-        display:block;
-      "
-    >
+      <img
+        src="${esc(img)}"
+        alt="${esc(tit)}"
+        loading="lazy"
+      >
 
-    <div style="
-      padding:10px 12px;
-      overflow:hidden;
-      flex:1;
-    ">
+    </div>
 
-      <small style="
-        color:var(--p,#168a45);
-        font-weight:bold;
-      ">
-        🌍 ${esc(
-          n.pais ||
-          n.categoria ||
-          "Notícias"
-        )}
-      </small>
+    <div class="card-content">
 
-      <h3 style="
-        margin:5px 0;
-        font-size:15px;
-        line-height:1.25;
-      ">
-        ${esc(titulo(n))}
-      </h3>
+      <div class="news-category">
+        🌍 ${esc(cat)}
+      </div>
 
-      <p style="
-        margin:0 0 4px;
-        font-size:12px;
-        line-height:1.35;
-        opacity:.75;
-        display:-webkit-box;
-        -webkit-line-clamp:2;
-        -webkit-box-orient:vertical;
-        overflow:hidden;
-      ">
-        ${esc(texto(n))}
-      </p>
+      <h3>${esc(tit)}</h3>
 
-      <small>${esc(data(n))}</small>
+      <p>${esc(txt)}</p>
+
+      <div class="news-meta">
+        ${esc(data(n))}
+      </div>
 
     </div>
 
   `;
 
-  el.onclick = function(){
+  el.onclick=function(){
 
     abrirNoticia(n.id);
 
   };
 
-  const imgEl =
-    el.querySelector("img");
+  const imgEl=el.querySelector("img");
 
   if(imgEl){
 
-    imgEl.onerror = function(){
+    imgEl.onerror=function(){
 
-      if(
-        !this.src.startsWith("data:image/svg")
-      ){
+      this.onerror=null;
 
-        this.src = imagemGerada(n);
-
-      }
+      this.src=imagemGerada(n);
 
     };
 
@@ -473,6 +445,8 @@ function filtrar(tipo){
 /* =========================================================
 🌟 DESTAQUE ALEATÓRIO ENTRE NOTÍCIAS RECENTES
 ========================================================= */
+let destaqueIndice = 0;
+let destaqueTimer = null;
 
 function destacar(){
 
@@ -490,22 +464,49 @@ function destacar(){
     `;
 
     return;
-
   }
 
   const limite =
-    Math.min(
-      noticias.length,
-      10
-    );
+    Math.min(noticias.length,10);
 
-  const indice =
-    Math.floor(
-      Math.random() * limite
-    );
+  destaqueIndice =
+    Math.floor(Math.random()*limite);
+
+  mostrarDestaque();
+
+  clearInterval(destaqueTimer);
+
+  destaqueTimer =
+    setInterval(function(){
+
+      destaqueIndice++;
+
+      if(destaqueIndice >= limite){
+        destaqueIndice=0;
+      }
+
+      mostrarDestaque();
+
+    },10000);
+}
+
+
+function mostrarDestaque(){
+
+  const area =
+    document.getElementById("destaque");
+
+  if(!area || !noticias.length) return;
+
+  const limite =
+    Math.min(noticias.length,10);
+
+  if(destaqueIndice >= limite){
+    destaqueIndice=0;
+  }
 
   const n =
-    noticias[indice];
+    noticias[destaqueIndice];
 
   area.innerHTML = `
 
@@ -513,10 +514,12 @@ function destacar(){
       class="featured-card"
       style="
         cursor:pointer;
+        position:relative;
         overflow:hidden;
+        min-height:300px;
         border-radius:16px;
-        background:var(--card,#fff);
-        box-shadow:0 3px 14px rgba(0,0,0,.10);
+        background:#17391e;
+        box-shadow:0 3px 14px rgba(0,0,0,.15);
       "
     >
 
@@ -524,40 +527,58 @@ function destacar(){
         src="${esc(imagem(n))}"
         alt="${esc(titulo(n))}"
         style="
+          position:absolute;
+          inset:0;
           width:100%;
-          height:240px;
+          height:100%;
           object-fit:cover;
-          display:block;
         "
       >
 
       <div style="
-        padding:14px;
+        position:absolute;
+        inset:0;
+        background:linear-gradient(
+          transparent 20%,
+          rgba(0,0,0,.88)
+        );
+      "></div>
+
+      <div style="
+        position:relative;
+        z-index:2;
+        min-height:300px;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        padding:20px;
+        color:#fff;
       ">
 
         <small style="
-          color:var(--p,#168a45);
+          color:#7ee35b;
           font-weight:bold;
         ">
           🌍 ${esc(
             n.pais ||
             n.categoria ||
-            "Notícias"
+            "DESTAQUE"
           )}
         </small>
 
         <h2 style="
           margin:7px 0;
-          font-size:20px;
-          line-height:1.25;
+          font-size:23px;
+          line-height:1.2;
         ">
           ${esc(titulo(n))}
         </h2>
 
         <p style="
-          margin:0 0 6px;
-          opacity:.75;
+          margin:0 0 7px;
+          font-size:13px;
           line-height:1.4;
+          opacity:.92;
         ">
           ${esc(texto(n)).slice(0,220)}
         </p>
@@ -577,12 +598,11 @@ function destacar(){
 
   if(article){
 
-    article.onclick =
-      function(){
+    article.onclick=function(){
 
-        abrirNoticia(n.id);
+      abrirNoticia(n.id);
 
-      };
+    };
 
   }
 
@@ -591,13 +611,14 @@ function destacar(){
 
   if(img){
 
-    img.onerror =
-      function(){
+    img.onerror=function(){
 
-        this.src =
-          imagemGerada(n);
+      this.onerror=null;
 
-      };
+      this.src =
+        imagemGerada(n);
+
+    };
 
   }
 
