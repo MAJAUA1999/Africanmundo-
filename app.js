@@ -84,81 +84,55 @@ function normalizarTexto(valor){
 /* =========================================================
    UTILITÁRIOS DE NOTÍCIAS
 ========================================================= */
-
 function obterTitulo(n){
 
-  var valor =
-    n && (
-      n.titulo ||
-      n.title ||
-      n.nome
-    );
-
-  valor =
-    String(valor || "").trim();
-
-  return valor || "Sem título";
+  return (
+    n?.titulo ||
+    n?.title ||
+    n?.nome ||
+    "Sem título"
+  );
 }
 
-
-/* =========================================================
-   OBTER TEXTO
-========================================================= */
 
 function obterTexto(n){
 
-  var valor =
-    n && (
-      n.texto ||
-      n.description ||
-      n.descricao ||
-      n.resumo
-    );
-
-  return String(valor || "").trim();
+  return (
+    n?.texto ||
+    n?.description ||
+    n?.descricao ||
+    n?.resumo ||
+    ""
+  );
 }
 
 
-/* =========================================================
-   OBTER IMAGEM
-========================================================= */
-
 function obterImagem(n){
 
-  var valor =
-    n && (
-      n.imagem ||
-      n.image ||
-      n.urlToImage
-    );
-
-  var imagem =
-    String(valor || "").trim();
+  const imagem =
+    n?.imagem ||
+    n?.image ||
+    n?.urlToImage ||
+    "";
 
   if(!imagem){
     return "";
   }
 
-  var invalida =
-    imagem.toLowerCase();
+  const valor =
+    String(imagem).trim();
 
   if(
-    invalida === "none" ||
-    invalida === "null" ||
-    invalida === "undefined" ||
-    invalida === "false" ||
-    invalida === "0"
+    valor === "None" ||
+    valor === "null" ||
+    valor === "undefined"
   ){
     return "";
   }
 
-  return imagem;
+  return valor;
 }
 
-
-/* =========================================================
-   FORMATAR DATA
-========================================================= */
 
 function formatarData(valor){
 
@@ -166,11 +140,11 @@ function formatarData(valor){
     return "";
   }
 
-  var data =
+  const data =
     new Date(valor);
 
   if(
-    isNaN(
+    Number.isNaN(
       data.getTime()
     )
   ){
