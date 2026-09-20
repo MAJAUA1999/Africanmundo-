@@ -85,86 +85,116 @@ function normalizarTexto(valor){
 /* =========================================================
    DADOS DAS NOTÍCIAS
 ========================================================= */
+function criarCard(n){
 
-function obterTitulo(n){
+  const article=document.createElement("article");
 
-  return (
-    n?.titulo ||
-    n?.title ||
-    n?.nome ||
-    "Sem título"
+  article.className="compact-card";
+  article.style.cursor="pointer";
+  article.setAttribute("role","button");
+  article.setAttribute("tabindex","0");
+
+  const titulo=esc(obterTitulo(n));
+
+  const categoria=esc(
+    String(n?.categoria||"Notícias")
+    .replace(/\b(Mundo)(\s+\1)+\b/gi,"$1")
   );
-}
 
+  const imagem=obterImagem(n);
 
-function obterTexto(n){
-
-  return (
-    n?.texto ||
-    n?.description ||
-    n?.descricao ||
-    n?.resumo ||
+  const cat=normalizarTexto(
+    n?.subcategoria||
+    n?.categoria||
     ""
   );
-}
 
+  let fallback="logo-africanmundo.png";
 
-function obterImagem(n){
-
-  const imagem =
-    n?.imagem ||
-    n?.image ||
-    n?.urlToImage ||
-    "";
-
-  if(!imagem){
-
-    return "";
+  if(cat.includes("futebol")){
+    fallback="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=900";
+  }
+  else if(cat.includes("desporto")){
+    fallback="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?w=900";
+  }
+  else if(cat.includes("economia")||cat.includes("negocio")){
+    fallback="https://images.unsplash.com/photo-1556761175-b413da4baf72?w=900";
+  }
+  else if(cat.includes("cultura")||cat.includes("entretenimento")){
+    fallback="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=900";
+  }
+  else if(cat.includes("saude")){
+    fallback="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=900";
+  }
+  else if(cat.includes("politica")){
+    fallback="https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=900";
+  }
+  else if(cat.includes("mocambique")||cat.includes("africa")){
+    fallback="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900";
   }
 
-  const valor =
-    String(imagem).trim();
+  const src=imagem||fallback;
 
-  if(
-    valor === "None" ||
-    valor === "null" ||
-    valor === "undefined"
-  ){
+  article.innerHTML=`
 
-    return "";
-  }
+    <div class="compact-media">
 
-  return valor;
-}
+      <img
+        src="${esc(src)}"
+        alt="${titulo}"
+        loading="lazy"
+        decoding="async"
+        onerror="
+          if(this.dataset.erro!=='1'){
+            this.dataset.erro='1';
+            this.src='${esc(fallback)}';
+          }else{
+            this.src='logo-africanmundo.png';
+          }
+        "
+      >
 
+    </div>
 
-function formatarData(valor){
+    <div class="compact-body">
 
-  if(!valor){
+      <div class="compact-cat">
+        ${categoria}
+      </div>
 
-    return "";
-  }
+      <div class="compact-title">
+        ${titulo}
+      </div>
 
-  const data =
-    new Date(valor);
+    </div>
+  `;
 
-  if(
-    Number.isNaN(
-      data.getTime()
-    )
-  ){
+  article.addEventListener(
+    "click",
+    function(e){
 
-    return "";
-  }
+      if(e.target.closest("a,button")){
+        return;
+      }
 
-  return data.toLocaleDateString(
-    "pt-MZ",
-    {
-      day:"2-digit",
-      month:"2-digit",
-      year:"numeric"
+      abrirNoticia(n);
     }
   );
+
+  article.addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Enter"||e.key===" "){
+
+        e.preventDefault();
+        abrirNoticia(n);
+
+      }
+    }
+  );
+
+  return article;
 }
 
 
