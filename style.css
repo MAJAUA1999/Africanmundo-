@@ -677,3 +677,96 @@ body.dark #amModal #amClose{
   }
 
 }
+
+ /* ===== CORREÇÃO FINAL DAS IMAGENS ===== */
+
+.news-card{
+  width:100% !important;
+  max-width:100% !important;
+  height:135px !important;
+  min-height:135px !important;
+  max-height:135px !important;
+  display:flex !important;
+  overflow:hidden !important;
+}
+
+.news-card .card-image{
+  width:180px !important;
+  min-width:180px !important;
+  max-width:180px !important;
+  height:135px !important;
+  min-height:135px !important;
+  max-height:135px !important;
+  flex:none !important;
+  overflow:hidden !important;
+}
+
+.news-card .card-image img{
+  width:100% !important;
+  height:100% !important;
+  min-width:100% !important;
+  max-width:100% !important;
+  min-height:100% !important;
+  max-height:100% !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+
+@media(max-width:600px){
+
+  .news-card{
+    width:100% !important;
+    height:100px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+  }
+
+  .news-card .card-image{
+    width:105px !important;
+    min-width:105px !important;
+    max-width:105px !important;
+    height:100px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+  }
+
+  .news-card .card-image img{
+    width:105px !important;
+    height:100px !important;
+    min-width:105px !important;
+    max-width:105px !important;
+    min-height:100px !important;
+    max-height:100px !important;
+    object-fit:cover !important;
+  }
+
+  .news-card .card-content{
+    width:auto !important;
+    min-width:0 !important;
+    max-width:calc(100% - 105px) !important;
+    padding:8px !important;
+    overflow:hidden !important;
+  }
+
+  .news-card h3{
+    font-size:14px !important;
+    line-height:1.25 !important;
+    margin:2px 0 4px !important;
+  }
+
+  .news-card p{
+    font-size:10px !important;
+    line-height:1.25 !important;
+    margin:2px 0 !important;
+  }
+
+  .news-card .news-category{
+    font-size:9px !important;
+    margin:0 0 3px !important;
+  }
+
+  .news-card .news-meta{
+    font-size:8px !important;
+  }
+
+}
