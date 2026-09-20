@@ -1091,3 +1091,95 @@ section:empty{
   }
 
 }
+
+/* =========================================
+   CATEGORIAS — 4 NOTÍCIAS COMPACTAS
+========================================= */
+
+.section .grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+
+.section .news-card{
+  display:block;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  border-radius:8px;
+}
+
+.section .news-card .card-image{
+  width:100% !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:85px !important;
+}
+
+.section .news-card .card-content{
+  padding:7px !important;
+}
+
+.section .news-card h3{
+  font-size:12px !important;
+  line-height:1.2 !important;
+  margin:3px 0 !important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.section .news-card p{
+  font-size:9px !important;
+  line-height:1.25 !important;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+
+.section .news-card .news-category{
+  font-size:8px !important;
+}
+
+.section .news-card .news-meta{
+  font-size:7px !important;
+}
+
+
+/* =========================================
+   NO MÁXIMO 4 NOTÍCIAS POR CATEGORIA
+========================================= */
+
+.section .grid .news-card:nth-child(n+5){
+  display:none !important;
+}
+
+
+@media(max-width:600px){
+
+  .section .grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:6px;
+  }
+
+  .section .news-card .card-image{
+    height:70px !important;
+  }
+
+  .section .news-card .card-content{
+    padding:6px !important;
+  }
+
+  .section .news-card h3{
+    font-size:11px !important;
+  }
+
+  .section .news-card p{
+    font-size:8px !important;
+  }
+
+}
