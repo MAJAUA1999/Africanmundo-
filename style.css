@@ -1183,3 +1183,119 @@ section:empty{
   }
 
 }
+
+/* =========================================
+   PÁGINA INICIAL — CATEGORIAS COMPACTAS
+========================================= */
+
+.section .grid{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:7px !important;
+}
+
+.section .news-card{
+  display:block !important;
+  width:100% !important;
+  height:auto !important;
+  min-height:0 !important;
+  max-height:none !important;
+  margin:0 !important;
+  padding:0 !important;
+  border-radius:8px !important;
+  overflow:hidden !important;
+}
+
+.section .news-card .card-image{
+  width:100% !important;
+  min-width:0 !important;
+  height:68px !important;
+  overflow:hidden !important;
+}
+
+.section .news-card .card-image img{
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+}
+
+.section .news-card .card-content{
+  padding:6px !important;
+}
+
+.section .news-card .news-category{
+  font-size:8px !important;
+  margin-bottom:2px !important;
+}
+
+.section .news-card h3{
+  font-size:11px !important;
+  line-height:1.18 !important;
+  margin:2px 0 !important;
+
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+.section .news-card p{
+  font-size:8px !important;
+  line-height:1.2 !important;
+  margin:2px 0 !important;
+
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+.section .news-card .news-meta{
+  font-size:7px !important;
+}
+
+.section .grid .news-card:nth-child(n+5){
+  display:none !important;
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media(max-width:600px){
+
+  .section{
+    margin:9px 3% !important;
+  }
+
+  .section-title{
+    margin-bottom:6px !important;
+  }
+
+  .section-title h2{
+    font-size:15px !important;
+  }
+
+  .section .grid{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    gap:6px !important;
+  }
+
+  .section .news-card .card-image{
+    height:62px !important;
+  }
+
+  .section .news-card .card-content{
+    padding:5px !important;
+  }
+
+  .section .news-card h3{
+    font-size:10px !important;
+  }
+
+  .section .news-card p{
+    font-size:8px !important;
+  }
+
+}
