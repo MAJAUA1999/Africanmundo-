@@ -1,1936 +1,985 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
-
 <head>
 
 <meta charset="UTF-8">
 
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,
+viewport-fit=cover">
 
-<meta
-name="theme-color"
+<meta name="theme-color"
 content="#168a45">
 
-<meta
-name="description"
+<meta name="description"
 content="AfricanMundo — Notícias de África. A informação que liga África ao mundo.">
 
-<meta
-name="google-site-verification"
-content="">
+<title>AfricanMundo — Notícias de África</title>
 
-<title>
-AfricanMundo — Notícias de África
-</title>
-
-<link
-rel="manifest"
-href="manifest.json">
+<link rel="manifest" href="manifest.json">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-
 <style>
 
-/* =======================================================
-   AFRICANMUNDO PREMIUM
-   ======================================================= */
-
 :root{
-
-  --p:#168a45;
-  --p2:#0f6d36;
-
-  --bg:#f4f7f6;
-  --card:#ffffff;
-
-  --txt:#172026;
-  --muted:#68747c;
-
-  --border:#e1e7e4;
-
-  --radius:16px;
-
-  --shadow:
-    0 5px 22px rgba(0,0,0,.07);
-
-  --max:1180px;
-
+--p:#168a45;
+--p2:#0f6d36;
+--bg:#f4f7f6;
+--card:#fff;
+--txt:#172026;
+--muted:#68747c;
+--border:#e1e7e4;
+--radius:16px;
+--shadow:0 5px 22px rgba(0,0,0,.07);
+--max:1180px;
 }
-
 
 *{
-  box-sizing:border-box;
+box-sizing:border-box;
 }
-
 
 html{
-  scroll-behavior:smooth;
+scroll-behavior:smooth;
 }
-
 
 body{
-
-  margin:0;
-
-  width:100%;
-  min-width:0;
-
-  overflow-x:hidden;
-
-  background:var(--bg);
-
-  color:var(--txt);
-
-  font-family:
-    Arial,
-    Helvetica,
-    sans-serif;
-
+margin:0;
+width:100%;
+min-width:0;
+overflow-x:hidden;
+background:var(--bg);
+color:var(--txt);
+font-family:Arial,Helvetica,sans-serif;
 }
-
 
 body.dark{
-
-  --bg:#101514;
-  --card:#18201e;
-
-  --txt:#f2f6f4;
-  --muted:#aeb9b5;
-
-  --border:#2c3834;
-
+--bg:#101514;
+--card:#18201e;
+--txt:#f2f6f4;
+--muted:#aeb9b5;
+--border:#2c3834;
 }
-
 
 body.blue{
-  --p:#1769d2;
-  --p2:#0d4fa8;
+--p:#1769d2;
+--p2:#0d4fa8;
 }
-
 
 body.red{
-  --p:#d62f3d;
-  --p2:#a91f2b;
+--p:#d62f3d;
+--p2:#a91f2b;
 }
-
 
 body.purple{
-  --p:#7444c8;
-  --p2:#552c9b;
+--p:#7444c8;
+--p2:#552c9b;
 }
-
 
 body.orange{
-  --p:#e87518;
-  --p2:#b94f0b;
+--p:#e87518;
+--p2:#b94f0b;
 }
-
 
 a{
-
-  color:inherit;
-
-  text-decoration:none;
-
+color:inherit;
+text-decoration:none;
 }
-
 
 button,
 input{
-
-  font:inherit;
-
+font:inherit;
 }
-
 
 button{
-
-  cursor:pointer;
-
+cursor:pointer;
 }
-
 
 .container{
-
-  width:
-    min(
-      var(--max),
-      calc(100% - 28px)
-    );
-
-  margin:auto;
-
+width:min(
+var(--max),
+calc(100% - 28px)
+);
+margin:auto;
 }
 
-
-/* =======================================================
-   CABEÇALHO
-======================================================= */
+/* CABEÇALHO */
 
 header{
-
-  position:sticky;
-
-  top:0;
-
-  z-index:1000;
-
-  background:var(--card);
-
-  border-bottom:
-    1px solid var(--border);
-
-  box-shadow:
-    0 2px 12px rgba(0,0,0,.05);
-
+position:sticky;
+top:0;
+z-index:1500;
+background:var(--card);
+border-bottom:1px solid var(--border);
 }
-
 
 .header-main{
-
-  min-height:68px;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:14px;
-
+min-height:68px;
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:12px;
+max-width:var(--max);
+margin:auto;
+padding:9px 14px;
 }
-
 
 .brand{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:9px;
-
-  min-width:0;
-
+display:flex;
+align-items:center;
+gap:10px;
+min-width:0;
 }
-
 
 .logo{
-
-  width:42px;
-  height:42px;
-
-  border-radius:12px;
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  background:var(--p);
-
-  color:#fff;
-
-  font-size:22px;
-
-  flex:none;
-
+width:43px;
+height:43px;
+border-radius:13px;
+display:grid;
+place-items:center;
+background:var(--p);
+color:#fff;
+font-size:23px;
+flex:none;
 }
-
 
 .brand-text{
-
-  min-width:0;
-
+min-width:0;
 }
 
-
-.brand-text strong{
-
-  display:block;
-
-  font-size:20px;
-
-  font-weight:800;
-
-  white-space:nowrap;
-
+.brand-name{
+font-size:21px;
+font-weight:900;
+color:var(--p);
+white-space:nowrap;
 }
 
-
-.brand-text span{
-
-  display:block;
-
-  margin-top:2px;
-
-  font-size:11px;
-
-  color:var(--muted);
-
-  white-space:nowrap;
-
+.brand-tag{
+font-size:10px;
+color:var(--muted);
+margin-top:2px;
+white-space:nowrap;
 }
-
 
 .header-actions{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:6px;
-
-  flex:none;
-
+display:flex;
+align-items:center;
+gap:6px;
+flex:none;
 }
-
 
 .header-actions button{
-
-  width:39px;
-  height:39px;
-
-  border:1px solid var(--border);
-
-  border-radius:12px;
-
-  background:var(--card);
-
-  color:var(--txt);
-
-  display:flex;
-
-  align-items:center;
-  justify-content:center;
-
-  padding:0;
-
-  transition:.2s;
-
+width:39px;
+height:39px;
+border:1px solid var(--border);
+border-radius:12px;
+background:var(--card);
+color:var(--txt);
+display:grid;
+place-items:center;
+font-size:17px;
 }
-
 
 .header-actions button:hover{
-
-  background:var(--p);
-
-  color:#fff;
-
-  border-color:var(--p);
-
-  transform:translateY(-1px);
-
+background:var(--p);
+color:#fff;
 }
 
-
-/* =======================================================
-   MENU
-======================================================= */
+/* MENU */
 
 nav{
-
-  border-top:
-    1px solid var(--border);
-
-  background:var(--card);
-
+background:var(--card);
+border-top:1px solid var(--border);
 }
-
 
 .nav-inner{
-
-  display:flex;
-
-  align-items:center;
-
-  gap:4px;
-
-  overflow-x:auto;
-
-  scrollbar-width:none;
-
+max-width:var(--max);
+margin:auto;
+display:flex;
+gap:5px;
+padding:7px 14px;
+overflow-x:auto;
+scrollbar-width:none;
 }
-
 
 .nav-inner::-webkit-scrollbar{
-
-  display:none;
-
+display:none;
 }
-
 
 .nav-inner a{
-
-  flex:none;
-
-  padding:12px 10px;
-
-  font-size:13px;
-
-  font-weight:700;
-
-  color:var(--muted);
-
-  border-bottom:2px solid transparent;
-
+padding:8px 12px;
+border-radius:9px;
+font-size:12px;
+font-weight:700;
+white-space:nowrap;
 }
 
-
-.nav-inner a:hover,
-.nav-inner a.active{
-
-  color:var(--p);
-
-  border-bottom-color:var(--p);
-
+.nav-inner a:hover{
+background:var(--p);
+color:#fff;
 }
 
-
-/* =======================================================
-   CONTEÚDO
-======================================================= */
+/* PRINCIPAL */
 
 main{
-
-  width:100%;
-
+padding:20px 0 35px;
 }
-
 
 .section{
-
-  margin-top:24px;
-
+margin-top:25px;
 }
-
 
 .section-head{
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:space-between;
-
-  gap:12px;
-
-  margin-bottom:12px;
-
+display:flex;
+align-items:center;
+justify-content:space-between;
+gap:10px;
+margin-bottom:11px;
 }
-
 
 .section-head h2{
-
-  margin:0;
-
-  font-size:20px;
-
-  line-height:1.2;
-
+margin:0;
+font-size:19px;
+font-weight:900;
 }
-
 
 .section-head a{
-
-  flex:none;
-
-  color:var(--p);
-
-  font-size:12px;
-
-  font-weight:800;
-
+color:var(--p);
+font-size:11px;
+font-weight:800;
+white-space:nowrap;
 }
 
-
-/* =======================================================
-   PESQUISA
-======================================================= */
+/* PESQUISA */
 
 .search{
-
-  margin-top:18px;
-
+margin-bottom:15px;
 }
-
 
 .search-box{
-
-  display:flex;
-
-  gap:8px;
-
-  width:100%;
-
+display:flex;
+gap:7px;
 }
-
 
 .search-box input{
-
-  flex:1;
-
-  min-width:0;
-
-  height:46px;
-
-  padding:
-    0 14px;
-
-  border:
-    1px solid var(--border);
-
-  border-radius:13px;
-
-  outline:none;
-
-  background:var(--card);
-
-  color:var(--txt);
-
+width:100%;
+min-width:0;
+height:43px;
+padding:0 14px;
+border:1px solid var(--border);
+border-radius:12px;
+background:var(--card);
+color:var(--txt);
+outline:none;
 }
-
-
-.search-box input:focus{
-
-  border-color:var(--p);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(22,138,69,.10);
-
-}
-
 
 .search-box button{
-
-  height:46px;
-
-  padding:
-    0 18px;
-
-  border:0;
-
-  border-radius:13px;
-
-  background:var(--p);
-
-  color:#fff;
-
-  font-weight:800;
-
+width:45px;
+height:43px;
+border:0;
+border-radius:12px;
+background:var(--p);
+color:#fff;
+font-size:18px;
 }
-
-
-.search-box button:hover{
-
-  background:var(--p2);
-
-}
-
 
 #searchResults{
-
-  margin-top:10px;
-
+margin-top:7px;
 }
 
-
-/* =======================================================
-   REDES SOCIAIS
-======================================================= */
+/* REDES */
 
 .socials{
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:7px;
-
-  margin-top:14px;
-
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+margin:12px 0;
 }
-
 
 .socials button{
-
-  border:
-    1px solid var(--border);
-
-  background:var(--card);
-
-  color:var(--txt);
-
-  border-radius:12px;
-
-  padding:
-    9px 12px;
-
-  font-size:12px;
-
-  font-weight:700;
-
+border:1px solid var(--border);
+background:var(--card);
+color:var(--txt);
+border-radius:10px;
+padding:8px 11px;
+font-size:11px;
+font-weight:700;
 }
-
 
 .socials button:hover{
-
-  color:#fff;
-
-  background:var(--p);
-
-  border-color:var(--p);
-
+background:var(--p);
+color:#fff;
 }
 
-
-/* =======================================================
-   PUBLICIDADE
-======================================================= */
+/* PUBLICIDADE */
 
 .ad{
-
-  margin-top:18px;
-
-  padding:16px;
-
-  display:flex;
-
-  align-items:center;
-
-  gap:12px;
-
-  background:
-    linear-gradient(
-      135deg,
-      var(--p),
-      var(--p2)
-    );
-
-  color:#fff;
-
-  border-radius:var(--radius);
-
-  box-shadow:var(--shadow);
-
+display:block;
+padding:15px;
+margin:15px 0;
+border-radius:15px;
+background:linear-gradient(
+135deg,
+var(--p),
+var(--p2)
+);
+color:#fff;
+text-align:center;
+font-weight:900;
+letter-spacing:.4px;
 }
 
-
-.ad strong{
-
-  font-size:16px;
-
-}
-
-
-.ad span{
-
-  font-size:12px;
-
-  opacity:.9;
-
-}
-
-   /* =======================================================
-   DESTAQUE
-======================================================= */
+/* DESTAQUE */
 
 .featured{
-
-  display:grid;
-
-  grid-template-columns:
-    minmax(0,1.45fr)
-    minmax(280px,.9fr);
-
-  min-width:0;
-
-  overflow:hidden;
-
-  background:var(--card);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:var(--radius);
-
-  box-shadow:var(--shadow);
-
+display:grid;
+grid-template-columns:
+minmax(0,1.45fr)
+minmax(280px,.9fr);
+min-width:0;
+overflow:hidden;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:var(--radius);
+box-shadow:var(--shadow);
 }
-
 
 .featured img{
-
-  width:100%;
-
-  height:100%;
-
-  min-height:330px;
-
-  display:block;
-
-  object-fit:cover;
-
+width:100%;
+height:100%;
+min-height:330px;
+display:block;
+object-fit:cover;
 }
-
 
 .featured-content{
-
-  min-width:0;
-
-  padding:24px;
-
-  display:flex;
-
-  flex-direction:column;
-
-  justify-content:center;
-
+min-width:0;
+padding:24px;
+display:flex;
+flex-direction:column;
+justify-content:center;
 }
-
 
 .featured-title{
-
-  margin:5px 0;
-
-  font-size:
-    clamp(22px,3vw,34px);
-
-  line-height:1.15;
-
-  color:var(--txt);
-
-  text-shadow:none;
-
+margin:5px 0;
+font-size:clamp(22px,3vw,34px);
+line-height:1.15;
+color:var(--txt);
+font-weight:900;
+text-shadow:none;
 }
-
 
 .featured-category{
-
-  color:var(--p);
-
-  font-size:12px;
-
-  font-weight:800;
-
-  margin-bottom:8px;
-
+color:var(--p);
+font-size:12px;
+font-weight:800;
+margin-bottom:8px;
 }
-
 
 .featured-text{
-
-  color:var(--muted);
-
-  font-size:14px;
-
-  line-height:1.55;
-
-  margin-top:10px;
-
+color:var(--muted);
+font-size:14px;
+line-height:1.55;
+margin-top:10px;
 }
-
 
 .featured-date{
-
-  margin-top:15px;
-
-  color:var(--muted);
-
-  font-size:11px;
-
+margin-top:15px;
+color:var(--muted);
+font-size:11px;
 }
-
-
-/* =======================================================
-   GRELHA DE NOTÍCIAS
-======================================================= */
-
-.grid{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      4,
-      minmax(0,1fr)
-    );
-
-  gap:13px;
-
-  min-width:0;
-
-}
-
-
-/* =======================================================
-   CARTÃO
-======================================================= */
-
-.card{
-
-  min-width:0;
-
-  overflow:hidden;
-
-  background:var(--card);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:14px;
-
-  box-shadow:
-    0 3px 12px
-    rgba(0,0,0,.05);
-
-  transition:
-    transform .2s,
-    box-shadow .2s;
-
-}
-
-
-.card:hover{
-
-  transform:translateY(-2px);
-
-  box-shadow:
-    0 7px 20px
-    rgba(0,0,0,.09);
-
-}
-
-
-.card img{
-
-  width:100%;
-
-  aspect-ratio:16/9;
-
-  height:auto;
-
-  display:block;
-
-  object-fit:cover;
-
-  background:var(--bg);
-
-}
-
-
-.card-body{
-
-  min-width:0;
-
-  padding:11px;
-
-}
-
-
-.card-category{
-
-  display:block;
-
-  margin-bottom:5px;
-
-  color:var(--p);
-
-  font-size:10px;
-
-  font-weight:800;
-
-}
-
-
-.card-title{
-
-  margin:0;
-
-  font-size:14px;
-
-  line-height:1.32;
-
-  font-weight:800;
-
-  display:-webkit-box;
-
-  -webkit-line-clamp:3;
-
-  -webkit-box-orient:vertical;
-
-  overflow:hidden;
-
-}
-
-
-.card-text{
-
-  margin:7px 0 0;
-
-  color:var(--muted);
-
-  font-size:11px;
-
-  line-height:1.4;
-
-  display:-webkit-box;
-
-  -webkit-line-clamp:2;
-
-  -webkit-box-orient:vertical;
-
-  overflow:hidden;
-
-}
-
-
-.card-date{
-
-  margin-top:8px;
-
-  color:var(--muted);
-
-  font-size:10px;
-
-}
-
-
-/* =======================================================
-   CARREGAMENTO
-======================================================= */
-
-.loading{
-
-  padding:25px 10px;
-
-  text-align:center;
-
-  color:var(--muted);
-
-  font-size:13px;
-
-}
-
-
-/* =======================================================
-   PUBLICIDADE ATIVA
-======================================================= */
-
-#anunciosAtivos{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(
-      3,
-      minmax(0,1fr)
-    );
-
-  gap:13px;
-
-}
-
-
-.anuncio-card{
-
-  min-width:0;
-
-  padding:15px;
-
-  background:var(--card);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:14px;
-
-}
-
-
-/* =======================================================
-   PAINÉIS DO TOPO
-======================================================= */
-
-.top-panel{
-
-  position:fixed;
-
-  top:76px;
-
-  right:14px;
-
-  z-index:2000;
-
-  width:min(
-    330px,
-    calc(100vw - 28px)
-  );
-
-  max-height:
-    calc(100vh - 95px);
-
-  overflow:auto;
-
-  padding:15px;
-
-  background:var(--card);
-
-  color:var(--txt);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:16px;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0,0,0,.18);
-
-}
-
-
-.top-panel h3{
-
-  margin:
-    0 0 10px;
-
-  font-size:16px;
-
-}
-
-
-.top-panel p{
-
-  margin:6px 0;
-
-  color:var(--muted);
-
-  font-size:13px;
-
-}
-
-
-/* =======================================================
-   MODAL
-======================================================= */
-
-.modal{
-
-  position:fixed;
-
-  inset:0;
-
-  z-index:3000;
-
-  display:flex;
-
-  align-items:center;
-
-  justify-content:center;
-
-  padding:18px;
-
-  background:
-    rgba(0,0,0,.62);
-
-}
-
-
-.modal-box{
-
-  position:relative;
-
-  width:min(
-    620px,
-    100%
-  );
-
-  max-height:
-    calc(100vh - 36px);
-
-  overflow:auto;
-
-  padding:22px;
-
-  background:var(--card);
-
-  color:var(--txt);
-
-  border-radius:18px;
-
-  box-shadow:
-    0 15px 45px
-    rgba(0,0,0,.25);
-
-}
-
-
-.modal-close{
-
-  position:absolute;
-
-  top:10px;
-
-  right:10px;
-
-  width:35px;
-
-  height:35px;
-
-  border:0;
-
-  border-radius:50%;
-
-  background:var(--bg);
-
-  color:var(--txt);
-
-  font-size:22px;
-
-}
-
-
-.modal-box h2{
-
-  margin:
-    0 40px 15px 0;
-
-  font-size:22px;
-
-}
-
-
-#modalBody{
-
-  color:var(--muted);
-
-  line-height:1.6;
-
-}
-
-
-/* =======================================================
-   RODAPÉ
-======================================================= */
-
-footer{
-
-  margin-top:40px;
-
-  padding:
-    28px 0;
-
-  background:#101514;
-
-  color:#fff;
-
-}
-
-
-footer strong{
-
-  font-size:15px;
-
-}
-
-
-footer p{
-
-  margin:7px 0 15px;
-
-  color:#b9c2bf;
-
-  font-size:12px;
-
-}
-
-
-.footer-links{
-
-  display:flex;
-
-  flex-wrap:wrap;
-
-  gap:14px;
-
-}
-
-
-.footer-links a{
-
-  font-size:12px;
-
-  color:#dce4e1;
-
-}
-
-
-.footer-links a:hover{
-
-  color:#fff;
-
-}
-
-
-/* =======================================================
-   TABLET
-======================================================= */
-
-@media(max-width:900px){
-
-  .grid{
-
-    grid-template-columns:
-      repeat(
-        3,
-        minmax(0,1fr)
-      );
-
-  }
-
-
-  .featured{
-
-    grid-template-columns:
-      minmax(0,1.2fr)
-      minmax(240px,.8fr);
-
-  }
-
-
-  #anunciosAtivos{
-
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-
-  }
-
-}
-
-
-/* =======================================================
-   CELULAR
-======================================================= */
-
-@media(max-width:680px){
-
-  .container{
-
-    width:
-      calc(100% - 14px);
-
-  }
-
-
-  .header-main{
-
-    min-height:58px;
-
-    gap:7px;
-
-  }
-
-
-  .logo{
-
-    width:37px;
-    height:37px;
-
-    border-radius:10px;
-
-    font-size:19px;
-
-  }
-
-
-  .brand-text strong{
-
-    font-size:17px;
-
-  }
-
-
-  .brand-text span{
-
-    font-size:9px;
-
-  }
-
-
-  .header-actions{
-
-    gap:3px;
-
-  }
-
-
-  .header-actions button{
-
-    width:34px;
-    height:34px;
-
-    border-radius:10px;
-
-    font-size:14px;
-
-  }
-
-
-  .nav-inner a{
-
-    padding:
-      10px 8px;
-
-    font-size:11px;
-
-  }
-
-
-  .section{
-
-    margin-top:18px;
-
-  }
-
-
-  .section-head{
-
-    margin-bottom:9px;
-
-  }
-
-
-  .section-head h2{
-
-    font-size:17px;
-
-  }
-
-
-  .section-head a{
-
-    font-size:10px;
-
-  }
-
-
-  .search{
-
-    margin-top:12px;
-
-  }
-
-
-  .search-box{
-
-    gap:5px;
-
-  }
-
-
-  .search-box input{
-
-    height:42px;
-
-    font-size:13px;
-
-  }
-
-
-  .search-box button{
-
-    height:42px;
-
-    padding:
-      0 11px;
-
-    font-size:11px;
-
-  }
-
-
-  .socials{
-
-    gap:5px;
-
-  }
-
-
-  .socials button{
-
-    padding:
-      7px 9px;
-
-    font-size:10px;
-
-  }
-
-
-  .ad{
-
-    padding:13px;
-
-    border-radius:13px;
-
-    gap:9px;
-
-  }
-
-
-  .ad strong{
-
-    font-size:13px;
-
-  }
-
-
-  .ad span{
-
-    font-size:10px;
-
-  }
-
-
-  .featured{
-
-    display:block;
-
-  }
-
-
-  .featured img{
-
-    width:100%;
-
-    height:auto;
-
-    min-height:0;
-
-    aspect-ratio:16/9;
-
-    object-fit:cover;
-
-  }
-
-
-  .featured-content{
-
-    padding:15px;
-
-  }
-
-
-  .featured-title{
-
-    font-size:22px;
-
-  }
-
-
-  .featured-text{
-
-    font-size:12px;
-
-    line-height:1.45;
-
-  }
-
-
-  .grid{
-
-    grid-template-columns:
-      repeat(
-        2,
-        minmax(0,1fr)
-      );
-
-    gap:8px;
-
-  }
-
-
-  .card{
-
-    border-radius:11px;
-
-  }
-
-
-  .card-body{
-
-    padding:8px;
-
-  }
-
-
-  .card-title{
-
-    font-size:12px;
-
-    line-height:1.28;
-
-  }
-
-
-  .card-text{
-
-    font-size:10px;
-
-    -webkit-line-clamp:2;
-
-  }
-
-
-  .card-category{
-
-    font-size:9px;
-
-  }
-
-
-  .card-date{
-
-    font-size:9px;
-
-  }
-
-
-  #anunciosAtivos{
-
-    grid-template-columns:
-      1fr;
-
-  }
-
-
-  .top-panel{
-
-    top:63px;
-
-    right:7px;
-
-    width:
-      calc(100vw - 14px);
-
-  }
-
-
-  .modal{
-
-    padding:10px;
-
-  }
-
-
-  .modal-box{
-
-    padding:17px;
-
-    border-radius:15px;
-
-  }
-
-}
-
-
-/* =======================================================
-   CELULARES MUITO PEQUENOS
-======================================================= */
-
-@media(max-width:380px){
-
-  .brand-text span{
-
-    display:none;
-
-  }
-
-
-  .header-actions button{
-
-    width:31px;
-    height:31px;
-
-    font-size:13px;
-
-  }
-
-
-  .featured-title{
-
-    font-size:20px;
-
-  }
-
-
-  .card-title{
-
-    font-size:11px;
-
-  }
-
-
-  .card-body{
-
-    padding:7px;
-
-  }
-
-}
-
-
-/* =======================================================
-   SEGURANÇA CONTRA LARGURA EXCESSIVA
-======================================================= */
 
 img{
-
-  max-width:100%;
-
+max-width:100%;
 }
-
 
 section,
 header,
 main,
 footer,
 div{
+max-width:100%;
+}
 
-  max-width:100%;
+   <style>
 
-   }
+/* ===============================
+   CARDS DE NOTÍCIAS
+================================ */
 
-   /* =======================================================
-   PAINÉIS FLUTUANTES
-======================================================= */
+.grid{
+display:grid;
+grid-template-columns:
+repeat(4,minmax(0,1fr));
+gap:13px;
+min-width:0;
+}
+
+.card{
+min-width:0;
+overflow:hidden;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+box-shadow:0 3px 12px rgba(0,0,0,.05);
+transition:.2s;
+cursor:pointer;
+}
+
+.card:hover{
+transform:translateY(-2px);
+box-shadow:0 7px 20px rgba(0,0,0,.09);
+}
+
+.card img{
+width:100%;
+aspect-ratio:16/9;
+height:auto;
+display:block;
+object-fit:cover;
+background:var(--bg);
+}
+
+.card-body{
+min-width:0;
+padding:11px;
+}
+
+.card-category{
+display:block;
+margin-bottom:5px;
+color:var(--p);
+font-size:10px;
+font-weight:800;
+}
+
+.card-title{
+margin:0;
+font-size:14px;
+line-height:1.32;
+font-weight:800;
+
+display:-webkit-box;
+-webkit-line-clamp:2;
+-webkit-box-orient:vertical;
+overflow:hidden;
+}
+
+.card-text{
+display:none !important;
+}
+
+.card-date{
+margin-top:8px;
+color:var(--muted);
+font-size:10px;
+}
+
+/* ===============================
+   PUBLICIDADE ATIVA
+================================ */
+
+#anunciosAtivos{
+display:grid;
+grid-template-columns:
+repeat(3,minmax(0,1fr));
+gap:12px;
+}
+
+#anunciosAtivos img{
+width:100%;
+height:auto;
+border-radius:12px;
+display:block;
+}
+
+/* ===============================
+   PAINÉIS
+================================ */
+
+.top-panel{
+position:fixed;
+top:76px;
+right:14px;
+z-index:2500;
+
+width:min(
+330px,
+calc(100vw - 28px)
+);
+
+max-height:
+calc(100vh - 95px);
+
+overflow:auto;
+
+padding:15px;
+
+background:var(--card);
+color:var(--txt);
+
+border:1px solid var(--border);
+border-radius:16px;
+
+box-shadow:
+0 12px 35px rgba(0,0,0,.18);
+}
 
 #notificationPanel,
 #toolsPanel,
 #userPanel,
 #colorPanel{
 
-  position:fixed !important;
+position:fixed !important;
 
-  top:76px !important;
+top:76px !important;
+right:14px !important;
+left:auto !important;
 
-  right:14px !important;
+z-index:2500 !important;
 
-  left:auto !important;
+width:min(
+330px,
+calc(100vw - 28px)
+) !important;
 
-  z-index:2500 !important;
+max-height:
+calc(100vh - 95px);
 
-  width:min(
-    330px,
-    calc(100vw - 28px)
-  ) !important;
+overflow:auto;
 
-  max-height:
-    calc(100vh - 95px);
+background:var(--card);
+color:var(--txt);
 
-  overflow:auto;
+border:1px solid var(--border);
+border-radius:16px;
 
-  background:var(--card);
-
-  color:var(--txt);
-
-  border:
-    1px solid var(--border);
-
-  border-radius:16px;
-
-  box-shadow:
-    0 12px 35px
-    rgba(0,0,0,.18);
-
+box-shadow:
+0 12px 35px rgba(0,0,0,.18);
 }
 
+/* ===============================
+   BOTÕES DOS PAINÉIS
+================================ */
 
-/* =======================================================
-   ELEMENTOS INTERNOS DOS PAINÉIS
-======================================================= */
-
+.top-panel button,
 #notificationPanel button,
 #toolsPanel button,
 #userPanel button,
 #colorPanel button{
 
-  max-width:100%;
+border:1px solid var(--border);
+background:var(--card);
+color:var(--txt);
+
+border-radius:10px;
+padding:9px 11px;
+
+margin:3px;
+
+font-size:12px;
+}
+
+.top-panel button:hover,
+#notificationPanel button:hover,
+#toolsPanel button:hover,
+#userPanel button:hover,
+#colorPanel button:hover{
+
+background:var(--p);
+color:#fff;
+}
+
+/* ===============================
+   MODAL
+================================ */
+
+.modal{
+position:fixed;
+inset:0;
+z-index:3000;
+
+display:none;
+align-items:center;
+justify-content:center;
+
+padding:15px;
+
+background:rgba(0,0,0,.65);
+}
+
+.modal-box{
+width:min(
+600px,
+100%
+);
+
+max-height:90vh;
+overflow:auto;
+
+background:var(--card);
+color:var(--txt);
+
+border-radius:18px;
+padding:20px;
+
+border:1px solid var(--border);
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.3);
+}
+
+.modal-box h2{
+margin-top:0;
+}
+
+.modal-close{
+float:right;
+border:0;
+background:transparent;
+color:var(--txt);
+font-size:24px;
+}
+
+/* ===============================
+   RODAPÉ
+================================ */
+
+footer{
+margin-top:45px;
+background:#101816;
+color:#dce7e2;
+}
+
+.footer-main{
+max-width:var(--max);
+margin:auto;
+padding:38px 14px 30px;
+
+display:grid;
+grid-template-columns:
+1.5fr
+1fr
+1fr
+1fr;
+
+gap:30px;
+}
+
+.footer-brand{
+min-width:0;
+}
+
+.footer-logo{
+display:flex;
+align-items:center;
+gap:9px;
+font-size:20px;
+font-weight:900;
+color:#fff;
+}
+
+.footer-logo span{
+width:40px;
+height:40px;
+display:grid;
+place-items:center;
+
+border-radius:12px;
+background:var(--p);
+}
+
+.footer-brand p{
+max-width:320px;
+margin:12px 0 0;
+
+color:#aebbb5;
+font-size:12px;
+line-height:1.6;
+}
+
+.footer-title{
+margin:0 0 12px;
+
+color:#fff;
+font-size:12px;
+font-weight:900;
+text-transform:uppercase;
+letter-spacing:.6px;
+}
+
+.footer-links{
+display:flex;
+flex-direction:column;
+gap:8px;
+}
+
+.footer-links a{
+color:#aebbb5;
+font-size:12px;
+}
+
+.footer-links a:hover{
+color:#fff;
+}
+
+.footer-socials{
+display:flex;
+flex-wrap:wrap;
+gap:7px;
+}
+
+.footer-socials button{
+width:34px;
+height:34px;
+
+border:1px solid #35443e;
+border-radius:10px;
+
+background:#17211e;
+color:#fff;
+
+font-size:14px;
+}
+
+.footer-socials button:hover{
+background:var(--p);
+border-color:var(--p);
+}
+
+/* ===============================
+   COPYRIGHT
+================================ */
+
+.footer-bottom{
+border-top:1px solid #29352f;
+
+max-width:var(--max);
+margin:auto;
+
+padding:16px 14px;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+gap:12px;
+}
+
+.footer-bottom p{
+margin:0;
+color:#91a19a;
+font-size:10px;
+}
+
+.footer-bottom-links{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.footer-bottom-links a{
+color:#91a19a;
+font-size:10px;
+}
+
+.footer-bottom-links a:hover{
+color:#fff;
+}
+
+/* ===============================
+   TABLET
+================================ */
+
+@media(max-width:900px){
+
+.grid{
+grid-template-columns:
+repeat(3,minmax(0,1fr));
+}
+
+.featured{
+grid-template-columns:
+minmax(0,1.2fr)
+minmax(230px,.8fr);
+}
+
+#anunciosAtivos{
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+}
+
+.footer-main{
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+}
 
 }
 
-
-#notificationPanel a,
-#toolsPanel a,
-#userPanel a{
-
-  display:block;
-
-  padding:10px 12px;
-
-  border-radius:10px;
-
-  color:var(--txt);
-
-}
-
-
-#notificationPanel a:hover,
-#toolsPanel a:hover,
-#userPanel a:hover{
-
-  background:var(--bg);
-
-  color:var(--p);
-
-}
-
-
-/* =======================================================
-   BOTÕES DE COR
-======================================================= */
-
-.color-options{
-
-  display:grid;
-
-  grid-template-columns:
-    repeat(5,1fr);
-
-  gap:8px;
-
-}
-
-
-.color-options button{
-
-  height:38px;
-
-  border:0;
-
-  border-radius:10px;
-
-}
-
-
-/* =======================================================
-   BOTÃO FECHAR PAINEL
-======================================================= */
-
-.panel-close{
-
-  position:absolute;
-
-  top:8px;
-
-  right:8px;
-
-  width:30px;
-
-  height:30px;
-
-  border:0;
-
-  border-radius:50%;
-
-  background:var(--bg);
-
-  color:var(--txt);
-
-}
-
-
-/* =======================================================
-   MENU INFERIOR MOBILE
-======================================================= */
-
-.bottom-menu{
-
-  display:none;
-
-}
-
+/* ===============================
+   CELULAR
+================================ */
 
 @media(max-width:680px){
 
-  #notificationPanel,
-  #toolsPanel,
-  #userPanel,
-  #colorPanel{
+.container{
+width:calc(100% - 14px);
+}
 
-    top:63px !important;
+.header-main{
+min-height:60px;
+padding:7px;
+}
 
-    right:7px !important;
+.logo{
+width:37px;
+height:37px;
+font-size:20px;
+}
 
-    left:7px !important;
+.brand-name{
+font-size:17px;
+}
 
-    width:auto !important;
+.brand-tag{
+font-size:8px;
+}
 
-    max-height:
-      calc(100vh - 75px);
+.header-actions{
+gap:3px;
+}
 
-    border-radius:15px;
+.header-actions button{
+width:34px;
+height:34px;
+border-radius:9px;
+font-size:14px;
+}
 
-  }
+.nav-inner{
+padding:6px 7px;
+}
 
+.nav-inner a{
+font-size:10px;
+padding:7px 9px;
+}
 
-  .bottom-menu{
+main{
+padding-top:13px;
+}
 
-    position:fixed;
+.featured{
+display:block;
+}
 
-    left:7px;
+.featured img{
+width:100%;
+height:auto;
+aspect-ratio:16/9;
+min-height:0;
+}
 
-    right:7px;
+.featured-content{
+padding:15px;
+}
 
-    bottom:7px;
+.featured-title{
+font-size:22px;
+}
 
-    z-index:1500;
+.featured-text{
+font-size:12px;
+}
 
-    display:flex;
+.grid{
+grid-template-columns:
+repeat(2,minmax(0,1fr));
+gap:8px;
+}
 
-    align-items:center;
+.card-body{
+padding:8px;
+}
 
-    justify-content:space-around;
+.card-title{
+font-size:12px;
+line-height:1.3;
+}
 
-    padding:7px;
+.card-category{
+font-size:9px;
+}
 
-    background:var(--card);
+.card-date{
+font-size:9px;
+}
 
-    border:
-      1px solid var(--border);
+#anunciosAtivos{
+grid-template-columns:1fr;
+}
 
-    border-radius:16px;
+.top-panel,
+#notificationPanel,
+#toolsPanel,
+#userPanel,
+#colorPanel{
 
-    box-shadow:
-      0 8px 28px
-      rgba(0,0,0,.16);
+top:63px !important;
+right:7px !important;
+left:7px !important;
 
-  }
-
-
-  .bottom-menu a,
-  .bottom-menu button{
-
-    min-width:0;
-
-    border:0;
-
-    background:transparent;
-
-    color:var(--muted);
-
-    padding:5px 7px;
-
-    font-size:10px;
-
-  }
-
-
-  .bottom-menu a.active,
-  .bottom-menu button.active{
-
-    color:var(--p);
-
-  }
-
-
-  body{
-
-    padding-bottom:68px;
-
-  }
+width:auto !important;
+max-width:none;
 
 }
 
+.footer-main{
+grid-template-columns:1fr;
+gap:25px;
+padding:30px 14px;
+}
 
-/* =======================================================
-   ESTADOS VAZIOS
-======================================================= */
+.footer-bottom{
+flex-direction:column;
+align-items:flex-start;
+}
 
-.empty,
-.no-news{
-
-  padding:22px 12px;
-
-  text-align:center;
-
-  color:var(--muted);
-
-  font-size:13px;
-
-  background:var(--card);
-
-  border:
-    1px dashed var(--border);
-
-  border-radius:14px;
+body{
+padding-bottom:10px;
+}
 
 }
 
+/* ===============================
+   CELULARES PEQUENOS
+================================ */
 
-/* =======================================================
-   MELHORIAS DE TOQUE
-======================================================= */
+@media(max-width:380px){
 
-button,
-a{
-
-  -webkit-tap-highlight-color:
-    transparent;
-
+.brand-tag{
+display:none;
 }
 
-
-@media(max-width:680px){
-
-  button,
-  a{
-
-    touch-action:manipulation;
-
-  }
-
+.header-actions button{
+width:31px;
+height:31px;
+font-size:13px;
 }
 
-
-/* =======================================================
-   ACESSIBILIDADE
-======================================================= */
-
-:focus-visible{
-
-  outline:
-    2px solid var(--p);
-
-  outline-offset:2px;
-
+.featured-title{
+font-size:20px;
 }
 
-
-/* =======================================================
-   IMPEDIR ESTOURO DE TEXTO
-======================================================= */
-
-h1,
-h2,
-h3,
-h4,
-p,
-span,
-a{
-
-  overflow-wrap:
-    anywhere;
-
+.card-title{
+font-size:11px;
 }
 
+.card-body{
+padding:7px;
+}
 
-/* =======================================================
-   FINAL DO CSS PREMIUM
-======================================================= */
+}
 
 </style>
 
@@ -1938,580 +987,572 @@ a{
 
 <body>
 
-
-<!-- =======================================================
-     CABEÇALHO
-======================================================= -->
-
 <header>
 
-<div class="container">
+  <div class="header-main">
 
-<div class="header-main">
+    <a href="index.html" class="brand">
 
+      <div class="logo">🌍</div>
 
-<div class="brand">
+      <div class="brand-text">
+        <div class="brand-name">
+          AfricanMundo
+        </div>
 
-<div class="logo">
-🌍
-</div>
+        <div class="brand-tag">
+          A informação que liga África ao mundo
+        </div>
+      </div>
 
-<div class="brand-text">
+    </a>
 
-<strong>
-AfricanMundo
-</strong>
+    <div class="header-actions">
 
-<span>
-A informação que liga África ao mundo
-</span>
+      <button id="notificationBtn"
+      aria-label="Notificações">🔔</button>
 
-</div>
+      <button id="toolsBtn"
+      aria-label="Ferramentas">🛠️</button>
 
-</div>
+      <button id="userBtn"
+      aria-label="Utilizador">👤</button>
 
+      <button id="themeBtn"
+      aria-label="Tema">🌙</button>
 
-<div class="header-actions">
+      <button id="colorBtn"
+      aria-label="Cores">🎨</button>
 
-<button
-id="notificationBtn"
-type="button"
-title="Notificações">
-🔔
-</button>
+    </div>
 
-<button
-id="toolsBtn"
-type="button"
-title="Ferramentas">
-🛠️
-</button>
-
-<button
-id="userBtn"
-type="button"
-title="Eu">
-👤
-</button>
-
-<button
-id="themeBtn"
-type="button"
-title="Tema">
-🌙
-</button>
-
-<button
-id="colorBtn"
-type="button"
-title="Cores">
-🎨
-</button>
-
-</div>
-
-</div>
-
-</div>
+  </div>
 
 
-<!-- =======================================================
-     MENU PRINCIPAL
-======================================================= -->
+  <nav>
 
-<nav>
+    <div class="nav-inner">
 
-<div class="container">
+      <a href="index.html">
+        Início
+      </a>
 
-<div class="nav-inner">
+      <a href="categoria.html?categoria=noticias">
+        Notícias
+      </a>
 
-<a href="index.html">
-🏠 INÍCIO
-</a>
+      <a href="futebol.html">
+        ⚽ Futebol
+      </a>
 
-<a href="categoria.html?categoria=noticias">
-📰 NOTÍCIAS
-</a>
+      <a href="mocambique.html">
+        🇲🇿 Moçambique
+      </a>
 
-<a href="categoria.html?categoria=futebol">
-⚽ FUTEBOL
-</a>
+      <a href="categoria.html?categoria=africa">
+        🌍 África
+      </a>
 
-<a href="categoria.html?categoria=mocambique">
-🇲🇿 MOÇAMBIQUE
-</a>
+      <a href="categoria.html?categoria=negocios">
+        💼 Negócios
+      </a>
 
-<a href="categoria.html?categoria=africa">
-🌍 ÁFRICA
-</a>
+      <a href="categoria.html?categoria=entretenimento">
+        🎭 Entretenimento
+      </a>
 
-<a href="categoria.html?categoria=negocios">
-💼 NEGÓCIOS
-</a>
+      <a href="categoria.html?categoria=desporto">
+        🏆 Desporto
+      </a>
 
-<a href="categoria.html?categoria=entretenimento">
-🎬 ENTRETENIMENTO
-</a>
+    </div>
 
-<a href="categoria.html?categoria=desporto">
-🏆 DESPORTO
-</a>
-
-</div>
-
-</div>
-
-</nav>
+  </nav>
 
 </header>
 
-
-<!-- =======================================================
-     CONTEÚDO
-======================================================= -->
 
 <main>
 
 <div class="container">
 
 
-<!-- =======================================================
-     PESQUISA
-======================================================= -->
+  <!-- PESQUISA -->
 
-<section class="search">
+  <section class="search">
 
-<form
-class="search-box"
-id="searchForm">
+    <form id="searchForm"
+    class="search-box">
 
-<input
-id="searchInput"
-type="search"
-placeholder="🔎 Pesquisar notícias..."
-autocomplete="off">
+      <input
+      id="searchInput"
+      type="search"
+      placeholder="Pesquisar notícias..."
+      autocomplete="off">
 
-<button type="submit">
-PESQUISAR
-</button>
+      <button
+      type="submit">
+        🔎
+      </button>
 
-</form>
+    </form>
 
-<div id="searchResults"></div>
+    <div id="searchResults"></div>
 
-</section>
+  </section>
 
 
-<!-- =======================================================
-     REDES SOCIAIS
-======================================================= -->
+  <!-- REDES SOCIAIS -->
 
-<div class="socials">
+  <div class="socials">
 
-<button
-type="button"
-onclick="abrirRede('Google')">
-🌐 Google
-</button>
+    <button
+    onclick="abrirRede('Google')">
+      🌐 Google
+    </button>
 
-<button
-type="button"
-onclick="abrirRede('Facebook')">
-🔵 Facebook
-</button>
+    <button
+    onclick="abrirRede('Facebook')">
+      📘 Facebook
+    </button>
 
-<button
-type="button"
-onclick="abrirRede('YouTube')">
-▶️ YouTube
-</button>
+    <button
+    onclick="abrirRede('YouTube')">
+      ▶️ YouTube
+    </button>
 
-<button
-type="button"
-onclick="abrirRede('WhatsApp')">
-💬 WhatsApp
-</button>
+    <button
+    onclick="abrirRede('WhatsApp')">
+      💬 WhatsApp
+    </button>
 
-<button
-type="button"
-onclick="abrirRede('Instagram')">
-📷 Instagram
-</button>
+    <button
+    onclick="abrirRede('Instagram')">
+      📷 Instagram
+    </button>
 
-<button
-type="button"
-onclick="abrirRede('TikTok')">
-🎵 TikTok
-</button>
+    <button
+    onclick="abrirRede('TikTok')">
+      🎵 TikTok
+    </button>
 
-</div>
+  </div>
 
 
-<!-- =======================================================
-     ANUNCIE AQUI
-======================================================= -->
+  <!-- PUBLICIDADE -->
 
-<a
-class="ad"
-href="contacto.html">
+  <a
+  href="contacto.html"
+  class="ad">
 
-📢
+    📢 ANUNCIE NO AFRICANMUNDO
 
-<strong>
-ANUNCIE AQUI
-</strong>
+  </a>
 
-<span>
-Divulgue a sua empresa, marca, produto ou serviço.
-</span>
 
-</a>
+  <!-- ANÚNCIOS ATIVOS -->
 
+  <section
+  id="anunciosAtivosSection"
+  class="section">
 
-<!-- =======================================================
-     ANÚNCIOS ATIVOS
-======================================================= -->
+    <div class="section-head">
 
-<section
-class="section"
-id="anunciosAtivosSection"
-style="display:none;">
+      <h2>
+        Publicidade
+      </h2>
 
-<div class="section-head">
+    </div>
 
-<h2>
-📢 PUBLICIDADE
-</h2>
+    <div id="anunciosAtivos"></div>
 
-</div>
+  </section>
 
-<div id="anunciosAtivos">
 
-<div class="loading">
-⏳ A carregar publicidade...
-</div>
+  <!-- DESTAQUE -->
 
-</div>
+  <section class="section">
 
-</section>
+    <div class="section-head">
 
+      <h2>
+        🔥 Destaque
+      </h2>
 
-<!-- =======================================================
-     DESTAQUE
-======================================================= -->
+    </div>
 
-<section class="section">
+    <div id="destaque"
+    class="featured">
 
-<div class="section-head">
+    </div>
 
-<h2>
-🌟 DESTAQUE
-</h2>
+  </section>
 
-</div>
 
-<div id="destaque">
+  <!-- ÚLTIMAS -->
 
-<div class="loading">
-⏳ A carregar destaque...
-</div>
+  <section class="section">
 
-</div>
+    <div class="section-head">
 
-</section>
+      <h2>
+        📰 Últimas notícias
+      </h2>
 
+      <a href="categoria.html?categoria=noticias">
+        Ver todas →
+      </a>
 
-<!-- =======================================================
-     ÚLTIMAS NOTÍCIAS
-======================================================= -->
+    </div>
 
-<section class="section">
+    <div
+    id="ultimas"
+    class="grid">
 
-<div class="section-head">
+    </div>
 
-<h2>
-📰 ÚLTIMAS NOTÍCIAS
-</h2>
+  </section>
 
-<a href="categoria.html?categoria=noticias">
-VER TODAS →
-</a>
 
-</div>
+  <!-- MOÇAMBIQUE -->
 
-<div
-id="ultimas"
-class="grid">
+  <section class="section">
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+    <div class="section-head">
 
-</div>
+      <h2>
+        🇲🇿 Moçambique
+      </h2>
 
-</section>
+      <a href="mocambique.html">
+        Ver todas →
+      </a>
 
+    </div>
 
-<!-- =======================================================
-     MOÇAMBIQUE
-======================================================= -->
+    <div
+    id="mocambique"
+    class="grid">
 
-<section class="section">
+    </div>
 
-<div class="section-head">
+  </section>
 
-<h2>
-🇲🇿 MOÇAMBIQUE
-</h2>
 
-<a href="categoria.html?categoria=mocambique">
-VER TODAS →
-</a>
+  <!-- ÁFRICA -->
 
-</div>
+  <section class="section">
 
-<div
-id="mocambique"
-class="grid">
+    <div class="section-head">
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+      <h2>
+        🌍 África
+      </h2>
 
-</div>
+      <a href="categoria.html?categoria=africa">
+        Ver todas →
+      </a>
 
-</section>
+    </div>
 
+    <div
+    id="africa"
+    class="grid">
 
-<!-- =======================================================
-     ÁFRICA
-======================================================= -->
+    </div>
 
-<section class="section">
+  </section>
 
-<div class="section-head">
 
-<h2>
-🌍 ÁFRICA
-</h2>
+  <!-- FUTEBOL -->
 
-<a href="categoria.html?categoria=africa">
-VER TODAS →
-</a>
+  <section class="section">
 
-</div>
+    <div class="section-head">
 
-<div
-id="africa"
-class="grid">
+      <h2>
+        ⚽ Futebol
+      </h2>
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+      <a href="futebol.html">
+        Ver todas →
+      </a>
 
-</div>
+    </div>
 
-</section>
+    <div
+    id="futebol"
+    class="grid">
 
+    </div>
 
-<!-- =======================================================
-     FUTEBOL
-======================================================= -->
+  </section>
 
-<section class="section">
 
-<div class="section-head">
+  <!-- DESPORTO -->
 
-<h2>
-⚽ FUTEBOL
-</h2>
+  <section class="section">
 
-<a href="categoria.html?categoria=futebol">
-VER TODAS →
-</a>
+    <div class="section-head">
 
-</div>
+      <h2>
+        🏆 Desporto
+      </h2>
 
-<div
-id="futebol"
-class="grid">
+      <a href="categoria.html?categoria=desporto">
+        Ver todas →
+      </a>
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+    </div>
 
-</div>
+    <div
+    id="desporto"
+    class="grid">
 
-</section>
+    </div>
 
+  </section>
 
-<!-- =======================================================
-     DESPORTO
-======================================================= -->
 
-<section class="section">
+  <!-- NEGÓCIOS -->
 
-<div class="section-head">
+  <section class="section">
 
-<h2>
-🏆 DESPORTO
-</h2>
+    <div class="section-head">
 
-<a href="categoria.html?categoria=desporto">
-VER TODAS →
-</a>
+      <h2>
+        💼 Negócios
+      </h2>
 
-</div>
+      <a href="categoria.html?categoria=negocios">
+        Ver todas →
+      </a>
 
-<div
-id="desporto"
-class="grid">
+    </div>
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+    <div
+    id="negocios"
+    class="grid">
 
-</div>
+    </div>
 
-</section>
+  </section>
 
 
-<!-- =======================================================
-     NEGÓCIOS
-======================================================= -->
+  <!-- ENTRETENIMENTO -->
 
-<section class="section">
+  <section class="section">
 
-<div class="section-head">
+    <div class="section-head">
 
-<h2>
-💼 NEGÓCIOS
-</h2>
+      <h2>
+        🎭 Entretenimento
+      </h2>
 
-<a href="categoria.html?categoria=negocios">
-VER TODAS →
-</a>
+      <a href="categoria.html?categoria=entretenimento">
+        Ver todas →
+      </a>
 
-</div>
+    </div>
 
-<div
-id="negocios"
-class="grid">
+    <div
+    id="entretenimento"
+    class="grid">
 
-<div class="loading">
-⏳ A carregar notícias...
-</div>
+    </div>
 
-</div>
-
-</section>
-
-
-<!-- =======================================================
-     ENTRETENIMENTO
-======================================================= -->
-
-<section class="section">
-
-<div class="section-head">
-
-<h2>
-🎬 ENTRETENIMENTO
-</h2>
-
-<a href="categoria.html?categoria=entretenimento">
-VER TODAS →
-</a>
-
-</div>
-
-<div
-id="entretenimento"
-class="grid">
-
-<div class="loading">
-⏳ A carregar notícias...
-</div>
-
-</div>
-
-</section>
+  </section>
 
 
 </div>
 
-</main>
+     </main>
 
-
-<!-- =======================================================
-     RODAPÉ
-======================================================= -->
+   <!-- =================================
+     RODAPÉ AFRICANMUNDO
+================================= -->
 
 <footer>
 
-<div class="container">
+  <div class="footer-main">
 
-<strong>
-© 2026 AfricanMundo
-</strong>
+    <div class="footer-brand">
 
-<p>
-A informação que liga África ao mundo.
-</p>
+      <div class="footer-logo">
+        <span>🌍</span>
+        AfricanMundo
+      </div>
 
-<div class="footer-links">
+      <p>
+        A informação que liga África ao mundo.
+        Notícias de Moçambique, África,
+        desporto, negócios e entretenimento.
+      </p>
 
-<a href="quem-somos.html">
-Quem Somos
-</a>
+    </div>
 
-<a href="contacto.html">
-Contacto
-</a>
 
-<a href="termos.html">
-Termos
-</a>
+    <div>
 
-</div>
+      <h3 class="footer-title">
+        Navegação
+      </h3>
 
-</div>
+      <div class="footer-links">
+
+        <a href="index.html">
+          Início
+        </a>
+
+        <a href="categoria.html?categoria=noticias">
+          Notícias
+        </a>
+
+        <a href="mocambique.html">
+          Moçambique
+        </a>
+
+        <a href="categoria.html?categoria=africa">
+          África
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <h3 class="footer-title">
+        Categorias
+      </h3>
+
+      <div class="footer-links">
+
+        <a href="futebol.html">
+          ⚽ Futebol
+        </a>
+
+        <a href="categoria.html?categoria=desporto">
+          🏆 Desporto
+        </a>
+
+        <a href="categoria.html?categoria=negocios">
+          💼 Negócios
+        </a>
+
+        <a href="categoria.html?categoria=entretenimento">
+          🎭 Entretenimento
+        </a>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <h3 class="footer-title">
+        Siga-nos
+      </h3>
+
+      <div class="footer-socials">
+
+        <button
+        onclick="abrirRede('Facebook')">
+          f
+        </button>
+
+        <button
+        onclick="abrirRede('YouTube')">
+          ▶
+        </button>
+
+        <button
+        onclick="abrirRede('Instagram')">
+          ◎
+        </button>
+
+        <button
+        onclick="abrirRede('WhatsApp')">
+          ◉
+        </button>
+
+        <button
+        onclick="abrirRede('TikTok')">
+          ♪
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <div class="footer-bottom">
+
+    <p>
+      © 2026 AfricanMundo.
+      Todos os direitos reservados.
+    </p>
+
+    <div class="footer-bottom-links">
+
+      <a href="quem-somos.html">
+        Quem somos
+      </a>
+
+      <a href="contacto.html">
+        Contacto
+      </a>
+
+      <a href="termos.html">
+        Termos de uso
+      </a>
+
+    </div>
+
+  </div>
 
 </footer>
 
 
-<!-- =======================================================
+<!-- =================================
      MODAL
-======================================================= -->
+================================= -->
 
 <div
 id="modal"
-class="modal"
-style="display:none;">
+class="modal">
 
-<div class="modal-box">
+  <div class="modal-box">
 
-<button
-class="modal-close"
-onclick="fecharModal()">
-×
-</button>
+    <button
+    class="modal-close"
+    onclick="
+    document.getElementById('modal').style.display='none'
+    ">
+      ×
+    </button>
 
-<h2 id="modalTitle"></h2>
+    <h2 id="modalTitle">
+      AfricanMundo
+    </h2>
 
-<div id="modalBody"></div>
+    <div id="modalBody"></div>
+
+  </div>
 
 </div>
 
-</div>
 
-
-<!-- =======================================================
-     JAVASCRIPT
-======================================================= -->
+<!-- =================================
+     JAVASCRIPT PRINCIPAL
+================================= -->
 
 <script src="app.js"></script>
 
-</body>
 
-   </html>
+</body>
+</html>
