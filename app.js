@@ -1,6 +1,6 @@
 /* =========================================================
 🌍 AFRICANMUNDO — APP.JS
-PARTE 1/4 — BASE + NOTÍCIAS
+PARTE 1/4 — BASE + CARDS + FILTROS
 ========================================================= */
 
 const SUPABASE_URL =
@@ -9,19 +9,20 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
 "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-let db = null;
-let noticias = [];
+let db=null;
+let noticias=[];
 
 const FALLBACK_IMG =
 "https://images.unsplash.com/photo-1495020689067-958852a7765e?auto=format&fit=crop&w=1200&q=85";
 
+
 /* =========================================================
-🔧 FUNÇÕES BÁSICAS
+🔧 BASE
 ========================================================= */
 
 function norm(v){
 
-  return String(v || "")
+  return String(v||"")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g,"")
     .toLowerCase()
@@ -31,7 +32,7 @@ function norm(v){
 
 function esc(v){
 
-  return String(v || "")
+  return String(v||"")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -58,14 +59,15 @@ function data(n){
 
   try{
 
-    return new Date(n.data).toLocaleDateString(
-      "pt-MZ",
-      {
-        day:"2-digit",
-        month:"2-digit",
-        year:"numeric"
-      }
-    );
+    return new Date(n.data)
+      .toLocaleDateString(
+        "pt-MZ",
+        {
+          day:"2-digit",
+          month:"2-digit",
+          year:"numeric"
+        }
+      );
 
   }catch(e){
 
@@ -75,139 +77,23 @@ function data(n){
 
 }
 
+
 /* =========================================================
-🖼️ IMAGEM AUTOMÁTICA
+🖼️ IMAGEM
 ========================================================= */
-function imagemGerada(n){
-
-  const assunto =
-    titulo(n).slice(0,70);
-
-  const categoria =
-    n?.categoria ||
-    n?.subcategoria ||
-    "Notícias";
-
-  const textoSvg=`
-  <svg xmlns="http://www.w3.org/2000/svg"
-       width="1200"
-       height="700"
-       viewBox="0 0 1200 700">
-
-    <defs>
-
-      <linearGradient
-        id="g"
-        x1="0"
-        y1="0"
-        x2="1"
-        y2="1">
-
-        <stop
-          offset="0%"
-          stop-color="#168a45"/>
-
-        <stop
-          offset="100%"
-          stop-color="#073b20"/>
-
-      </linearGradient>
-
-    </defs>
-
-    <rect
-      width="1200"
-      height="700"
-      fill="url(#g)"/>
-
-    <circle
-      cx="1030"
-      cy="110"
-      r="170"
-      fill="rgba(255,255,255,.08)"/>
-
-    <circle
-      cx="150"
-      cy="600"
-      r="240"
-      fill="rgba(255,255,255,.05)"/>
-
-    <text
-      x="70"
-      y="100"
-      fill="#fff"
-      font-family="Arial"
-      font-size="32"
-      font-weight="bold">
-      AFRICANMUNDO
-    </text>
-
-    <text
-      x="70"
-      y="175"
-      fill="#d8ffe8"
-      font-family="Arial"
-      font-size="25">
-      ${esc(categoria)}
-    </text>
-
-    <foreignObject
-      x="70"
-      y="230"
-      width="1060"
-      height="280">
-
-      <div
-        xmlns="http://www.w3.org/1999/xhtml"
-        style="
-          color:white;
-          font-family:Arial,sans-serif;
-          font-size:48px;
-          font-weight:bold;
-          line-height:1.15;
-        ">
-
-        ${esc(assunto)}
-
-      </div>
-
-    </foreignObject>
-
-    <text
-      x="70"
-      y="635"
-      fill="#fff"
-      font-family="Arial"
-      font-size="24">
-      A informação que liga África ao mundo
-    </text>
-
-  </svg>`;
-
-  return(
-    "data:image/svg+xml;charset=UTF-8,"+
-    encodeURIComponent(textoSvg)
-  );
-
-}
-
 
 function imagem(n){
 
   const campos=[
-
     n?.imagem,
     n?.imagem_url,
     n?.image,
     n?.image_url,
     n?.url_imagem,
     n?.foto
-
   ];
 
-  for(
-    const img of campos
-  ){
+  for(const img of campos){
 
     if(
       img &&
@@ -222,9 +108,10 @@ function imagem(n){
 
   }
 
-  return imagemGerada(n);
+  return FALLBACK_IMG;
 
 }
+
 
 /* =========================================================
 🔌 SUPABASE
@@ -232,10 +119,10 @@ function imagem(n){
 
 function iniciarSupabase(){
 
-  if(typeof supabase === "undefined"){
+  if(typeof supabase==="undefined"){
 
     console.error(
-      "❌ Biblioteca Supabase não encontrada."
+      "❌ Supabase não encontrado."
     );
 
     return false;
@@ -244,7 +131,7 @@ function iniciarSupabase(){
 
   try{
 
-    db = supabase.createClient(
+    db=supabase.createClient(
       SUPABASE_URL,
       SUPABASE_KEY
     );
@@ -254,7 +141,7 @@ function iniciarSupabase(){
   }catch(e){
 
     console.error(
-      "❌ Erro ao iniciar Supabase:",
+      "❌ Erro Supabase:",
       e
     );
 
@@ -264,43 +151,44 @@ function iniciarSupabase(){
 
 }
 
+
 /* =========================================================
-📰 CARD
+📰 CARD PROFISSIONAL
 ========================================================= */
+
 function card(n){
 
-  const el=document.createElement("article");
+  const el=
+    document.createElement("article");
 
-  el.className="news-card";
+  el.className="card";
 
-  const img=imagem(n);
   const tit=titulo(n);
-  const txt=texto(n);
-  const cat=n?.pais||n?.categoria||n?.subcategoria||"Notícias";
+
+  const cat=
+    n?.subcategoria ||
+    n?.categoria ||
+    "Notícias";
 
   el.innerHTML=`
 
-    <div class="card-image">
+    <img
+      src="${esc(imagem(n))}"
+      alt="${esc(tit)}"
+      loading="lazy"
+    >
 
-      <img
-        src="${esc(img)}"
-        alt="${esc(tit)}"
-        loading="lazy"
-      >
+    <div class="card-body">
 
-    </div>
+      <span class="card-category">
+        ${esc(cat)}
+      </span>
 
-    <div class="card-content">
+      <h3 class="card-title">
+        ${esc(tit)}
+      </h3>
 
-      <div class="news-category">
-        🌍 ${esc(cat)}
-      </div>
-
-      <h3>${esc(tit)}</h3>
-
-      <p>${esc(txt)}</p>
-
-      <div class="news-meta">
+      <div class="card-date">
         ${esc(data(n))}
       </div>
 
@@ -314,15 +202,15 @@ function card(n){
 
   };
 
-  const imgEl=el.querySelector("img");
+  const img=
+    el.querySelector("img");
 
-  if(imgEl){
+  if(img){
 
-    imgEl.onerror=function(){
+    img.onerror=function(){
 
       this.onerror=null;
-
-      this.src=imagemGerada(n);
+      this.src=FALLBACK_IMG;
 
     };
 
@@ -332,22 +220,23 @@ function card(n){
 
 }
 
+
 /* =========================================================
 📋 LISTA
 ========================================================= */
 
 function lista(arr,id){
 
-  const area =
+  const area=
     document.getElementById(id);
 
   if(!area) return;
 
-  area.innerHTML = "";
+  area.innerHTML="";
 
   if(!arr || !arr.length){
 
-    area.innerHTML = `
+    area.innerHTML=`
       <div class="loading">
         Ainda não existem notícias nesta categoria.
       </div>
@@ -367,74 +256,248 @@ function lista(arr,id){
 
 }
 
+
 /* =========================================================
-🔎 FILTROS
+🔎 TEXTO PARA PESQUISA/FILTRO
 ========================================================= */
 
 function textoCompleto(n){
 
-  return norm(
-    [
-      n?.categoria,
-      n?.subcategoria,
-      n?.pais,
-      n?.titulo,
-      n?.texto,
-      n?.fonte
-    ].join(" ")
-  );
+  return norm([
+    n?.categoria,
+    n?.subcategoria,
+    n?.pais,
+    n?.titulo,
+    n?.texto,
+    n?.fonte
+  ].join(" "));
 
 }
+
+
+/* =========================================================
+🇲🇿 IDENTIFICAR MOÇAMBIQUE
+========================================================= */
+
+function ehMocambique(n){
+
+  const categoria=
+    norm(n?.categoria);
+
+  const pais=
+    norm(n?.pais);
+
+  const sub=
+    norm(n?.subcategoria);
+
+  if(
+    categoria==="mocambique" ||
+    pais==="mocambique"
+  ){
+
+    return true;
+
+  }
+
+  if(
+    sub.includes("mocambique")
+  ){
+
+    return true;
+
+  }
+
+  const x=
+    textoCompleto(n);
+
+  return /(^|[\s,.-])(
+    mocambique|
+    mozambique|
+    maputo|
+    matola|
+    gaza|
+    inhambane|
+    sofala|
+    beira|
+    manica|
+    tete|
+    zambezia|
+    nampula|
+    pemba|
+    niassa|
+    "cabo delgado"
+  )([\s,.-]|$)/x.test(x);
+
+}
+
+
+/* =========================================================
+🌍 IDENTIFICAR ÁFRICA
+========================================================= */
+
+function ehAfrica(n){
+
+  if(ehMocambique(n))
+    return false;
+
+  const categoria=
+    norm(n?.categoria);
+
+  if(categoria==="africa")
+    return true;
+
+  const x=
+    textoCompleto(n);
+
+  return /angola|malawi|zimbabwe|zambia|tanzania|nigeria|kenya|quenia|ghana|marrocos|egito|etiopia|africa do sul|rwanda|uganda|senegal|camaroes|namibia|botswana|tunisia|argelia|libia|somalia|sudao/.test(x);
+
+}
+
+
+/* =========================================================
+⚽ IDENTIFICAR FUTEBOL
+========================================================= */
+
+function ehFutebol(n){
+
+  const categoria=
+    norm(n?.categoria);
+
+  const sub=
+    norm(n?.subcategoria);
+
+  if(
+    categoria==="futebol" ||
+    sub==="futebol"
+  ){
+
+    return true;
+
+  }
+
+  const x=
+    textoCompleto(n);
+
+  return /futebol|football|golo|gol|campeonato de futebol|liga de futebol|uefa|champions league|premier league|mundial de clubes/.test(x);
+
+}
+
+
+/* =========================================================
+🏆 IDENTIFICAR DESPORTO
+========================================================= */
+
+function ehDesporto(n){
+
+  if(ehFutebol(n))
+    return false;
+
+  const categoria=
+    norm(n?.categoria);
+
+  const sub=
+    norm(n?.subcategoria);
+
+  if(
+    categoria==="desporto" ||
+    sub==="desporto"
+  ){
+
+    return true;
+
+  }
+
+  const x=
+    textoCompleto(n);
+
+  return /desporto|atletismo|basquete|basquetebol|boxe|olimpi|natacao|tenis|voleibol|ciclismo/.test(x);
+
+}
+
+
+/* =========================================================
+💼 IDENTIFICAR NEGÓCIOS
+========================================================= */
+
+function ehNegocios(n){
+
+  const categoria=
+    norm(n?.categoria);
+
+  const sub=
+    norm(n?.subcategoria);
+
+  if(
+    categoria==="negocios" ||
+    sub==="negocios"
+  ){
+
+    return true;
+
+  }
+
+  const x=
+    textoCompleto(n);
+
+  return /negocio|economia|empresa|mercado|investimento|comercio|financas|banco|emprego|energia/.test(x);
+
+}
+
+
+/* =========================================================
+🎭 IDENTIFICAR ENTRETENIMENTO
+========================================================= */
+
+function ehEntretenimento(n){
+
+  const categoria=
+    norm(n?.categoria);
+
+  const sub=
+    norm(n?.subcategoria);
+
+  if(
+    categoria==="entretenimento" ||
+    sub==="entretenimento"
+  ){
+
+    return true;
+
+  }
+
+  const x=
+    textoCompleto(n);
+
+  return /entretenimento|cultura|musica|cinema|artista|festival|teatro|televisao|celebridade/.test(x);
+
+}
+
+
+/* =========================================================
+🔎 FILTRAR
+========================================================= */
 
 function filtrar(tipo){
 
   return noticias.filter(function(n){
 
-    const x =
-      textoCompleto(n);
+    if(tipo==="mocambique")
+      return ehMocambique(n);
 
-    if(tipo === "mocambique"){
+    if(tipo==="africa")
+      return ehAfrica(n);
 
-      return (
-        norm(n?.categoria) === "mocambique" ||
-        norm(n?.pais) === "mocambique" ||
-        /mocambique|mozambique|maputo|matola|gaza|inhambane|sofala|beira|manica|tete|zambezia|nampula|pemba|cabo delgado|niassa/.test(x)
-      );
+    if(tipo==="futebol")
+      return ehFutebol(n);
 
-    }
+    if(tipo==="desporto")
+      return ehDesporto(n);
 
-    if(tipo === "africa"){
+    if(tipo==="negocios")
+      return ehNegocios(n);
 
-      return (
-        norm(n?.categoria) === "africa" ||
-        /angola|malawi|zimbabwe|zambia|tanzania|nigeria|kenya|quenia|ghana|marrocos|egito|etiopia|africa do sul|rwanda|uganda|senegal|camaroes|namibia|botswana|tunisia|argelia|libia|somalia|sudao/.test(x)
-      );
-
-    }
-
-    if(tipo === "futebol"){
-
-      return /futebol|football|golo|gol|jogador|clube|campeonato|liga|uefa|champions|premier league|mundial de clubes/.test(x);
-
-    }
-
-    if(tipo === "desporto"){
-
-      return /desporto|atletismo|basquete|basquetebol|boxe|olimpi|natação|tenis|ténis|voleibol|ciclismo/.test(x);
-
-    }
-
-    if(tipo === "negocios"){
-
-      return /negocio|negócio|economia|empresa|mercado|investimento|comercio|comércio|financas|finanças|banco|emprego|energia/.test(x);
-
-    }
-
-    if(tipo === "entretenimento"){
-
-      return /entretenimento|cultura|musica|música|cinema|artista|festival|teatro|televisao|televisão|celebridade/.test(x);
-
-    }
+    if(tipo==="entretenimento")
+      return ehEntretenimento(n);
 
     return true;
 
@@ -443,225 +506,79 @@ function filtrar(tipo){
 }
 
 /* =========================================================
-🌟 DESTAQUE ALEATÓRIO ENTRE NOTÍCIAS RECENTES
+🌍 AFRICANMUNDO — APP.JS
+PARTE 2/4 — CARREGAMENTO + DESTAQUE + PESQUISA
 ========================================================= */
-let destaqueIndice = 0;
-let destaqueTimer = null;
 
-function destacar(){
-
-  const area =
-    document.getElementById("destaque");
-
-  if(!area) return;
-
-  if(!noticias.length){
-
-    area.innerHTML = `
-      <div class="loading">
-        Ainda não existem notícias em destaque.
-      </div>
-    `;
-
-    return;
-  }
-
-  const limite =
-    Math.min(noticias.length,10);
-
-  destaqueIndice =
-    Math.floor(Math.random()*limite);
-
-  mostrarDestaque();
-
-  clearInterval(destaqueTimer);
-
-  destaqueTimer =
-    setInterval(function(){
-
-      destaqueIndice++;
-
-      if(destaqueIndice >= limite){
-        destaqueIndice=0;
-      }
-
-      mostrarDestaque();
-
-    },10000);
-}
-
-
-function mostrarDestaque(){
-
-  const area =
-    document.getElementById("destaque");
-
-  if(!area || !noticias.length) return;
-
-  const limite =
-    Math.min(noticias.length,10);
-
-  if(destaqueIndice >= limite){
-    destaqueIndice=0;
-  }
-
-  const n =
-    noticias[destaqueIndice];
-
-  area.innerHTML = `
-
-    <article
-      class="featured-card"
-      style="
-        cursor:pointer;
-        position:relative;
-        overflow:hidden;
-        min-height:300px;
-        border-radius:16px;
-        background:#17391e;
-        box-shadow:0 3px 14px rgba(0,0,0,.15);
-      "
-    >
-
-      <img
-        src="${esc(imagem(n))}"
-        alt="${esc(titulo(n))}"
-        style="
-          position:absolute;
-          inset:0;
-          width:100%;
-          height:100%;
-          object-fit:cover;
-        "
-      >
-
-      <div style="
-        position:absolute;
-        inset:0;
-        background:linear-gradient(
-          transparent 20%,
-          rgba(0,0,0,.88)
-        );
-      "></div>
-
-      <div style="
-        position:relative;
-        z-index:2;
-        min-height:300px;
-        display:flex;
-        flex-direction:column;
-        justify-content:flex-end;
-        padding:20px;
-        color:#fff;
-      ">
-
-        <small style="
-          color:#7ee35b;
-          font-weight:bold;
-        ">
-          🌍 ${esc(
-            n.pais ||
-            n.categoria ||
-            "DESTAQUE"
-          )}
-        </small>
-
-        <h2 style="
-          margin:7px 0;
-          font-size:23px;
-          line-height:1.2;
-        ">
-          ${esc(titulo(n))}
-        </h2>
-
-        <p style="
-          margin:0 0 7px;
-          font-size:13px;
-          line-height:1.4;
-          opacity:.92;
-        ">
-          ${esc(texto(n)).slice(0,220)}
-        </p>
-
-        <small>
-          ${esc(data(n))}
-        </small>
-
-      </div>
-
-    </article>
-
-  `;
-
-  const article =
-    area.querySelector("article");
-
-  if(article){
-
-    article.onclick=function(){
-
-      abrirNoticia(n.id);
-
-    };
-
-  }
-
-  const img =
-    area.querySelector("img");
-
-  if(img){
-
-    img.onerror=function(){
-
-      this.onerror=null;
-
-      this.src =
-        imagemGerada(n);
-
-    };
-
-  }
-
-}
 
 /* =========================================================
-📥 CARREGAR NOTÍCIAS
+📰 MOSTRAR NOTÍCIAS
 ========================================================= */
 
-async function carregarNoticias(){
+function mostrarNoticias(){
 
-  if(!db){
+  lista(
+    noticias.slice(0,10),
+    "ultimas"
+  );
 
-    if(!iniciarSupabase()){
+  lista(
+    filtrar("mocambique").slice(0,4),
+    "mocambique"
+  );
 
-      mostrarErroNoticias(
-        "Supabase não está disponível."
-      );
+  lista(
+    filtrar("africa").slice(0,4),
+    "africa"
+  );
 
-      return;
+  lista(
+    filtrar("futebol").slice(0,4),
+    "futebol"
+  );
 
-    }
+  lista(
+    filtrar("desporto").slice(0,4),
+    "desporto"
+  );
 
-  }
+  lista(
+    filtrar("negocios").slice(0,4),
+    "negocios"
+  );
 
-  const areas = [
+  lista(
+    filtrar("entretenimento").slice(0,4),
+    "entretenimento"
+  );
+
+}
+
+
+/* =========================================================
+⏳ CARREGAMENTO
+========================================================= */
+
+function mostrarCarregando(){
+
+  const ids=[
     "ultimas",
-    "futebol",
     "mocambique",
     "africa",
+    "futebol",
+    "desporto",
     "negocios",
-    "entretenimento",
-    "desporto"
+    "entretenimento"
   ];
 
-  areas.forEach(function(id){
+  ids.forEach(function(id){
 
-    const el =
+    const area=
       document.getElementById(id);
 
-    if(el){
+    if(area){
 
-      el.innerHTML = `
+      area.innerHTML=`
         <div class="loading">
           ⏳ A preparar notícias...
         </div>
@@ -670,6 +587,85 @@ async function carregarNoticias(){
     }
 
   });
+
+}
+
+
+/* =========================================================
+❌ ERRO
+========================================================= */
+
+function mostrarErroNoticias(erro){
+
+  console.error(
+    "❌ Erro ao carregar notícias:",
+    erro
+  );
+
+  const ids=[
+    "ultimas",
+    "mocambique",
+    "africa",
+    "futebol",
+    "desporto",
+    "negocios",
+    "entretenimento"
+  ];
+
+  ids.forEach(function(id){
+
+    const area=
+      document.getElementById(id);
+
+    if(!area) return;
+
+    area.innerHTML=`
+      <div class="loading">
+        ⚠️ Não foi possível carregar
+        as notícias.
+        <br><br>
+        <button
+          onclick="carregarNoticias()"
+          style="
+            padding:9px 14px;
+            border:0;
+            border-radius:9px;
+            background:#168a45;
+            color:white;
+            cursor:pointer;
+          "
+        >
+          🔄 Tentar novamente
+        </button>
+      </div>
+    `;
+
+  });
+
+}
+
+
+/* =========================================================
+📰 CARREGAR NOTÍCIAS
+========================================================= */
+
+async function carregarNoticias(){
+
+  mostrarCarregando();
+
+  if(!db){
+
+    if(!iniciarSupabase()){
+
+      mostrarErroNoticias(
+        "Supabase não disponível"
+      );
+
+      return;
+
+    }
+
+  }
 
   try{
 
@@ -695,9 +691,9 @@ async function carregarNoticias(){
           ascending:false
         }
       )
-      .limit(300);
+      .limit(500);
 
-    const r =
+    const resultado =
       await Promise.race([
 
         consulta,
@@ -709,7 +705,7 @@ async function carregarNoticias(){
 
               reject(
                 new Error(
-                  "Tempo de ligação ao Supabase excedido."
+                  "Tempo limite excedido."
                 )
               );
 
@@ -721,150 +717,212 @@ async function carregarNoticias(){
 
       ]);
 
-    if(r.error)
-      throw r.error;
+    if(resultado.error){
+
+      throw resultado.error;
+
+    }
 
     noticias =
-      Array.isArray(r.data)
-      ? r.data
+      Array.isArray(resultado.data)
+      ? resultado.data
       : [];
 
-    window.__noticias =
-      noticias;
-
-    lista(
-      noticias.slice(0,10),
-      "ultimas"
+    console.log(
+      "📰 Notícias carregadas:",
+      noticias.length
     );
 
-    lista(
-      filtrar("futebol").slice(0,6),
-      "futebol"
-    );
+    if(!noticias.length){
 
-    lista(
-      filtrar("mocambique").slice(0,6),
-      "mocambique"
-    );
+      mostrarErroNoticias(
+        "Nenhuma notícia encontrada."
+      );
 
-    lista(
-      filtrar("africa").slice(0,6),
-      "africa"
-    );
+      return;
 
-    lista(
-      filtrar("negocios").slice(0,6),
-      "negocios"
-    );
+    }
 
-    lista(
-      filtrar("entretenimento").slice(0,6),
-      "entretenimento"
-    );
-
-    lista(
-      filtrar("desporto").slice(0,6),
-      "desporto"
-    );
+    mostrarNoticias();
 
     destacar();
 
     ligarLinksCategorias();
 
     console.log(
-      "✅ AfricanMundo:",
-      noticias.length,
-      "notícias carregadas."
+      "🇲🇿 Moçambique:",
+      filtrar("mocambique").length
+    );
+
+    console.log(
+      "🌍 África:",
+      filtrar("africa").length
+    );
+
+    console.log(
+      "⚽ Futebol:",
+      filtrar("futebol").length
+    );
+
+    console.log(
+      "🏆 Desporto:",
+      filtrar("desporto").length
+    );
+
+    console.log(
+      "💼 Negócios:",
+      filtrar("negocios").length
+    );
+
+    console.log(
+      "🎭 Entretenimento:",
+      filtrar("entretenimento").length
     );
 
   }catch(e){
 
-    console.error(
-      "❌ Erro ao carregar notícias:",
-      e
-    );
-
-    mostrarErroNoticias(
-      "Não foi possível carregar as notícias agora."
-    );
+    mostrarErroNoticias(e);
 
   }
 
 }
 
-function mostrarErroNoticias(mensagem){
-
-  const ids = [
-    "ultimas",
-    "futebol",
-    "mocambique",
-    "africa",
-    "negocios",
-    "entretenimento",
-    "desporto"
-  ];
-
-  ids.forEach(function(id){
-
-    const el =
-      document.getElementById(id);
-
-    if(el){
-
-      el.innerHTML = `
-        <div class="loading">
-          ⚠️ ${esc(mensagem)}
-          <br>
-          <button
-            onclick="atualizarNoticias()"
-            style="
-              margin-top:10px;
-              padding:8px 14px;
-              border:0;
-              border-radius:8px;
-              cursor:pointer;
-            "
-          >
-            🔄 Tentar novamente
-          </button>
-        </div>
-      `;
-
-    }
-
-  });
-
-  const destaque =
-    document.getElementById(
-      "destaque"
-    );
-
-  if(destaque){
-
-    destaque.innerHTML = `
-      <div class="loading">
-        ⚠️ ${esc(mensagem)}
-      </div>
-    `;
-
-  }
-
-     }
 
 /* =========================================================
-🌍 AFRICANMUNDO — APP.JS
-PARTE 2/4 — PESQUISA + REDES + TEMA
+⭐ DESTAQUE
+========================================================= */
+
+function destacar(){
+
+  const area=
+    document.getElementById("destaque");
+
+  if(!area || !noticias.length)
+    return;
+
+  const n=noticias[0];
+
+  mostrarDestaque(n);
+
+}
+
+
+/* =========================================================
+⭐ MOSTRAR DESTAQUE
+========================================================= */
+
+function mostrarDestaque(n){
+
+  const area=
+    document.getElementById("destaque");
+
+  if(!area) return;
+
+  const img=
+    imagem(n);
+
+  const tit=
+    titulo(n);
+
+  const cat=
+    n?.subcategoria ||
+    n?.categoria ||
+    "Destaque";
+
+  area.innerHTML=`
+
+    <article
+      class="featured-card"
+      onclick="abrirNoticia(${Number(n.id)})"
+      style="
+        position:relative;
+        overflow:hidden;
+        min-height:330px;
+        border-radius:16px;
+        cursor:pointer;
+        background:#111;
+      "
+    >
+
+      <img
+        src="${esc(img)}"
+        alt="${esc(tit)}"
+        style="
+          width:100%;
+          height:330px;
+          object-fit:cover;
+          display:block;
+        "
+      >
+
+      <div style="
+        position:absolute;
+        inset:0;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        padding:24px;
+        color:white;
+        background:
+          linear-gradient(
+            transparent 25%,
+            rgba(0,0,0,.85)
+          );
+      ">
+
+        <div style="
+          font-size:11px;
+          font-weight:800;
+          margin-bottom:7px;
+          text-transform:uppercase;
+        ">
+          ${esc(cat)}
+        </div>
+
+        <h2 style="
+          margin:0;
+          font-size:clamp(21px,3vw,34px);
+          line-height:1.15;
+          font-weight:900;
+        ">
+          ${esc(tit)}
+        </h2>
+
+        <div style="
+          margin-top:9px;
+          font-size:11px;
+          opacity:.85;
+        ">
+          ${esc(data(n))}
+        </div>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+📰 ABRIR NOTÍCIA
 ========================================================= */
 
 function abrirNoticia(id){
 
-  if(id === undefined || id === null) return;
+  if(
+    id===undefined ||
+    id===null
+  )
+    return;
 
-  location.href =
-    "noticia.html?id=" +
+  location.href=
+    "noticia.html?id="+
     encodeURIComponent(id);
 
 }
+
 
 /* =========================================================
 🔎 PESQUISA
@@ -872,41 +930,49 @@ function abrirNoticia(id){
 
 function pesquisar(){
 
-  const input =
-    document.getElementById("searchInput");
+  const input=
+    document.getElementById(
+      "searchInput"
+    );
 
-  const area =
-    document.getElementById("searchResults");
+  const resultados=
+    document.getElementById(
+      "searchResults"
+    );
 
-  if(!input || !area) return;
+  if(!input || !resultados)
+    return;
 
-  const termo =
+  const termo=
     norm(input.value);
-
-  area.innerHTML = "";
 
   if(!termo){
 
-    area.style.display = "none";
+    resultados.innerHTML="";
+    resultados.style.display="none";
+
     return;
 
   }
 
-  const resultados =
+  const encontrados=
     noticias
-    .filter(function(n){
+      .filter(function(n){
 
-      return textoCompleto(n)
-        .includes(termo);
+        return textoCompleto(n)
+          .includes(termo);
 
-    })
-    .slice(0,20);
+      })
+      .slice(0,20);
 
-  area.style.display = "block";
+  resultados.innerHTML="";
 
-  if(!resultados.length){
+  resultados.style.display=
+    "grid";
 
-    area.innerHTML = `
+  if(!encontrados.length){
+
+    resultados.innerHTML=`
       <div class="loading">
         Nenhuma notícia encontrada.
       </div>
@@ -916,9 +982,9 @@ function pesquisar(){
 
   }
 
-  resultados.forEach(function(n){
+  encontrados.forEach(function(n){
 
-    area.appendChild(
+    resultados.appendChild(
       card(n)
     );
 
@@ -926,208 +992,32 @@ function pesquisar(){
 
 }
 
-/* =========================================================
-🌙 TEMA
-========================================================= */
-
-function iniciarTema(){
-
-  try{
-
-    const salvo =
-      localStorage.getItem(
-        "africanmundo_tema"
-      );
-
-    if(salvo === "dark"){
-
-      document.body.classList.add("dark");
-
-    }
-
-  }catch(e){}
-
-}
-
-function alternarTema(){
-
-  document.body.classList.toggle("dark");
-
-  try{
-
-    localStorage.setItem(
-      "africanmundo_tema",
-      document.body.classList.contains("dark")
-        ? "dark"
-        : "light"
-    );
-
-  }catch(e){}
-
-}
 
 /* =========================================================
-🎨 CORES
-========================================================= */
-
-function restaurarCor(){
-
-  try{
-
-    const cor =
-      localStorage.getItem(
-        "africanmundo_cor"
-      );
-
-    if(cor){
-
-      document.documentElement
-        .style
-        .setProperty(
-          "--p",
-          cor
-        );
-
-    }
-
-  }catch(e){}
-
-}
-
-function escolherCor(){
-
-  const cores = [
-    "#168a45",
-    "#1565c0",
-    "#c62828",
-    "#7b1fa2",
-    "#ef6c00"
-  ];
-
-  const atual =
-    getComputedStyle(
-      document.documentElement
-    )
-    .getPropertyValue("--p")
-    .trim();
-
-  let i =
-    cores.indexOf(atual);
-
-  if(i < 0) i = 0;
-
-  const proxima =
-    cores[(i + 1) % cores.length];
-
-  document.documentElement
-    .style
-    .setProperty(
-      "--p",
-      proxima
-    );
-
-  try{
-
-    localStorage.setItem(
-      "africanmundo_cor",
-      proxima
-    );
-
-  }catch(e){}
-
-}
-
-/* =========================================================
-🌐 REDES SOCIAIS
-========================================================= */
-
-const REDES_SOCIAIS = {
-
-  google:
-    "https://www.google.com",
-
-  facebook:
-    "https://www.facebook.com",
-
-  youtube:
-    "https://www.youtube.com",
-
-  whatsapp:
-    "https://wa.me/",
-
-  instagram:
-    "https://www.instagram.com",
-
-  tiktok:
-    "https://www.tiktok.com"
-
-};
-
-function abrirRede(rede){
-
-  const nome =
-    norm(rede);
-
-  const url =
-    REDES_SOCIAIS[nome];
-
-  if(!url){
-
-    console.warn(
-      "Rede social desconhecida:",
-      rede
-    );
-
-    return false;
-
-  }
-
-  try{
-
-    window.open(
-      url,
-      "_blank",
-      "noopener,noreferrer"
-    );
-
-  }catch(e){
-
-    location.href = url;
-
-  }
-
-  return true;
-
-}
-
-/* =========================================================
-📤 PARTILHAR
+🔗 PARTILHAR NOTÍCIA
 ========================================================= */
 
 async function partilharNoticia(id){
 
-  const base =
-    location.origin +
+  const url=
+    location.origin+
     location.pathname
       .replace(
         /[^/]+$/,
         ""
-      );
-
-  const url =
-    base +
-    "noticia.html?id=" +
+      )+
+    "noticia.html?id="+
     encodeURIComponent(id);
 
-  const n =
+  const n=
     noticias.find(function(x){
 
-      return String(x.id) ===
+      return String(x.id)===
         String(id);
 
     });
 
-  const dados = {
+  const dados={
 
     title:
       n?.titulo ||
@@ -1145,7 +1035,9 @@ async function partilharNoticia(id){
 
     if(navigator.share){
 
-      await navigator.share(dados);
+      await navigator.share(
+        dados
+      );
 
       return;
 
@@ -1167,10 +1059,7 @@ async function partilharNoticia(id){
 
     abrirModal(
       "Partilhar",
-      `
-        <p>Copie o link:</p>
-        <p>${esc(url)}</p>
-      `
+      "<p>"+esc(url)+"</p>"
     );
 
   }catch(e){
@@ -1184,6 +1073,12 @@ async function partilharNoticia(id){
 }
 
 /* =========================================================
+🌍 AFRICANMUNDO — APP.JS
+PARTE 3/4 — MODAL + ANÚNCIOS + BOTÕES
+========================================================= */
+
+
+/* =========================================================
 🔔 MODAL
 ========================================================= */
 
@@ -1192,42 +1087,41 @@ function abrirModal(
   conteudo
 ){
 
-  const modal =
+  const modal=
     document.getElementById("modal");
 
-  const mt =
+  const mt=
     document.getElementById("modalTitle");
 
-  const mb =
+  const mb=
     document.getElementById("modalBody");
 
   if(!modal) return;
 
   if(mt)
-    mt.textContent =
+    mt.textContent=
       tituloModal ||
       "AfricanMundo";
 
   if(mb)
-    mb.innerHTML =
+    mb.innerHTML=
       conteudo || "";
 
-  modal.style.display = "flex";
+  modal.style.display="flex";
 
 }
+
 
 function fecharModal(){
 
-  const modal =
+  const modal=
     document.getElementById("modal");
 
-  if(modal){
-
-    modal.style.display = "none";
-
-  }
+  if(modal)
+    modal.style.display="none";
 
 }
+
 
 /* =========================================================
 🔔 NOTIFICAÇÕES
@@ -1241,13 +1135,14 @@ function mostrarNotificacoes(){
       <p>🔔 Bem-vindo ao AfricanMundo.</p>
 
       <p>
-        Aqui encontrará notícias recentes
-        de Moçambique, África e do mundo.
+        Notícias recentes de Moçambique,
+        África e do mundo.
       </p>
     `
   );
 
 }
+
 
 /* =========================================================
 🛠️ FERRAMENTAS
@@ -1266,6 +1161,7 @@ function mostrarFerramentas(){
   );
 
 }
+
 
 /* =========================================================
 👤 UTILIZADOR
@@ -1291,13 +1187,14 @@ function mostrarUtilizador(){
 
 }
 
+
 /* =========================================================
 🧭 MENU ATIVO
 ========================================================= */
 
 function marcarMenuAtivo(){
 
-  const pagina =
+  const pagina=
     norm(location.pathname);
 
   document
@@ -1308,12 +1205,12 @@ function marcarMenuAtivo(){
 
       link.classList.remove("ativo");
 
-      const href =
+      const href=
         link.getAttribute("href");
 
       if(!href) return;
 
-      const caminho =
+      const caminho=
         norm(
           href.split("?")[0]
         );
@@ -1331,13 +1228,14 @@ function marcarMenuAtivo(){
 
 }
 
+
 /* =========================================================
-🔗 VER TODAS — CATEGORIAS
+🔗 VER TODAS
 ========================================================= */
 
 function ligarLinksCategorias(){
 
-  const mapa = {
+  const mapa={
 
     futebol:
       "futebol.html",
@@ -1365,12 +1263,12 @@ function ligarLinksCategorias(){
   Object.keys(mapa)
     .forEach(function(id){
 
-      const area =
+      const area=
         document.getElementById(id);
 
       if(!area) return;
 
-      const secao =
+      const secao=
         area.closest("section");
 
       if(!secao) return;
@@ -1379,22 +1277,19 @@ function ligarLinksCategorias(){
         .querySelectorAll("a")
         .forEach(function(link){
 
-          const textoLink =
-            norm(link.textContent);
+          const textoLink=
+            norm(
+              link.textContent
+            );
 
           if(
-            textoLink.includes("ver todas")
+            textoLink.includes(
+              "ver todas"
+            )
           ){
 
-            link.href = mapa[id];
-
-            link.onclick =
-              function(){
-
-                location.href =
-                  mapa[id];
-
-              };
+            link.href=
+              mapa[id];
 
           }
 
@@ -1404,10 +1299,6 @@ function ligarLinksCategorias(){
 
 }
 
-/* =========================================================
-🌍 AFRICANMUNDO — APP.JS
-PARTE 3/4 — ANÚNCIOS + FAVORITOS + BOTÕES
-========================================================= */
 
 /* =========================================================
 📢 ANÚNCIOS ATIVOS
@@ -1415,12 +1306,12 @@ PARTE 3/4 — ANÚNCIOS + FAVORITOS + BOTÕES
 
 async function carregarAnuncios(){
 
-  const sec =
+  const sec=
     document.getElementById(
       "anunciosAtivosSection"
     );
 
-  const area =
+  const area=
     document.getElementById(
       "anunciosAtivos"
     );
@@ -1432,7 +1323,7 @@ async function carregarAnuncios(){
 
     if(!iniciarSupabase()){
 
-      sec.style.display = "none";
+      sec.style.display="none";
 
       return;
 
@@ -1442,7 +1333,7 @@ async function carregarAnuncios(){
 
   try{
 
-    const r =
+    const r=
       await db
       .from("anuncios")
       .select("*")
@@ -1457,57 +1348,48 @@ async function carregarAnuncios(){
     if(r.error)
       throw r.error;
 
-    const dados =
+    const dados=
       r.data || [];
 
     if(!dados.length){
 
-      sec.style.display = "none";
+      sec.style.display="none";
 
       return;
 
     }
 
-    sec.style.display = "block";
+    sec.style.display="block";
 
-    area.innerHTML = "";
+    area.innerHTML="";
 
     dados.forEach(function(a){
 
-      const el =
+      const el=
         document.createElement("div");
 
-      el.className = "card";
+      el.className="card";
 
-      const tituloAnuncio =
+      const tituloAnuncio=
         a.titulo ||
         "Anuncie no AfricanMundo";
 
-      const textoAnuncio =
+      const textoAnuncio=
         a.texto ||
         "Divulgue a sua empresa, marca, produto ou serviço.";
 
-      const imagemAnuncio =
+      const imagemAnuncio=
         a.imagem ||
         a.imagem_url ||
         "";
 
-      const linkAnuncio =
+      const linkAnuncio=
         a.url ||
         a.link ||
         a.url_original ||
         "";
 
-      el.style.cssText = `
-        overflow:hidden;
-        border-radius:14px;
-        margin-bottom:12px;
-        background:var(--card,#fff);
-        box-shadow:0 2px 10px rgba(0,0,0,.08);
-        cursor:pointer;
-      `;
-
-      el.innerHTML = `
+      el.innerHTML=`
 
         ${
           imagemAnuncio
@@ -1526,38 +1408,31 @@ async function carregarAnuncios(){
           : ""
         }
 
-        <div style="
-          padding:14px;
-        ">
+        <div class="card-body">
 
-          <h3 style="
-            margin:0 0 6px;
-          ">
+          <h3>
             📢 ${esc(tituloAnuncio)}
           </h3>
 
-          <p style="
-            margin:0;
-            opacity:.75;
-          ">
+          <p>
             ${esc(textoAnuncio)}
           </p>
 
         </div>
+
       `;
 
       if(linkAnuncio){
 
-        el.onclick =
-          function(){
+        el.onclick=function(){
 
-            window.open(
-              linkAnuncio,
-              "_blank",
-              "noopener,noreferrer"
-            );
+          window.open(
+            linkAnuncio,
+            "_blank",
+            "noopener,noreferrer"
+          );
 
-          };
+        };
 
       }
 
@@ -1572,14 +1447,15 @@ async function carregarAnuncios(){
       e
     );
 
-    sec.style.display = "none";
+    sec.style.display="none";
 
   }
 
 }
 
+
 /* =========================================================
-📢 GARANTIR ANUNCIE AQUI
+📢 ANUNCIE AQUI
 ========================================================= */
 
 function prepararAnuncieAqui(){
@@ -1588,25 +1464,26 @@ function prepararAnuncieAqui(){
     .querySelectorAll("a,button,div")
     .forEach(function(el){
 
-      const texto =
+      const texto=
         norm(el.textContent);
 
-      if(texto === "anuncie aqui"){
+      if(
+        texto==="anuncie aqui"
+      ){
 
-        el.style.cursor = "pointer";
+        el.style.cursor="pointer";
 
         if(
-          el.tagName !== "A" ||
+          el.tagName!=="A" ||
           !el.getAttribute("href")
         ){
 
-          el.onclick =
-            function(){
+          el.onclick=function(){
 
-              location.href =
-                "contacto.html";
+            location.href=
+              "contacto.html";
 
-            };
+          };
 
         }
 
@@ -1615,6 +1492,7 @@ function prepararAnuncieAqui(){
     });
 
 }
+
 
 /* =========================================================
 ❤️ FAVORITOS
@@ -1638,22 +1516,23 @@ function obterFavoritos(){
 
 }
 
+
 function alternarFavorito(id){
 
-  let favoritos =
+  let favoritos=
     obterFavoritos();
 
-  id = String(id);
+  id=String(id);
 
   if(
     favoritos.includes(id)
   ){
 
-    favoritos =
+    favoritos=
       favoritos.filter(
         function(x){
 
-          return x !== id;
+          return x!==id;
 
         }
       );
@@ -1679,13 +1558,14 @@ function alternarFavorito(id){
 
 }
 
+
 /* =========================================================
 📱 MENU MOBILE
 ========================================================= */
 
 function abrirMenu(){
 
-  const menu =
+  const menu=
     document.querySelector(
       ".bottom-menu,.mobile-menu"
     );
@@ -1700,73 +1580,80 @@ function abrirMenu(){
 
 }
 
+
 /* =========================================================
 🖱️ BOTÕES DO CABEÇALHO
 ========================================================= */
 
 function ligarBotoesCabecalho(){
 
-  const notificacao =
+  const notificacao=
     document.getElementById(
       "notificationBtn"
     );
 
-  const ferramentas =
+  const ferramentas=
     document.getElementById(
       "toolsBtn"
     );
 
-  const utilizador =
+  const utilizador=
     document.getElementById(
       "userBtn"
     );
 
-  const tema =
+  const tema=
     document.getElementById(
       "themeBtn"
     );
 
-  const cor =
+  const cor=
     document.getElementById(
       "colorBtn"
     );
 
+
   if(notificacao){
 
-    notificacao.onclick =
+    notificacao.onclick=
       mostrarNotificacoes;
 
   }
 
+
   if(ferramentas){
 
-    ferramentas.onclick =
+    ferramentas.onclick=
       mostrarFerramentas;
 
   }
 
+
   if(utilizador){
 
-    utilizador.onclick =
+    utilizador.onclick=
       mostrarUtilizador;
 
   }
 
+
   if(tema){
 
-    tema.onclick =
+    tema.onclick=
       alternarTema;
 
   }
 
+
   if(cor){
 
-    cor.onclick =
+    cor.onclick=
       escolherCor;
 
   }
 
 }
+
 
 /* =========================================================
 🔎 PESQUISA
@@ -1774,7 +1661,7 @@ function ligarBotoesCabecalho(){
 
 function ligarPesquisa(){
 
-  const form =
+  const form=
     document.getElementById(
       "searchForm"
     );
@@ -1794,7 +1681,8 @@ function ligarPesquisa(){
 
   }
 
-  const input =
+
+  const input=
     document.getElementById(
       "searchInput"
     );
@@ -1808,7 +1696,13 @@ function ligarPesquisa(){
 
   }
 
-}
+            }
+
+/* =========================================================
+🌍 AFRICANMUNDO — APP.JS
+PARTE 4/4 — FINAL + INICIALIZAÇÃO
+========================================================= */
+
 
 /* =========================================================
 📡 TESTAR SUPABASE
@@ -1825,7 +1719,7 @@ async function testarSupabase(){
 
   try{
 
-    const r =
+    const r=
       await db
       .from("noticias")
       .select("id")
@@ -1861,32 +1755,40 @@ async function testarSupabase(){
 
 }
 
+
 /* =========================================================
 🔄 ATUALIZAR NOTÍCIAS
 ========================================================= */
 
 async function atualizarNoticias(){
 
-  const botoes =
+  const botoes=
     document.querySelectorAll(
       "[data-atualizar]"
     );
 
   botoes.forEach(function(b){
 
-    b.disabled = true;
+    b.disabled=true;
 
   });
 
-  await carregarNoticias();
+  try{
 
-  botoes.forEach(function(b){
+    await carregarNoticias();
 
-    b.disabled = false;
+  }finally{
 
-  });
+    botoes.forEach(function(b){
+
+      b.disabled=false;
+
+    });
+
+  }
 
 }
+
 
 /* =========================================================
 🔄 ATUALIZAÇÃO AUTOMÁTICA
@@ -1894,18 +1796,25 @@ async function atualizarNoticias(){
 
 function iniciarAtualizacaoAutomatica(){
 
-  setInterval(function(){
+  setInterval(
+    function(){
 
-    if(document.visibilityState==="visible"){
+      if(
+        document.visibilityState===
+        "visible"
+      ){
 
-      carregarNoticias();
-      carregarAnuncios();
+        carregarNoticias();
+        carregarAnuncios();
 
-    }
+      }
 
-  },5*60*1000);
+    },
+    5*60*1000
+  );
 
 }
+
 
 /* =========================================================
 🧹 FECHAR MODAL
@@ -1913,23 +1822,43 @@ function iniciarAtualizacaoAutomatica(){
 
 function iniciarFechoModal(){
 
-  document.addEventListener("click",function(e){
+  document.addEventListener(
+    "click",
+    function(e){
 
-    const m=document.getElementById("modal");
+      const m=
+        document.getElementById(
+          "modal"
+        );
 
-    if(m && e.target===m)
-      fecharModal();
+      if(
+        m &&
+        e.target===m
+      ){
 
-  });
+        fecharModal();
 
-  document.addEventListener("keydown",function(e){
+      }
 
-    if(e.key==="Escape")
-      fecharModal();
+    }
+  );
 
-  });
+
+  document.addEventListener(
+    "keydown",
+    function(e){
+
+      if(e.key==="Escape"){
+
+        fecharModal();
+
+      }
+
+    }
+  );
 
 }
+
 
 /* =========================================================
 🖼️ PROTEGER IMAGENS
@@ -1937,66 +1866,220 @@ function iniciarFechoModal(){
 
 function iniciarProtecaoImagens(){
 
-  document.addEventListener("error",function(e){
+  document.addEventListener(
+    "error",
+    function(e){
 
-    const img=e.target;
+      const img=e.target;
 
-    if(!img || img.tagName!=="IMG")
-      return;
+      if(
+        !img ||
+        img.tagName!=="IMG"
+      )
+        return;
 
-    if(
-      (img.src||"")
-      .startsWith("data:image/svg")
-    )
-      return;
+      if(
+        (img.src||"")
+          .startsWith(
+            "data:image/svg"
+          )
+      )
+        return;
 
-    const svg=`
-      <svg xmlns="http://www.w3.org/2000/svg"
-        width="1200" height="700">
+      img.onerror=null;
 
-        <rect width="1200" height="700"
-          fill="#168a45"/>
+      img.src=FALLBACK_IMG;
 
-        <text x="60" y="110"
-          fill="white"
-          font-family="Arial"
-          font-size="42"
-          font-weight="bold">
-          AFRICANMUNDO
-        </text>
-
-        <text x="60" y="350"
-          fill="white"
-          font-family="Arial"
-          font-size="42"
-          font-weight="bold">
-          ${esc(
-            img.alt ||
-            "Notícia AfricanMundo"
-          ).slice(0,55)}
-        </text>
-
-        <text x="60" y="620"
-          fill="white"
-          font-family="Arial"
-          font-size="24">
-          A informação que liga África ao mundo
-        </text>
-
-      </svg>
-    `;
-
-    img.src=
-      "data:image/svg+xml;charset=UTF-8,"+
-      encodeURIComponent(svg);
-
-  },true);
+    },
+    true
+  );
 
 }
 
+
 /* =========================================================
-🌍 AFRICANMUNDO — APP.JS
-PARTE 4/4 — INICIALIZAÇÃO FINAL
+🎨 TEMA
+========================================================= */
+
+function iniciarTema(){
+
+  try{
+
+    const tema=
+      localStorage.getItem(
+        "africanmundo_tema"
+      );
+
+    if(tema==="dark"){
+
+      document.body.classList.add(
+        "dark"
+      );
+
+    }else{
+
+      document.body.classList.remove(
+        "dark"
+      );
+
+    }
+
+  }catch(e){}
+
+}
+
+
+function alternarTema(){
+
+  document.body.classList.toggle(
+    "dark"
+  );
+
+  try{
+
+    localStorage.setItem(
+      "africanmundo_tema",
+      document.body.classList.contains(
+        "dark"
+      )
+      ? "dark"
+      : "light"
+    );
+
+  }catch(e){}
+
+}
+
+
+/* =========================================================
+🎨 COR
+========================================================= */
+
+function restaurarCor(){
+
+  try{
+
+    const cor=
+      localStorage.getItem(
+        "africanmundo_cor"
+      );
+
+    if(cor){
+
+      document.documentElement
+        .setAttribute(
+          "data-cor",
+          cor
+        );
+
+    }
+
+  }catch(e){}
+
+}
+
+
+function escolherCor(){
+
+  const cores=[
+    "verde",
+    "azul",
+    "vermelho",
+    "roxo",
+    "laranja"
+  ];
+
+  const atual=
+    document.documentElement
+      .getAttribute("data-cor") ||
+    "verde";
+
+  const indice=
+    cores.indexOf(atual);
+
+  const proxima=
+    cores[
+      (indice+1)%
+      cores.length
+    ];
+
+  document.documentElement
+    .setAttribute(
+      "data-cor",
+      proxima
+    );
+
+  try{
+
+    localStorage.setItem(
+      "africanmundo_cor",
+      proxima
+    );
+
+  }catch(e){}
+
+}
+
+
+/* =========================================================
+🌐 REDES SOCIAIS
+========================================================= */
+
+const REDES_SOCIAIS={
+
+  google:
+    "https://www.google.com",
+
+  facebook:
+    "https://www.facebook.com",
+
+  youtube:
+    "https://www.youtube.com",
+
+  whatsapp:
+    "https://wa.me/",
+
+  instagram:
+    "https://www.instagram.com",
+
+  tiktok:
+    "https://www.tiktok.com"
+
+};
+
+
+function abrirRede(rede){
+
+  const nome=
+    norm(rede);
+
+  const url=
+    REDES_SOCIAIS[nome];
+
+  if(!url){
+
+    console.warn(
+      "⚠️ Rede desconhecida:",
+      rede
+    );
+
+    return false;
+
+  }
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+  return true;
+
+}
+
+
+/* =========================================================
+🚀 INICIAR BOTÕES
 ========================================================= */
 
 function iniciarBotoes(){
@@ -2010,6 +2093,7 @@ function iniciarBotoes(){
   prepararAnuncieAqui();
 
 }
+
 
 /* =========================================================
 🚀 INICIAR AFRICANMUNDO
@@ -2045,12 +2129,13 @@ async function iniciarAfricanMundo(){
 
 }
 
+
 /* =========================================================
-📱 INICIAR QUANDO A PÁGINA ESTIVER PRONTA
+📱 INICIAR PÁGINA
 ========================================================= */
 
 if(
-  document.readyState ===
+  document.readyState===
   "loading"
 ){
 
@@ -2063,5 +2148,4 @@ if(
 
   iniciarAfricanMundo();
 
-}
-     
+        }
