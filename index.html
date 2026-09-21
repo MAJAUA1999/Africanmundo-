@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
-<head>
 
-<meta name="google-site-verification"
-content="E0zy-1tWcPBb6DkG3gAwwwHcjN7pPNwc5btkP-rAHic">
+<head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
+<meta
+name="viewport"
 content="width=device-width,initial-scale=1,viewport-fit=cover">
 
-<meta name="theme-color" content="#168a45">
+<meta
+name="theme-color"
+content="#168a45">
 
-<meta name="description"
-content="AfricanMundo — Notícias de Moçambique, África, futebol, negócios, entretenimento e desporto.">
+<meta
+name="description"
+content="AfricanMundo — Notícias de África. A informação que liga África ao mundo.">
 
-<title>AfricanMundo — Notícias de Moçambique e África</title>
+<meta
+name="google-site-verification"
+content="">
+
+<title>
+AfricanMundo — Notícias de África
+</title>
+
+<link
+rel="manifest"
+href="manifest.json">
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+
 <style>
 
-/* =========================================================
+/* =======================================================
    AFRICANMUNDO PREMIUM
-   ESTRUTURA RESPONSIVA
-========================================================= */
+   ======================================================= */
 
 :root{
+
   --p:#168a45;
   --p2:#0f6d36;
 
@@ -34,546 +47,598 @@ content="AfricanMundo — Notícias de Moçambique, África, futebol, negócios,
   --card:#ffffff;
 
   --txt:#172026;
-  --muted:#69757d;
+  --muted:#68747c;
+
   --border:#e1e7e4;
 
   --radius:16px;
-  --shadow:0 5px 22px rgba(0,0,0,.07);
+
+  --shadow:
+    0 5px 22px rgba(0,0,0,.07);
+
   --max:1180px;
+
 }
+
 
 *{
   box-sizing:border-box;
 }
 
+
 html{
   scroll-behavior:smooth;
 }
 
+
 body{
+
   margin:0;
-  min-width:0;
+
   width:100%;
+  min-width:0;
+
   overflow-x:hidden;
+
+  background:var(--bg);
+
+  color:var(--txt);
 
   font-family:
     Arial,
     Helvetica,
     sans-serif;
 
-  background:var(--bg);
-  color:var(--txt);
 }
+
 
 body.dark{
-  --bg:#101517;
-  --card:#171e21;
-  --txt:#f2f5f6;
-  --muted:#aab5ba;
-  --border:#293338;
+
+  --bg:#101514;
+  --card:#18201e;
+
+  --txt:#f2f6f4;
+  --muted:#aeb9b5;
+
+  --border:#2c3834;
+
 }
+
 
 body.blue{
-  --p:#1976d2;
-  --p2:#1259a4;
+  --p:#1769d2;
+  --p2:#0d4fa8;
 }
+
 
 body.red{
-  --p:#d62828;
-  --p2:#a61f1f;
+  --p:#d62f3d;
+  --p2:#a91f2b;
 }
+
 
 body.purple{
-  --p:#7b3fc6;
-  --p2:#5b2c91;
+  --p:#7444c8;
+  --p2:#552c9b;
 }
 
+
 body.orange{
-  --p:#ed7d16;
-  --p2:#b85b0c;
+  --p:#e87518;
+  --p2:#b94f0b;
 }
+
+
+a{
+
+  color:inherit;
+
+  text-decoration:none;
+
+}
+
 
 button,
 input{
+
   font:inherit;
+
 }
+
 
 button{
+
   cursor:pointer;
+
 }
 
-img,
-video{
-  max-width:100%;
-}
-
-
-/* =========================================================
-   CONTAINER
-========================================================= */
 
 .container{
-  width:min(var(--max),calc(100% - 28px));
+
+  width:
+    min(
+      var(--max),
+      calc(100% - 28px)
+    );
+
   margin:auto;
+
 }
 
 
-/* =========================================================
-   HEADER
-========================================================= */
+/* =======================================================
+   CABEÇALHO
+======================================================= */
 
 header{
+
   position:sticky;
+
   top:0;
+
   z-index:1000;
 
   background:var(--card);
-  border-bottom:1px solid var(--border);
 
-  box-shadow:0 3px 15px rgba(0,0,0,.06);
+  border-bottom:
+    1px solid var(--border);
+
+  box-shadow:
+    0 2px 12px rgba(0,0,0,.05);
+
 }
 
-.top{
-  min-height:70px;
+
+.header-main{
+
+  min-height:68px;
 
   display:flex;
+
   align-items:center;
+
   justify-content:space-between;
 
-  gap:15px;
+  gap:14px;
+
 }
 
-
-/* LOGO */
 
 .brand{
-  min-width:0;
 
   display:flex;
-  align-items:center;
-  gap:10px;
 
-  text-decoration:none;
-  color:var(--txt);
+  align-items:center;
+
+  gap:9px;
+
+  min-width:0;
+
 }
 
+
 .logo{
-  width:43px;
-  height:43px;
 
-  flex:0 0 43px;
+  width:42px;
+  height:42px;
 
-  display:grid;
-  place-items:center;
+  border-radius:12px;
 
-  border-radius:13px;
+  display:flex;
 
-  background:linear-gradient(
-    135deg,
-    var(--p),
-    var(--p2)
-  );
+  align-items:center;
+  justify-content:center;
+
+  background:var(--p);
 
   color:#fff;
 
   font-size:22px;
 
-  box-shadow:
-    0 5px 14px rgba(22,138,69,.22);
+  flex:none;
+
 }
+
 
 .brand-text{
+
   min-width:0;
+
 }
 
-.brand-title{
+
+.brand-text strong{
+
+  display:block;
+
   font-size:20px;
-  font-weight:950;
-  letter-spacing:-.3px;
+
+  font-weight:800;
+
+  white-space:nowrap;
+
 }
 
-.brand-subtitle{
+
+.brand-text span{
+
+  display:block;
+
   margin-top:2px;
+
+  font-size:11px;
 
   color:var(--muted);
 
-  font-size:9px;
   white-space:nowrap;
+
 }
 
 
-/* HEADER BUTTONS */
+.header-actions{
 
-.actions{
   display:flex;
+
   align-items:center;
+
   gap:6px;
 
-  flex-shrink:0;
+  flex:none;
+
 }
 
-.icon{
-  width:38px;
-  height:38px;
+
+.header-actions button{
+
+  width:39px;
+  height:39px;
+
+  border:1px solid var(--border);
+
+  border-radius:12px;
+
+  background:var(--card);
+
+  color:var(--txt);
+
+  display:flex;
+
+  align-items:center;
+  justify-content:center;
 
   padding:0;
 
-  display:grid;
-  place-items:center;
+  transition:.2s;
 
-  border:1px solid var(--border);
-  border-radius:11px;
-
-  background:var(--card);
-  color:var(--txt);
-
-  font-size:16px;
-
-  transition:
-    transform .15s,
-    background .15s,
-    color .15s;
 }
 
-.icon:hover{
-  transform:translateY(-1px);
+
+.header-actions button:hover{
 
   background:var(--p);
+
   color:#fff;
 
   border-color:var(--p);
+
+  transform:translateY(-1px);
+
 }
 
 
-/* =========================================================
+/* =======================================================
    MENU
-========================================================= */
+======================================================= */
 
-.menu{
-  border-top:1px solid var(--border);
+nav{
+
+  border-top:
+    1px solid var(--border);
+
+  background:var(--card);
+
+}
+
+
+.nav-inner{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:4px;
+
   overflow-x:auto;
 
   scrollbar-width:none;
+
 }
 
-.menu::-webkit-scrollbar{
+
+.nav-inner::-webkit-scrollbar{
+
   display:none;
-}
 
-.menu-inner{
-  display:flex;
-  align-items:center;
-
-  gap:7px;
-
-  padding:8px 0;
-
-  white-space:nowrap;
-}
-
-.menu a{
-  padding:8px 12px;
-
-  border-radius:10px;
-
-  background:var(--bg);
-
-  color:var(--txt);
-
-  text-decoration:none;
-
-  font-size:11px;
-  font-weight:900;
-
-  transition:.15s;
-}
-
-.menu a:hover{
-  background:var(--p);
-  color:#fff;
 }
 
 
-/* =========================================================
-   MAIN
-========================================================= */
+.nav-inner a{
+
+  flex:none;
+
+  padding:12px 10px;
+
+  font-size:13px;
+
+  font-weight:700;
+
+  color:var(--muted);
+
+  border-bottom:2px solid transparent;
+
+}
+
+
+.nav-inner a:hover,
+.nav-inner a.active{
+
+  color:var(--p);
+
+  border-bottom-color:var(--p);
+
+}
+
+
+/* =======================================================
+   CONTEÚDO
+======================================================= */
 
 main{
-  padding:8px 0 50px;
+
+  width:100%;
+
 }
 
 
-/* =========================================================
+.section{
+
+  margin-top:24px;
+
+}
+
+
+.section-head{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:space-between;
+
+  gap:12px;
+
+  margin-bottom:12px;
+
+}
+
+
+.section-head h2{
+
+  margin:0;
+
+  font-size:20px;
+
+  line-height:1.2;
+
+}
+
+
+.section-head a{
+
+  flex:none;
+
+  color:var(--p);
+
+  font-size:12px;
+
+  font-weight:800;
+
+}
+
+
+/* =======================================================
    PESQUISA
-========================================================= */
+======================================================= */
 
 .search{
-  padding:15px 0 5px;
+
+  margin-top:18px;
+
 }
+
 
 .search-box{
+
   display:flex;
+
   gap:8px;
+
+  width:100%;
+
 }
 
-.search input{
-  width:100%;
+
+.search-box input{
+
+  flex:1;
+
   min-width:0;
-  height:45px;
 
-  padding:0 14px;
+  height:46px;
 
-  border:1px solid var(--border);
-  border-radius:12px;
+  padding:
+    0 14px;
 
-  background:var(--card);
-  color:var(--txt);
+  border:
+    1px solid var(--border);
+
+  border-radius:13px;
 
   outline:none;
+
+  background:var(--card);
+
+  color:var(--txt);
+
 }
 
-.search input:focus{
+
+.search-box input:focus{
+
   border-color:var(--p);
-  box-shadow:0 0 0 3px rgba(22,138,69,.08);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(22,138,69,.10);
+
 }
 
-.search button{
-  height:45px;
 
-  padding:0 17px;
+.search-box button{
+
+  height:46px;
+
+  padding:
+    0 18px;
 
   border:0;
-  border-radius:12px;
+
+  border-radius:13px;
 
   background:var(--p);
+
   color:#fff;
 
-  font-size:11px;
-  font-weight:900;
+  font-weight:800;
+
 }
+
+
+.search-box button:hover{
+
+  background:var(--p2);
+
+}
+
 
 #searchResults{
+
   margin-top:10px;
+
 }
 
 
-/* =========================================================
+/* =======================================================
    REDES SOCIAIS
-========================================================= */
+======================================================= */
 
 .socials{
+
   display:flex;
+
   flex-wrap:wrap;
 
   gap:7px;
 
-  margin:8px 0 16px;
+  margin-top:14px;
+
 }
+
 
 .socials button{
-  border:1px solid var(--border);
+
+  border:
+    1px solid var(--border);
 
   background:var(--card);
+
   color:var(--txt);
 
-  border-radius:10px;
+  border-radius:12px;
 
-  padding:8px 11px;
+  padding:
+    9px 12px;
 
-  font-size:11px;
-  font-weight:800;
+  font-size:12px;
 
-  transition:.15s;
+  font-weight:700;
+
 }
+
 
 .socials button:hover{
-  background:var(--p);
+
   color:#fff;
+
+  background:var(--p);
+
   border-color:var(--p);
+
 }
 
 
-/* =========================================================
-   ANUNCIE AQUI
-========================================================= */
+/* =======================================================
+   PUBLICIDADE
+======================================================= */
 
 .ad{
-  display:block;
 
-  padding:18px;
+  margin-top:18px;
 
-  text-align:center;
+  padding:16px;
 
-  text-decoration:none;
+  display:flex;
+
+  align-items:center;
+
+  gap:12px;
 
   background:
     linear-gradient(
       135deg,
-      var(--card),
-      var(--bg)
+      var(--p),
+      var(--p2)
     );
 
-  border:1px solid var(--border);
+  color:#fff;
+
   border-radius:var(--radius);
 
   box-shadow:var(--shadow);
+
 }
+
 
 .ad strong{
-  display:block;
 
-  margin:6px 0;
+  font-size:16px;
 
-  color:var(--p);
-
-  font-size:20px;
-  font-weight:950;
 }
+
 
 .ad span{
-  color:var(--muted);
+
   font-size:12px;
+
+  opacity:.9;
+
 }
 
-
-/* =========================================================
-   PUBLICIDADE ATIVA
-========================================================= */
-
-#anunciosAtivos{
-  display:grid;
-
-  grid-template-columns:
-    repeat(2,minmax(0,1fr));
-
-  gap:10px;
-}
-
-.anuncio-card{
-  min-width:0;
-
-  padding:7px;
-
-  background:var(--card);
-
-  border:1px solid var(--border);
-  border-radius:11px;
-
-  overflow:hidden;
-}
-
-.anuncio-media{
-  width:100%;
-
-  aspect-ratio:16 / 7;
-
-  overflow:hidden;
-
-  border-radius:8px;
-
-  background:var(--bg);
-}
-
-.anuncio-media img,
-.anuncio-media video{
-  width:100%;
-  height:100%;
-
-  display:block;
-
-  object-fit:cover;
-}
-
-.anuncio-titulo{
-  margin-top:5px;
-
-  font-size:10px;
-  line-height:1.25;
-
-  font-weight:900;
-}
-
-.anuncio-texto{
-  margin-top:3px;
-
-  color:var(--muted);
-
-  font-size:8px;
-  line-height:1.3;
-}
-
-.anuncio-botao{
-  display:inline-block;
-
-  margin-top:5px;
-
-  padding:5px 7px;
-
-  border-radius:6px;
-
-  background:var(--p);
-  color:#fff;
-
-  text-decoration:none;
-
-  font-size:8px;
-  font-weight:900;
-}
-
-
-/* =========================================================
-   SEÇÕES
-========================================================= */
-
-.section{
-  margin-top:28px;
-}
-
-.section-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-
-  gap:10px;
-
-  margin-bottom:11px;
-}
-
-.section-head h2{
-  margin:0;
-
-  font-size:19px;
-  line-height:1.2;
-
-  font-weight:950;
-}
-
-.section-head a{
-  flex-shrink:0;
-
-  color:var(--p);
-
-  text-decoration:none;
-
-  font-size:11px;
-  font-weight:900;
-}
-
-.section-head a:hover{
-  text-decoration:underline;
-}
-
-
-/* =========================================================
+   /* =======================================================
    DESTAQUE
-========================================================= */
-
-#destaque{
-  min-width:0;
-}
+======================================================= */
 
 .featured{
-  position:relative;
 
   display:grid;
 
@@ -587,16 +652,20 @@ main{
 
   background:var(--card);
 
-  border:1px solid var(--border);
-  border-radius:18px;
+  border:
+    1px solid var(--border);
+
+  border-radius:var(--radius);
 
   box-shadow:var(--shadow);
 
-  cursor:pointer;
 }
 
+
 .featured img{
+
   width:100%;
+
   height:100%;
 
   min-height:330px;
@@ -604,91 +673,143 @@ main{
   display:block;
 
   object-fit:cover;
+
 }
 
-.featured-body{
+
+.featured-content{
+
   min-width:0;
 
+  padding:24px;
+
   display:flex;
+
   flex-direction:column;
+
   justify-content:center;
 
-  padding:25px;
 }
 
-.featured-cat{
-  color:var(--p);
-
-  font-size:10px;
-  font-weight:950;
-
-  text-transform:uppercase;
-}
 
 .featured-title{
-  margin:8px 0;
 
-  font-size:27px;
-  line-height:1.18;
+  margin:5px 0;
 
-  font-weight:950;
+  font-size:
+    clamp(22px,3vw,34px);
 
-  overflow-wrap:anywhere;
+  line-height:1.15;
+
+  color:var(--txt);
+
+  text-shadow:none;
+
 }
+
+
+.featured-category{
+
+  color:var(--p);
+
+  font-size:12px;
+
+  font-weight:800;
+
+  margin-bottom:8px;
+
+}
+
 
 .featured-text{
+
   color:var(--muted);
 
-  font-size:13px;
+  font-size:14px;
+
   line-height:1.55;
+
+  margin-top:10px;
+
 }
 
 
-/* =========================================================
-   GRID DE NOTÍCIAS
-========================================================= */
+.featured-date{
+
+  margin-top:15px;
+
+  color:var(--muted);
+
+  font-size:11px;
+
+}
+
+
+/* =======================================================
+   GRELHA DE NOTÍCIAS
+======================================================= */
 
 .grid{
+
   display:grid;
 
   grid-template-columns:
-    repeat(4,minmax(0,1fr));
+    repeat(
+      4,
+      minmax(0,1fr)
+    );
 
   gap:13px;
 
   min-width:0;
+
 }
 
+
+/* =======================================================
+   CARTÃO
+======================================================= */
+
 .card{
+
   min-width:0;
-
-  background:var(--card);
-
-  border:1px solid var(--border);
-  border-radius:15px;
 
   overflow:hidden;
 
-  box-shadow:var(--shadow);
+  background:var(--card);
 
-  cursor:pointer;
+  border:
+    1px solid var(--border);
+
+  border-radius:14px;
+
+  box-shadow:
+    0 3px 12px
+    rgba(0,0,0,.05);
 
   transition:
-    transform .18s,
-    box-shadow .18s;
+    transform .2s,
+    box-shadow .2s;
+
 }
 
+
 .card:hover{
+
   transform:translateY(-2px);
 
   box-shadow:
-    0 8px 26px rgba(0,0,0,.11);
+    0 7px 20px
+    rgba(0,0,0,.09);
+
 }
 
+
 .card img{
+
   width:100%;
 
-  aspect-ratio:16 / 9;
+  aspect-ratio:16/9;
 
   height:auto;
 
@@ -697,191 +818,818 @@ main{
   object-fit:cover;
 
   background:var(--bg);
+
 }
+
 
 .card-body{
+
+  min-width:0;
+
   padding:11px;
+
 }
 
-.card-cat{
+
+.card-category{
+
+  display:block;
+
+  margin-bottom:5px;
+
   color:var(--p);
 
-  font-size:9px;
-  font-weight:950;
+  font-size:10px;
 
-  text-transform:uppercase;
+  font-weight:800;
+
 }
+
 
 .card-title{
-  margin-top:5px;
 
-  font-size:13px;
-  line-height:1.35;
+  margin:0;
 
-  font-weight:900;
+  font-size:14px;
 
-  overflow-wrap:anywhere;
+  line-height:1.32;
+
+  font-weight:800;
+
+  display:-webkit-box;
+
+  -webkit-line-clamp:3;
+
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+
 }
 
 
-/* =========================================================
-   CARDS COMPACTOS
-========================================================= */
+.card-text{
 
-.compact-card{
-  display:flex;
+  margin:7px 0 0;
 
-  min-width:0;
+  color:var(--muted);
 
-  gap:9px;
-
-  padding:7px;
-
-  background:var(--card);
-
-  border:1px solid var(--border);
-  border-radius:12px;
-
-  box-shadow:var(--shadow);
-
-  cursor:pointer;
-}
-
-.compact-card img{
-  width:82px;
-  height:68px;
-
-  flex:0 0 82px;
-
-  object-fit:cover;
-
-  border-radius:8px;
-}
-
-.compact-body{
-  min-width:0;
-
-  padding:2px 3px;
-}
-
-.compact-cat{
-  margin-bottom:4px;
-
-  color:var(--p);
-
-  font-size:8px;
-  font-weight:900;
-
-  text-transform:uppercase;
-}
-
-.compact-title{
   font-size:11px;
-  line-height:1.3;
 
-  font-weight:900;
+  line-height:1.4;
 
-  overflow-wrap:anywhere;
+  display:-webkit-box;
+
+  -webkit-line-clamp:2;
+
+  -webkit-box-orient:vertical;
+
+  overflow:hidden;
+
 }
 
 
-/* =========================================================
-   LOADING
-========================================================= */
+.card-date{
+
+  margin-top:8px;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+}
+
+
+/* =======================================================
+   CARREGAMENTO
+======================================================= */
 
 .loading{
-  grid-column:1 / -1;
 
-  padding:25px;
+  padding:25px 10px;
 
   text-align:center;
 
   color:var(--muted);
 
+  font-size:13px;
+
+}
+
+
+/* =======================================================
+   PUBLICIDADE ATIVA
+======================================================= */
+
+#anunciosAtivos{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(
+      3,
+      minmax(0,1fr)
+    );
+
+  gap:13px;
+
+}
+
+
+.anuncio-card{
+
+  min-width:0;
+
+  padding:15px;
+
   background:var(--card);
 
-  border:1px solid var(--border);
+  border:
+    1px solid var(--border);
 
   border-radius:14px;
+
 }
 
 
-/* =========================================================
-   FOOTER
-========================================================= */
+/* =======================================================
+   PAINÉIS DO TOPO
+======================================================= */
 
-footer{
-  margin-top:35px;
+.top-panel{
 
-  padding:30px 0 70px;
+  position:fixed;
+
+  top:76px;
+
+  right:14px;
+
+  z-index:2000;
+
+  width:min(
+    330px,
+    calc(100vw - 28px)
+  );
+
+  max-height:
+    calc(100vh - 95px);
+
+  overflow:auto;
+
+  padding:15px;
 
   background:var(--card);
 
-  border-top:1px solid var(--border);
+  color:var(--txt);
 
-  text-align:center;
+  border:
+    1px solid var(--border);
+
+  border-radius:16px;
+
+  box-shadow:
+    0 12px 35px
+    rgba(0,0,0,.18);
+
 }
 
-footer strong{
-  color:var(--p);
 
-  font-size:18px;
+.top-panel h3{
+
+  margin:
+    0 0 10px;
+
+  font-size:16px;
+
 }
 
-footer p{
+
+.top-panel p{
+
+  margin:6px 0;
+
   color:var(--muted);
 
-  font-size:11px;
+  font-size:13px;
 
-  line-height:1.6;
-}
-
-footer a{
-  color:var(--p);
-
-  text-decoration:none;
-}
-
-footer a:hover{
-  text-decoration:underline;
 }
 
 
-/* =========================================================
+/* =======================================================
    MODAL
-========================================================= */
+======================================================= */
 
-.modal-overlay{
+.modal{
+
   position:fixed;
 
   inset:0;
 
-  z-index:99999;
+  z-index:3000;
 
-  display:none;
-
-  align-items:flex-start;
-  justify-content:center;
-
-  padding:0 12px;
-
-  background:rgba(0,0,0,.35);
-
-  pointer-events:none;
-}
-
-.modal-overlay.active{
   display:flex;
 
-  pointer-events:auto;
+  align-items:center;
+
+  justify-content:center;
+
+  padding:18px;
+
+  background:
+    rgba(0,0,0,.62);
+
 }
 
+
 .modal-box{
-  width:min(520px,100%);
 
-  max-height:90vh;
+  position:relative;
 
-  margin-top:12px;
+  width:min(
+    620px,
+    100%
+  );
+
+  max-height:
+    calc(100vh - 36px);
+
+  overflow:auto;
+
+  padding:22px;
+
+  background:var(--card);
+
+  color:var(--txt);
+
+  border-radius:18px;
+
+  box-shadow:
+    0 15px 45px
+    rgba(0,0,0,.25);
+
+}
+
+
+.modal-close{
+
+  position:absolute;
+
+  top:10px;
+
+  right:10px;
+
+  width:35px;
+
+  height:35px;
+
+  border:0;
+
+  border-radius:50%;
+
+  background:var(--bg);
+
+  color:var(--txt);
+
+  font-size:22px;
+
+}
+
+
+.modal-box h2{
+
+  margin:
+    0 40px 15px 0;
+
+  font-size:22px;
+
+}
+
+
+#modalBody{
+
+  color:var(--muted);
+
+  line-height:1.6;
+
+}
+
+
+/* =======================================================
+   RODAPÉ
+======================================================= */
+
+footer{
+
+  margin-top:40px;
+
+  padding:
+    28px 0;
+
+  background:#101514;
+
+  color:#fff;
+
+}
+
+
+footer strong{
+
+  font-size:15px;
+
+}
+
+
+footer p{
+
+  margin:7px 0 15px;
+
+  color:#b9c2bf;
+
+  font-size:12px;
+
+}
+
+
+.footer-links{
+
+  display:flex;
+
+  flex-wrap:wrap;
+
+  gap:14px;
+
+}
+
+
+.footer-links a{
+
+  font-size:12px;
+
+  color:#dce4e1;
+
+}
+
+
+.footer-links a:hover{
+
+  color:#fff;
+
+}
+
+
+/* =======================================================
+   TABLET
+======================================================= */
+
+@media(max-width:900px){
+
+  .grid{
+
+    grid-template-columns:
+      repeat(
+        3,
+        minmax(0,1fr)
+      );
+
+  }
+
+
+  .featured{
+
+    grid-template-columns:
+      minmax(0,1.2fr)
+      minmax(240px,.8fr);
+
+  }
+
+
+  #anunciosAtivos{
+
+    grid-template-columns:
+      repeat(2,minmax(0,1fr));
+
+  }
+
+}
+
+
+/* =======================================================
+   CELULAR
+======================================================= */
+
+@media(max-width:680px){
+
+  .container{
+
+    width:
+      calc(100% - 14px);
+
+  }
+
+
+  .header-main{
+
+    min-height:58px;
+
+    gap:7px;
+
+  }
+
+
+  .logo{
+
+    width:37px;
+    height:37px;
+
+    border-radius:10px;
+
+    font-size:19px;
+
+  }
+
+
+  .brand-text strong{
+
+    font-size:17px;
+
+  }
+
+
+  .brand-text span{
+
+    font-size:9px;
+
+  }
+
+
+  .header-actions{
+
+    gap:3px;
+
+  }
+
+
+  .header-actions button{
+
+    width:34px;
+    height:34px;
+
+    border-radius:10px;
+
+    font-size:14px;
+
+  }
+
+
+  .nav-inner a{
+
+    padding:
+      10px 8px;
+
+    font-size:11px;
+
+  }
+
+
+  .section{
+
+    margin-top:18px;
+
+  }
+
+
+  .section-head{
+
+    margin-bottom:9px;
+
+  }
+
+
+  .section-head h2{
+
+    font-size:17px;
+
+  }
+
+
+  .section-head a{
+
+    font-size:10px;
+
+  }
+
+
+  .search{
+
+    margin-top:12px;
+
+  }
+
+
+  .search-box{
+
+    gap:5px;
+
+  }
+
+
+  .search-box input{
+
+    height:42px;
+
+    font-size:13px;
+
+  }
+
+
+  .search-box button{
+
+    height:42px;
+
+    padding:
+      0 11px;
+
+    font-size:11px;
+
+  }
+
+
+  .socials{
+
+    gap:5px;
+
+  }
+
+
+  .socials button{
+
+    padding:
+      7px 9px;
+
+    font-size:10px;
+
+  }
+
+
+  .ad{
+
+    padding:13px;
+
+    border-radius:13px;
+
+    gap:9px;
+
+  }
+
+
+  .ad strong{
+
+    font-size:13px;
+
+  }
+
+
+  .ad span{
+
+    font-size:10px;
+
+  }
+
+
+  .featured{
+
+    display:block;
+
+  }
+
+
+  .featured img{
+
+    width:100%;
+
+    height:auto;
+
+    min-height:0;
+
+    aspect-ratio:16/9;
+
+    object-fit:cover;
+
+  }
+
+
+  .featured-content{
+
+    padding:15px;
+
+  }
+
+
+  .featured-title{
+
+    font-size:22px;
+
+  }
+
+
+  .featured-text{
+
+    font-size:12px;
+
+    line-height:1.45;
+
+  }
+
+
+  .grid{
+
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0,1fr)
+      );
+
+    gap:8px;
+
+  }
+
+
+  .card{
+
+    border-radius:11px;
+
+  }
+
+
+  .card-body{
+
+    padding:8px;
+
+  }
+
+
+  .card-title{
+
+    font-size:12px;
+
+    line-height:1.28;
+
+  }
+
+
+  .card-text{
+
+    font-size:10px;
+
+    -webkit-line-clamp:2;
+
+  }
+
+
+  .card-category{
+
+    font-size:9px;
+
+  }
+
+
+  .card-date{
+
+    font-size:9px;
+
+  }
+
+
+  #anunciosAtivos{
+
+    grid-template-columns:
+      1fr;
+
+  }
+
+
+  .top-panel{
+
+    top:63px;
+
+    right:7px;
+
+    width:
+      calc(100vw - 14px);
+
+  }
+
+
+  .modal{
+
+    padding:10px;
+
+  }
+
+
+  .modal-box{
+
+    padding:17px;
+
+    border-radius:15px;
+
+  }
+
+}
+
+
+/* =======================================================
+   CELULARES MUITO PEQUENOS
+======================================================= */
+
+@media(max-width:380px){
+
+  .brand-text span{
+
+    display:none;
+
+  }
+
+
+  .header-actions button{
+
+    width:31px;
+    height:31px;
+
+    font-size:13px;
+
+  }
+
+
+  .featured-title{
+
+    font-size:20px;
+
+  }
+
+
+  .card-title{
+
+    font-size:11px;
+
+  }
+
+
+  .card-body{
+
+    padding:7px;
+
+  }
+
+}
+
+
+/* =======================================================
+   SEGURANÇA CONTRA LARGURA EXCESSIVA
+======================================================= */
+
+img{
+
+  max-width:100%;
+
+}
+
+
+section,
+header,
+main,
+footer,
+div{
+
+  max-width:100%;
+
+   }
+
+   /* =======================================================
+   PAINÉIS FLUTUANTES
+======================================================= */
+
+#notificationPanel,
+#toolsPanel,
+#userPanel,
+#colorPanel{
+
+  position:fixed !important;
+
+  top:76px !important;
+
+  right:14px !important;
+
+  left:auto !important;
+
+  z-index:2500 !important;
+
+  width:min(
+    330px,
+    calc(100vw - 28px)
+  ) !important;
+
+  max-height:
+    calc(100vh - 95px);
 
   overflow:auto;
 
@@ -889,521 +1637,304 @@ footer a:hover{
 
   color:var(--txt);
 
-  border:1px solid var(--border);
+  border:
+    1px solid var(--border);
 
-  border-radius:18px;
+  border-radius:16px;
 
   box-shadow:
-    0 20px 60px rgba(0,0,0,.35);
-
-  animation:amModal .2s ease-out;
-}
-
-@keyframes amModal{
-
-  from{
-    opacity:0;
-    transform:translateY(-15px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+    0 12px 35px
+    rgba(0,0,0,.18);
 
 }
 
-.modal-head{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
 
-  gap:10px;
+/* =======================================================
+   ELEMENTOS INTERNOS DOS PAINÉIS
+======================================================= */
 
-  padding:14px 16px;
+#notificationPanel button,
+#toolsPanel button,
+#userPanel button,
+#colorPanel button{
 
-  border-bottom:1px solid var(--border);
+  max-width:100%;
+
 }
 
-.modal-head strong{
-  min-width:0;
 
-  font-size:15px;
+#notificationPanel a,
+#toolsPanel a,
+#userPanel a{
+
+  display:block;
+
+  padding:10px 12px;
+
+  border-radius:10px;
+
+  color:var(--txt);
+
 }
 
-.modal-head button{
-  flex-shrink:0;
+
+#notificationPanel a:hover,
+#toolsPanel a:hover,
+#userPanel a:hover{
+
+  background:var(--bg);
+
+  color:var(--p);
+
+}
+
+
+/* =======================================================
+   BOTÕES DE COR
+======================================================= */
+
+.color-options{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:8px;
+
+}
+
+
+.color-options button{
+
+  height:38px;
 
   border:0;
 
-  background:var(--bg);
-  color:var(--txt);
-
-  border-radius:9px;
-
-  padding:7px 10px;
-}
-
-#modalBody{
-  padding:16px;
-}
-
-
-/* =========================================================
-   DROPDOWNS / FERRAMENTAS
-========================================================= */
-
-@keyframes amDropdown{
-
-  from{
-    opacity:0;
-    transform:translateY(-7px);
-  }
-
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  border-radius:10px;
 
 }
 
-.am-box .am-action,
-.am-box .am-color{
-  width:100%;
 
-  margin:3px 0;
+/* =======================================================
+   BOTÃO FECHAR PAINEL
+======================================================= */
 
-  padding:8px 9px;
+.panel-close{
 
-  border:1px solid var(--border);
+  position:absolute;
 
-  border-radius:8px;
+  top:8px;
+
+  right:8px;
+
+  width:30px;
+
+  height:30px;
+
+  border:0;
+
+  border-radius:50%;
 
   background:var(--bg);
 
   color:var(--txt);
 
-  text-align:left;
-
-  font-size:11px;
-  font-weight:700;
-}
-
-.am-box .am-action:hover,
-.am-box .am-color:hover{
-  background:var(--p);
-  color:#fff;
 }
 
 
-/* =========================================================
-   TABLET
-========================================================= */
+/* =======================================================
+   MENU INFERIOR MOBILE
+======================================================= */
 
-@media (max-width:900px){
+.bottom-menu{
 
-  .grid{
-    grid-template-columns:
-      repeat(3,minmax(0,1fr));
-  }
-
-  .featured{
-    grid-template-columns:
-      minmax(0,1.25fr)
-      minmax(230px,.9fr);
-  }
-
-  .featured img{
-    min-height:280px;
-  }
-
-  .featured-title{
-    font-size:23px;
-  }
+  display:none;
 
 }
 
 
-/* =========================================================
-   CELULAR
-========================================================= */
+@media(max-width:680px){
 
-@media (max-width:600px){
+  #notificationPanel,
+  #toolsPanel,
+  #userPanel,
+  #colorPanel{
 
-  .container{
-    width:calc(100% - 14px);
-  }
+    top:63px !important;
 
-  .top{
-    min-height:57px;
+    right:7px !important;
 
-    gap:5px;
-  }
+    left:7px !important;
 
-  .logo{
-    width:35px;
-    height:35px;
+    width:auto !important;
 
-    flex-basis:35px;
+    max-height:
+      calc(100vh - 75px);
 
-    border-radius:10px;
+    border-radius:15px;
 
-    font-size:18px;
-  }
-
-  .brand{
-    gap:7px;
-  }
-
-  .brand-title{
-    font-size:16px;
-  }
-
-  .brand-subtitle{
-    display:none;
-  }
-
-  .actions{
-    gap:3px;
-  }
-
-  .icon{
-    width:31px;
-    height:31px;
-
-    border-radius:9px;
-
-    font-size:13px;
   }
 
 
-  /* MENU */
+  .bottom-menu{
 
-  .menu-inner{
-    gap:5px;
+    position:fixed;
 
-    padding:6px 0;
-  }
+    left:7px;
 
-  .menu a{
-    padding:7px 9px;
+    right:7px;
 
-    font-size:9px;
-  }
+    bottom:7px;
 
+    z-index:1500;
 
-  /* PESQUISA */
+    display:flex;
 
-  .search{
-    padding:12px 0 5px;
-  }
+    align-items:center;
 
-  .search-box{
-    gap:5px;
-  }
+    justify-content:space-around;
 
-  .search input{
-    height:40px;
+    padding:7px;
 
-    padding:0 11px;
+    background:var(--card);
 
-    font-size:12px;
-  }
+    border:
+      1px solid var(--border);
 
-  .search button{
-    height:40px;
+    border-radius:16px;
 
-    padding:0 11px;
+    box-shadow:
+      0 8px 28px
+      rgba(0,0,0,.16);
 
-    font-size:9px;
   }
 
 
-  /* REDES */
+  .bottom-menu a,
+  .bottom-menu button{
 
-  .socials{
-    gap:5px;
+    min-width:0;
 
-    margin:6px 0 12px;
-  }
+    border:0;
 
-  .socials button{
-    padding:7px 8px;
+    background:transparent;
 
-    font-size:9px;
-  }
+    color:var(--muted);
 
+    padding:5px 7px;
 
-  /* ANÚNCIO */
-
-  .ad{
-    padding:14px 10px;
-  }
-
-  .ad strong{
-    font-size:17px;
-  }
-
-  .ad span{
     font-size:10px;
+
   }
 
 
-  /* SEÇÕES */
+  .bottom-menu a.active,
+  .bottom-menu button.active{
 
-  .section{
-    margin-top:21px;
-  }
+    color:var(--p);
 
-  .section-head{
-    margin-bottom:8px;
-  }
-
-  .section-head h2{
-    font-size:16px;
-  }
-
-  .section-head a{
-    font-size:9px;
   }
 
 
-  /* DESTAQUE */
+  body{
 
-  .featured{
-    display:block;
+    padding-bottom:68px;
 
-    border-radius:14px;
-  }
-
-  .featured img{
-    width:100%;
-    height:auto;
-
-    min-height:0;
-
-    aspect-ratio:16 / 9;
-
-    object-fit:cover;
-  }
-
-  .featured-body{
-    padding:11px;
-  }
-
-  .featured-cat{
-    font-size:8px;
-  }
-
-  .featured-title{
-  margin:5px 0;
-  font-size:clamp(22px,3vw,34px);
-  line-height:1.15;
-  text-shadow:none;
-  }
-
-  .featured-text{
-    font-size:11px;
-    line-height:1.45;
-  }
-
-
-  /* NOTÍCIAS */
-
-  .grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-
-    gap:7px;
-  }
-
-  .card{
-    border-radius:11px;
-  }
-
-  .card img{
-    width:100%;
-    height:auto;
-
-    aspect-ratio:16 / 9;
-  }
-
-  .card-body{
-    padding:6px;
-  }
-
-  .card-cat{
-    font-size:7px;
-  }
-
-  .card-title{
-    margin-top:4px;
-
-    font-size:9px;
-    line-height:1.3;
-  }
-
-
-  /* COMPACTOS */
-
-  .compact-card{
-    gap:7px;
-
-    padding:6px;
-
-    min-height:70px;
-  }
-
-  .compact-card img{
-    width:70px;
-    height:58px;
-
-    flex-basis:70px;
-  }
-
-  .compact-cat{
-    font-size:7px;
-  }
-
-  .compact-title{
-    font-size:10px;
-    line-height:1.25;
-  }
-
-
-  /* PUBLICIDADE */
-
-  #anunciosAtivos{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr));
-
-    gap:6px;
-  }
-
-  .anuncio-card{
-    padding:5px;
-
-    border-radius:8px;
-  }
-
-  .anuncio-media{
-    aspect-ratio:16 / 8;
-  }
-
-  .anuncio-titulo{
-    font-size:8px;
-  }
-
-  .anuncio-texto{
-    font-size:6.5px;
-  }
-
-  .anuncio-botao{
-    font-size:6.5px;
-
-    padding:4px 5px;
-  }
-
-
-  /* FOOTER */
-
-  footer{
-    margin-top:24px;
-
-    padding:23px 0 60px;
-  }
-
-  footer strong{
-    font-size:15px;
-  }
-
-  footer p{
-    font-size:9px;
-  }
-
-
-  /* MODAL */
-
-  .modal-overlay{
-    padding:0 7px;
-  }
-
-  .modal-box{
-    margin-top:7px;
-
-    border-radius:14px;
   }
 
 }
 
 
-/* =========================================================
-   CELULARES MUITO PEQUENOS
-========================================================= */
+/* =======================================================
+   ESTADOS VAZIOS
+======================================================= */
 
-@media (max-width:380px){
+.empty,
+.no-news{
 
-  .container{
-    width:calc(100% - 10px);
-  }
+  padding:22px 12px;
 
-  .brand-title{
-    font-size:15px;
-  }
+  text-align:center;
 
-  .actions{
-    gap:2px;
-  }
+  color:var(--muted);
 
-  .icon{
-    width:29px;
-    height:29px;
+  font-size:13px;
 
-    font-size:12px;
-  }
+  background:var(--card);
 
-  .grid{
-    gap:6px;
-  }
+  border:
+    1px dashed var(--border);
 
-  .card-title{
-    font-size:9px;
-  }
+  border-radius:14px;
 
-  .featured-title{
-    font-size:17px;
+}
+
+
+/* =======================================================
+   MELHORIAS DE TOQUE
+======================================================= */
+
+button,
+a{
+
+  -webkit-tap-highlight-color:
+    transparent;
+
+}
+
+
+@media(max-width:680px){
+
+  button,
+  a{
+
+    touch-action:manipulation;
+
   }
 
 }
 
 
-/* =========================================================
-   PC GRANDE
-========================================================= */
+/* =======================================================
+   ACESSIBILIDADE
+======================================================= */
 
-@media (min-width:1100px){
+:focus-visible{
 
-  .top{
-    min-height:74px;
-  }
+  outline:
+    2px solid var(--p);
 
-  .brand-title{
-    font-size:21px;
-  }
-
-  .featured-title{
-    font-size:29px;
-  }
-
-  .grid{
-    gap:15px;
-  }
+  outline-offset:2px;
 
 }
+
+
+/* =======================================================
+   IMPEDIR ESTOURO DE TEXTO
+======================================================= */
+
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+a{
+
+  overflow-wrap:
+    anywhere;
+
+}
+
+
+/* =======================================================
+   FINAL DO CSS PREMIUM
+======================================================= */
 
 </style>
-</head>
 
+   </head>
 
 <body>
 
@@ -1414,120 +1945,125 @@ footer a:hover{
 
 <header>
 
-  <div class="container top">
+<div class="container">
 
-    <a href="index.html" class="brand">
-
-      <div class="logo">
-        🌍
-      </div>
-
-      <div class="brand-text">
-
-        <div class="brand-title">
-          AfricanMundo
-        </div>
-
-        <div class="brand-subtitle">
-          A informação que liga África ao mundo
-        </div>
-
-      </div>
-
-    </a>
+<div class="header-main">
 
 
-    <div class="actions">
+<div class="brand">
 
-      <button
-        class="icon"
-        id="notificationBtn"
-        type="button"
-        aria-label="Notificações">
-        🔔
-      </button>
+<div class="logo">
+🌍
+</div>
 
-      <button
-        class="icon"
-        id="toolsBtn"
-        type="button"
-        aria-label="Ferramentas">
-        🛠️
-      </button>
+<div class="brand-text">
 
-      <button
-        class="icon"
-        id="userBtn"
-        type="button"
-        aria-label="Utilizador">
-        👤
-      </button>
+<strong>
+AfricanMundo
+</strong>
 
-      <button
-        class="icon"
-        id="themeBtn"
-        type="button"
-        aria-label="Tema">
-        🌙
-      </button>
+<span>
+A informação que liga África ao mundo
+</span>
 
-      <button
-        class="icon"
-        id="colorBtn"
-        type="button"
-        aria-label="Cor">
-        🎨
-      </button>
+</div>
 
-    </div>
-
-  </div>
+</div>
 
 
-  <!-- MENU -->
+<div class="header-actions">
 
-  <nav class="menu">
+<button
+id="notificationBtn"
+type="button"
+title="Notificações">
+🔔
+</button>
 
-    <div class="container menu-inner">
+<button
+id="toolsBtn"
+type="button"
+title="Ferramentas">
+🛠️
+</button>
 
-      <a href="index.html">
-        🏠 INÍCIO
-      </a>
+<button
+id="userBtn"
+type="button"
+title="Eu">
+👤
+</button>
 
-      <a href="categoria.html?categoria=noticias">
-        📰 NOTÍCIAS
-      </a>
+<button
+id="themeBtn"
+type="button"
+title="Tema">
+🌙
+</button>
 
-      <a href="categoria.html?categoria=futebol">
-        ⚽ FUTEBOL
-      </a>
+<button
+id="colorBtn"
+type="button"
+title="Cores">
+🎨
+</button>
 
-      <a href="categoria.html?categoria=mocambique">
-        🇲🇿 MOÇAMBIQUE
-      </a>
+</div>
 
-      <a href="categoria.html?categoria=africa">
-        🌍 ÁFRICA
-      </a>
+</div>
 
-      <a href="categoria.html?categoria=negocios">
-        💼 NEGÓCIOS
-      </a>
+</div>
 
-      <a href="categoria.html?categoria=entretenimento">
-        🎬 ENTRETENIMENTO
-      </a>
 
-      <a href="categoria.html?categoria=desporto">
-        🏆 DESPORTO
-      </a>
+<!-- =======================================================
+     MENU PRINCIPAL
+======================================================= -->
 
-    </div>
+<nav>
 
-  </nav>
+<div class="container">
+
+<div class="nav-inner">
+
+<a href="index.html">
+🏠 INÍCIO
+</a>
+
+<a href="categoria.html?categoria=noticias">
+📰 NOTÍCIAS
+</a>
+
+<a href="categoria.html?categoria=futebol">
+⚽ FUTEBOL
+</a>
+
+<a href="categoria.html?categoria=mocambique">
+🇲🇿 MOÇAMBIQUE
+</a>
+
+<a href="categoria.html?categoria=africa">
+🌍 ÁFRICA
+</a>
+
+<a href="categoria.html?categoria=negocios">
+💼 NEGÓCIOS
+</a>
+
+<a href="categoria.html?categoria=entretenimento">
+🎬 ENTRETENIMENTO
+</a>
+
+<a href="categoria.html?categoria=desporto">
+🏆 DESPORTO
+</a>
+
+</div>
+
+</div>
+
+</nav>
 
 </header>
-
 
 
 <!-- =======================================================
@@ -1542,9 +2078,12 @@ footer a:hover{
 <!-- =======================================================
      PESQUISA
 ======================================================= -->
- <section class="search">
 
-<form class="search-box" id="searchForm">
+<section class="search">
+
+<form
+class="search-box"
+id="searchForm">
 
 <input
 id="searchInput"
@@ -1569,32 +2108,38 @@ PESQUISAR
 
 <div class="socials">
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('Google')">
 🌐 Google
 </button>
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('Facebook')">
 🔵 Facebook
 </button>
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('YouTube')">
 ▶️ YouTube
 </button>
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('WhatsApp')">
 💬 WhatsApp
 </button>
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('Instagram')">
 📷 Instagram
 </button>
 
-<button type="button"
+<button
+type="button"
 onclick="abrirRede('TikTok')">
 🎵 TikTok
 </button>
@@ -1706,7 +2251,8 @@ class="grid">
 
 </section>
 
- <!-- =======================================================
+
+<!-- =======================================================
      MOÇAMBIQUE
 ======================================================= -->
 
@@ -1714,7 +2260,9 @@ class="grid">
 
 <div class="section-head">
 
-<h2>🇲🇿 MOÇAMBIQUE</h2>
+<h2>
+🇲🇿 MOÇAMBIQUE
+</h2>
 
 <a href="categoria.html?categoria=mocambique">
 VER TODAS →
@@ -1743,7 +2291,9 @@ class="grid">
 
 <div class="section-head">
 
-<h2>🌍 ÁFRICA</h2>
+<h2>
+🌍 ÁFRICA
+</h2>
 
 <a href="categoria.html?categoria=africa">
 VER TODAS →
@@ -1772,7 +2322,9 @@ class="grid">
 
 <div class="section-head">
 
-<h2>⚽ FUTEBOL</h2>
+<h2>
+⚽ FUTEBOL
+</h2>
 
 <a href="categoria.html?categoria=futebol">
 VER TODAS →
@@ -1792,7 +2344,8 @@ class="grid">
 
 </section>
 
- <!-- =======================================================
+
+<!-- =======================================================
      DESPORTO
 ======================================================= -->
 
@@ -1800,7 +2353,9 @@ class="grid">
 
 <div class="section-head">
 
-<h2>🏆 DESPORTO</h2>
+<h2>
+🏆 DESPORTO
+</h2>
 
 <a href="categoria.html?categoria=desporto">
 VER TODAS →
@@ -1808,7 +2363,9 @@ VER TODAS →
 
 </div>
 
-<div id="desporto" class="grid">
+<div
+id="desporto"
+class="grid">
 
 <div class="loading">
 ⏳ A carregar notícias...
@@ -1827,7 +2384,9 @@ VER TODAS →
 
 <div class="section-head">
 
-<h2>💼 NEGÓCIOS</h2>
+<h2>
+💼 NEGÓCIOS
+</h2>
 
 <a href="categoria.html?categoria=negocios">
 VER TODAS →
@@ -1835,7 +2394,9 @@ VER TODAS →
 
 </div>
 
-<div id="negocios" class="grid">
+<div
+id="negocios"
+class="grid">
 
 <div class="loading">
 ⏳ A carregar notícias...
@@ -1854,7 +2415,9 @@ VER TODAS →
 
 <div class="section-head">
 
-<h2>🎬 ENTRETENIMENTO</h2>
+<h2>
+🎬 ENTRETENIMENTO
+</h2>
 
 <a href="categoria.html?categoria=entretenimento">
 VER TODAS →
@@ -1862,7 +2425,9 @@ VER TODAS →
 
 </div>
 
-<div id="entretenimento" class="grid">
+<div
+id="entretenimento"
+class="grid">
 
 <div class="loading">
 ⏳ A carregar notícias...
@@ -1871,6 +2436,9 @@ VER TODAS →
 </div>
 
 </section>
+
+
+</div>
 
 </main>
 
@@ -1883,7 +2451,9 @@ VER TODAS →
 
 <div class="container">
 
-<strong>© 2026 AfricanMundo</strong>
+<strong>
+© 2026 AfricanMundo
+</strong>
 
 <p>
 A informação que liga África ao mundo.
@@ -1943,4 +2513,5 @@ onclick="fecharModal()">
 <script src="app.js"></script>
 
 </body>
-</html>
+
+   </html>
