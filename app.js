@@ -258,12 +258,17 @@ function mostrarDestaque(){
   const img =
     imagem(n);
 
-  const resumo =
-    texto(n)
-    .replace(/\s+/g," ")
-    .trim()
-    .slice(0,160);
-
+ const resumo =
+  String(
+    n?.texto ||
+    n?.descricao ||
+    n?.resumo ||
+    n?.description ||
+    ""
+  )
+  .replace(/\s+/g," ")
+  .trim()
+  .slice(0,180); 
 
   box.innerHTML = `
 
