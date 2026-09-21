@@ -1,42 +1,124 @@
 <!doctype html>
 <html lang="pt">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Moçambique — AfricanMundo</title>
+<meta charset="utf-8">
 
-  <link rel="stylesheet" href="style.css">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1">
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<title>Moçambique — AfricanMundo</title>
+
+<link rel="stylesheet"
+      href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+.news{
+  background:#fff;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:18px;
+  box-shadow:0 3px 12px rgba(0,0,0,.08);
+  cursor:pointer;
+}
+
+.news img{
+  width:100%;
+  height:210px;
+  object-fit:cover;
+  display:block;
+}
+
+.news-body{
+  padding:14px;
+}
+
+.news small{
+  color:#168a45;
+  font-weight:700;
+}
+
+.news h3{
+  margin:8px 0;
+  font-size:19px;
+}
+
+.news p{
+  margin:0;
+  color:#666;
+  line-height:1.5;
+}
+
+.carregar{
+  display:block;
+  width:100%;
+  padding:14px;
+  margin:20px 0;
+  border:0;
+  border-radius:10px;
+  background:#168a45;
+  color:#fff;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.sem-noticias{
+  text-align:center;
+  padding:30px 10px;
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header>
+
   <div class="top">
     🌍 AfricanMundo
   </div>
+
 </header>
 
 <main>
 
-  <section class="news-section">
+<section class="news-section">
 
-    <div class="section-title">
-      <h1>🇲🇿 Moçambique</h1>
-      <a href="index.html">← Voltar</a>
-    </div>
+  <div class="section-title">
 
-    <div id="newsGrid" class="news-grid">
-      <p>🔄 A carregar notícias de Moçambique...</p>
-    </div>
+    <h1>🇲🇿 Moçambique</h1>
 
-  </section>
+    <a href="index.html">
+      ← Voltar
+    </a>
+
+  </div>
+
+  <div id="newsGrid"
+       class="news-grid">
+
+    <p>🔄 A carregar notícias de Moçambique...</p>
+
+  </div>
+
+  <button id="carregarMais"
+          class="carregar"
+          style="display:none">
+
+    Carregar mais notícias
+
+  </button>
+
+</section>
 
 </main>
 
-<script>
+  <script>
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -44,98 +126,376 @@ const SUPABASE_URL =
 const SUPABASE_KEY =
   "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
+const db =
+  window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
 const grid =
   document.getElementById("newsGrid");
 
+const botao =
+  document.getElementById("carregarMais");
 
-async function carregarNoticias() {
+let noticias = [];
 
-  try {
+let pagina = 0;
 
-    const resultado =
-      await window.supabase
-        .createClient(
-          SUPABASE_URL,
-          SUPABASE_KEY
-        )
-        .from("noticias")
-        .select("*");
-
-    const data = resultado.data;
-    const error = resultado.error;
+const POR_PAGINA = 30;
 
 
-    if (error) {
+/* =========================
+   NORMALIZAR
+========================= */
 
-      grid.innerHTML =
-        "<p>❌ Erro ao carregar notícias.</p>";
+function normalizar(valor){
 
-      console.error(error);
+  return String(valor || "")
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g,"");
 
-      return;
+}
+
+
+/* =========================
+   ESCAPAR HTML
+========================= */
+
+function escapar(valor){
+
+  return String(valor || "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================
+   IMAGEM
+========================= */
+
+function obterImagem(noticia){
+
+  const campos = [
+    noticia.imagem,
+    noticia.image,
+    noticia.url_imagem,
+    noticia.imagem_url
+  ];
+
+  for(const valor of campos){
+
+    if(
+      typeof valor === "string" &&
+      valor.trim() !== ""
+    ){
+
+      return valor.trim();
+
     }
 
+  }
 
-    const mocambique =
-      (data || []).filter(function(noticia) {
+  return "";
 
-        return String(noticia.categoria || "")
-          .trim()
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(/[\u0300-\u036f]/g, "") === "mocambique";
-
-      });
+}
 
 
-    if (mocambique.length === 0) {
+/* =========================
+   DATA
+========================= */
 
-      grid.innerHTML =
-        "<p>🇲🇿 Ainda não existem notícias de Moçambique publicadas.</p>";
+function formatarData(valor){
 
-      return;
+  if(!valor) return "";
+
+  const data =
+    new Date(valor);
+
+  if(isNaN(data.getTime()))
+    return "";
+
+  return data.toLocaleDateString(
+    "pt-PT",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric"
+    }
+  );
+
+}
+
+
+/* =========================
+   FILTRAR MOÇAMBIQUE
+========================= */
+
+function ehMocambique(noticia){
+
+  const categoria =
+    normalizar(noticia.categoria);
+
+  const pais =
+    normalizar(noticia.pais);
+
+  return (
+    categoria === "mocambique" ||
+    pais === "mocambique"
+  );
+
+}
+
+
+/* =========================
+   MOSTRAR NOTÍCIAS
+========================= */
+
+function mostrarNoticias(){
+
+  const inicio =
+    pagina * POR_PAGINA;
+
+  const fim =
+    inicio + POR_PAGINA;
+
+  const lista =
+    noticias.slice(
+      inicio,
+      fim
+    );
+
+  if(pagina === 0){
+
+    grid.innerHTML = "";
+
+  }
+
+
+  lista.forEach(function(noticia){
+
+    const artigo =
+      document.createElement("article");
+
+    artigo.className =
+      "news";
+
+
+    const imagem =
+      obterImagem(noticia);
+
+
+    artigo.innerHTML = `
+
+      ${
+        imagem
+        ?
+        `
+        <img
+          src="${escapar(imagem)}"
+          alt="${escapar(noticia.titulo || "Notícia")}"
+          loading="lazy"
+        >
+        `
+        :
+        ""
+      }
+
+      <div class="news-body">
+
+        <small>
+          🇲🇿 ${escapar(
+            noticia.subcategoria ||
+            noticia.categoria ||
+            "Moçambique"
+          )}
+        </small>
+
+        <h3>
+          ${escapar(
+            noticia.titulo ||
+            "Sem título"
+          )}
+        </h3>
+
+        <p>
+          ${escapar(
+            String(noticia.texto || "")
+              .replace(/<[^>]*>/g,"")
+              .replace(/\s+/g," ")
+              .trim()
+              .slice(0,180)
+          )}
+        </p>
+
+        <small>
+          ${escapar(
+            formatarData(noticia.data)
+          )}
+        </small>
+
+      </div>
+
+    `;
+
+
+    artigo.onclick =
+      function(){
+
+        if(noticia.id){
+
+          window.location.href =
+            "noticia.html?id=" +
+            encodeURIComponent(noticia.id);
+
+        }
+
+      };
+
+
+    grid.appendChild(artigo);
+
+
+    const img =
+      artigo.querySelector("img");
+
+    if(img){
+
+      img.onerror =
+        function(){
+
+          this.style.display =
+            "none";
+
+        };
+
     }
 
-
-    grid.innerHTML =
-      mocambique.map(function(noticia) {
-
-        return `
-          <article class="news">
-
-            <div class="thumb">
-              🇲🇿
-            </div>
-
-            <small>
-              ${noticia.categoria || "Moçambique"}
-            </small>
-
-            <h3>
-              ${noticia.titulo || "Sem título"}
-            </h3>
-
-            <p>
-              ${noticia.texto || ""}
-            </p>
-
-          </article>
-        `;
-
-      }).join("");
+  });
 
 
-  } catch (erro) {
+  pagina++;
 
-    grid.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
 
-    console.error(erro);
+  if(
+    pagina * POR_PAGINA
+    <
+    noticias.length
+  ){
+
+    botao.style.display =
+      "block";
+
+  }else{
+
+    botao.style.display =
+      "none";
 
   }
 
 }
 
+
+/* =========================
+   CARREGAR MAIS
+========================= */
+
+botao.addEventListener(
+  "click",
+  mostrarNoticias
+);
+
+    async function carregarNoticias(){
+
+  try{
+
+    grid.innerHTML =
+      "<p>🔄 A carregar notícias de Moçambique...</p>";
+
+
+    const resposta =
+      await db
+        .from("noticias")
+        .select(`
+          id,
+          titulo,
+          imagem,
+          categoria,
+          subcategoria,
+          texto,
+          data,
+          fonte,
+          pais
+        `)
+        .order("data", {
+          ascending:false
+        })
+        .limit(300);
+
+
+    if(resposta.error){
+
+      throw resposta.error;
+
+    }
+
+
+    noticias =
+      (resposta.data || [])
+        .filter(ehMocambique);
+
+
+    if(!noticias.length){
+
+      grid.innerHTML = `
+        <p class="sem-noticias">
+          🇲🇿 Ainda não existem notícias de
+          Moçambique publicadas.
+        </p>
+      `;
+
+      botao.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    pagina = 0;
+
+    mostrarNoticias();
+
+
+  }catch(erro){
+
+    console.error(
+      "Erro ao carregar Moçambique:",
+      erro
+    );
+
+
+    grid.innerHTML = `
+      <p class="sem-noticias">
+        ❌ Não foi possível carregar
+        as notícias de Moçambique.
+      </p>
+    `;
+
+  }
+
+}
+
+
+/* =========================
+   INICIAR
+========================= */
 
 carregarNoticias();
 
