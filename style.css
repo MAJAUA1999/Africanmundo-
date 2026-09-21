@@ -192,12 +192,14 @@ section,
   right:0;
   bottom:0;
   z-index:2;
-  padding:80px 28px 24px;
+  padding:120px 28px 24px;
   color:#fff;
   background:
     linear-gradient(
-      transparent,
-      rgba(0,0,0,.92)
+      to bottom,
+      transparent 0%,
+      rgba(0,0,0,.25) 25%,
+      rgba(0,0,0,.95) 100%
     );
 }
 
