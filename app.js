@@ -522,6 +522,11 @@ noticias=data||[];
 mostrarDestaque();
 
 lista(
+noticias.slice(0,4),
+"ultimas"
+);
+
+lista(
 filtrar("futebol").slice(0,4),
 "futebol"
 );
