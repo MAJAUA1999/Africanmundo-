@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-MZ">
+
 <head>
 
 <meta charset="UTF-8">
@@ -14,13 +15,23 @@ content="#168a45">
 <meta name="description"
 content="AfricanMundo — Notícias de África. A informação que liga África ao mundo.">
 
+<meta name="robots"
+content="index,follow,max-image-preview:large">
+
 <title>AfricanMundo — Notícias de África</title>
 
-<link rel="manifest" href="manifest.json">
+<link rel="manifest"
+href="manifest.json">
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script
+src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+</script>
 
 <style>
+
+/* =========================================
+   BASE
+========================================= */
 
 :root{
 --p:#168a45;
@@ -50,7 +61,10 @@ min-width:0;
 overflow-x:hidden;
 background:var(--bg);
 color:var(--txt);
-font-family:Arial,Helvetica,sans-serif;
+font-family:
+Arial,
+Helvetica,
+sans-serif;
 }
 
 body.dark{
@@ -103,7 +117,9 @@ calc(100% - 28px)
 margin:auto;
 }
 
-/* CABEÇALHO */
+/* =========================================
+   CABEÇALHO
+========================================= */
 
 header{
 position:sticky;
@@ -185,7 +201,9 @@ background:var(--p);
 color:#fff;
 }
 
-/* MENU */
+/* =========================================
+   MENU
+========================================= */
 
 nav{
 background:var(--card);
@@ -219,7 +237,9 @@ background:var(--p);
 color:#fff;
 }
 
-/* PRINCIPAL */
+/* =========================================
+   PRINCIPAL
+========================================= */
 
 main{
 padding:20px 0 35px;
@@ -250,7 +270,9 @@ font-weight:800;
 white-space:nowrap;
 }
 
-/* PESQUISA */
+/* =========================================
+   PESQUISA
+========================================= */
 
 .search{
 margin-bottom:15px;
@@ -273,6 +295,13 @@ color:var(--txt);
 outline:none;
 }
 
+.search-box input:focus{
+border-color:var(--p);
+box-shadow:
+0 0 0 3px
+rgba(22,138,69,.10);
+}
+
 .search-box button{
 width:45px;
 height:43px;
@@ -287,7 +316,9 @@ font-size:18px;
 margin-top:7px;
 }
 
-/* REDES */
+/* =========================================
+   REDES SOCIAIS
+========================================= */
 
 .socials{
 display:flex;
@@ -311,14 +342,17 @@ background:var(--p);
 color:#fff;
 }
 
-/* PUBLICIDADE */
+/* =========================================
+   PUBLICIDADE
+========================================= */
 
 .ad{
 display:block;
 padding:15px;
 margin:15px 0;
 border-radius:15px;
-background:linear-gradient(
+background:
+linear-gradient(
 135deg,
 var(--p),
 var(--p2)
@@ -327,72 +361,105 @@ color:#fff;
 text-align:center;
 font-weight:900;
 letter-spacing:.4px;
+box-shadow:
+0 6px 18px
+rgba(0,0,0,.10);
 }
 
-/* DESTAQUE */
+/* =========================================
+   DESTAQUE AFRICANMUNDO
+========================================= */
 
-.featured{
-display:grid;
-grid-template-columns:
-minmax(0,1.45fr)
-minmax(280px,.9fr);
+#destaque{
+width:100%;
 min-width:0;
-overflow:hidden;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:var(--radius);
-box-shadow:var(--shadow);
 }
 
-.featured img{
+#destaque .destaque-card{
+position:relative;
+width:100%;
+aspect-ratio:16 / 9;
+min-height:330px;
+overflow:hidden;
+border-radius:18px;
+background:#111;
+cursor:pointer;
+box-shadow:
+0 8px 28px
+rgba(0,0,0,.14);
+}
+
+#destaque .destaque-card img{
+position:absolute;
+inset:0;
 width:100%;
 height:100%;
-min-height:330px;
+max-width:none;
 display:block;
 object-fit:cover;
+transition:
+transform .5s ease;
 }
 
-.featured-content{
-min-width:0;
-padding:24px;
-display:flex;
-flex-direction:column;
-justify-content:center;
+#destaque .destaque-card:hover img{
+transform:scale(1.025);
 }
 
-.featured-title{
-margin:5px 0;
-font-size:clamp(22px,3vw,34px);
-line-height:1.15;
-color:var(--txt);
-font-weight:900;
-text-shadow:none;
+#destaque .destaque-overlay{
+position:absolute;
+left:0;
+right:0;
+bottom:0;
+z-index:2;
+padding:110px 30px 25px;
+color:#fff;
+background:
+linear-gradient(
+to bottom,
+transparent 0%,
+rgba(0,0,0,.18) 25%,
+rgba(0,0,0,.94) 100%
+);
 }
 
-.featured-category{
-color:var(--p);
+#destaque .destaque-categoria{
 font-size:12px;
-font-weight:800;
-margin-bottom:8px;
+font-weight:900;
+margin-bottom:7px;
+text-transform:uppercase;
+letter-spacing:.5px;
 }
 
-.featured-text{
-color:var(--muted);
+#destaque .destaque-overlay h2{
+margin:0 0 8px;
+max-width:900px;
+font-size:
+clamp(22px,3vw,34px);
+line-height:1.14;
+color:#fff;
+font-weight:900;
+}
+
+#destaque .destaque-overlay p,
+#destaque .destaque-resumo{
+display:block !important;
+margin:0 0 8px !important;
+max-width:850px;
 font-size:14px;
-line-height:1.55;
-margin-top:10px;
+line-height:1.45;
+color:#fff !important;
+opacity:1 !important;
+visibility:visible !important;
 }
 
-.featured-date{
-margin-top:15px;
-color:var(--muted);
+#destaque .destaque-data{
 font-size:11px;
+color:#ddd;
 }
 
-
-/* ===============================
+/* =========================================
    CARDS DE NOTÍCIAS
-================================ */
+========================================= */
 
 .grid{
 display:grid;
@@ -408,14 +475,18 @@ overflow:hidden;
 background:var(--card);
 border:1px solid var(--border);
 border-radius:14px;
-box-shadow:0 3px 12px rgba(0,0,0,.05);
+box-shadow:
+0 3px 12px
+rgba(0,0,0,.05);
 transition:.2s;
 cursor:pointer;
 }
 
 .card:hover{
 transform:translateY(-2px);
-box-shadow:0 7px 20px rgba(0,0,0,.09);
+box-shadow:
+0 7px 20px
+rgba(0,0,0,.09);
 }
 
 .card img{
@@ -462,9 +533,9 @@ color:var(--muted);
 font-size:10px;
 }
 
-/* ===============================
-   PUBLICIDADE ATIVA
-================================ */
+/* =========================================
+   ANÚNCIOS ATIVOS
+========================================= */
 
 #anunciosAtivos{
 display:grid;
@@ -480,90 +551,72 @@ border-radius:12px;
 display:block;
 }
 
-/* ===============================
+/* =========================================
    PAINÉIS
-================================ */
+========================================= */
 
 .top-panel{
 position:fixed;
 top:76px;
 right:14px;
 z-index:2500;
-
 width:min(
 330px,
 calc(100vw - 28px)
 );
-
 max-height:
 calc(100vh - 95px);
-
 overflow:auto;
-
 padding:15px;
-
 background:var(--card);
 color:var(--txt);
-
 border:1px solid var(--border);
 border-radius:16px;
-
 box-shadow:
-0 12px 35px rgba(0,0,0,.18);
+0 12px 35px
+rgba(0,0,0,.18);
 }
 
 #notificationPanel,
 #toolsPanel,
 #userPanel,
 #colorPanel{
-
 position:fixed !important;
-
 top:76px !important;
 right:14px !important;
 left:auto !important;
-
 z-index:2500 !important;
-
 width:min(
 330px,
 calc(100vw - 28px)
 ) !important;
-
 max-height:
 calc(100vh - 95px);
-
 overflow:auto;
-
 background:var(--card);
 color:var(--txt);
-
 border:1px solid var(--border);
 border-radius:16px;
-
 box-shadow:
-0 12px 35px rgba(0,0,0,.18);
+0 12px 35px
+rgba(0,0,0,.18);
 }
 
-/* ===============================
+/* =========================================
    BOTÕES DOS PAINÉIS
-================================ */
+========================================= */
 
 .top-panel button,
 #notificationPanel button,
 #toolsPanel button,
 #userPanel button,
 #colorPanel button{
-
 border:1px solid var(--border);
 background:var(--card);
 color:var(--txt);
-
 border-radius:10px;
 padding:9px 11px;
-
 margin:3px;
-
 font-size:12px;
 }
 
@@ -572,26 +625,22 @@ font-size:12px;
 #toolsPanel button:hover,
 #userPanel button:hover,
 #colorPanel button:hover{
-
 background:var(--p);
 color:#fff;
 }
 
-/* ===============================
+/* =========================================
    MODAL
-================================ */
+========================================= */
 
 .modal{
 position:fixed;
 inset:0;
 z-index:3000;
-
 display:none;
 align-items:center;
 justify-content:center;
-
 padding:15px;
-
 background:rgba(0,0,0,.65);
 }
 
@@ -600,20 +649,16 @@ width:min(
 600px,
 100%
 );
-
 max-height:90vh;
 overflow:auto;
-
 background:var(--card);
 color:var(--txt);
-
 border-radius:18px;
 padding:20px;
-
 border:1px solid var(--border);
-
 box-shadow:
-0 20px 50px rgba(0,0,0,.3);
+0 20px 50px
+rgba(0,0,0,.3);
 }
 
 .modal-box h2{
@@ -628,9 +673,10 @@ color:var(--txt);
 font-size:24px;
 }
 
-/* ===============================
+/* =========================================
    RODAPÉ
-================================ */
+========================================= */
+
 footer{
 margin-top:22px;
 background:#101816;
@@ -641,14 +687,9 @@ color:#dce7e2;
 max-width:var(--max);
 margin:auto;
 padding:20px 14px 16px;
-
 display:grid;
 grid-template-columns:
-1.5fr
-1fr
-1fr
-1fr;
-
+1.5fr 1fr 1fr 1fr;
 gap:18px;
 }
 
@@ -670,7 +711,6 @@ width:32px;
 height:32px;
 display:grid;
 place-items:center;
-
 border-radius:9px;
 background:var(--p);
 }
@@ -678,7 +718,6 @@ background:var(--p);
 .footer-brand p{
 max-width:280px;
 margin:7px 0 0;
-
 color:#aebbb5;
 font-size:10px;
 line-height:1.4;
@@ -686,7 +725,6 @@ line-height:1.4;
 
 .footer-title{
 margin:0 0 7px;
-
 color:#fff;
 font-size:10px;
 font-weight:900;
@@ -718,37 +756,30 @@ gap:5px;
 .footer-socials button{
 width:28px;
 height:28px;
-
 border:1px solid #35443e;
 border-radius:8px;
-
 background:#17211e;
 color:#fff;
-
 font-size:12px;
 }
 
 .footer-socials button:hover{
 background:var(--p);
 border-color:var(--p);
-   }
+}
 
-/* ===============================
+/* =========================================
    COPYRIGHT
-================================ */
+========================================= */
 
 .footer-bottom{
 border-top:1px solid #29352f;
-
 max-width:var(--max);
 margin:auto;
-
 padding:16px 14px;
-
 display:flex;
 align-items:center;
 justify-content:space-between;
-
 gap:12px;
 }
 
@@ -773,21 +804,15 @@ font-size:10px;
 color:#fff;
 }
 
-/* ===============================
+/* =========================================
    TABLET
-================================ */
+========================================= */
 
 @media(max-width:900px){
 
 .grid{
 grid-template-columns:
 repeat(3,minmax(0,1fr));
-}
-
-.featured{
-grid-template-columns:
-minmax(0,1.2fr)
-minmax(230px,.8fr);
 }
 
 #anunciosAtivos{
@@ -802,9 +827,9 @@ repeat(2,minmax(0,1fr));
 
 }
 
-/* ===============================
+/* =========================================
    CELULAR
-================================ */
+========================================= */
 
 @media(max-width:680px){
 
@@ -855,28 +880,41 @@ main{
 padding-top:13px;
 }
 
-.featured{
-display:block;
+/* DESTAQUE MOBILE */
+
+#destaque .destaque-card{
+aspect-ratio:16/10;
+min-height:300px;
+border-radius:14px;
 }
 
-.featured img{
-width:100%;
-height:auto;
-aspect-ratio:16/9;
-min-height:0;
+#destaque .destaque-overlay{
+padding:100px 17px 17px;
 }
 
-.featured-content{
-padding:15px;
+#destaque .destaque-categoria{
+font-size:10px;
+margin-bottom:5px;
 }
 
-.featured-title{
-font-size:22px;
+#destaque .destaque-overlay h2{
+font-size:21px;
+line-height:1.18;
+margin-bottom:6px;
 }
 
-.featured-text{
-font-size:12px;
+#destaque .destaque-overlay p,
+#destaque .destaque-resumo{
+font-size:12px !important;
+line-height:1.35 !important;
+margin-bottom:6px !important;
 }
+
+#destaque .destaque-data{
+font-size:9px;
+}
+
+/* CATEGORIAS */
 
 .grid{
 grid-template-columns:
@@ -910,14 +948,11 @@ grid-template-columns:1fr;
 #toolsPanel,
 #userPanel,
 #colorPanel{
-
 top:63px !important;
 right:7px !important;
 left:7px !important;
-
 width:auto !important;
 max-width:none;
-
 }
 
 .footer-main{
@@ -937,9 +972,9 @@ padding-bottom:10px;
 
 }
 
-/* ===============================
+/* =========================================
    CELULARES PEQUENOS
-================================ */
+========================================= */
 
 @media(max-width:380px){
 
@@ -953,8 +988,21 @@ height:31px;
 font-size:13px;
 }
 
-.featured-title{
-font-size:20px;
+#destaque .destaque-card{
+min-height:280px;
+}
+
+#destaque .destaque-overlay{
+padding:90px 14px 14px;
+}
+
+#destaque .destaque-overlay h2{
+font-size:19px;
+}
+
+#destaque .destaque-overlay p,
+#destaque .destaque-resumo{
+font-size:11px !important;
 }
 
 .card-title{
@@ -969,7 +1017,7 @@ padding:7px;
 
 </style>
 
-   </head>
+</head>
 
 <body>
 
@@ -977,11 +1025,15 @@ padding:7px;
 
   <div class="header-main">
 
-    <a href="index.html" class="brand">
+    <a href="index.html"
+    class="brand">
 
-      <div class="logo">🌍</div>
+      <div class="logo">
+        🌍
+      </div>
 
       <div class="brand-text">
+
         <div class="brand-name">
           AfricanMundo
         </div>
@@ -989,31 +1041,46 @@ padding:7px;
         <div class="brand-tag">
           A informação que liga África ao mundo
         </div>
+
       </div>
 
     </a>
 
     <div class="header-actions">
 
-      <button id="notificationBtn"
-      aria-label="Notificações">🔔</button>
+      <button
+      id="notificationBtn"
+      aria-label="Notificações">
+        🔔
+      </button>
 
-      <button id="toolsBtn"
-      aria-label="Ferramentas">🛠️</button>
+      <button
+      id="toolsBtn"
+      aria-label="Ferramentas">
+        🛠️
+      </button>
 
-      <button id="userBtn"
-      aria-label="Utilizador">👤</button>
+      <button
+      id="userBtn"
+      aria-label="Utilizador">
+        👤
+      </button>
 
-      <button id="themeBtn"
-      aria-label="Tema">🌙</button>
+      <button
+      id="themeBtn"
+      aria-label="Tema">
+        🌙
+      </button>
 
-      <button id="colorBtn"
-      aria-label="Cores">🎨</button>
+      <button
+      id="colorBtn"
+      aria-label="Cores">
+        🎨
+      </button>
 
     </div>
 
   </div>
-
 
   <nav>
 
@@ -1057,27 +1124,27 @@ padding:7px;
 
 </header>
 
-
 <main>
 
 <div class="container">
 
-
-  <!-- PESQUISA -->
+     <!-- ===============================
+       PESQUISA
+  ================================ -->
 
   <section class="search">
 
-    <form id="searchForm"
-    class="search-box">
+    <form
+      id="searchForm"
+      class="search-box">
 
       <input
-      id="searchInput"
-      type="search"
-      placeholder="Pesquisar notícias..."
-      autocomplete="off">
+        id="searchInput"
+        type="search"
+        placeholder="Pesquisar notícias..."
+        autocomplete="off">
 
-      <button
-      type="submit">
+      <button type="submit">
         🔎
       </button>
 
@@ -1088,59 +1155,59 @@ padding:7px;
   </section>
 
 
-  <!-- REDES SOCIAIS -->
+  <!-- ===============================
+       REDES SOCIAIS
+  ================================ -->
 
   <div class="socials">
 
-    <button
-    onclick="abrirRede('Google')">
+    <button onclick="abrirRede('Google')">
       🌐 Google
     </button>
 
-    <button
-    onclick="abrirRede('Facebook')">
+    <button onclick="abrirRede('Facebook')">
       📘 Facebook
     </button>
 
-    <button
-    onclick="abrirRede('YouTube')">
+    <button onclick="abrirRede('YouTube')">
       ▶️ YouTube
     </button>
 
-    <button
-    onclick="abrirRede('WhatsApp')">
+    <button onclick="abrirRede('WhatsApp')">
       💬 WhatsApp
     </button>
 
-    <button
-    onclick="abrirRede('Instagram')">
+    <button onclick="abrirRede('Instagram')">
       📷 Instagram
     </button>
 
-    <button
-    onclick="abrirRede('TikTok')">
+    <button onclick="abrirRede('TikTok')">
       🎵 TikTok
     </button>
 
   </div>
 
 
-  <!-- PUBLICIDADE -->
+  <!-- ===============================
+       PUBLICIDADE
+  ================================ -->
 
   <a
-  href="contacto.html"
-  class="ad">
+    href="contacto.html"
+    class="ad">
 
     📢 ANUNCIE NO AFRICANMUNDO
 
   </a>
 
 
-  <!-- ANÚNCIOS ATIVOS -->
+  <!-- ===============================
+       ANÚNCIOS ATIVOS
+  ================================ -->
 
   <section
-  id="anunciosAtivosSection"
-  class="section">
+    id="anunciosAtivosSection"
+    class="section">
 
     <div class="section-head">
 
@@ -1155,9 +1222,13 @@ padding:7px;
   </section>
 
 
-  <!-- DESTAQUE -->
+  <!-- ===============================
+       DESTAQUE
+  ================================ -->
 
-  <section class="section">
+  <section
+    class="section"
+    aria-label="Notícia em destaque">
 
     <div class="section-head">
 
@@ -1167,15 +1238,14 @@ padding:7px;
 
     </div>
 
-    <div id="destaque"
-    class="featured">
-
-    </div>
+    <div id="destaque"></div>
 
   </section>
 
 
-  <!-- ÚLTIMAS -->
+  <!-- ===============================
+       ÚLTIMAS NOTÍCIAS
+  ================================ -->
 
   <section class="section">
 
@@ -1185,22 +1255,24 @@ padding:7px;
         📰 Últimas notícias
       </h2>
 
-      <a href="categoria.html?categoria=noticias">
+      <a
+        href="categoria.html?categoria=noticias">
         Ver todas →
       </a>
 
     </div>
 
     <div
-    id="ultimas"
-    class="grid">
-
+      id="ultimas"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- MOÇAMBIQUE -->
+  <!-- ===============================
+       MOÇAMBIQUE
+  ================================ -->
 
   <section class="section">
 
@@ -1217,15 +1289,16 @@ padding:7px;
     </div>
 
     <div
-    id="mocambique"
-    class="grid">
-
+      id="mocambique"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- ÁFRICA -->
+  <!-- ===============================
+       ÁFRICA
+  ================================ -->
 
   <section class="section">
 
@@ -1235,22 +1308,24 @@ padding:7px;
         🌍 África
       </h2>
 
-      <a href="categoria.html?categoria=africa">
+      <a
+        href="categoria.html?categoria=africa">
         Ver todas →
       </a>
 
     </div>
 
     <div
-    id="africa"
-    class="grid">
-
+      id="africa"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- FUTEBOL -->
+  <!-- ===============================
+       FUTEBOL
+  ================================ -->
 
   <section class="section">
 
@@ -1267,15 +1342,16 @@ padding:7px;
     </div>
 
     <div
-    id="futebol"
-    class="grid">
-
+      id="futebol"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- DESPORTO -->
+  <!-- ===============================
+       DESPORTO
+  ================================ -->
 
   <section class="section">
 
@@ -1285,22 +1361,24 @@ padding:7px;
         🏆 Desporto
       </h2>
 
-      <a href="categoria.html?categoria=desporto">
+      <a
+        href="categoria.html?categoria=desporto">
         Ver todas →
       </a>
 
     </div>
 
     <div
-    id="desporto"
-    class="grid">
-
+      id="desporto"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- NEGÓCIOS -->
+  <!-- ===============================
+       NEGÓCIOS
+  ================================ -->
 
   <section class="section">
 
@@ -1310,22 +1388,24 @@ padding:7px;
         💼 Negócios
       </h2>
 
-      <a href="categoria.html?categoria=negocios">
+      <a
+        href="categoria.html?categoria=negocios">
         Ver todas →
       </a>
 
     </div>
 
     <div
-    id="negocios"
-    class="grid">
-
+      id="negocios"
+      class="grid">
     </div>
 
   </section>
 
 
-  <!-- ENTRETENIMENTO -->
+  <!-- ===============================
+       ENTRETENIMENTO
+  ================================ -->
 
   <section class="section">
 
@@ -1335,16 +1415,16 @@ padding:7px;
         🎭 Entretenimento
       </h2>
 
-      <a href="categoria.html?categoria=entretenimento">
+      <a
+        href="categoria.html?categoria=entretenimento">
         Ver todas →
       </a>
 
     </div>
 
     <div
-    id="entretenimento"
-    class="grid">
-
+      id="entretenimento"
+      class="grid">
     </div>
 
   </section>
@@ -1352,7 +1432,7 @@ padding:7px;
 
 </div>
 
-     </main>
+</main>
 
    <!-- =================================
      RODAPÉ AFRICANMUNDO
@@ -1365,8 +1445,11 @@ padding:7px;
     <div class="footer-brand">
 
       <div class="footer-logo">
+
         <span>🌍</span>
+
         AfricanMundo
+
       </div>
 
       <p>
@@ -1445,27 +1528,27 @@ padding:7px;
       <div class="footer-socials">
 
         <button
-        onclick="abrirRede('Facebook')">
+          onclick="abrirRede('Facebook')">
           f
         </button>
 
         <button
-        onclick="abrirRede('YouTube')">
+          onclick="abrirRede('YouTube')">
           ▶
         </button>
 
         <button
-        onclick="abrirRede('Instagram')">
+          onclick="abrirRede('Instagram')">
           ◎
         </button>
 
         <button
-        onclick="abrirRede('WhatsApp')">
+          onclick="abrirRede('WhatsApp')">
           ◉
         </button>
 
         <button
-        onclick="abrirRede('TikTok')">
+          onclick="abrirRede('TikTok')">
           ♪
         </button>
 
@@ -1475,6 +1558,8 @@ padding:7px;
 
   </div>
 
+
+  <!-- COPYRIGHT -->
 
   <div class="footer-bottom">
 
@@ -1509,17 +1594,20 @@ padding:7px;
 ================================= -->
 
 <div
-id="modal"
-class="modal">
+  id="modal"
+  class="modal">
 
   <div class="modal-box">
 
     <button
-    class="modal-close"
-    onclick="
-    document.getElementById('modal').style.display='none'
-    ">
+      class="modal-close"
+      onclick="
+        document.getElementById('modal').style.display='none'
+      "
+      aria-label="Fechar">
+
       ×
+
     </button>
 
     <h2 id="modalTitle">
@@ -1539,6 +1627,6 @@ class="modal">
 
 <script src="app.js"></script>
 
-
 </body>
+
 </html>
