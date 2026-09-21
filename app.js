@@ -274,114 +274,164 @@ ${esc(data(n))}
 /* =====================================================
    CARREGAR NOTÍCIAS
 ===================================================== */
-
 async function carregarNoticias(){
 
-if(!db){
+  if(!db){
 
-console.error(
-"Supabase não inicializado."
-);
+    mostrarErroNoticias(
+      "Supabase não inicializado"
+    );
 
-return;
+    return;
 
-}
+  }
 
-try{
+  try{
 
-const {
-data,
-error
-}=await db
-.from("noticias")
-.select(`
-id,
-titulo,
-imagem,
-categoria,
-subcategoria,
-texto,
-data,
-fonte,
-url_original,
-id_externo,
-idioma,
-visualizacoes,
-pais
-`)
-.order(
-"data",
-{ascending:false}
-)
-.limit(200);
+    const pedido =
+      db
+      .from("noticias")
+      .select(`
+        id,
+        titulo,
+        imagem,
+        categoria,
+        subcategoria,
+        texto,
+        data,
+        fonte,
+        url_original,
+        id_externo,
+        idioma,
+        visualizacoes,
+        pais
+      `)
+      .order(
+        "data",
+        {ascending:false}
+      )
+      .limit(100);
 
-if(error)throw error;
 
-noticias=data||[];
+    const limite =
+      new Promise((_,reject)=>{
 
-indiceDestaque=
-Math.floor(
-Math.random()*
-noticias.length
-);
+        setTimeout(
+          ()=>{
+            reject(
+              new Error(
+                "Tempo de carregamento excedido"
+              )
+            );
+          },
+          8000
+        );
 
-mostrarDestaque();
+      });
 
-lista(
-noticias.slice(0,4),
-"ultimas"
-);
 
-lista(
-filtrar("mocambique")
-.slice(0,4),
-"mocambique"
-);
+    const resultado =
+      await Promise.race([
+        pedido,
+        limite
+      ]);
 
-lista(
-filtrar("africa")
-.slice(0,4),
-"africa"
-);
 
-lista(
-filtrar("futebol")
-.slice(0,4),
-"futebol"
-);
+    if(resultado.error){
 
-lista(
-filtrar("desporto")
-.slice(0,4),
-"desporto"
-);
+      throw resultado.error;
 
-lista(
-filtrar("negocios")
-.slice(0,4),
-"negocios"
-);
+    }
 
-lista(
-filtrar("entretenimento")
-.slice(0,4),
-"entretenimento"
-);
 
-iniciarRotacaoDestaque();
+    noticias =
+      resultado.data || [];
 
-}catch(e){
 
-console.error(
-"Erro ao carregar notícias:",
-e
-);
+    if(!noticias.length){
 
-mostrarErroNoticias(e);
+      mostrarErroNoticias(
+        "Nenhuma notícia encontrada"
+      );
 
-}
+      return;
 
-}
+    }
+
+
+    indiceDestaque =
+      Math.floor(
+        Math.random() *
+        noticias.length
+      );
+
+
+    mostrarDestaque();
+
+
+    lista(
+      noticias.slice(0,4),
+      "ultimas"
+    );
+
+
+    lista(
+      filtrar("mocambique")
+      .slice(0,4),
+      "mocambique"
+    );
+
+
+    lista(
+      filtrar("africa")
+      .slice(0,4),
+      "africa"
+    );
+
+
+    lista(
+      filtrar("futebol")
+      .slice(0,4),
+      "futebol"
+    );
+
+
+    lista(
+      filtrar("desporto")
+      .slice(0,4),
+      "desporto"
+    );
+
+
+    lista(
+      filtrar("negocios")
+      .slice(0,4),
+      "negocios"
+    );
+
+
+    lista(
+      filtrar("entretenimento")
+      .slice(0,4),
+      "entretenimento"
+    );
+
+
+    iniciarRotacaoDestaque();
+
+
+  }catch(e){
+
+    console.error(
+      "Erro ao carregar notícias:",
+      e
+    );
+
+    mostrarErroNoticias(e);
+
+  }
+
+  }
 
 /* =========================================================
    FILTROS POR CATEGORIA
