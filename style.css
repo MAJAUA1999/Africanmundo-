@@ -1,10 +1,17 @@
+/* =========================================
+   AFRICANMUNDO — ESTILO PRINCIPAL
+   PARTE 1/2
+========================================= */
+
 *{
   box-sizing:border-box;
 }
 
 html{
   width:100%;
+  min-width:0;
   overflow-x:hidden;
+  scroll-behavior:smooth;
 }
 
 body{
@@ -17,11 +24,30 @@ body{
   color:#151515;
 }
 
-/* ===============================
+img,
+video,
+iframe,
+canvas{
+  max-width:100%;
+}
+
+a{
+  color:inherit;
+  text-decoration:none;
+}
+
+button,
+a{
+  -webkit-tap-highlight-color:transparent;
+}
+
+
+/* =========================================
    TOPO
-================================ */
+========================================= */
 
 .top{
+  width:100%;
   background:#0b0d0c;
   color:#ddd;
   padding:7px 4%;
@@ -33,6 +59,7 @@ body{
 }
 
 .brand{
+  width:100%;
   background:#101311;
   color:#fff;
   padding:14px 4%;
@@ -41,6 +68,7 @@ body{
 .logo{
   font-size:30px;
   font-weight:800;
+  line-height:1.1;
 }
 
 .logo span{
@@ -48,19 +76,22 @@ body{
 }
 
 .tag{
-  margin-top:3px;
+  margin-top:4px;
   color:#ccc;
   font-size:12px;
 }
 
-/* ===============================
+
+/* =========================================
    MENU
-================================ */
+========================================= */
 
 nav{
   display:flex;
+  align-items:center;
   gap:2px;
   flex-wrap:wrap;
+  width:100%;
   background:#171a18;
   padding:0 4%;
   overflow:hidden;
@@ -68,92 +99,32 @@ nav{
 
 nav a{
   color:#fff;
-  text-decoration:none;
   padding:11px 9px;
   font-size:13px;
+  white-space:nowrap;
 }
 
 nav a:hover,
 nav a.active,
 nav a.ativo{
   background:#58b52d;
+  color:#fff;
 }
 
 .admin{
   margin-left:auto;
 }
 
-/* ===============================
-   DESTAQUE
-================================ */
 
-.hero{
-  position:relative;
-  margin:14px 4%;
-  min-height:280px;
-  padding:30px;
-  display:flex;
-  align-items:flex-end;
-  overflow:hidden;
-  background:#17391e;
-  color:#fff;
-  border-radius:12px;
-}
-
-.hero img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.hero::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    transparent 25%,
-    rgba(0,0,0,.85)
-  );
-}
-
-.hero div{
-  position:relative;
-  z-index:2;
-  max-width:760px;
-}
-
-.badge{
-  display:inline-block;
-  background:#58b52d;
-  padding:5px 8px;
-  border-radius:4px;
-  font-size:11px;
-  font-weight:bold;
-}
-
-.hero h1{
-  font-size:30px;
-  line-height:1.15;
-  margin:10px 0 6px;
-}
-
-.hero p{
-  margin:0;
-  font-size:14px;
-  line-height:1.4;
-}
-
-/* ===============================
+/* =========================================
    BOTÕES
-================================ */
+========================================= */
 
 .btn,
 button{
   display:inline-block;
   border:0;
-  background:#58b52d;
+  background:#168a45;
   color:#fff;
   padding:10px 15px;
   border-radius:6px;
@@ -161,220 +132,228 @@ button{
   font-weight:bold;
 }
 
-/* ===============================
-   SECÇÕES
-================================ */
+button:active,
+.btn:active{
+  transform:scale(.98);
+}
 
-.section,
-.cards{
-  margin:20px 4%;
+
+/* =========================================
+   ÁREA PRINCIPAL
+========================================= */
+
+main,
+header,
+footer,
+section,
+.container,
+.content,
+#app,
+#root{
+  width:100%;
+  max-width:100%;
+  min-width:0;
+}
+
+
+/* =========================================
+   DESTAQUE
+========================================= */
+
+#destaque{
+  width:94%;
+  max-width:1100px;
+  margin:14px auto;
+}
+
+#destaque .destaque-card{
+  position:relative;
+  width:100%;
+  height:330px;
+  overflow:hidden;
+  border-radius:14px;
+  background:#111;
+  cursor:pointer;
+}
+
+#destaque .destaque-card img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  max-width:none;
+  object-fit:cover;
+  display:block;
+}
+
+#destaque .destaque-overlay{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  z-index:2;
+  padding:55px 22px 18px;
+  color:#fff;
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0,0,0,.9)
+    );
+}
+
+#destaque .destaque-categoria{
+  font-size:12px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+#destaque .destaque-overlay h2{
+  margin:0 0 6px;
+  font-size:25px;
+  line-height:1.15;
+  color:#fff;
+}
+
+#destaque .destaque-overlay p{
+  margin:0 0 6px;
+  max-width:800px;
+  font-size:13px;
+  line-height:1.35;
+  color:#fff;
+}
+
+#destaque .destaque-data{
+  font-size:11px;
+  color:#ddd;
+}
+
+
+/* =========================================
+   SEÇÕES
+========================================= */
+
+.section{
+  width:auto;
+  margin:18px 4%;
 }
 
 .section-title{
   display:flex;
-  justify-content:space-between;
   align-items:center;
-  border-bottom:2px solid #58b52d;
-  margin-bottom:10px;
+  justify-content:space-between;
+  gap:10px;
+  border-bottom:2px solid #168a45;
+  margin-bottom:9px;
 }
 
 .section-title h2{
   margin:0 0 6px;
-  font-size:20px;
+  font-size:19px;
+  line-height:1.2;
 }
 
-/* ===============================
+.section-title a{
+  color:#168a45;
+  font-size:11px;
+  font-weight:bold;
+}
+
+
+/* =========================================
    GRID
-================================ */
+========================================= */
 
 .grid{
   display:grid;
   grid-template-columns:
-    repeat(auto-fit,minmax(210px,1fr));
+    repeat(4,minmax(0,1fr));
   gap:10px;
-}
-
-/* ===============================
-   CARTÃO ANTIGO
-================================ */
-
-.news{
-  background:#fff;
-  border-radius:10px;
-  overflow:hidden;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-  padding:10px;
-  margin-bottom:10px;
-}
-
-.news .thumb{
   width:100%;
-  height:115px;
-  background:#193c20;
-  border-radius:7px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
+  min-width:0;
 }
 
-.news .thumb img{
+
+/* =========================================
+   CARTÃO PRINCIPAL
+========================================= */
+
+.card{
+  min-width:0;
   width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.news h3{
-  margin:7px 0;
-  font-size:17px;
-}
-
-.news p{
-  margin:0;
-  font-size:13px;
-  line-height:1.4;
-}
-
-/* ===============================
-   DUAS COLUNAS
-================================ */
-
-.two{
-  display:grid;
-  grid-template-columns:2fr 1fr;
-  gap:14px;
-}
-
-.feature,
-.matches,
-.cards>div,
-.panel{
-  background:#fff;
-  padding:14px;
-  border-radius:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
-
-.photo{
-  height:160px;
-  background:#17391e;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-  border-radius:7px;
-}
-
-.photo img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.matches{
-  background:#111;
-  color:#fff;
-}
-
-.matches div{
-  padding:12px 0;
-  border-bottom:1px solid #444;
-}
-
-.matches b{
-  color:#58b52d;
-  margin:0 6px;
-}
-
-/* ===============================
-   CARTÕES DE NOTÍCIAS
-================================ */
-
-.news-card{
-  width:100%;
-  height:125px;
-  display:flex;
   overflow:hidden;
   background:#fff;
+  border:1px solid #e4e7e5;
   border-radius:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
+  box-shadow:0 2px 8px rgba(0,0,0,.07);
   cursor:pointer;
-  margin-bottom:10px;
+  transition:transform .2s,box-shadow .2s;
 }
 
-.news-card .card-image{
-  width:165px;
-  min-width:165px;
-  height:125px;
-  overflow:hidden;
-  background:#17391e;
+.card:hover{
+  transform:translateY(-2px);
+  box-shadow:0 5px 15px rgba(0,0,0,.12);
 }
 
-.news-card .card-image img{
+.card img{
   width:100%;
-  height:100%;
+  height:125px;
   display:block;
   object-fit:cover;
+  background:#17391e;
 }
 
-.news-card .card-content{
-  flex:1;
+.card-body{
   min-width:0;
-  padding:10px 12px;
-  overflow:hidden;
+  padding:9px;
 }
 
-.news-card .news-category{
-  color:#58b52d;
-  font-size:10px;
+.card-category{
+  display:block;
+  margin-bottom:4px;
+  color:#168a45;
+  font-size:9px;
   font-weight:bold;
   text-transform:uppercase;
-  margin-bottom:4px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
 }
 
-.news-card h3{
-  margin:0 0 5px;
-  font-size:16px;
+.card-title{
+  margin:0;
+  color:#151515;
+  font-size:14px;
   line-height:1.25;
+  font-weight:700;
+
   display:-webkit-box;
   -webkit-line-clamp:2;
   -webkit-box-orient:vertical;
   overflow:hidden;
 }
 
-.news-card p{
-  margin:0 0 5px;
-  color:#555;
-  font-size:12px;
-  line-height:1.35;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.news-card .news-meta{
+.card-date{
+  margin-top:5px;
   color:#777;
-  font-size:9px;
+  font-size:8px;
 }
 
-/* ===============================
-   LISTA DE NOTÍCIAS
-================================ */
 
-.news-grid{
+/* =========================================
+   ÚLTIMAS NOTÍCIAS
+========================================= */
+
+#ultimas{
   width:100%;
-  display:grid;
-  grid-template-columns:1fr;
-  gap:0;
 }
 
-/* ===============================
+
+/* =========================================
    ANÚNCIOS
-================================ */
+========================================= */
 
 #anunciosAtivosSection{
+  width:auto;
   margin:15px 4%;
 }
 
@@ -385,20 +364,38 @@ button{
   gap:10px;
 }
 
-/* ===============================
-   RODAPÉ
-================================ */
+.anuncie,
+.anuncie-aqui{
+  cursor:pointer;
+  transition:transform .2s;
+}
+
+.anuncie:hover,
+.anuncie-aqui:hover{
+  transform:translateY(-2px);
+}
+
+
+/* =========================================
+   FOOTER
+========================================= */
 
 footer{
+  width:100%;
   margin-top:30px;
   background:#101311;
   color:#fff;
   padding:25px 4%;
 }
 
-/* ===============================
+footer a{
+  color:#fff;
+}
+
+
+/* =========================================
    ADMIN
-================================ */
+========================================= */
 
 .admin-wrap{
   max-width:1100px;
@@ -407,11 +404,14 @@ footer{
 }
 
 .panel{
+  background:#fff;
   padding:18px;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
 .hidden{
-  display:none;
+  display:none !important;
 }
 
 .admin-grid{
@@ -440,9 +440,10 @@ textarea{
   padding:10px 0;
 }
 
-/* ===============================
+
+/* =========================================
    MODAIS
-================================ */
+========================================= */
 
 .afm-modal,
 .modal-africanmundo,
@@ -450,133 +451,225 @@ textarea{
 .tools-panel,
 .user-panel,
 .color-panel{
-  position:fixed!important;
-  top:70px!important;
-  right:12px!important;
-  width:min(380px,calc(100% - 24px))!important;
-  max-height:calc(100vh - 90px)!important;
-  overflow-y:auto!important;
-  background:#fff!important;
-  color:#151515!important;
-  border-radius:14px!important;
-  padding:16px!important;
-  box-shadow:0 10px 35px rgba(0,0,0,.25)!important;
-  z-index:99999!important;
+  position:fixed !important;
+  top:70px !important;
+  right:12px !important;
+  width:min(380px,calc(100% - 24px)) !important;
+  max-height:calc(100vh - 90px) !important;
+  overflow-y:auto !important;
+  background:#fff !important;
+  color:#151515 !important;
+  border-radius:14px !important;
+  padding:16px !important;
+  box-shadow:0 10px 35px rgba(0,0,0,.25) !important;
+  z-index:99999 !important;
 }
 
 .afm-overlay,
 .modal-overlay,
 .notification-overlay{
-  position:fixed!important;
-  inset:0!important;
-  background:rgba(0,0,0,.45)!important;
-  z-index:99998!important;
+  position:fixed !important;
+  inset:0 !important;
+  background:rgba(0,0,0,.45) !important;
+  z-index:99998 !important;
 }
 
-/* ===============================
+
+/* =========================================
    MODAL PRINCIPAL
-================================ */
+========================================= */
 
 #amModal{
-  position:fixed!important;
-  inset:0!important;
-  z-index:2147483647!important;
-  display:flex!important;
-  align-items:center!important;
-  justify-content:center!important;
-  padding:12px!important;
+  position:fixed !important;
+  inset:0 !important;
+  z-index:2147483647 !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  padding:12px !important;
 }
 
 #amModal .am-back{
-  position:fixed!important;
-  inset:0!important;
-  background:rgba(0,0,0,.65)!important;
+  position:fixed !important;
+  inset:0 !important;
+  background:rgba(0,0,0,.65) !important;
 }
 
 #amModal .am-box{
-  position:relative!important;
-  width:min(430px,100%)!important;
-  max-height:85vh!important;
-  overflow-y:auto!important;
-  background:#fff!important;
-  border-radius:14px!important;
-  box-shadow:0 15px 50px rgba(0,0,0,.4)!important;
+  position:relative !important;
+  width:min(430px,100%) !important;
+  max-height:85vh !important;
+  overflow-y:auto !important;
+  background:#fff !important;
+  border-radius:14px !important;
+  box-shadow:0 15px 50px rgba(0,0,0,.4) !important;
 }
 
 #amModal .am-head{
-  display:flex!important;
-  align-items:center!important;
-  justify-content:space-between!important;
-  padding:14px 16px!important;
-  border-bottom:1px solid #ddd!important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:space-between !important;
+  padding:14px 16px !important;
+  border-bottom:1px solid #ddd !important;
 }
 
 #amModal #amBody{
-  padding:16px!important;
-  line-height:1.5!important;
+  padding:16px !important;
+  line-height:1.5 !important;
 }
 
 #amModal #amClose{
-  width:34px!important;
-  height:34px!important;
-  padding:0!important;
-  border:0!important;
-  border-radius:50%!important;
-  background:#eee!important;
-  cursor:pointer!important;
+  width:34px !important;
+  height:34px !important;
+  padding:0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+  background:#eee !important;
+  cursor:pointer !important;
 }
 
 #amModal .am-action,
 #amModal .am-color{
-  display:block!important;
-  width:100%!important;
-  margin:8px 0!important;
-  padding:11px!important;
-  border:0!important;
-  border-radius:7px!important;
-  background:#58b52d!important;
-  color:#fff!important;
-  cursor:pointer!important;
-  font-weight:bold!important;
-  }
+  display:block !important;
+  width:100% !important;
+  margin:8px 0 !important;
+  padding:11px !important;
+  border:0 !important;
+  border-radius:7px !important;
+  background:#168a45 !important;
+  color:#fff !important;
+  cursor:pointer !important;
+  font-weight:bold !important;
+}
 
-/* ===============================
+
+/* =========================================
+   LOADING
+========================================= */
+
+.loading{
+  padding:15px;
+  text-align:center;
+  color:#777;
+  font-size:13px;
+}
+
+
+/* =========================================
+   FIM DA PARTE 1
+========================================= */
+
+/* =========================================
+   AFRICANMUNDO — ESTILO PRINCIPAL
+   PARTE 2/2
+========================================= */
+
+
+/* =========================================
+   CATEGORIAS — 4 NOTÍCIAS
+========================================= */
+
+.section .grid{
+  display:grid !important;
+  grid-template-columns:
+    repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+
+
+/* =========================================
+   CARDS DAS CATEGORIAS
+========================================= */
+
+.section .card{
+  display:block !important;
+  width:100% !important;
+  min-width:0 !important;
+  height:auto !important;
+  margin:0 !important;
+  padding:0 !important;
+  overflow:hidden !important;
+  border-radius:9px !important;
+}
+
+.section .card img{
+  width:100% !important;
+  height:85px !important;
+  min-height:85px !important;
+  max-height:85px !important;
+  display:block !important;
+  object-fit:cover !important;
+}
+
+.section .card .card-body{
+  width:100% !important;
+  min-width:0 !important;
+  padding:7px !important;
+}
+
+.section .card .card-category{
+  margin:0 0 3px !important;
+  font-size:8px !important;
+  line-height:1.1 !important;
+}
+
+.section .card .card-title{
+  margin:0 !important;
+  font-size:11px !important;
+  line-height:1.2 !important;
+
+  display:-webkit-box !important;
+  -webkit-line-clamp:2 !important;
+  -webkit-box-orient:vertical !important;
+  overflow:hidden !important;
+}
+
+.section .card .card-date{
+  margin-top:4px !important;
+  font-size:7px !important;
+}
+
+
+/* =========================================
+   APENAS 4 NOTÍCIAS
+========================================= */
+
+.section .grid .card:nth-child(n+5){
+  display:none !important;
+}
+
+
+/* =========================================
    MODO ESCURO
-================================ */
+========================================= */
 
 body.dark{
   background:#101417;
   color:#f2f5f6;
 }
 
-body.dark .news,
-body.dark .news-card,
-body.dark .feature,
-body.dark .panel,
-body.dark .cards>div{
-  background:#171d21;
-  color:#f2f5f6;
-  box-shadow:none;
+body.dark .card,
+body.dark .panel{
+  background:#171d21 !important;
+  color:#f2f5f6 !important;
+  border-color:#293238 !important;
+  box-shadow:none !important;
 }
 
-body.dark .news-card p{
-  color:#d5dde1;
+body.dark .card-title{
+  color:#f2f5f6 !important;
 }
 
-body.dark .news-card .news-meta{
-  color:#aeb8bd;
-}
-
-body.dark .section-title{
-  color:#f2f5f6;
+body.dark .card-date{
+  color:#aeb8bd !important;
 }
 
 body.dark input,
 body.dark select,
 body.dark textarea{
-  background:#171d21;
-  color:#f2f5f6;
-  border-color:#293238;
+  background:#171d21 !important;
+  color:#f2f5f6 !important;
+  border-color:#293238 !important;
 }
 
 body.dark .afm-modal,
@@ -585,55 +678,140 @@ body.dark .notification-panel,
 body.dark .tools-panel,
 body.dark .user-panel,
 body.dark .color-panel{
-  background:#171d21!important;
-  color:#f2f5f6!important;
+  background:#171d21 !important;
+  color:#f2f5f6 !important;
 }
 
 body.dark #amModal .am-box{
-  background:#171d21!important;
-  color:#f2f5f6!important;
+  background:#171d21 !important;
+  color:#f2f5f6 !important;
 }
 
 body.dark #amModal .am-head{
-  border-color:#293238!important;
+  border-color:#293238 !important;
 }
 
 body.dark #amModal #amClose{
-  background:#293238!important;
-  color:#fff!important;
+  background:#293238 !important;
+  color:#fff !important;
 }
 
-/* ===============================
-   IMAGENS SEM FOTO
-================================ */
 
-.news-card .card-image.sem-imagem{
+/* =========================================
+   IMAGEM DE FALLBACK
+========================================= */
+
+.card img{
   background:
     linear-gradient(
       135deg,
       #17391e,
-      #58b52d
+      #168a45
     );
 }
 
-.news-card .card-image.sem-imagem::after{
-  content:"AFRICANMUNDO";
-  display:flex;
-  width:100%;
-  height:100%;
-  align-items:center;
-  justify-content:center;
-  color:#fff;
-  font-size:12px;
-  font-weight:bold;
-  letter-spacing:1px;
+
+/* =========================================
+   DESTAQUE — IMAGEM COMPLETA
+========================================= */
+
+#destaque{
+  width:94% !important;
+  max-width:1100px !important;
+  margin:14px auto !important;
 }
 
-/* ===============================
-   RESPONSIVO
-================================ */
+#destaque .destaque-card{
+  position:relative !important;
+  width:100% !important;
+  height:330px !important;
+  overflow:hidden !important;
+  border-radius:14px !important;
+  background:#111 !important;
+  cursor:pointer !important;
+}
 
-@media(max-width:700px){
+#destaque .destaque-card img{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  max-width:none !important;
+  object-fit:cover !important;
+  display:block !important;
+}
+
+#destaque .destaque-overlay{
+  position:absolute !important;
+  left:0 !important;
+  right:0 !important;
+  bottom:0 !important;
+  z-index:2 !important;
+  padding:60px 22px 18px !important;
+  color:#fff !important;
+
+  background:
+    linear-gradient(
+      transparent,
+      rgba(0,0,0,.92)
+    ) !important;
+}
+
+#destaque .destaque-categoria{
+  font-size:12px !important;
+  font-weight:bold !important;
+  margin-bottom:5px !important;
+  color:#fff !important;
+}
+
+#destaque .destaque-overlay h2{
+  margin:0 0 6px !important;
+  font-size:25px !important;
+  line-height:1.15 !important;
+  color:#fff !important;
+}
+
+#destaque .destaque-overlay p{
+  margin:0 0 6px !important;
+  max-width:800px !important;
+  font-size:13px !important;
+  line-height:1.35 !important;
+  color:#fff !important;
+}
+
+#destaque .destaque-data{
+  font-size:11px !important;
+  color:#ddd !important;
+}
+
+
+/* =========================================
+   RESPONSIVO
+========================================= */
+
+@media(max-width:900px){
+
+  .grid{
+    grid-template-columns:
+      repeat(3,minmax(0,1fr));
+  }
+
+}
+
+
+/* =========================================
+   CELULAR
+========================================= */
+
+@media(max-width:600px){
+
+  .top{
+    padding:7px 3%;
+  }
+
+  .top span{
+    display:none;
+  }
 
   .brand{
     padding:12px 3%;
@@ -641,6 +819,10 @@ body.dark #amModal #amClose{
 
   .logo{
     font-size:26px;
+  }
+
+  .tag{
+    font-size:11px;
   }
 
   nav{
@@ -653,649 +835,199 @@ body.dark #amModal #amClose{
     font-size:11px;
   }
 
-  .hero{
-    margin:10px 3%;
-    min-height:230px;
-    padding:20px;
-  }
-
-  .hero h1{
-    font-size:24px;
-  }
-
-  .hero p{
-    font-size:12px;
-  }
-
-  .section,
-  .cards{
-    margin:16px 3%;
-  }
-
-  .section-title{
-    margin-bottom:8px;
-  }
-
-  .section-title h2{
-    font-size:17px;
-  }
-
-  .two,
-  .admin-grid{
-    grid-template-columns:1fr;
-  }
-
-  .grid{
-    grid-template-columns:1fr;
-  }
-
-}
-
-/* ===============================
-   CARTÃO MOBILE
-================================ */
-
-@media(max-width:600px){
-
-  .news-card{
-    height:92px;
-    min-height:92px;
-    max-height:92px;
-    margin-bottom:7px;
-    border-radius:8px;
-  }
-
-  .news-card .card-image{
-    width:92px;
-    min-width:92px;
-    max-width:92px;
-    height:92px;
-  }
-
-  .news-card .card-content{
-    padding:7px 8px;
-  }
-
-  .news-card .news-category{
-    font-size:8px;
-    margin-bottom:2px;
-  }
-
-  .news-card h3{
-    font-size:13px;
-    line-height:1.2;
-    margin:2px 0 3px;
-  }
-
-  .news-card p{
-    font-size:9px;
-    line-height:1.2;
-    margin:2px 0;
-  }
-
-  .news-card .news-meta{
-    font-size:7px;
-  }
-
-  .news{
-    padding:8px;
-  }
-
-  .news .thumb{
-    height:100px;
-  }
-
-  .top span{
-    display:none;
-  }
-
   .admin{
     margin-left:0;
   }
 
-  #anunciosAtivosSection{
-    margin:12px 3%;
-  }
 
-  footer{
-    padding:22px 3%;
-  }
-
-}
-
-/* ===============================
-   SEGURANÇA DE LAYOUT
-================================ */
-
-img,
-video,
-iframe,
-canvas{
-  max-width:100%;
-}
-
-table{
-  max-width:100%;
-}
-
-main,
-header,
-footer,
-section,
-.container,
-.content,
-#app,
-#root{
-  width:100%;
-  max-width:100%;
-  min-width:0;
-}
-
-.card-content{
-  min-width:0;
-  max-width:100%;
-}
-
-*{
-  max-width:100%;
-    }
-
-/* ===============================
-   DESTAQUE PROFISSIONAL
-================================ */
-
-.hero{
-  position:relative;
-  isolation:isolate;
-}
-
-.hero img{
-  z-index:-2;
-}
-
-.hero::after{
-  z-index:-1;
-}
-
-.hero h1{
-  text-shadow:0 2px 8px rgba(0,0,0,.6);
-}
-
-.hero p{
-  max-width:680px;
-  text-shadow:0 1px 5px rgba(0,0,0,.6);
-}
-
-/* ===============================
-   LINKS
-================================ */
-
-a{
-  color:inherit;
-}
-
-a,
-button{
-  -webkit-tap-highlight-color:transparent;
-}
-
-/* ===============================
-   CARREGAMENTO
-================================ */
-
-.loading{
-  padding:15px;
-  text-align:center;
-  color:#777;
-  font-size:13px;
-}
-
-/* ===============================
-   ANUNCIE AQUI
-================================ */
-
-.anuncie,
-.anuncie-aqui{
-  cursor:pointer;
-  transition:transform .2s;
-}
-
-.anuncie:hover,
-.anuncie-aqui:hover{
-  transform:translateY(-2px);
-}
-
-/* ===============================
-   AJUSTE FINAL MOBILE
-================================ */
-
-@media(max-width:600px){
-
-  .hero{
-    min-height:220px;
-    margin:8px 3%;
-    padding:17px;
-    border-radius:10px;
-  }
-
-  .hero h1{
-    font-size:21px;
-    margin:7px 0 4px;
-  }
-
-  .hero p{
-    font-size:11px;
-    line-height:1.3;
-    max-height:42px;
-    overflow:hidden;
-  }
-
-  .badge{
-    font-size:9px;
-    padding:4px 6px;
-  }
-
-  .section,
-  .cards{
-    margin:13px 3%;
-  }
-
-  .section-title h2{
-    font-size:16px;
-  }
-
-  .section-title{
-    border-width:1px;
-  }
-
-}
-
-/* ===============================
-   EVITAR ESPAÇOS DESNECESSÁRIOS
-================================ */
-
-section:empty{
-  display:none;
-}
-
-.cards:empty,
-.grid:empty{
-  display:none;
-}
-
-/* ===============================
-   FIM AFRICANMUNDO CSS
-================================ */
-
-/* =========================================
-   AFRICANMUNDO — LAYOUT COMPACTO
-========================================= */
-
-.section{
-  margin:14px 4%;
-}
-
-.section-title{
-  margin-bottom:7px;
-}
-
-.section-title h2{
-  font-size:17px;
-}
-
-.grid{
-  gap:7px;
-}
-
-.news-card{
-  height:105px;
-  min-height:105px;
-  max-height:105px;
-  margin-bottom:7px;
-  border-radius:9px;
-}
-
-.news-card .card-image{
-  width:105px;
-  min-width:105px;
-  max-width:105px;
-  height:105px;
-}
-
-.news-card .card-content{
-  padding:7px 9px;
-}
-
-.news-card h3{
-  font-size:14px;
-  line-height:1.2;
-  margin:4px 0;
-}
-
-.news-card p{
-  font-size:11px;
-  line-height:1.3;
-  margin:0 0 3px;
-}
-
-.news-card .news-category{
-  font-size:9px;
-  margin-bottom:2px;
-}
-
-.news-card .news-meta{
-  font-size:8px;
-}
-
-#anunciosAtivosSection{
-  margin:12px 4%;
-}
-
-@media(max-width:600px){
-
-  .section{
-    margin:11px 3%;
-  }
-
-  .section-title h2{
-    font-size:16px;
-  }
-
-  .news-card{
-    height:88px;
-    min-height:88px;
-    max-height:88px;
-  }
-
-  .news-card .card-image{
-    width:88px;
-    min-width:88px;
-    max-width:88px;
-    height:88px;
-  }
-
-  .news-card .card-content{
-    padding:6px 8px;
-  }
-
-  .news-card h3{
-    font-size:13px;
-    margin:3px 0;
-  }
-
-  .news-card p{
-    font-size:10px;
-    -webkit-line-clamp:2;
-  }
-
-  .news-card .news-category{
-    font-size:8px;
-  }
-
-  .news-card .news-meta{
-    font-size:7px;
-  }
-
-}
-
- /* =========================================
-    AJUSTE DE TAMANHO — MOBILE
- ========================================= */
-
-#destaque{
-  width:auto !important;
-  max-width:900px;
-  margin:10px auto !important;
-}
-
-#destaque .featured-card{
-  width:100% !important;
-  min-height:200px !important;
-  max-height:220px !important;
-}
-
-#destaque .featured-card > img{
-  width:100% !important;
-  height:100% !important;
-  object-fit:cover !important;
-}
-
-@media(max-width:600px){
+  /* DESTAQUE */
 
   #destaque{
     width:94% !important;
-    margin:8px auto !important;
+    margin:9px auto !important;
   }
 
-  #destaque .featured-card{
-    min-height:185px !important;
-    max-height:200px !important;
+  #destaque .destaque-card{
+    height:210px !important;
     border-radius:10px !important;
   }
 
-  #destaque .featured-card > div:last-child{
-    min-height:185px !important;
-    padding:10px !important;
+  #destaque .destaque-overlay{
+    padding:40px 12px 11px !important;
   }
 
-  #destaque .featured-card h2{
-    font-size:16px !important;
-    line-height:1.15 !important;
-    margin:4px 0 !important;
-  }
-
-  #destaque .featured-card p{
-    font-size:10px !important;
-    line-height:1.25 !important;
+  #destaque .destaque-categoria{
+    font-size:9px !important;
     margin-bottom:3px !important;
   }
 
-}
-
-/* =========================================
-   CATEGORIAS — 4 NOTÍCIAS COMPACTAS
-========================================= */
-
-.section .grid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:8px;
-}
-
-.section .news-card{
-  display:block;
-  height:auto !important;
-  min-height:0 !important;
-  max-height:none !important;
-  margin:0 !important;
-  border-radius:8px;
-}
-
-.section .news-card .card-image{
-  width:100% !important;
-  min-width:0 !important;
-  max-width:none !important;
-  height:85px !important;
-}
-
-.section .news-card .card-content{
-  padding:7px !important;
-}
-
-.section .news-card h3{
-  font-size:12px !important;
-  line-height:1.2 !important;
-  margin:3px 0 !important;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.section .news-card p{
-  font-size:9px !important;
-  line-height:1.25 !important;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.section .news-card .news-category{
-  font-size:8px !important;
-}
-
-.section .news-card .news-meta{
-  font-size:7px !important;
-}
-
-
-/* =========================================
-   NO MÁXIMO 4 NOTÍCIAS POR CATEGORIA
-========================================= */
-
-.section .grid .news-card:nth-child(n+5){
-  display:none !important;
-}
-
-
-@media(max-width:600px){
-
-  .section .grid{
-    grid-template-columns:repeat(2,1fr);
-    gap:6px;
+  #destaque .destaque-overlay h2{
+    font-size:17px !important;
+    line-height:1.15 !important;
+    margin-bottom:4px !important;
   }
 
-  .section .news-card .card-image{
-    height:70px !important;
+  #destaque .destaque-overlay p{
+    font-size:10px !important;
+    line-height:1.25 !important;
+    max-height:27px !important;
+    overflow:hidden !important;
   }
 
-  .section .news-card .card-content{
-    padding:6px !important;
-  }
-
-  .section .news-card h3{
-    font-size:11px !important;
-  }
-
-  .section .news-card p{
+  #destaque .destaque-data{
     font-size:8px !important;
   }
 
-}
 
-/* =========================================
-   PÁGINA INICIAL — CATEGORIAS COMPACTAS
-========================================= */
-
-.section .grid{
-  display:grid !important;
-  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
-  gap:7px !important;
-}
-
-.section .news-card{
-  display:block !important;
-  width:100% !important;
-  height:auto !important;
-  min-height:0 !important;
-  max-height:none !important;
-  margin:0 !important;
-  padding:0 !important;
-  border-radius:8px !important;
-  overflow:hidden !important;
-}
-
-.section .news-card .card-image{
-  width:100% !important;
-  min-width:0 !important;
-  height:68px !important;
-  overflow:hidden !important;
-}
-
-.section .news-card .card-image img{
-  width:100% !important;
-  height:100% !important;
-  object-fit:cover !important;
-}
-
-.section .news-card .card-content{
-  padding:6px !important;
-}
-
-.section .news-card .news-category{
-  font-size:8px !important;
-  margin-bottom:2px !important;
-}
-
-.section .news-card h3{
-  font-size:11px !important;
-  line-height:1.18 !important;
-  margin:2px 0 !important;
-
-  display:-webkit-box !important;
-  -webkit-line-clamp:2 !important;
-  -webkit-box-orient:vertical !important;
-  overflow:hidden !important;
-}
-
-.section .news-card p{
-  font-size:8px !important;
-  line-height:1.2 !important;
-  margin:2px 0 !important;
-
-  display:-webkit-box !important;
-  -webkit-line-clamp:2 !important;
-  -webkit-box-orient:vertical !important;
-  overflow:hidden !important;
-}
-
-.section .news-card .news-meta{
-  font-size:7px !important;
-}
-
-.section .grid .news-card:nth-child(n+5){
-  display:none !important;
-}
-
-
-/* =========================================
-   CELULAR
-========================================= */
-
-@media(max-width:600px){
+  /* SEÇÕES */
 
   .section{
-    margin:9px 3% !important;
+    margin:10px 3% !important;
   }
 
   .section-title{
     margin-bottom:6px !important;
+    border-width:1px;
   }
 
   .section-title h2{
     font-size:15px !important;
   }
 
+
+  /* GRID 2x2 */
+
   .section .grid{
-    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+    grid-template-columns:
+      repeat(2,minmax(0,1fr)) !important;
     gap:6px !important;
   }
 
-  .section .news-card .card-image{
-    height:62px !important;
+
+  /* CARDS */
+
+  .section .card{
+    border-radius:8px !important;
   }
 
-  .section .news-card .card-content{
-    padding:5px !important;
+  .section .card img{
+    height:72px !important;
+    min-height:72px !important;
+    max-height:72px !important;
   }
 
-  .section .news-card h3{
+  .section .card .card-body{
+    padding:6px !important;
+  }
+
+  .section .card .card-category{
+    font-size:7px !important;
+    margin-bottom:2px !important;
+  }
+
+  .section .card .card-title{
     font-size:10px !important;
+    line-height:1.2 !important;
   }
 
-  .section .news-card p{
-    font-size:8px !important;
+  .section .card .card-date{
+    font-size:7px !important;
+    margin-top:3px !important;
+  }
+
+
+  /* ANÚNCIOS */
+
+  #anunciosAtivosSection{
+    margin:12px 3%;
+  }
+
+
+  /* FOOTER */
+
+  footer{
+    padding:22px 3%;
+  }
+
+
+  /* ADMIN */
+
+  .admin-grid{
+    grid-template-columns:1fr;
   }
 
 }
+
+
+/* =========================================
+   TELAS MUITO PEQUENAS
+========================================= */
+
+@media(max-width:380px){
+
+  .logo{
+    font-size:23px;
+  }
+
+  nav a{
+    padding:8px 5px;
+    font-size:10px;
+  }
+
+  #destaque .destaque-card{
+    height:190px !important;
+  }
+
+  #destaque .destaque-overlay h2{
+    font-size:15px !important;
+  }
+
+  .section .card img{
+    height:65px !important;
+    min-height:65px !important;
+    max-height:65px !important;
+  }
+
+  .section .card .card-title{
+    font-size:9px !important;
+  }
+
+}
+
+
+/* =========================================
+   SEGURANÇA DE LAYOUT
+========================================= */
+
+.card,
+.card-body,
+.section,
+.grid,
+.destaque-card{
+  min-width:0;
+  max-width:100%;
+}
+
+table{
+  max-width:100%;
+  overflow-x:auto;
+}
+
+
+/* =========================================
+   ESTADO VAZIO
+========================================= */
+
+.sem-noticias{
+  width:100%;
+  padding:15px;
+  margin:0;
+  text-align:center;
+  color:#777;
+  font-size:12px;
+}
+
+
+/* =========================================
+   FIM DO CSS
+========================================= */
