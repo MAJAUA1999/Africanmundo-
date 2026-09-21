@@ -436,136 +436,106 @@ async function carregarNoticias(){
 /* =========================================================
    FILTROS POR CATEGORIA
 ========================================================= */
-
 function filtrar(tipo){
 
   const t = norm(tipo);
 
   return noticias.filter(n => {
 
-    const cat  = norm(n?.categoria);
-    const sub  = norm(n?.subcategoria);
-    const pais = norm(n?.pais);
+    const cat =
+      norm(n?.categoria);
 
-    const x = norm(
-      `${n?.titulo || ""} ${n?.texto || ""}`
-    );
+    const sub =
+      norm(n?.subcategoria);
+
+    const pais =
+      norm(n?.pais);
 
 
-    /* =========================
-       MOÇAMBIQUE
-    ========================= */
+    /* MOÇAMBIQUE */
 
     if(t === "mocambique"){
 
-      if(
+      return (
         cat === "mocambique" ||
         pais === "mocambique"
-      ) return true;
+      );
 
-      if(
-        cat === "africa" ||
-        pais === "africa"
-      ) return false;
-
-      return /mocambique|mozambique|maputo|matola|gaza|inhambane|sofala|beira|manica|tete|zambezia|nampula|pemba|cabo delgado|niassa/.test(x);
     }
 
 
-    /* =========================
-       ÁFRICA
-    ========================= */
+    /* ÁFRICA */
 
     if(t === "africa"){
 
-      if(
-        cat === "mocambique" ||
-        pais === "mocambique" ||
-        /mocambique|mozambique/.test(x)
-      ) return false;
-
-      if(
+      return (
         cat === "africa" ||
         pais === "africa"
-      ) return true;
+      );
 
-      return /angola|malawi|zimbabwe|zambia|tanzania|nigeria|kenya|quenia|ghana|marrocos|egito|etiopia|africa do sul|rwanda|uganda|senegal|camaroes|namibia|botswana|tunisia|argelia|libia|somalia|sudao/.test(x);
     }
 
 
-    /* =========================
-       FUTEBOL
-    ========================= */
+    /* FUTEBOL */
 
     if(t === "futebol"){
 
-      if(
-        sub === "futebol" ||
-        cat === "futebol"
-      ) return true;
+      return (
+        cat === "futebol" ||
+        sub === "futebol"
+      );
 
-      if(
-        cat === "desporto" &&
-        !/futebol|football|golo|gol|jogador|clube|campeonato|liga|uefa|champions|premier league|mundial de clubes/.test(x)
-      ) return false;
-
-      return /futebol|football|golo|gol|jogador|clube|campeonato|liga|uefa|champions|premier league|mundial de clubes/.test(x);
     }
 
 
-    /* =========================
-       DESPORTO
-    ========================= */
+    /* DESPORTO */
 
     if(t === "desporto"){
 
       if(
         cat === "futebol" ||
         sub === "futebol"
-      ) return false;
+      ){
 
-      if(
+        return false;
+
+      }
+
+      return (
         cat === "desporto" ||
         sub === "desporto"
-      ) return true;
+      );
 
-      return /desporto|atletismo|basquete|basquetebol|boxe|olimpi|natacao|tenis|voleibol|ciclismo/.test(x);
     }
 
 
-    /* =========================
-       NEGÓCIOS
-    ========================= */
+    /* NEGÓCIOS */
 
     if(t === "negocios"){
 
-      if(
+      return (
         cat === "negocios" ||
-        sub === "negocios"
-      ) return true;
+        sub === "negocios" ||
+        sub === "economia"
+      );
 
-      return /negocio|economia|empresa|mercado|investimento|comercio|financas|banco|emprego|energia/.test(x);
     }
 
 
-    /* =========================
-       ENTRETENIMENTO
-    ========================= */
+    /* ENTRETENIMENTO */
 
     if(t === "entretenimento"){
 
-      if(
+      return (
         cat === "entretenimento" ||
-        sub === "entretenimento"
-      ) return true;
+        sub === "entretenimento" ||
+        sub === "cultura"
+      );
 
-      return /entretenimento|cultura|musica|cinema|artista|festival|teatro|televisao|celebridade/.test(x);
     }
 
 
-    /* =========================
-       NOTÍCIAS
-    ========================= */
+    /* NOTÍCIAS */
 
     if(
       t === "noticias" ||
@@ -573,14 +543,15 @@ function filtrar(tipo){
     ){
 
       return true;
+
     }
+
 
     return false;
 
   });
 
 }
-
 
 /* =========================================================
    DESTAQUE — ROTAÇÃO AUTOMÁTICA
