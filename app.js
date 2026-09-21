@@ -501,24 +501,20 @@ async function carregarNoticias(){
 /* =========================================================
    FILTROS POR CATEGORIA
 ========================================================= */
+
 function filtrar(tipo){
 
   const t = norm(tipo);
 
   return noticias.filter(n => {
 
-    const cat =
-      norm(n?.categoria);
-
-    const sub =
-      norm(n?.subcategoria);
-
-    const pais =
-      norm(n?.pais);
+    const cat = norm(n?.categoria);
+    const sub = norm(n?.subcategoria);
+    const pais = norm(n?.pais);
 
 
     /* =========================
-       MOÇAMBIQUE
+       🇲🇿 MOÇAMBIQUE
     ========================= */
 
     if(t === "mocambique"){
@@ -532,7 +528,7 @@ function filtrar(tipo){
 
 
     /* =========================
-       ÁFRICA
+       🌍 ÁFRICA
     ========================= */
 
     if(t === "africa"){
@@ -541,7 +537,8 @@ function filtrar(tipo){
         cat === "africa" ||
         (
           pais &&
-          pais !== "mocambique"
+          pais !== "mocambique" &&
+          pais !== "internacional"
         )
       );
 
@@ -549,7 +546,7 @@ function filtrar(tipo){
 
 
     /* =========================
-       FUTEBOL
+       ⚽ FUTEBOL
     ========================= */
 
     if(t === "futebol"){
@@ -563,7 +560,7 @@ function filtrar(tipo){
 
 
     /* =========================
-       DESPORTO
+       🏆 DESPORTO
     ========================= */
 
     if(t === "desporto"){
@@ -578,45 +575,82 @@ function filtrar(tipo){
       }
 
       return (
+
         cat === "desporto" ||
-        sub === "desporto"
+
+        [
+          "desporto",
+          "basquetebol",
+          "atletismo",
+          "boxe",
+          "tenis",
+          "voleibol",
+          "ciclismo",
+          "motorizado",
+          "formula 1",
+          "olimpiadas"
+        ].includes(sub)
+
       );
 
     }
 
 
     /* =========================
-       NEGÓCIOS
+       💼 NEGÓCIOS
     ========================= */
 
     if(t === "negocios"){
 
       return (
+
         cat === "negocios" ||
-        sub === "negocios" ||
-        sub === "economia"
+
+        [
+          "negocios",
+          "economia",
+          "financas",
+          "empresas",
+          "investimento",
+          "mercado",
+          "emprego",
+          "oportunidades",
+          "energia"
+        ].includes(sub)
+
       );
 
     }
 
 
     /* =========================
-       ENTRETENIMENTO
+       🎭 ENTRETENIMENTO
     ========================= */
 
     if(t === "entretenimento"){
 
       return (
+
         cat === "entretenimento" ||
-        sub === "entretenimento" ||
-        sub === "cultura"
+
+        [
+          "entretenimento",
+          "cultura",
+          "musica",
+          "cinema",
+          "televisao",
+          "famosos",
+          "artes",
+          "lazer"
+        ].includes(sub)
+
       );
 
     }
 
 
     /* =========================
-       NOTÍCIAS
+       📰 TODAS AS NOTÍCIAS
     ========================= */
 
     if(
