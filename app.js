@@ -412,7 +412,11 @@ function destacar(arr){
 
 if(!arr||!arr.length)return null;
 
-return arr[0];
+return arr[
+Math.floor(
+Math.random()*arr.length
+)
+];
 
 }
 
