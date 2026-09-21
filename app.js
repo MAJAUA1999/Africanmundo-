@@ -217,56 +217,89 @@ return arr[indiceDestaque];
 
 function mostrarDestaque(){
 
-const box=
-document.getElementById("destaque");
+  const box =
+    document.getElementById("destaque");
 
-if(!box||!noticias.length)
-return;
+  if(!box || !noticias.length)
+    return;
 
-const n=
-destacar(noticias);
 
-if(!n)return;
+  const n =
+    destacar(noticias);
 
-box.innerHTML=`
+  if(!n) return;
 
-<div class="destaque-card"
-onclick="abrirNoticia(${Number(n.id)})">
 
-<img
-src="${esc(imagem(n))}"
-alt="${esc(titulo(n))}"
-loading="eager"
->
+  const img =
+    imagem(n);
 
-<div class="destaque-body">
+  const resumo =
+    texto(n)
+    .replace(/\s+/g," ")
+    .trim()
+    .slice(0,160);
 
-<div class="card-category">
-🌍 ${esc(
-n.subcategoria||
-n.categoria||
-"Notícias"
-)}
-</div>
 
-<h2>
-${esc(titulo(n))}
-</h2>
+  box.innerHTML = `
 
-<p>
-${esc(
-texto(n).slice(0,220)
-)}
-</p>
+    <div
+      class="destaque-card"
+      onclick="abrirNoticia(${Number(n.id)})"
+    >
 
-<div class="card-date">
-${esc(data(n))}
-</div>
+      <img
+        src="${esc(img)}"
+        alt="${esc(titulo(n))}"
+        loading="eager"
+      >
 
-</div>
+      <div class="destaque-overlay">
 
-</div>
-`;
+        <div class="destaque-categoria">
+          🌍 ${esc(
+            n.subcategoria ||
+            n.categoria ||
+            "Notícias"
+          )}
+        </div>
+
+        <h2>
+          ${esc(titulo(n))}
+        </h2>
+
+        ${
+          resumo
+          ? `<p>${esc(resumo)}...</p>`
+          : ""
+        }
+
+        <div class="destaque-data">
+          ${esc(data(n))}
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+
+  const imagemEl =
+    box.querySelector("img");
+
+
+  if(imagemEl){
+
+    imagemEl.onerror =
+      function(){
+
+        this.onerror = null;
+
+        this.src = FALLBACK_IMG;
+
+      };
+
+  }
 
 }
 
