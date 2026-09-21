@@ -1164,10 +1164,10 @@ async function iniciarAfricanMundo(){
 
     marcarMenuAtivo();
 
-    await carregarNoticias();
+    carregarNoticias();
 
-    iniciarAtualizacaoAutomatica();
-
+iniciarAtualizacaoAutomatica();
+     
   }catch(e){
 
     console.error(
