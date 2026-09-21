@@ -58,10 +58,30 @@ return n?.texto||"";
 }
 
 function imagem(n){
-return n?.imagem||
-n?.image||
-n?.url_imagem||
-FALLBACK_IMG;
+
+  const campos = [
+    n?.imagem,
+    n?.image,
+    n?.url_imagem,
+    n?.imagem_url
+  ];
+
+  for(const valor of campos){
+
+    if(
+      valor &&
+      typeof valor === "string" &&
+      valor.trim() !== ""
+    ){
+
+      return valor.trim();
+
+    }
+
+  }
+
+  return FALLBACK_IMG;
+
 }
 
 function data(n){
@@ -98,71 +118,76 @@ return FALLBACK_IMG;
 /* =====================================================
    CARD
 ===================================================== */
-
 function card(n){
 
-const el=
-document.createElement("article");
+  const el =
+    document.createElement("article");
 
-el.className="card";
+  el.className = "card";
 
-const img=imagem(n);
-const tit=titulo(n);
+  const img =
+    imagem(n);
 
-const cat=
-n?.subcategoria||
-n?.categoria||
-"Notícias";
+  const tit =
+    titulo(n);
 
-el.innerHTML=`
+  const cat =
+    n?.subcategoria ||
+    n?.categoria ||
+    "Notícias";
 
-<img
-src="${esc(img)}"
-alt="${esc(tit)}"
-loading="lazy"
->
+  el.innerHTML = `
 
-<div class="card-body">
+    <img
+      src="${esc(img)}"
+      alt="${esc(tit)}"
+      loading="lazy"
+    >
 
-<div class="card-category">
-🌍 ${esc(cat)}
-</div>
+    <div class="card-body">
 
-<h3 class="card-title">
-${esc(tit)}
-</h3>
+      <div class="card-category">
+        🌍 ${esc(cat)}
+      </div>
 
-<div class="card-date">
-${esc(data(n))}
-</div>
+      <h3 class="card-title">
+        ${esc(tit)}
+      </h3>
 
-</div>
-`;
+      <div class="card-date">
+        ${esc(data(n))}
+      </div>
 
-el.onclick=function(){
+    </div>
 
-abrirNoticia(n.id);
+  `;
 
-};
+  el.onclick =
+    function(){
 
-const imgEl=
-el.querySelector("img");
+      abrirNoticia(n.id);
 
-if(imgEl){
+    };
 
-imgEl.onerror=function(){
+  const imgEl =
+    el.querySelector("img");
 
-this.onerror=null;
-this.src=imagemGerada(n);
+  if(imgEl){
 
-};
+    imgEl.onerror =
+      function(){
+
+        this.onerror = null;
+
+        this.src = FALLBACK_IMG;
+
+      };
+
+  }
+
+  return el;
 
 }
-
-return el;
-
-}
-
 
 /* =====================================================
    LISTA
@@ -343,7 +368,7 @@ async function carregarNoticias(){
         "data",
         {ascending:false}
       )
-      .limit(100);
+      .limit(200);
 
 
     const limite =
@@ -351,11 +376,13 @@ async function carregarNoticias(){
 
         setTimeout(
           ()=>{
+
             reject(
               new Error(
                 "Tempo de carregamento excedido"
               )
             );
+
           },
           8000
         );
@@ -464,7 +491,7 @@ async function carregarNoticias(){
 
   }
 
-  }
+       }
 
 /* =========================================================
    FILTROS POR CATEGORIA
@@ -485,7 +512,9 @@ function filtrar(tipo){
       norm(n?.pais);
 
 
-    /* MOÇAMBIQUE */
+    /* =========================
+       MOÇAMBIQUE
+    ========================= */
 
     if(t === "mocambique"){
 
@@ -497,19 +526,26 @@ function filtrar(tipo){
     }
 
 
-    /* ÁFRICA */
+    /* =========================
+       ÁFRICA
+    ========================= */
 
     if(t === "africa"){
 
       return (
         cat === "africa" ||
-        pais === "africa"
+        (
+          pais &&
+          pais !== "mocambique"
+        )
       );
 
     }
 
 
-    /* FUTEBOL */
+    /* =========================
+       FUTEBOL
+    ========================= */
 
     if(t === "futebol"){
 
@@ -521,7 +557,9 @@ function filtrar(tipo){
     }
 
 
-    /* DESPORTO */
+    /* =========================
+       DESPORTO
+    ========================= */
 
     if(t === "desporto"){
 
@@ -542,7 +580,9 @@ function filtrar(tipo){
     }
 
 
-    /* NEGÓCIOS */
+    /* =========================
+       NEGÓCIOS
+    ========================= */
 
     if(t === "negocios"){
 
@@ -555,7 +595,9 @@ function filtrar(tipo){
     }
 
 
-    /* ENTRETENIMENTO */
+    /* =========================
+       ENTRETENIMENTO
+    ========================= */
 
     if(t === "entretenimento"){
 
@@ -568,7 +610,9 @@ function filtrar(tipo){
     }
 
 
-    /* NOTÍCIAS */
+    /* =========================
+       NOTÍCIAS
+    ========================= */
 
     if(
       t === "noticias" ||
