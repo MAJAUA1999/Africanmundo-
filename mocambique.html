@@ -16,59 +16,94 @@
 
 <style>
 
-.news{
+.news-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:20px;
+}
+
+.news-card{
   background:#fff;
   border-radius:14px;
   overflow:hidden;
-  margin-bottom:18px;
   box-shadow:0 3px 12px rgba(0,0,0,.08);
   cursor:pointer;
+  transition:.2s;
 }
 
-.news img{
+.news-card:hover{
+  transform:translateY(-3px);
+}
+
+.news-card img{
   width:100%;
-  height:210px;
+  height:190px;
   object-fit:cover;
   display:block;
 }
 
-.news-body{
-  padding:14px;
+.news-content{
+  padding:15px;
 }
 
-.news small{
+.news-category{
   color:#168a45;
-  font-weight:700;
-}
-
-.news h3{
-  margin:8px 0;
-  font-size:19px;
-}
-
-.news p{
-  margin:0;
-  color:#666;
-  line-height:1.5;
-}
-
-.carregar{
-  display:block;
-  width:100%;
-  padding:14px;
-  margin:20px 0;
-  border:0;
-  border-radius:10px;
-  background:#168a45;
-  color:#fff;
-  font-size:16px;
+  font-size:13px;
   font-weight:bold;
-  cursor:pointer;
+  margin-bottom:7px;
+}
+
+.news-title{
+  margin:0 0 8px;
+  font-size:18px;
+  line-height:1.35;
+}
+
+.news-date{
+  color:#777;
+  font-size:12px;
 }
 
 .sem-noticias{
   text-align:center;
   padding:30px 10px;
+}
+
+#carregarMais{
+  display:block;
+  margin:25px auto;
+  padding:13px 25px;
+  border:0;
+  border-radius:10px;
+  background:#168a45;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+@media(max-width:800px){
+
+  .news-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:12px;
+  }
+
+  .news-card img{
+    height:150px;
+  }
+
+  .news-title{
+    font-size:16px;
+  }
+
+}
+
+@media(max-width:500px){
+
+  .news-grid{
+    grid-template-columns:1fr;
+  }
+
 }
 
 </style>
@@ -81,6 +116,9 @@
 
   <div class="top">
     🌍 AfricanMundo
+    <span>
+      A informação que liga África ao mundo
+    </span>
   </div>
 
 </header>
@@ -102,12 +140,13 @@
   <div id="newsGrid"
        class="news-grid">
 
-    <p>🔄 A carregar notícias de Moçambique...</p>
+    <p>
+      🔄 A preparar as notícias...
+    </p>
 
   </div>
 
   <button id="carregarMais"
-          class="carregar"
           style="display:none">
 
     Carregar mais notícias
@@ -118,7 +157,7 @@
 
 </main>
 
-  <script>
+      <script>
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -180,7 +219,7 @@ function escapar(valor){
    IMAGEM
 ========================= */
 
-function obterImagem(noticia){
+function imagem(noticia){
 
   const campos = [
     noticia.imagem,
@@ -211,17 +250,17 @@ function obterImagem(noticia){
    DATA
 ========================= */
 
-function formatarData(valor){
+function dataNoticia(valor){
 
   if(!valor) return "";
 
-  const data =
+  const d =
     new Date(valor);
 
-  if(isNaN(data.getTime()))
+  if(isNaN(d.getTime()))
     return "";
 
-  return data.toLocaleDateString(
+  return d.toLocaleDateString(
     "pt-PT",
     {
       day:"2-digit",
@@ -234,7 +273,7 @@ function formatarData(valor){
 
 
 /* =========================
-   FILTRAR MOÇAMBIQUE
+   FILTRO MOÇAMBIQUE
 ========================= */
 
 function ehMocambique(noticia){
@@ -254,7 +293,107 @@ function ehMocambique(noticia){
 
 
 /* =========================
-   MOSTRAR NOTÍCIAS
+   CRIAR CARD
+========================= */
+
+function criarCard(noticia){
+
+  const card =
+    document.createElement("article");
+
+  card.className =
+    "news-card";
+
+
+  const img =
+    imagem(noticia);
+
+
+  const titulo =
+    noticia.titulo ||
+    "Sem título";
+
+
+  const categoria =
+    noticia.subcategoria ||
+    noticia.categoria ||
+    "Moçambique";
+
+
+  card.innerHTML = `
+
+    ${
+      img
+      ?
+      `
+      <img
+        src="${escapar(img)}"
+        alt="${escapar(titulo)}"
+        loading="lazy"
+      >
+      `
+      :
+      ""
+    }
+
+    <div class="news-content">
+
+      <div class="news-category">
+        🇲🇿 ${escapar(categoria)}
+      </div>
+
+      <h3 class="news-title">
+        ${escapar(titulo)}
+      </h3>
+
+      <div class="news-date">
+        ${escapar(
+          dataNoticia(noticia.data)
+        )}
+      </div>
+
+    </div>
+
+  `;
+
+
+  card.onclick =
+    function(){
+
+      if(noticia.id){
+
+        window.location.href =
+          "noticia.html?id=" +
+          encodeURIComponent(noticia.id);
+
+      }
+
+    };
+
+
+  const imagemEl =
+    card.querySelector("img");
+
+  if(imagemEl){
+
+    imagemEl.onerror =
+      function(){
+
+        this.style.display =
+          "none";
+
+      };
+
+  }
+
+
+  return card;
+
+}
+
+
+/* =========================
+   MOSTRAR
 ========================= */
 
 function mostrarNoticias(){
@@ -271,6 +410,7 @@ function mostrarNoticias(){
       fim
     );
 
+
   if(pagina === 0){
 
     grid.innerHTML = "";
@@ -278,106 +418,15 @@ function mostrarNoticias(){
   }
 
 
-  lista.forEach(function(noticia){
+  lista.forEach(
+    function(noticia){
 
-    const artigo =
-      document.createElement("article");
-
-    artigo.className =
-      "news";
-
-
-    const imagem =
-      obterImagem(noticia);
-
-
-    artigo.innerHTML = `
-
-      ${
-        imagem
-        ?
-        `
-        <img
-          src="${escapar(imagem)}"
-          alt="${escapar(noticia.titulo || "Notícia")}"
-          loading="lazy"
-        >
-        `
-        :
-        ""
-      }
-
-      <div class="news-body">
-
-        <small>
-          🇲🇿 ${escapar(
-            noticia.subcategoria ||
-            noticia.categoria ||
-            "Moçambique"
-          )}
-        </small>
-
-        <h3>
-          ${escapar(
-            noticia.titulo ||
-            "Sem título"
-          )}
-        </h3>
-
-        <p>
-          ${escapar(
-            String(noticia.texto || "")
-              .replace(/<[^>]*>/g,"")
-              .replace(/\s+/g," ")
-              .trim()
-              .slice(0,180)
-          )}
-        </p>
-
-        <small>
-          ${escapar(
-            formatarData(noticia.data)
-          )}
-        </small>
-
-      </div>
-
-    `;
-
-
-    artigo.onclick =
-      function(){
-
-        if(noticia.id){
-
-          window.location.href =
-            "noticia.html?id=" +
-            encodeURIComponent(noticia.id);
-
-        }
-
-      };
-
-
-    grid.appendChild(artigo);
-
-
-    const img =
-      artigo.querySelector("img");
-
-    if(img){
-
-      img.onerror =
-        function(){
-
-          this.style.display =
-            "none";
-
-        };
+      grid.appendChild(
+        criarCard(noticia)
+      );
 
     }
-
-  });
+  );
 
 
   pagina++;
@@ -402,21 +451,20 @@ function mostrarNoticias(){
 }
 
 
-/* =========================
-   CARREGAR MAIS
-========================= */
-
 botao.addEventListener(
   "click",
   mostrarNoticias
 );
 
-    async function carregarNoticias(){
+            async function carregarNoticias(){
 
   try{
 
-    grid.innerHTML =
-      "<p>🔄 A carregar notícias de Moçambique...</p>";
+    grid.innerHTML = `
+      <p class="sem-noticias">
+        🔄 A preparar as notícias...
+      </p>
+    `;
 
 
     const resposta =
@@ -455,13 +503,10 @@ botao.addEventListener(
 
       grid.innerHTML = `
         <p class="sem-noticias">
-          🇲🇿 Ainda não existem notícias de
-          Moçambique publicadas.
+          🇲🇿 Nenhuma notícia de
+          Moçambique encontrada.
         </p>
       `;
-
-      botao.style.display =
-        "none";
 
       return;
 
@@ -483,8 +528,8 @@ botao.addEventListener(
 
     grid.innerHTML = `
       <p class="sem-noticias">
-        ❌ Não foi possível carregar
-        as notícias de Moçambique.
+        ❌ Erro ao carregar
+        notícias de Moçambique.
       </p>
     `;
 
