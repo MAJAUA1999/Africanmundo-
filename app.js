@@ -624,7 +624,6 @@ const PAISES_AFRICA = [
 /* =====================================================
    CARREGAR NOTÍCIAS
 ===================================================== */
-
 async function carregarNoticias(){
 
   if(!db){
@@ -637,11 +636,10 @@ async function carregarNoticias(){
 
   }
 
-
   try{
 
-    const resultado =
-      await db
+    const pedido =
+      db
         .from("noticias")
         .select(`
           id,
@@ -660,11 +658,32 @@ async function carregarNoticias(){
         `)
         .order(
           "data",
-          {
-            ascending:false
-          }
+          { ascending:false }
         )
         .limit(1000);
+
+
+    const limite =
+      new Promise(function(_,reject){
+
+        setTimeout(function(){
+
+          reject(
+            new Error(
+              "Tempo limite ao carregar notícias."
+            )
+          );
+
+        },8000);
+
+      });
+
+
+    const resultado =
+      await Promise.race([
+        pedido,
+        limite
+      ]);
 
 
     if(resultado.error){
@@ -676,12 +695,17 @@ async function carregarNoticias(){
 
     noticias =
       (resultado.data || [])
-        .filter(n => n && n.id)
-        .sort(
-          (a,b) =>
-            dataNumero(b) -
-            dataNumero(a)
-        );
+        .filter(function(n){
+
+          return n && n.id;
+
+        })
+        .sort(function(a,b){
+
+          return dataNumero(b) -
+                 dataNumero(a);
+
+        });
 
 
     if(!noticias.length){
@@ -695,25 +719,17 @@ async function carregarNoticias(){
     }
 
 
-    /* COMEÇAR PELO MAIS RECENTE */
-
     indiceDestaque = 0;
 
 
-    /* DESTAQUE */
-
     mostrarDestaque();
 
-
-    /* ÚLTIMAS */
 
     lista(
       noticias.slice(0,4),
       "ultimas"
     );
 
-
-    /* MOÇAMBIQUE */
 
     lista(
       filtrar("mocambique")
@@ -722,16 +738,12 @@ async function carregarNoticias(){
     );
 
 
-    /* ÁFRICA */
-
     lista(
       filtrar("africa")
         .slice(0,4),
       "africa"
     );
 
-
-    /* FUTEBOL */
 
     lista(
       filtrar("futebol")
@@ -740,16 +752,12 @@ async function carregarNoticias(){
     );
 
 
-    /* DESPORTO */
-
     lista(
       filtrar("desporto")
         .slice(0,4),
       "desporto"
     );
 
-
-    /* NEGÓCIOS */
 
     lista(
       filtrar("negocios")
@@ -758,8 +766,6 @@ async function carregarNoticias(){
     );
 
 
-    /* ENTRETENIMENTO */
-
     lista(
       filtrar("entretenimento")
         .slice(0,4),
@@ -767,18 +773,21 @@ async function carregarNoticias(){
     );
 
 
-    /* ROTAÇÃO */
-
     iniciarRotacaoDestaque();
 
 
   }catch(e){
 
+    console.error(
+      "❌ ERRO AO CARREGAR:",
+      e
+    );
+
     mostrarErroNoticias(e);
 
   }
 
-}
+       }
 
 
 /* =====================================================
