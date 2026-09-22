@@ -1230,19 +1230,40 @@ async function iniciarAfricanMundo(){
 
     iniciarAtualizacaoAutomatica();
 
+}catch(e){
 
-  }catch(e){
+  console.error(
+    "❌ ERRO AFRICANMUNDO:",
+    e
+  );
 
-    console.error(
-      "❌ ERRO PRINCIPAL:",
-      e
-    );
+  const aviso =
+    document.getElementById("ultimas");
 
-    mostrarErroNoticias(e);
+  if(aviso){
+
+    aviso.innerHTML = `
+      <div style="
+        padding:15px;
+        background:#fff3f3;
+        border:1px solid #ffcccc;
+        border-radius:12px;
+        color:#b00020;
+        font-size:13px;
+      ">
+        ❌ Erro ao carregar as notícias.
+        <br><br>
+        ${esc(
+          e?.message ||
+          String(e)
+        )}
+      </div>
+    `;
 
   }
 
-       }
+  }
+
 
 /* =========================================================
    INÍCIO
