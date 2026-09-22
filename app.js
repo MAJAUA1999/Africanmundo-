@@ -398,13 +398,10 @@ function filtrar(tipo){
 async function carregarNoticias(){
 
   if(!db){
-
     mostrarErroNoticias(
       "Supabase não inicializado."
     );
-
     return;
-
   }
 
   try{
@@ -427,21 +424,11 @@ async function carregarNoticias(){
           visualizacoes,
           pais
         `)
-        .order(
-          "data",
-          {
-            ascending:false
-          }
-        )
-        .limit(3000);
+        .order("data",{ascending:false})
+        .limit(1000);
 
-
-    if(resultado.error){
-
+    if(resultado.error)
       throw resultado.error;
-
-    }
-
 
     noticias =
       (resultado.data || [])
@@ -456,49 +443,14 @@ async function carregarNoticias(){
             dataNumero(a)
         );
 
-
-    console.log(
-      "AfricanMundo:",
-      noticias.length,
-      "notícias carregadas."
-    );
-
-
-    console.log(
-      "Desporto:",
-      noticias.filter(n =>
-        norm(n?.subcategoria) === "desporto"
-      ).length
-    );
-
-
-    console.log(
-      "Cultura:",
-      noticias.filter(n =>
-        norm(n?.subcategoria) === "cultura"
-      ).length
-    );
-
-
     if(!noticias.length){
-
       mostrarErroNoticias(
         "Nenhuma notícia encontrada."
       );
-
       return;
-
     }
 
-
-    /* PRIMEIRA = MAIS NOVA */
-
-    indiceDestaque = 0;
-
     mostrarDestaque();
-
-
-    /* ÚLTIMAS */
 
     lista(
       noticias.slice(0,4),
@@ -506,59 +458,122 @@ async function carregarNoticias(){
     );
 
 
-    /* MOÇAMBIQUE */
+    /* 🇲🇿 MOÇAMBIQUE */
+
+    const mz =
+      await db
+        .from("noticias")
+        .select("*")
+        .eq("categoria","Moçambique")
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("mocambique")
-        .slice(0,4),
+      mz.data || [],
       "mocambique"
     );
 
 
-    /* ÁFRICA */
+    /* 🌍 ÁFRICA */
+
+    const africa =
+      await db
+        .from("noticias")
+        .select("*")
+        .eq("categoria","África")
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("africa")
-        .slice(0,4),
+      africa.data || [],
       "africa"
     );
 
 
-    /* FUTEBOL */
+    /* ⚽ FUTEBOL */
+
+    const futebol =
+      await db
+        .from("noticias")
+        .select("*")
+        .eq("subcategoria","Futebol")
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("futebol")
-        .slice(0,4),
+      futebol.data || [],
       "futebol"
     );
 
 
-    /* DESPORTO */
+    /* 🏆 DESPORTO */
+
+    const desporto =
+      await db
+        .from("noticias")
+        .select("*")
+        .eq("subcategoria","Desporto")
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("desporto")
-        .slice(0,4),
+      desporto.data || [],
       "desporto"
     );
 
 
-    /* NEGÓCIOS */
+    /* 💼 NEGÓCIOS */
+
+    const negocios =
+      await db
+        .from("noticias")
+        .select("*")
+        .in(
+          "subcategoria",
+          [
+            "Economia",
+            "Emprego",
+            "Agricultura",
+            "Energia"
+          ]
+        )
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("negocios")
-        .slice(0,4),
+      negocios.data || [],
       "negocios"
     );
 
 
-    /* ENTRETENIMENTO */
+    /* 🎭 ENTRETENIMENTO */
+
+    const entretenimento =
+      await db
+        .from("noticias")
+        .select("*")
+        .eq("subcategoria","Cultura")
+        .order("data",{ascending:false})
+        .limit(4);
 
     lista(
-      filtrar("entretenimento")
-        .slice(0,4),
+      entretenimento.data || [],
       "entretenimento"
     );
 
+
+    console.log(
+      "AfricanMundo carregado:",
+      {
+        mocambique: mz.data?.length || 0,
+        africa: africa.data?.length || 0,
+        futebol: futebol.data?.length || 0,
+        desporto: desporto.data?.length || 0,
+        negocios: negocios.data?.length || 0,
+        entretenimento:
+          entretenimento.data?.length || 0
+      }
+    );
 
   }catch(e){
 
@@ -570,8 +585,6 @@ async function carregarNoticias(){
     mostrarErroNoticias(e);
 
   }
-
-                      }
 
 
  /* =====================================================
