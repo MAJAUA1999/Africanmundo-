@@ -1180,20 +1180,53 @@ document.addEventListener(
 /* =========================================================
    INICIAR AFRICANMUNDO
 ========================================================= */
-
 async function iniciarAfricanMundo(){
 
   try{
 
-    restaurarCor();
+    console.log("🟢 AfricanMundo iniciou");
 
-    iniciarTema();
 
-    iniciarBotoes();
+    try{
+      restaurarCor();
+    }catch(e){
+      console.error("Erro restaurarCor:",e);
+    }
 
-    marcarMenuAtivo();
+
+    try{
+      iniciarTema();
+    }catch(e){
+      console.error("Erro iniciarTema:",e);
+    }
+
+
+    try{
+      iniciarBotoes();
+    }catch(e){
+      console.error("Erro iniciarBotoes:",e);
+    }
+
+
+    try{
+      marcarMenuAtivo();
+    }catch(e){
+      console.error("Erro marcarMenuAtivo:",e);
+    }
+
+
+    console.log(
+      "🟢 A iniciar carregamento das notícias"
+    );
+
 
     await carregarNoticias();
+
+
+    console.log(
+      "🟢 Notícias carregadas"
+    );
+
 
     iniciarAtualizacaoAutomatica();
 
@@ -1201,14 +1234,15 @@ async function iniciarAfricanMundo(){
   }catch(e){
 
     console.error(
-      "Erro ao iniciar AfricanMundo:",
+      "❌ ERRO PRINCIPAL:",
       e
     );
 
+    mostrarErroNoticias(e);
+
   }
 
-}
-
+       }
 
 /* =========================================================
    INÍCIO
