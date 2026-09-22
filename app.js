@@ -460,12 +460,29 @@ async function carregarNoticias(){
 
 
     noticias =
-      (resultado.data || [])
-        .filter(n =>
-          n &&
-          n.id &&
-          n.titulo
-        )
+  (resultado.data || [])
+    .filter(n =>
+      n &&
+      n.id &&
+      n.titulo
+    );
+
+console.log("TOTAL:", noticias.length);
+
+console.log(
+  "DESPORTO:",
+  noticias.filter(n =>
+    norm(n?.subcategoria) === "desporto"
+  )
+);
+
+console.log(
+  "CULTURA:",
+  noticias.filter(n =>
+    norm(n?.subcategoria) === "cultura"
+  )
+);
+     
         .sort(
           (a,b) =>
             dataNumero(b) -
