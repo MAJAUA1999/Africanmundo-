@@ -242,9 +242,11 @@ function mostrarDestaque(){
   const box =
     document.getElementById("destaque");
 
-  if(!box || !noticias.length) return;
+  if(!box || !noticias.length)
+    return;
 
-  const n = noticias[0];
+  const n =
+    noticias[indiceDestaque];
 
   const img = imagem(n);
 
@@ -307,14 +309,45 @@ function mostrarDestaque(){
 
   if(imagemEl){
 
-    imagemEl.onerror = function(){
+    imagemEl.onerror =
+      function(){
 
-      this.onerror = null;
-      this.src = FALLBACK_IMG;
+        this.onerror = null;
+        this.src =
+          FALLBACK_IMG;
 
-    };
+      };
 
   }
+}
+
+function iniciarDestaque(){
+
+  clearInterval(timerDestaque);
+
+  if(noticias.length < 2)
+    return;
+
+  timerDestaque =
+    setInterval(
+      function(){
+
+        indiceDestaque++;
+
+        if(
+          indiceDestaque >=
+          noticias.length
+        ){
+
+          indiceDestaque = 0;
+
+        }
+
+        mostrarDestaque();
+
+      },
+      10000
+    );
 }
 
 
@@ -407,6 +440,7 @@ async function carregarNoticias(){
   try{
 
     /* 📰 ÚLTIMAS */
+
     const ult =
       await db
         .from("noticias")
@@ -418,14 +452,20 @@ async function carregarNoticias(){
           visualizacoes,pais
         `)
         .order("data",{ascending:false})
+        .order("id",{ascending:false})
         .limit(4);
 
     if(ult.error)
       throw ult.error;
 
-    noticias = ult.data || [];
+    noticias =
+      ult.data || [];
+
+    indiceDestaque = 0;
 
     mostrarDestaque();
+
+    iniciarDestaque();
 
     lista(
       noticias,
@@ -434,13 +474,27 @@ async function carregarNoticias(){
 
 
     /* 🇲🇿 MOÇAMBIQUE */
+
     const mz =
       await db
         .from("noticias")
         .select("*")
-        .eq("categoria","Moçambique")
-        .order("data",{ascending:false})
+        .eq(
+          "categoria",
+          "Moçambique"
+        )
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(mz.error)
+      throw mz.error;
 
     lista(
       mz.data || [],
@@ -449,13 +503,27 @@ async function carregarNoticias(){
 
 
     /* 🌍 ÁFRICA */
+
     const af =
       await db
         .from("noticias")
         .select("*")
-        .eq("categoria","África")
-        .order("data",{ascending:false})
+        .eq(
+          "categoria",
+          "África"
+        )
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(af.error)
+      throw af.error;
 
     lista(
       af.data || [],
@@ -464,13 +532,27 @@ async function carregarNoticias(){
 
 
     /* ⚽ FUTEBOL */
+
     const fut =
       await db
         .from("noticias")
         .select("*")
-        .eq("subcategoria","Futebol")
-        .order("data",{ascending:false})
+        .eq(
+          "subcategoria",
+          "Futebol"
+        )
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(fut.error)
+      throw fut.error;
 
     lista(
       fut.data || [],
@@ -479,13 +561,27 @@ async function carregarNoticias(){
 
 
     /* 🏆 DESPORTO */
+
     const desp =
       await db
         .from("noticias")
         .select("*")
-        .eq("subcategoria","Desporto")
-        .order("data",{ascending:false})
+        .eq(
+          "subcategoria",
+          "Desporto"
+        )
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(desp.error)
+      throw desp.error;
 
     lista(
       desp.data || [],
@@ -494,6 +590,7 @@ async function carregarNoticias(){
 
 
     /* 💼 NEGÓCIOS */
+
     const neg =
       await db
         .from("noticias")
@@ -507,8 +604,18 @@ async function carregarNoticias(){
             "Energia"
           ]
         )
-        .order("data",{ascending:false})
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(neg.error)
+      throw neg.error;
 
     lista(
       neg.data || [],
@@ -517,13 +624,27 @@ async function carregarNoticias(){
 
 
     /* 🎭 ENTRETENIMENTO */
+
     const ent =
       await db
         .from("noticias")
         .select("*")
-        .eq("subcategoria","Cultura")
-        .order("data",{ascending:false})
+        .eq(
+          "subcategoria",
+          "Cultura"
+        )
+        .order(
+          "data",
+          {ascending:false}
+        )
+        .order(
+          "id",
+          {ascending:false}
+        )
         .limit(4);
+
+    if(ent.error)
+      throw ent.error;
 
     lista(
       ent.data || [],
@@ -534,13 +655,26 @@ async function carregarNoticias(){
     console.log(
       "AfricanMundo — categorias:",
       {
-        ultimas: ult.data?.length || 0,
-        mocambique: mz.data?.length || 0,
-        africa: af.data?.length || 0,
-        futebol: fut.data?.length || 0,
-        desporto: desp.data?.length || 0,
-        negocios: neg.data?.length || 0,
-        entretenimento: ent.data?.length || 0
+        ultimas:
+          ult.data?.length || 0,
+
+        mocambique:
+          mz.data?.length || 0,
+
+        africa:
+          af.data?.length || 0,
+
+        futebol:
+          fut.data?.length || 0,
+
+        desporto:
+          desp.data?.length || 0,
+
+        negocios:
+          neg.data?.length || 0,
+
+        entretenimento:
+          ent.data?.length || 0
       }
     );
 
@@ -555,8 +689,7 @@ async function carregarNoticias(){
 
   }
 
-}
-
+       }
 
  /* =====================================================
     ABRIR NOTÍCIA
