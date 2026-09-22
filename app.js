@@ -410,6 +410,9 @@ function dataNumero(n){
 /* =====================================================
    CARREGAR NOTÍCIAS
  ===================================================== */
+/* =====================================================
+   CARREGAR NOTÍCIAS
+===================================================== */
 
 async function carregarNoticias(){
 
@@ -460,34 +463,40 @@ async function carregarNoticias(){
 
 
     noticias =
-  (resultado.data || [])
-    .filter(n =>
-      n &&
-      n.id &&
-      n.titulo
-    );
-
-console.log("TOTAL:", noticias.length);
-
-console.log(
-  "DESPORTO:",
-  noticias.filter(n =>
-    norm(n?.subcategoria) === "desporto"
-  )
-);
-
-console.log(
-  "CULTURA:",
-  noticias.filter(n =>
-    norm(n?.subcategoria) === "cultura"
-  )
-);
-     
+      (resultado.data || [])
+        .filter(n =>
+          n &&
+          n.id &&
+          n.titulo
+        )
         .sort(
           (a,b) =>
             dataNumero(b) -
             dataNumero(a)
         );
+
+
+    console.log(
+      "AfricanMundo:",
+      noticias.length,
+      "notícias carregadas."
+    );
+
+
+    console.log(
+      "Desporto:",
+      noticias.filter(n =>
+        norm(n?.subcategoria) === "desporto"
+      ).length
+    );
+
+
+    console.log(
+      "Cultura:",
+      noticias.filter(n =>
+        norm(n?.subcategoria) === "cultura"
+      ).length
+    );
 
 
     if(!noticias.length){
@@ -501,7 +510,7 @@ console.log(
     }
 
 
-    /* PRIMEIRA NOTÍCIA = MAIS NOVA */
+    /* PRIMEIRA = MAIS NOVA */
 
     indiceDestaque = 0;
 
@@ -516,7 +525,7 @@ console.log(
     );
 
 
-    /* CATEGORIAS */
+    /* MOÇAMBIQUE */
 
     lista(
       filtrar("mocambique")
@@ -524,11 +533,17 @@ console.log(
       "mocambique"
     );
 
+
+    /* ÁFRICA */
+
     lista(
       filtrar("africa")
         .slice(0,4),
       "africa"
     );
+
+
+    /* FUTEBOL */
 
     lista(
       filtrar("futebol")
@@ -536,17 +551,26 @@ console.log(
       "futebol"
     );
 
+
+    /* DESPORTO */
+
     lista(
       filtrar("desporto")
         .slice(0,4),
       "desporto"
     );
 
+
+    /* NEGÓCIOS */
+
     lista(
       filtrar("negocios")
         .slice(0,4),
       "negocios"
     );
+
+
+    /* ENTRETENIMENTO */
 
     lista(
       filtrar("entretenimento")
@@ -566,7 +590,8 @@ console.log(
 
   }
 
-     }
+                      }
+
 
  /* =====================================================
     ABRIR NOTÍCIA
