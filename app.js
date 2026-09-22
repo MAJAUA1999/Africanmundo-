@@ -321,7 +321,6 @@ function mostrarDestaque(){
 /* =====================================================
    FILTRAR CATEGORIAS
  ===================================================== */
-
 function filtrar(tipo){
 
   const t = norm(tipo);
@@ -338,15 +337,21 @@ function filtrar(tipo){
       const pais =
         norm(n?.pais);
 
+      const texto =
+        norm(
+          `${n?.titulo || ""}
+           ${n?.texto || ""}`
+        );
+
 
       /* 🇲🇿 MOÇAMBIQUE */
 
       if(t === "mocambique"){
 
         return (
-          cat === "mocambique" ||
-          pais === "mocambique" ||
-          pais === "mozambique"
+          cat.includes("mocambique") ||
+          pais.includes("mocambique") ||
+          pais.includes("mozambique")
         );
 
       }
@@ -356,20 +361,20 @@ function filtrar(tipo){
 
       if(t === "africa"){
 
-        if(
-          cat === "mocambique" ||
-          pais === "mocambique" ||
-          pais === "mozambique"
-        ){
+        const mocambique =
+          cat.includes("mocambique") ||
+          pais.includes("mocambique") ||
+          pais.includes("mozambique");
 
+        if(mocambique)
           return false;
 
-        }
-
         return (
-          cat === "africa" ||
-          pais !== "" &&
-          pais !== "internacional"
+          cat.includes("africa") ||
+          (
+            pais !== "" &&
+            pais !== "internacional"
+          )
         );
 
       }
@@ -381,7 +386,9 @@ function filtrar(tipo){
 
         return (
           cat === "futebol" ||
-          sub === "futebol"
+          sub === "futebol" ||
+          cat.includes("futebol") ||
+          sub.includes("futebol")
         );
 
       }
@@ -391,29 +398,39 @@ function filtrar(tipo){
 
       if(t === "desporto"){
 
-        if(
-          cat === "futebol" ||
-          sub === "futebol"
-        ){
+        const termos = [
+          "desporto",
+          "esporte",
+          "basquetebol",
+          "basquete",
+          "atletismo",
+          "boxe",
+          "tenis",
+          "voleibol",
+          "ciclismo",
+          "motorizado",
+          "automobilismo",
+          "formula 1",
+          "formula1",
+          "olimpiada",
+          "olimpico",
+          "jogos",
+          "corrida"
+        ];
 
-          return false;
+        const categoriaDesporto =
+          termos.some(x =>
+            cat.includes(x) ||
+            sub.includes(x)
+          );
 
-        }
+        const futebol =
+          cat.includes("futebol") ||
+          sub.includes("futebol");
 
         return (
-          cat === "desporto" ||
-          [
-            "desporto",
-            "basquetebol",
-            "atletismo",
-            "boxe",
-            "tenis",
-            "voleibol",
-            "ciclismo",
-            "motorizado",
-            "formula 1",
-            "olimpiadas"
-          ].includes(sub)
+          categoriaDesporto &&
+          !futebol
         );
 
       }
@@ -423,20 +440,22 @@ function filtrar(tipo){
 
       if(t === "negocios"){
 
-        return (
-          cat === "negocios" ||
-          [
-            "negocios",
-            "economia",
-            "financas",
-            "empresas",
-            "investimento",
-            "mercado",
-            "emprego",
-            "oportunidades",
-            "energia",
-            "agricultura"
-          ].includes(sub)
+        const termos = [
+          "negocio",
+          "economia",
+          "financas",
+          "empresa",
+          "investimento",
+          "mercado",
+          "emprego",
+          "oportunidades",
+          "energia",
+          "agricultura"
+        ];
+
+        return termos.some(x =>
+          cat.includes(x) ||
+          sub.includes(x)
         );
 
       }
@@ -446,24 +465,32 @@ function filtrar(tipo){
 
       if(t === "entretenimento"){
 
-        return (
-          cat === "entretenimento" ||
-          [
-            "entretenimento",
-            "cultura",
-            "musica",
-            "cinema",
-            "televisao",
-            "famosos",
-            "artes",
-            "lazer"
-          ].includes(sub)
+        const termos = [
+          "entretenimento",
+          "cultura",
+          "musica",
+          "cinema",
+          "televisao",
+          "televisao",
+          "famosos",
+          "famosas",
+          "celebridades",
+          "artes",
+          "arte",
+          "lazer",
+          "show",
+          "espetaculo"
+        ];
+
+        return termos.some(x =>
+          cat.includes(x) ||
+          sub.includes(x)
         );
 
       }
 
 
-      /* 📰 NOTÍCIAS */
+      /* 📰 TODAS AS NOTÍCIAS */
 
       if(
         t === "noticias" ||
@@ -474,6 +501,7 @@ function filtrar(tipo){
 
       }
 
+
       return false;
 
     })
@@ -482,8 +510,8 @@ function filtrar(tipo){
         dataNumero(b) -
         dataNumero(a)
     );
-}
 
+           }
 
 /* =====================================================
    DATA NUMÉRICA
