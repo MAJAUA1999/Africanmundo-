@@ -328,179 +328,56 @@ function filtrar(tipo){
   return noticias
     .filter(n => {
 
-      const cat =
-        norm(n?.categoria);
-
-      const sub =
-        norm(n?.subcategoria);
-
-      const pais =
-        norm(n?.pais);
-
-      const texto =
-        norm(
-          `${n?.titulo || ""}
-           ${n?.texto || ""}`
-        );
-
+      const cat = norm(n?.categoria);
+      const sub = norm(n?.subcategoria);
+      const pais = norm(n?.pais);
 
       /* 🇲🇿 MOÇAMBIQUE */
-
       if(t === "mocambique"){
-
         return (
-          cat.includes("mocambique") ||
-          pais.includes("mocambique") ||
-          pais.includes("mozambique")
+          cat === "mocambique" ||
+          pais === "mocambique" ||
+          pais === "mozambique"
         );
-
       }
-
 
       /* 🌍 ÁFRICA */
-
       if(t === "africa"){
-
-        const mocambique =
-          cat.includes("mocambique") ||
-          pais.includes("mocambique") ||
-          pais.includes("mozambique");
-
-        if(mocambique)
-          return false;
-
-        return (
-          cat.includes("africa") ||
-          (
-            pais !== "" &&
-            pais !== "internacional"
-          )
-        );
-
+        return cat === "africa";
       }
-
 
       /* ⚽ FUTEBOL */
-
       if(t === "futebol"){
-
-        return (
-          cat === "futebol" ||
-          sub === "futebol" ||
-          cat.includes("futebol") ||
-          sub.includes("futebol")
-        );
-
+        return sub === "futebol";
       }
-
 
       /* 🏆 DESPORTO */
-
       if(t === "desporto"){
-
-        const termos = [
-          "desporto",
-          "esporte",
-          "basquetebol",
-          "basquete",
-          "atletismo",
-          "boxe",
-          "tenis",
-          "voleibol",
-          "ciclismo",
-          "motorizado",
-          "automobilismo",
-          "formula 1",
-          "formula1",
-          "olimpiada",
-          "olimpico",
-          "jogos",
-          "corrida"
-        ];
-
-        const categoriaDesporto =
-          termos.some(x =>
-            cat.includes(x) ||
-            sub.includes(x)
-          );
-
-        const futebol =
-          cat.includes("futebol") ||
-          sub.includes("futebol");
-
-        return (
-          categoriaDesporto &&
-          !futebol
-        );
-
+        return sub === "desporto";
       }
-
 
       /* 💼 NEGÓCIOS */
-
       if(t === "negocios"){
-
-        const termos = [
-          "negocio",
-          "economia",
-          "financas",
-          "empresa",
-          "investimento",
-          "mercado",
-          "emprego",
-          "oportunidades",
-          "energia",
-          "agricultura"
-        ];
-
-        return termos.some(x =>
-          cat.includes(x) ||
-          sub.includes(x)
+        return (
+          sub === "economia" ||
+          sub === "emprego" ||
+          sub === "agricultura" ||
+          sub === "energia"
         );
-
       }
-
 
       /* 🎭 ENTRETENIMENTO */
-
       if(t === "entretenimento"){
-
-        const termos = [
-          "entretenimento",
-          "cultura",
-          "musica",
-          "cinema",
-          "televisao",
-          "televisao",
-          "famosos",
-          "famosas",
-          "celebridades",
-          "artes",
-          "arte",
-          "lazer",
-          "show",
-          "espetaculo"
-        ];
-
-        return termos.some(x =>
-          cat.includes(x) ||
-          sub.includes(x)
-        );
-
+        return sub === "cultura";
       }
 
-
-      /* 📰 TODAS AS NOTÍCIAS */
-
+      /* 📰 TODAS */
       if(
         t === "noticias" ||
         t === "noticia"
       ){
-
         return true;
-
       }
-
 
       return false;
 
@@ -511,7 +388,7 @@ function filtrar(tipo){
         dataNumero(a)
     );
 
-           }
+}
 
 /* =====================================================
    DATA NUMÉRICA
