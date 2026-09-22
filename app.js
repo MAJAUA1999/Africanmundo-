@@ -449,7 +449,7 @@ async function carregarNoticias(){
             ascending:false
           }
         )
-        .limit(300);
+        .limit(1000);
 
 
     if(resultado.error){
