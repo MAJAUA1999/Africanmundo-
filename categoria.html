@@ -1490,29 +1490,18 @@ async function carregarCategoria(){
    BUSCAR PÁGINA
 ========================================== */
 
-async function buscarPagina(
-  primeiraPagina
-){
+async function buscarPagina(primeiraPagina){
 
   const grid =
-    document.getElementById(
-      "newsGrid"
-    );
-
+    document.getElementById("newsGrid");
 
   if(!grid) return;
 
-
   const inicio =
-    paginaAtual *
-    noticiasPorPagina;
-
+    paginaAtual * noticiasPorPagina;
 
   const fim =
-    inicio +
-    noticiasPorPagina -
-    1;
-
+    inicio + noticiasPorPagina - 1;
 
   let consulta =
     supabaseClient
@@ -1529,27 +1518,65 @@ async function buscarPagina(
         url_original,
         pais
       `)
-      .order(
-        "id",
-        {
-          ascending:false
-        }
-      );
+      .order("data",{ascending:false});
 
+  /* FILTRO CORRETO */
 
-  /*
-   IMPORTANTE:
+  switch(categoriaAtual){
 
-   Não usamos eq() aqui.
+    case "mocambique":
+      consulta =
+        consulta.eq(
+          "categoria",
+          "Moçambique"
+        );
+      break;
 
-   Buscamos os registros e
-   aplicamos o filtro localmente.
+    case "africa":
+      consulta =
+        consulta.eq(
+          "categoria",
+          "África"
+        );
+      break;
 
-   Isso permite encontrar notícias
-   mesmo quando a categoria está
-   escrita de forma diferente.
-  */
+    case "futebol":
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Futebol"
+        );
+      break;
 
+    case "desporto":
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Desporto"
+        );
+      break;
+
+    case "entretenimento":
+      consulta =
+        consulta.eq(
+          "subcategoria",
+          "Cultura"
+        );
+      break;
+
+    case "negocios":
+      consulta =
+        consulta.in(
+          "subcategoria",
+          [
+            "Economia",
+            "Emprego",
+            "Agricultura",
+            "Energia"
+          ]
+        );
+      break;
+  }
 
   const resposta =
     await consulta.range(
@@ -1557,52 +1584,25 @@ async function buscarPagina(
       fim
     );
 
-
   if(resposta.error){
-
     throw resposta.error;
-
   }
-
 
   let noticias =
     Array.isArray(resposta.data)
       ? resposta.data
       : [];
 
-
-  console.log(
-    "📥 Registros recebidos:",
-    noticias.length
-  );
-
-
-  /*
-   Filtrar categoria
-  */
-
-  noticias =
-    filtrarNoticias(
-      noticias,
-      categoriaAtual
-    );
-
-
   console.log(
     "📂 Categoria:",
     categoriaAtual,
-    "| Encontradas:",
+    "| Notícias:",
     noticias.length
   );
 
+  /* REMOVER DUPLICADOS */
 
-  /*
-   Remover duplicados
-  */
-
-  const mapa =
-    new Map();
-
+  const mapa = new Map();
 
   noticias.forEach(
     function(noticia){
@@ -1622,57 +1622,41 @@ async function buscarPagina(
     }
   );
 
-
   noticias =
-    Array.from(
-      mapa.values()
-    );
+    Array.from(mapa.values());
 
-
-  /*
-   Primeira página
-  */
+  /* PRIMEIRA PÁGINA */
 
   if(primeiraPagina){
-
     grid.innerHTML = "";
-
   }
 
+  /* NENHUMA NOTÍCIA */
 
-  /*
-   Nenhuma notícia
-  */
+  if(!noticias.length){
 
-  if(
-    !noticias.length &&
-    primeiraPagina
-  ){
+    if(primeiraPagina){
 
-    grid.innerHTML = `
-      <div class="empty">
+      grid.innerHTML = `
+        <div class="empty">
+          📰 Nenhuma notícia encontrada
+          nesta categoria.
+          <br><br>
+          Quando houver novas notícias,
+          elas aparecerão aqui.
+        </div>
+      `;
 
-        📰 Nenhuma notícia encontrada
-        nesta categoria.
-
-        <br><br>
-
-        Quando houver novas notícias,
-        elas aparecerão aqui.
-
-      </div>
-    `;
+    }
 
     naoHaMaisNoticias = true;
 
-    return;
+    criarBotaoCarregarMais();
 
+    return;
   }
 
-
-  /*
-   Criar cartões
-  */
+  /* CRIAR CARTÕES */
 
   noticias.forEach(
     function(noticia){
@@ -1680,21 +1664,13 @@ async function buscarPagina(
       try{
 
         const card =
-          criarCard(
-            noticia
-          );
+          criarCard(noticia);
 
         if(card){
-
-          grid.appendChild(
-            card
-          );
-
+          grid.appendChild(card);
         }
 
-      }
-
-      catch(erro){
+      }catch(erro){
 
         console.error(
           "Erro no cartão:",
@@ -1706,20 +1682,12 @@ async function buscarPagina(
     }
   );
 
-
-  /*
-   Atualizar página
-  */
-
   paginaAtual++;
 
-
-  /*
-   Se recebeu menos de 30
-  */
+  /* FIM DOS RESULTADOS */
 
   if(
-    resposta.data.length <
+    noticias.length <
     noticiasPorPagina
   ){
 
@@ -1727,10 +1695,9 @@ async function buscarPagina(
 
   }
 
-
   criarBotaoCarregarMais();
 
-}
+            }
 
 
 /* ==========================================
