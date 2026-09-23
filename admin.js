@@ -1,83 +1,53 @@
 console.log("✅ ADMIN.JS FOI CARREGADO");
 
 /* =========================================
-   SUPABASE
+SUPABASE
 ========================================= */
 
 const SUPABASE_URL =
-  "https://sonzwfhepjfvzltuxxne.supabase.co";
+"https://sonzwfhepjfvzltuxxne.supabase.co";
 
 const SUPABASE_KEY =
-  "sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
 const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
-
+window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
 
 /* =========================================
-   LOGIN COM SUPABASE AUTH
+LOGIN COM SUPABASE AUTH
 ========================================= */
 
 async function login() {
 
   const email =
-    document
-      .getElementById("user")
-      .value
-      .trim();
+    document.getElementById("user").value.trim();
 
   const senha =
-    document
-      .getElementById("pass")
-      .value;
-
+    document.getElementById("pass").value;
 
   if (!email || !senha) {
-
-    alert(
-      "Digite o email e a senha."
-    );
-
+    alert("Digite o email e a senha.");
     return;
-
   }
-
 
   const botao =
-    document.querySelector(
-      "#loginBox .btn"
-    );
-
+    document.querySelector("#loginBox .btn");
 
   if (botao) {
-
     botao.disabled = true;
-
-    botao.textContent =
-      "A entrar...";
-
+    botao.textContent = "A entrar...";
   }
-
 
   try {
 
-    const {
-      data,
-      error
-    } =
-      await supabaseClient
-        .auth
-        .signInWithPassword({
-
-          email: email,
-
-          password: senha
-
-        });
-
+    const { data, error } =
+      await supabaseClient.auth.signInWithPassword({
+        email: email,
+        password: senha
+      });
 
     if (error) {
 
@@ -91,9 +61,7 @@ async function login() {
       );
 
       return;
-
     }
-
 
     if (!data || !data.user) {
 
@@ -102,15 +70,11 @@ async function login() {
       );
 
       return;
-
     }
-
 
     await show();
 
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "Erro inesperado:",
@@ -121,16 +85,12 @@ async function login() {
       "❌ Ocorreu um erro ao entrar."
     );
 
-  }
-
-  finally {
+  } finally {
 
     if (botao) {
 
       botao.disabled = false;
-
-      botao.textContent =
-        "Entrar";
+      botao.textContent = "Entrar";
 
     }
 
@@ -138,61 +98,36 @@ async function login() {
 
 }
 
-
 /* =========================================
-   MOSTRAR PAINEL
+MOSTRAR PAINEL
 ========================================= */
 
 async function show() {
 
   const loginBox =
-    document.getElementById(
-      "loginBox"
-    );
+    document.getElementById("loginBox");
 
   const dashboard =
-    document.getElementById(
-      "dashboard"
-    );
-
+    document.getElementById("dashboard");
 
   if (loginBox) {
-
-    loginBox.classList.add(
-      "hidden"
-    );
-
+    loginBox.classList.add("hidden");
   }
-
 
   if (dashboard) {
-
-    dashboard.classList.remove(
-      "hidden"
-    );
-
+    dashboard.classList.remove("hidden");
   }
-
-
-  /* =====================================
-     CARREGAR NOTÍCIAS
-  ===================================== */
 
   await render();
 
-   await carregarMetricas();
-
-
-  /* =====================================
-     CARREGAR PEDIDOS DE PUBLICIDADE
-  ===================================== */
+  await carregarMetricas();
 
   await carregarPedidosAnuncios();
 
 }
 
 /* =========================================
-   VERIFICAR SESSÃO
+VERIFICAR SESSÃO
 ========================================= */
 
 async function verificarSessao() {
@@ -205,7 +140,6 @@ async function verificarSessao() {
       .auth
       .getSession();
 
-
   if (error) {
 
     console.error(
@@ -214,9 +148,7 @@ async function verificarSessao() {
     );
 
     return;
-
   }
-
 
   if (
     data &&
@@ -230,9 +162,8 @@ async function verificarSessao() {
 
 }
 
-
 /* =========================================
-   SAIR
+SAIR
 ========================================= */
 
 async function logout() {
@@ -243,9 +174,7 @@ async function logout() {
       .auth
       .signOut();
 
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "Erro ao sair:",
@@ -254,14 +183,12 @@ async function logout() {
 
   }
 
-
   location.reload();
 
 }
 
-
 /* =========================================
-   OBSERVAR ALTERAÇÕES DE SESSÃO
+OBSERVAR ALTERAÇÕES DE SESSÃO
 ========================================= */
 
 supabaseClient
@@ -277,16 +204,14 @@ supabaseClient
     }
   );
 
-
 /* =========================================
-   PREVISUALIZAR IMAGEM
+PREVISUALIZAR IMAGEM
 ========================================= */
 
 const imageFileInput =
   document.getElementById(
     "imageFile"
   );
-
 
 if (imageFileInput) {
 
@@ -298,34 +223,26 @@ if (imageFileInput) {
         this.files &&
         this.files[0];
 
-
       const preview =
         document.getElementById(
           "imagePreview"
         );
 
-
       if (!preview) {
-
         return;
-
       }
-
 
       if (!arquivo) {
 
         preview.innerHTML = "";
 
         return;
-
       }
-
 
       const url =
         URL.createObjectURL(
           arquivo
         );
-
 
       preview.innerHTML = `
 
@@ -349,19 +266,15 @@ if (imageFileInput) {
 
 }
 
-
 /* =========================================
-   ENVIAR IMAGEM PARA O STORAGE
+ENVIAR IMAGEM PARA O STORAGE
 ========================================= */
 
 async function enviarImagem(arquivo) {
 
   if (!arquivo) {
-
     return null;
-
   }
-
 
   if (
     !arquivo.type ||
@@ -374,7 +287,6 @@ async function enviarImagem(arquivo) {
 
   }
 
-
   const extensao =
     arquivo.name
       .split(".")
@@ -385,7 +297,6 @@ async function enviarImagem(arquivo) {
         ""
       ) || "jpg";
 
-
   const nomeArquivo =
     Date.now() +
     "-" +
@@ -395,11 +306,9 @@ async function enviarImagem(arquivo) {
     "." +
     extensao;
 
-
   const caminho =
     "noticias/" +
     nomeArquivo;
-
 
   const resultado =
     await supabaseClient
@@ -415,13 +324,9 @@ async function enviarImagem(arquivo) {
         }
       );
 
-
   if (resultado.error) {
-
     throw resultado.error;
-
   }
-
 
   const url =
     supabaseClient
@@ -431,19 +336,15 @@ async function enviarImagem(arquivo) {
         caminho
       );
 
-
   return url.data.publicUrl;
 
 }
+
 /* =========================================
-   PUBLICAR NOTÍCIA
+PUBLICAR NOTÍCIA
 ========================================= */
 
 async function publish() {
-
-  /* =====================================
-     CONFIRMAR LOGIN
-  ===================================== */
 
   const {
     data: sessaoData
@@ -451,7 +352,6 @@ async function publish() {
     await supabaseClient
       .auth
       .getSession();
-
 
   if (
     !sessaoData ||
@@ -466,9 +366,7 @@ async function publish() {
     location.reload();
 
     return;
-
   }
-
 
   const title =
     document
@@ -476,13 +374,11 @@ async function publish() {
       .value
       .trim();
 
-
   const cat =
     document
       .getElementById("category")
       .value
       .trim();
-
 
   const body =
     document
@@ -490,12 +386,10 @@ async function publish() {
       .value
       .trim();
 
-
   const imageFile =
     document
       .getElementById("imageFile")
       .files[0];
-
 
   if (!title || !body) {
 
@@ -504,15 +398,12 @@ async function publish() {
     );
 
     return;
-
   }
-
 
   const botao =
     document.querySelector(
       'button[onclick="publish()"]'
     );
-
 
   if (botao) {
 
@@ -523,15 +414,9 @@ async function publish() {
 
   }
 
-
   try {
 
     let imagemURL = null;
-
-
-    /* =====================================
-       ENVIAR IMAGEM
-    ===================================== */
 
     if (imageFile) {
 
@@ -542,11 +427,6 @@ async function publish() {
 
     }
 
-
-    /* =====================================
-       GUARDAR NOTÍCIA
-    ===================================== */
-
     const {
       data,
       error
@@ -554,25 +434,14 @@ async function publish() {
       await supabaseClient
         .from("noticias")
         .insert([
-
           {
-            titulo:
-              title,
-
-            categoria:
-              cat,
-
-            imagem:
-              imagemURL,
-
-            texto:
-              body
-
+            titulo: title,
+            categoria: cat,
+            imagem: imagemURL,
+            texto: body
           }
-
         ])
         .select();
-
 
     if (error) {
 
@@ -587,29 +456,22 @@ async function publish() {
       );
 
       return;
-
     }
-
 
     console.log(
       "Notícia publicada:",
       data
     );
 
-
     limparFormulario();
 
-
     await render();
-
 
     alert(
       "✅ Notícia publicada com sucesso!"
     );
 
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "Erro no upload:",
@@ -621,9 +483,7 @@ async function publish() {
       erro.message
     );
 
-  }
-
-  finally {
+  } finally {
 
     if (botao) {
 
@@ -638,87 +498,59 @@ async function publish() {
 
 }
 
-
 /* =========================================
-   LIMPAR FORMULÁRIO
+LIMPAR FORMULÁRIO
 ========================================= */
 
 function limparFormulario() {
 
   const title =
-    document.getElementById(
-      "title"
-    );
-
+    document.getElementById("title");
 
   const imageFile =
-    document.getElementById(
-      "imageFile"
-    );
-
+    document.getElementById("imageFile");
 
   const body =
-    document.getElementById(
-      "body"
-    );
-
+    document.getElementById("body");
 
   const preview =
     document.getElementById(
       "imagePreview"
     );
 
-
   if (title) {
-
     title.value = "";
-
   }
-
 
   if (imageFile) {
-
     imageFile.value = "";
-
   }
-
 
   if (body) {
-
     body.value = "";
-
   }
-
 
   if (preview) {
-
     preview.innerHTML = "";
-
   }
 
-}
+     }
+
 /* =========================================
-   CARREGAR NOTÍCIAS
+CARREGAR NOTÍCIAS
 ========================================= */
 
 async function render() {
 
   const posts =
-    document.getElementById(
-      "posts"
-    );
-
+    document.getElementById("posts");
 
   if (!posts) {
-
     return;
-
   }
-
 
   posts.innerHTML =
     "<p>🔄 A carregar notícias...</p>";
-
 
   try {
 
@@ -742,7 +574,6 @@ async function render() {
         }
       );
 
-
     const consulta =
       supabaseClient
         .from("noticias")
@@ -754,21 +585,17 @@ async function render() {
           }
         );
 
-
     const resultado =
       await Promise.race([
         consulta,
         tempoLimite
       ]);
 
-
     const data =
       resultado.data;
 
-
     const error =
       resultado.error;
-
 
     if (error) {
 
@@ -776,7 +603,6 @@ async function render() {
         "Erro Supabase:",
         error
       );
-
 
       posts.innerHTML = `
 
@@ -803,11 +629,8 @@ async function render() {
 
       `;
 
-
       return;
-
     }
-
 
     if (
       !data ||
@@ -817,11 +640,8 @@ async function render() {
       posts.innerHTML =
         "<p>📰 Ainda não existem notícias publicadas.</p>";
 
-
       return;
-
     }
-
 
     posts.innerHTML =
       data
@@ -831,7 +651,6 @@ async function render() {
             const imagem =
               p.imagem ??
               "";
-
 
             return `
 
@@ -863,7 +682,6 @@ async function render() {
                   : ""
                 }
 
-
                 <b>
                   ${esc(
                     p.titulo ||
@@ -871,9 +689,7 @@ async function render() {
                   )}
                 </b>
 
-
                 <br>
-
 
                 <small>
                   🏷️ ${esc(
@@ -882,7 +698,6 @@ async function render() {
                   )}
                 </small>
 
-
                 <p>
                   ${esc(
                     p.texto ||
@@ -890,12 +705,10 @@ async function render() {
                   )}
                 </p>
 
-
                 <small>
                   🆔 ID:
                   ${esc(p.id)}
                 </small>
-
 
                 <div
                   style="
@@ -920,7 +733,6 @@ async function render() {
                   >
                     ✏️ Editar
                   </button>
-
 
                   <button
                     onclick="excluirNoticia(${Number(p.id)})"
@@ -947,16 +759,12 @@ async function render() {
         )
         .join("");
 
-
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "Erro ao carregar notícias:",
       erro
     );
-
 
     posts.innerHTML = `
 
@@ -988,15 +796,15 @@ async function render() {
 
   }
 
-       }
+}
+
 /* =========================================
-   EDITAR NOTÍCIA
+EDITAR NOTÍCIA
 ========================================= */
 
 async function editarNoticia(id) {
 
   id = Number(id);
-
 
   if (!Number.isFinite(id)) {
 
@@ -1005,9 +813,7 @@ async function editarNoticia(id) {
     );
 
     return;
-
   }
-
 
   const {
     data: noticia,
@@ -1016,12 +822,8 @@ async function editarNoticia(id) {
     await supabaseClient
       .from("noticias")
       .select("*")
-      .eq(
-        "id",
-        id
-      )
+      .eq("id", id)
       .maybeSingle();
-
 
   if (buscarError) {
 
@@ -1030,17 +832,13 @@ async function editarNoticia(id) {
       buscarError
     );
 
-
     alert(
       "❌ Erro ao carregar a notícia:\n\n" +
       buscarError.message
     );
 
-
     return;
-
   }
-
 
   if (!noticia) {
 
@@ -1048,11 +846,8 @@ async function editarNoticia(id) {
       "❌ Notícia não encontrada."
     );
 
-
     return;
-
   }
-
 
   const novoTitulo =
     prompt(
@@ -1060,13 +855,9 @@ async function editarNoticia(id) {
       noticia.titulo || ""
     );
 
-
   if (novoTitulo === null) {
-
     return;
-
   }
-
 
   if (!novoTitulo.trim()) {
 
@@ -1074,11 +865,8 @@ async function editarNoticia(id) {
       "❌ O título não pode ficar vazio."
     );
 
-
     return;
-
   }
-
 
   const novoTexto =
     prompt(
@@ -1086,13 +874,9 @@ async function editarNoticia(id) {
       noticia.texto || ""
     );
 
-
   if (novoTexto === null) {
-
     return;
-
   }
-
 
   if (!novoTexto.trim()) {
 
@@ -1100,11 +884,8 @@ async function editarNoticia(id) {
       "❌ O texto não pode ficar vazio."
     );
 
-
     return;
-
   }
-
 
   const categorias = [
 
@@ -1118,11 +899,9 @@ async function editarNoticia(id) {
 
   ];
 
-
   const categoriaAtual =
     noticia.categoria ||
     "Notícias";
-
 
   const novaCategoria =
     prompt(
@@ -1134,17 +913,12 @@ async function editarNoticia(id) {
 
     );
 
-
   if (novaCategoria === null) {
-
     return;
-
   }
-
 
   const categoriaDigitada =
     novaCategoria.trim();
-
 
   const categoriaFinal =
     categorias.find(
@@ -1156,13 +930,12 @@ async function editarNoticia(id) {
         );
 
       }
-    ) || categoriaAtual;
-
+    ) ||
+    categoriaAtual;
 
   const imagemAtual =
     noticia.imagem ??
     "";
-
 
   const novaImagem =
     prompt(
@@ -1170,13 +943,9 @@ async function editarNoticia(id) {
       imagemAtual
     );
 
-
   if (novaImagem === null) {
-
     return;
-
   }
-
 
   const {
     data: atualizado,
@@ -1196,7 +965,8 @@ async function editarNoticia(id) {
           categoriaFinal,
 
         imagem:
-          novaImagem.trim() || null
+          novaImagem.trim() ||
+          null
 
       })
       .eq(
@@ -1205,7 +975,6 @@ async function editarNoticia(id) {
       )
       .select("*");
 
-
   if (updateError) {
 
     console.error(
@@ -1213,17 +982,13 @@ async function editarNoticia(id) {
       updateError
     );
 
-
     alert(
       "❌ Erro ao editar:\n\n" +
       updateError.message
     );
 
-
     return;
-
   }
-
 
   if (
     !atualizado ||
@@ -1234,20 +999,15 @@ async function editarNoticia(id) {
       "⚠️ A atualização não alterou nenhuma notícia."
     );
 
-
     return;
-
   }
-
 
   console.log(
     "Notícia realmente atualizada:",
     atualizado[0]
   );
 
-
   await render();
-
 
   alert(
     "✅ Notícia atualizada com sucesso!"
@@ -1255,16 +1015,19 @@ async function editarNoticia(id) {
 
 }
 
-
 /* =========================================
-   EXCLUIR NOTÍCIA
+EXCLUIR NOTÍCIA
 ========================================= */
 
 async function excluirNoticia(id) {
 
   id = Number(id);
 
-  if (!confirm("⚠️ Tem certeza que deseja excluir esta notícia?")) {
+  if (
+    !confirm(
+      "⚠️ Tem certeza que deseja excluir esta notícia?"
+    )
+  ) {
     return;
   }
 
@@ -1272,10 +1035,11 @@ async function excluirNoticia(id) {
 
     const {
       error
-    } = await supabaseClient
-      .from("noticias")
-      .delete()
-      .eq("id", id);
+    } =
+      await supabaseClient
+        .from("noticias")
+        .delete()
+        .eq("id", id);
 
     if (error) {
       throw error;
@@ -1306,9 +1070,8 @@ async function excluirNoticia(id) {
 
 }
 
-
 /* =========================================
-   PROTEGER HTML
+PROTEGER HTML
 ========================================= */
 
 function esc(s) {
@@ -1346,9 +1109,8 @@ function esc(s) {
 
 }
 
-
-/* =========================================
-   INICIALIZAR PAINEL
+ /* =========================================
+INICIALIZAR PAINEL
 ========================================= */
 
 document.addEventListener(
@@ -1360,9 +1122,8 @@ document.addEventListener(
   }
 );
 
-
 /* =========================================
-   PROTEGER O PAINEL CONTRA SESSÃO EXPIRADA
+PROTEGER O PAINEL CONTRA SESSÃO EXPIRADA
 ========================================= */
 
 supabaseClient
@@ -1388,7 +1149,6 @@ supabaseClient
             "loginBox"
           );
 
-
         if (dashboard) {
 
           dashboard.classList.add(
@@ -1396,7 +1156,6 @@ supabaseClient
           );
 
         }
-
 
         if (loginBox) {
 
@@ -1412,15 +1171,19 @@ supabaseClient
   );
 
 /* =========================================
-   MÉTRICAS
+MÉTRICAS
 ========================================= */
 
 async function carregarMetricas() {
 
   const area =
-    document.getElementById("metricas");
+    document.getElementById(
+      "metricas"
+    );
 
-  if (!area) return;
+  if (!area) {
+    return;
+  }
 
   area.innerHTML =
     "<p>⏳ A carregar métricas...</p>";
@@ -1433,7 +1196,9 @@ async function carregarMetricas() {
     } =
       await supabaseClient
         .from("noticias")
-        .select("id,titulo,categoria,visualizacoes")
+        .select(
+          "id,titulo,categoria,visualizacoes"
+        )
         .order(
           "visualizacoes",
           {
@@ -1441,8 +1206,9 @@ async function carregarMetricas() {
           }
         );
 
-    if (error)
+    if (error) {
       throw error;
+    }
 
     const noticias =
       data || [];
@@ -1454,42 +1220,52 @@ async function carregarMetricas() {
       noticias.reduce(
         function(total, noticia) {
 
-          return total +
+          return (
+            total +
             Number(
               noticia.visualizacoes || 0
-            );
+            )
+          );
 
         },
         0
       );
 
-     const mediaVisualizacoes =
-  totalNoticias > 0
-    ? (totalVisualizacoes / totalNoticias).toFixed(1)
-    : "0";
-     
+    const mediaVisualizacoes =
+      totalNoticias > 0
+      ? (
+          totalVisualizacoes /
+          totalNoticias
+        ).toFixed(1)
+      : "0";
+
     const maisLidas =
-      noticias.slice(0,5);
+      noticias.slice(0, 5);
 
     area.innerHTML = `
 
-      <div style="
-        display:grid;
-        grid-template-columns:
-          repeat(
-            auto-fit,
-            minmax(180px,1fr)
-          );
-        gap:12px;
-        margin-top:15px;
-      ">
+      <div
+        style="
+          display:grid;
+          grid-template-columns:
+            repeat(
+              auto-fit,
+              minmax(180px,1fr)
+            );
+          gap:12px;
+          margin-top:15px;
+        "
+      >
 
-        <div style="
-          padding:18px;
-          border:1px solid var(--border);
-          border-radius:12px;
-          background:var(--card);
-        ">
+        <div
+          style="
+            padding:18px;
+            border:1px solid var(--border);
+            border-radius:12px;
+            background:var(--card);
+          "
+        >
+
           <div style="font-size:25px;">
             📰
           </div>
@@ -1501,53 +1277,62 @@ async function carregarMetricas() {
           <div style="color:var(--muted);">
             Notícias
           </div>
+
         </div>
 
-        <div style="
-          padding:18px;
-          border:1px solid var(--border);
-          border-radius:12px;
-          background:var(--card);
-        ">
-  <div style="font-size:25px;">
-    👁️
-  </div>
+        <div
+          style="
+            padding:18px;
+            border:1px solid var(--border);
+            border-radius:12px;
+            background:var(--card);
+          "
+        >
 
-  <strong style="font-size:24px;">
-    ${totalVisualizacoes}
-  </strong>
+          <div style="font-size:25px;">
+            👁️
+          </div>
 
-  <div style="color:var(--muted);">
-    Visualizações
-  </div>
-</div>
+          <strong style="font-size:24px;">
+            ${totalVisualizacoes}
+          </strong>
 
-<div style="
-  padding:18px;
-  border:1px solid var(--border);
-  border-radius:12px;
-  background:var(--card);
-">
-  <div style="font-size:25px;">
-    📈
-  </div>
+          <div style="color:var(--muted);">
+            Visualizações
+          </div>
 
-  <strong style="font-size:24px;">
-    ${mediaVisualizacoes}
-  </strong>
+        </div>
 
-  <div style="color:var(--muted);">
-    Média por notícia
-  </div>
-</div>
+        <div
+          style="
+            padding:18px;
+            border:1px solid var(--border);
+            border-radius:12px;
+            background:var(--card);
+          "
+        >
 
-</div>
+          <div style="font-size:25px;">
+            📈
+          </div>
 
-<div style="margin-top:20px;">
+          <strong style="font-size:24px;">
+            ${mediaVisualizacoes}
+          </strong>
 
-  <h3>
-    🔥 Notícias mais lidas
-  </h3>
+          <div style="color:var(--muted);">
+            Média por notícia
+          </div>
+
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px;">
+
+        <h3>
+          🔥 Notícias mais lidas
+        </h3>
 
         ${
           maisLidas.length
@@ -1555,14 +1340,17 @@ async function carregarMetricas() {
               function(n, i) {
 
                 return `
-                  <div style="
-                    padding:12px 0;
-                    border-bottom:
-                      1px solid var(--border);
-                  ">
+
+                  <div
+                    style="
+                      padding:12px 0;
+                      border-bottom:
+                        1px solid var(--border);
+                    "
+                  >
 
                     <strong>
-                      ${i + 1}. 
+                      ${i + 1}.
                       ${esc(n.titulo)}
                     </strong>
 
@@ -1573,54 +1361,66 @@ async function carregarMetricas() {
                         color:var(--muted);
                       "
                     >
+
                       🏷️ ${esc(
                         n.categoria ||
                         "Notícias"
                       )}
+
                       &nbsp; • &nbsp;
+
                       👁️ ${
                         Number(
                           n.visualizacoes || 0
                         )
-                      } visualizações
+                      }
+
                     </small>
 
                   </div>
+
                 `;
 
               }
             ).join("")
-          : "<p>Nenhuma notícia encontrada.</p>"
+          : "<p>Não existem dados.</p>"
         }
 
       </div>
 
     `;
 
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
-      "Erro nas métricas:",
+      "Erro ao carregar métricas:",
       erro
     );
 
     area.innerHTML = `
-      <div style="
-        padding:15px;
-        border-radius:10px;
-        border:1px solid #e57373;
-      ">
+
+      <div
+        style="
+          padding:15px;
+          border-radius:10px;
+          background:#fff3f3;
+          border:1px solid #e57373;
+        "
+      >
+
         ❌ Não foi possível carregar as métricas.
+
         <br><br>
+
         <small>
           ${esc(
             erro.message ||
             "Erro desconhecido."
           )}
         </small>
+
       </div>
+
     `;
 
   }
@@ -1628,27 +1428,24 @@ async function carregarMetricas() {
 }
 
 /* =========================================
-   PEDIDOS DE PUBLICIDADE
+PEDIDOS DE ANÚNCIOS
 ========================================= */
 
 async function carregarPedidosAnuncios() {
 
   const area =
-    document.getElementById("pedidosAnuncios");
+    document.getElementById(
+      "pedidosAnuncios"
+    );
 
   if (!area) {
-    console.log("Área pedidosAnuncios não encontrada.");
     return;
   }
 
   area.innerHTML =
-    "<p>⏳ A carregar pedidos...</p>";
+    "<p>⏳ A carregar pedidos de anúncios...</p>";
 
   try {
-
-    /* ================================
-       VERIFICAR SESSÃO
-    ================================= */
 
     const {
       data: sessao,
@@ -1668,184 +1465,89 @@ async function carregarPedidosAnuncios() {
       !sessao.session.user
     ) {
 
-      area.innerHTML = `
-        <div style="
-          padding:15px;
-          border-radius:10px;
-          background:#fff3f3;
-          border:1px solid #e57373;
-        ">
-          🔐 Sessão de administrador não encontrada.
-        </div>
-      `;
+      area.innerHTML =
+        "<p>🔐 Entre como administrador para ver os pedidos.</p>";
 
       return;
     }
-
-
-    /* ================================
-       BUSCAR ANÚNCIOS
-    ================================= */
 
     const {
       data,
       error
     } =
       await supabaseClient
-        .from("anuncios")
+        .from("pedidos_anuncios")
         .select("*")
-        .order("id", {
-          ascending:false
-        })
+        .order(
+          "id",
+          {
+            ascending: false
+          }
+        )
         .limit(50);
-
 
     if (error) {
       throw error;
     }
 
+    const pedidos =
+      data || [];
 
-    console.log(
-      "📢 PEDIDOS DE ANÚNCIOS:",
-      data
-    );
+    if (!pedidos.length) {
 
-
-    /* ================================
-       SEM PEDIDOS
-    ================================= */
-
-    if (
-      !data ||
-      data.length === 0
-    ) {
-
-      area.innerHTML = `
-        <div style="
-          padding:15px;
-          border-radius:10px;
-          background:var(--card);
-          border:1px solid var(--border);
-        ">
-          📭 Ainda não existem pedidos de publicidade.
-        </div>
-      `;
+      area.innerHTML =
+        "<p>📭 Ainda não existem pedidos de anúncios.</p>";
 
       return;
     }
 
-
-    /* ================================
-       MOSTRAR PEDIDOS
-    ================================= */
-
     area.innerHTML =
-      data.map(function(p) {
+      pedidos
+        .map(
+          function(p) {
 
-        const ativo =
-          p.ativo === true ||
-          p.ativo === "true" ||
-          p.ativo === 1 ||
-          p.ativo === "1";
+            const estado =
+              p.estado ||
+              "pendente";
 
+            const tipo =
+              p.tipo_anuncio ||
+              "não informado";
 
-        const imagem =
-          p.imagem || "";
+            const local =
+              p.local_anuncio ||
+              "início";
 
+            const inicio =
+              p.data_inicio ||
+              "Não definida";
 
-        const video =
-          p.video ||
-          p["vídeo"] ||
-          "";
+            const fim =
+              p.data_fim ||
+              "Não definida";
 
+            let arquivoHTML =
+              "";
 
-        const link =
-          p.link || "";
+            if (p.arquivo_url) {
 
+              if (
+                tipo === "video" ||
+                (
+                  p.arquivo_tipo &&
+                  p.arquivo_tipo.startsWith(
+                    "video/"
+                  )
+                )
+              ) {
 
-        return `
+                arquivoHTML = `
 
-          <div style="
-            margin-bottom:20px;
-            padding:18px;
-            border:1px solid var(--border);
-            border-radius:14px;
-            background:var(--card);
-          ">
-
-
-            <h3 style="
-              margin-top:0;
-              margin-bottom:15px;
-            ">
-              📢 ${esc(
-                p.empresa ||
-                "Publicidade"
-              )}
-            </h3>
-
-
-            <p>
-              👤 <strong>Nome:</strong><br>
-              ${esc(
-                p.nome ||
-                "Não informado"
-              )}
-            </p>
-
-
-            <p>
-              📧 <strong>Email:</strong><br>
-              ${esc(
-                p.email ||
-                "Não informado"
-              )}
-            </p>
-
-
-            <p>
-              📞 <strong>Telefone:</strong><br>
-              ${esc(
-                p.telefone ||
-                "Não informado"
-              )}
-            </p>
-
-
-            <p>
-              🏷️ <strong>Tipo:</strong><br>
-              ${esc(
-                p.tipo ||
-                "Não informado"
-              )}
-            </p>
-
-
-            <p>
-              📝 <strong>Mensagem:</strong><br>
-              ${esc(
-                p.mensagem ||
-                "Sem mensagem"
-              )}
-            </p>
-
-
-            ${
-              imagem
-              ? `
-                <div style="
-                  margin:15px 0;
-                ">
-
-                  <strong>
-                    🖼️ Imagem:
-                  </strong>
-
-                  <br><br>
-
-                  <img
-                    src="${esc(imagem)}"
-                    alt="Imagem do anúncio"
+                  <video
+                    autoplay
+                    muted
+                    loop
+                    playsinline
                     style="
                       width:100%;
                       max-width:500px;
@@ -1853,203 +1555,297 @@ async function carregarPedidosAnuncios() {
                       object-fit:cover;
                       border-radius:10px;
                       display:block;
+                      margin-top:10px;
                     "
                   >
 
-                </div>
-              `
-              : ""
-            }
+                    <source
+                      src="${esc(p.arquivo_url)}"
+                      type="${esc(
+                        p.arquivo_tipo ||
+                        "video/mp4"
+                      )}"
+                    >
 
+                  </video>
 
-            ${
-              video
-              ? `
-                <div style="
-                  margin:15px 0;
-                ">
+                `;
 
-                  <strong>
-                    🎬 Vídeo:
-                  </strong>
+              } else {
 
-                  <br><br>
+                arquivoHTML = `
 
-                  <video
-                    controls
-                    playsinline
+                  <img
+                    src="${esc(p.arquivo_url)}"
+                    alt="Anúncio"
                     style="
                       width:100%;
                       max-width:500px;
+                      max-height:280px;
+                      object-fit:cover;
                       border-radius:10px;
                       display:block;
+                      margin-top:10px;
                     "
                   >
-                    <source
-                      src="${esc(video)}"
-                    >
-                    O seu navegador não suporta vídeo.
-                  </video>
+
+                `;
+
+              }
+
+            }
+
+            let botoes =
+              "";
+
+            if (
+              estado === "pendente"
+            ) {
+
+              botoes = `
+
+                <button
+                  onclick="
+                    alterarEstadoAnuncio(
+                      ${Number(p.id)},
+                      'aprovado'
+                    )
+                  "
+                  style="
+                    padding:9px 14px;
+                    border:0;
+                    border-radius:7px;
+                    background:#168a45;
+                    color:#fff;
+                    font-weight:700;
+                    cursor:pointer;
+                  "
+                >
+                  ✅ Aprovar
+                </button>
+
+                <button
+                  onclick="
+                    alterarEstadoAnuncio(
+                      ${Number(p.id)},
+                      'rejeitado'
+                    )
+                  "
+                  style="
+                    padding:9px 14px;
+                    border:0;
+                    border-radius:7px;
+                    background:#d32f2f;
+                    color:#fff;
+                    font-weight:700;
+                    cursor:pointer;
+                  "
+                >
+                  🔴 Rejeitar
+                </button>
+
+              `;
+
+            } else if (
+              estado === "aprovado"
+            ) {
+
+              botoes = `
+
+                <button
+                  onclick="
+                    alterarEstadoAnuncio(
+                      ${Number(p.id)},
+                      'finalizado'
+                    )
+                  "
+                  style="
+                    padding:9px 14px;
+                    border:0;
+                    border-radius:7px;
+                    background:#1976d2;
+                    color:#fff;
+                    font-weight:700;
+                    cursor:pointer;
+                  "
+                >
+                  🏁 Finalizar
+                </button>
+
+              `;
+
+            }
+
+            return `
+
+              <div
+                style="
+                  margin-bottom:20px;
+                  padding:18px;
+                  border:1px solid var(--border);
+                  border-radius:12px;
+                  background:var(--card);
+                "
+              >
+
+                <h3 style="margin-top:0;">
+                  📢 ${esc(
+                    p.empresa ||
+                    "Empresa não informada"
+                  )}
+                </h3>
+
+                <p>
+                  <strong>Responsável:</strong>
+                  ${esc(
+                    p.responsavel ||
+                    "-"
+                  )}
+                </p>
+
+                <p>
+                  <strong>Contacto:</strong>
+                  ${esc(
+                    p.contacto ||
+                    "-"
+                  )}
+                </p>
+
+                <p>
+                  <strong>Email:</strong>
+                  ${esc(
+                    p.email ||
+                    "-"
+                  )}
+                </p>
+
+                <p>
+                  <strong>Tipo:</strong>
+                  ${esc(tipo)}
+                </p>
+
+                <p>
+                  <strong>Local:</strong>
+                  ${esc(local)}
+                </p>
+
+                <p>
+                  <strong>Período:</strong>
+                  ${esc(inicio)}
+                  até
+                  ${esc(fim)}
+                </p>
+
+                <p>
+                  <strong>Descrição:</strong><br>
+                  ${esc(
+                    p.descricao ||
+                    "Sem descrição."
+                  )}
+                </p>
+
+                ${
+                  p.link_destino
+                  ? `
+                    <p>
+                      <strong>Link:</strong><br>
+                      <a
+                        href="${esc(p.link_destino)}"
+                        target="_blank"
+                        rel="noopener"
+                      >
+                        ${esc(p.link_destino)}
+                      </a>
+                    </p>
+                  `
+                  : ""
+                }
+
+                ${
+                  arquivoHTML
+                  ? `
+                    <div>
+                      <strong>Material:</strong>
+                      ${arquivoHTML}
+                    </div>
+                  `
+                  : `
+                    <p>
+                      📎 Nenhum material enviado.
+                    </p>
+                  `
+                }
+
+                <p
+                  style="
+                    margin-top:15px;
+                    font-weight:700;
+                  "
+                >
+                  Estado:
+                  ${esc(estado)}
+                </p>
+
+                <div
+                  style="
+                    display:flex;
+                    flex-wrap:wrap;
+                    gap:8px;
+                    margin-top:12px;
+                  "
+                >
+
+                  ${botoes}
+
+                  <button
+                    onclick="
+                      excluirAnuncio(
+                        ${Number(p.id)}
+                      )
+                    "
+                    style="
+                      padding:9px 14px;
+                      border:0;
+                      border-radius:7px;
+                      background:#555;
+                      color:#fff;
+                      font-weight:700;
+                      cursor:pointer;
+                    "
+                  >
+                    🗑️ Excluir
+                  </button>
 
                 </div>
-              `
-              : ""
-            }
 
+              </div>
 
-            ${
-              link
-              ? `
-                <p>
-                  🔗 <strong>Link:</strong><br>
+            `;
 
-                  <a
-                    href="${esc(link)}"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style="
-                      word-break:break-all;
-                    "
-                  >
-                    ${esc(link)}
-                  </a>
-                </p>
-              `
-              : ""
-            }
+          }
+        )
+        .join("");
 
-
-            <p>
-              📅 <strong>Início:</strong><br>
-              ${esc(
-               p.data_inicio ||
-"Não definido"
-              )}
-            </p>
-
-
-            <p>
-              📅 <strong>Fim:</strong><br>
-              ${esc(
-                p.data_fim ||
-"Não definido"
-              )}
-            </p>
-
-
-            <p>
-              📌 <strong>Estado:</strong>
-
-              <span style="
-                display:inline-block;
-                margin-left:6px;
-                padding:5px 10px;
-                border-radius:20px;
-                background:${ativo
-                  ? "#d9f7e5"
-                  : "#fde0e0"};
-                color:${ativo
-                  ? "#168a45"
-                  : "#c62828"};
-                font-weight:700;
-              ">
-                ${
-                  ativo
-                  ? "🟢 Ativo"
-                  : "🔴 Inativo"
-                }
-              </span>
-
-            </p>
-
-
-            <div style="
-              margin-top:15px;
-              display:flex;
-              gap:8px;
-              flex-wrap:wrap;
-            ">
-
-
-              <button
-                type="button"
-                onclick="
-                  marcarAnuncio(
-                    ${Number(p.id)},
-                    ${!ativo}
-                  )
-                "
-                style="
-                  padding:10px 16px;
-                  border:0;
-                  border-radius:8px;
-                  background:${ativo
-                    ? "#c62828"
-                    : "#168a45"};
-                  color:white;
-                  font-weight:700;
-                  cursor:pointer;
-                "
-              >
-                ${
-                  ativo
-                  ? "🔴 Desativar"
-                  : "🟢 Ativar"
-                }
-              </button>
-
-
-              <button
-                type="button"
-                onclick="
-                  excluirAnuncio(
-                    ${Number(p.id)}
-                  )
-                "
-                style="
-                  padding:10px 16px;
-                  border:0;
-                  border-radius:8px;
-                  background:#d32f2f;
-                  color:white;
-                  font-weight:700;
-                  cursor:pointer;
-                "
-              >
-                🗑️ Excluir
-              </button>
-
-
-            </div>
-
-
-          </div>
-
-        `;
-
-      }).join("");
-
-
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
-      "❌ ERRO FINAL DOS ANÚNCIOS:",
+      "Erro ao carregar pedidos de anúncios:",
       erro
     );
 
-
     area.innerHTML = `
-      <div style="
-        padding:15px;
-        border-radius:10px;
-        background:#fff3f3;
-        border:1px solid #e57373;
-      ">
 
-        ❌ <strong>
-          Erro ao carregar pedidos.
+      <div
+        style="
+          padding:15px;
+          border-radius:10px;
+          background:#fff3f3;
+          border:1px solid #e57373;
+        "
+      >
+
+        <strong>
+          ❌ Não foi possível carregar os pedidos.
         </strong>
 
         <br><br>
@@ -2062,115 +1858,21 @@ async function carregarPedidosAnuncios() {
         </small>
 
       </div>
+
     `;
 
   }
 
-}
+        }
 
-/* =========================================
-   ATIVAR / DESATIVAR ANÚNCIO
+ /* =========================================
+ALTERAR ESTADO DO ANÚNCIO
 ========================================= */
 
-async function marcarAnuncio(
+async function alterarEstadoAnuncio(
   id,
   novoEstado
 ) {
-
-  id = Number(id);
-
-
-  novoEstado =
-    novoEstado === true ||
-    novoEstado === "true" ||
-    novoEstado === 1 ||
-    novoEstado === "1";
-
-
-  try {
-
-    const {
-      data: sessao,
-      error: erroSessao
-    } =
-      await supabaseClient
-        .auth
-        .getSession();
-
-
-    if (erroSessao) {
-      throw erroSessao;
-    }
-
-
-    if (
-      !sessao ||
-      !sessao.session
-    ) {
-
-      alert(
-        "🔐 A sessão terminou. Entre novamente."
-      );
-
-      location.reload();
-
-      return;
-    }
-
-
-    const {
-      error
-    } =
-      await supabaseClient
-        .from("anuncios")
-        .update({
-          ativo: novoEstado
-        })
-        .eq("id", id);
-
-
-    if (error) {
-      throw error;
-    }
-
-
-    await carregarPedidosAnuncios();
-
-
-    alert(
-      novoEstado
-      ? "✅ Anúncio ativado."
-      : "🔴 Anúncio desativado."
-    );
-
-
-  }
-
-  catch (erro) {
-
-    console.error(
-      "Erro ao alterar anúncio:",
-      erro
-    );
-
-
-    alert(
-      "❌ Não foi possível alterar o anúncio.\n\n" +
-      (
-        erro.message ||
-        "Erro desconhecido."
-      )
-    );
-
-  }
-
-             }
-
-/* =========================================
-   EXCLUIR ANÚNCIO
-========================================= */
-
-async function excluirAnuncio(id) {
 
   id = Number(id);
 
@@ -2183,18 +1885,25 @@ async function excluirAnuncio(id) {
     return;
   }
 
+  const estadosValidos = [
+    "pendente",
+    "aprovado",
+    "rejeitado",
+    "finalizado"
+  ];
 
-  const confirmar =
-    confirm(
-      "⚠️ Tem certeza que deseja excluir este anúncio?\n\n" +
-      "Esta ação não poderá ser desfeita."
+  if (
+    !estadosValidos.includes(
+      novoEstado
+    )
+  ) {
+
+    alert(
+      "❌ Estado do anúncio inválido."
     );
 
-
-  if (!confirmar) {
     return;
   }
-
 
   try {
 
@@ -2210,11 +1919,9 @@ async function excluirAnuncio(id) {
         .auth
         .getSession();
 
-
     if (erroSessao) {
       throw erroSessao;
     }
-
 
     if (
       !sessao ||
@@ -2231,24 +1938,32 @@ async function excluirAnuncio(id) {
       return;
     }
 
-
     /* ================================
-       EXCLUIR ANÚNCIO
+       ATUALIZAR ESTADO
     ================================= */
 
     const {
       error
     } =
       await supabaseClient
-        .from("anuncios")
-        .delete()
-        .eq("id", id);
+        .from("pedidos_anuncios")
+        .update({
 
+          estado:
+            novoEstado,
+
+          atualizado_em:
+            new Date().toISOString()
+
+        })
+        .eq(
+          "id",
+          id
+        );
 
     if (error) {
       throw error;
     }
-
 
     /* ================================
        ATUALIZAR LISTA
@@ -2256,21 +1971,159 @@ async function excluirAnuncio(id) {
 
     await carregarPedidosAnuncios();
 
+    let mensagem =
+      "⏳ Estado atualizado.";
+
+    if (
+      novoEstado ===
+      "aprovado"
+    ) {
+
+      mensagem =
+        "✅ Anúncio aprovado.";
+
+    }
+
+    if (
+      novoEstado ===
+      "rejeitado"
+    ) {
+
+      mensagem =
+        "🔴 Anúncio rejeitado.";
+
+    }
+
+    if (
+      novoEstado ===
+      "finalizado"
+    ) {
+
+      mensagem =
+        "🏁 Anúncio finalizado.";
+
+    }
+
+    alert(
+      mensagem
+    );
+
+  } catch (erro) {
+
+    console.error(
+      "Erro ao alterar anúncio:",
+      erro
+    );
+
+    alert(
+      "❌ Não foi possível alterar o anúncio.\n\n" +
+      (
+        erro.message ||
+        "Erro desconhecido."
+      )
+    );
+
+  }
+
+}
+
+/* =========================================
+EXCLUIR PEDIDO DE ANÚNCIO
+========================================= */
+
+async function excluirAnuncio(
+  id
+) {
+
+  id = Number(id);
+
+  if (!Number.isFinite(id)) {
+
+    alert(
+      "❌ ID do anúncio inválido."
+    );
+
+    return;
+  }
+
+  const confirmar =
+    confirm(
+      "⚠️ Tem certeza que deseja excluir este anúncio?\n\n" +
+      "Esta ação não poderá ser desfeita."
+    );
+
+  if (!confirmar) {
+    return;
+  }
+
+  try {
+
+    /* ================================
+       VERIFICAR SESSÃO
+    ================================= */
+
+    const {
+      data: sessao,
+      error: erroSessao
+    } =
+      await supabaseClient
+        .auth
+        .getSession();
+
+    if (erroSessao) {
+      throw erroSessao;
+    }
+
+    if (
+      !sessao ||
+      !sessao.session ||
+      !sessao.session.user
+    ) {
+
+      alert(
+        "🔐 A sessão terminou. Entre novamente."
+      );
+
+      location.reload();
+
+      return;
+    }
+
+    /* ================================
+       EXCLUIR PEDIDO
+    ================================= */
+
+    const {
+      error
+    } =
+      await supabaseClient
+        .from("pedidos_anuncios")
+        .delete()
+        .eq(
+          "id",
+          id
+        );
+
+    if (error) {
+      throw error;
+    }
+
+    /* ================================
+       ATUALIZAR LISTA
+    ================================= */
+
+    await carregarPedidosAnuncios();
 
     alert(
       "✅ Anúncio excluído com sucesso!"
     );
 
-
-  }
-
-  catch (erro) {
+  } catch (erro) {
 
     console.error(
       "Erro ao excluir anúncio:",
       erro
     );
-
 
     alert(
       "❌ Não foi possível excluir o anúncio.\n\n" +
