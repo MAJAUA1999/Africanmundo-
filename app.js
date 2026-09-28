@@ -457,12 +457,13 @@ function filtrar(tipo){
 
 /* =====================================================
    BUSCAR UMA CATEGORIA
+   NOTÍCIAS RECENTES + IMAGEM ORIGINAL
 ===================================================== */
 
 async function buscarCategoria(
   categoria,
   elemento,
-  limite = 4
+  limite = 6
 ){
 
   const grid =
@@ -528,17 +529,80 @@ async function buscarCategoria(
 
     }
 
-    const dados =
+    let dados =
       resultado.data || [];
+
+
+    /* =================================================
+       GARANTIR QUE AS MAIS RECENTES FIQUEM PRIMEIRO
+    ================================================= */
+
+    dados.sort(
+      (a,b) => {
+
+        const dataA =
+          dataNumero(a);
+
+        const dataB =
+          dataNumero(b);
+
+        if(
+          dataB !== dataA
+        ){
+
+          return dataB - dataA;
+
+        }
+
+        return (
+          Number(b.id || 0) -
+          Number(a.id || 0)
+        );
+
+      }
+    );
+
+
+    /* =================================================
+       MOSTRAR NOTÍCIAS
+    ================================================= */
 
     lista(
       dados,
       elemento
     );
 
+
+    /* =================================================
+       VERIFICAR IMAGENS
+    ================================================= */
+
+    const semImagem =
+      dados.filter(
+        n =>
+          !n.imagem ||
+          String(
+            n.imagem
+          ).trim() === ""
+      ).length;
+
+    if(
+      semImagem > 0
+    ){
+
+      console.warn(
+        `AfricanMundo — ${categoria}:`,
+        semImagem,
+        "notícia(s) sem imagem original."
+      );
+
+    }
+
+
     console.log(
       `AfricanMundo — ${categoria}:`,
-      dados.length
+      dados.length,
+      "notícias recentes."
     );
 
     return dados;
