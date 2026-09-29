@@ -1,4 +1,4 @@
-const CACHE_NAME = "africanmundo-v6";
+const CACHE_NAME = "africanmundo-v7";
 
 const ARQUIVOS = [
   "./index.html",
@@ -28,7 +28,6 @@ self.addEventListener("install", event => {
 
 /* =========================================
    ACTIVAR
-   LIMPA TODOS OS CACHES ANTIGOS
 ========================================= */
 
 self.addEventListener("activate", event => {
@@ -40,9 +39,17 @@ self.addEventListener("activate", event => {
 
         return Promise.all(
 
-          chaves
-            .filter(chave => chave !== CACHE_NAME)
-            .map(chave => caches.delete(chave))
+          chaves.map(chave => {
+
+            if(chave !== CACHE_NAME){
+
+              return caches.delete(chave);
+
+            }
+
+            return Promise.resolve();
+
+          })
 
         );
 
@@ -62,13 +69,13 @@ self.addEventListener("push", event => {
 
   let dados = {};
 
-  try {
+  try{
 
     dados = event.data
       ? event.data.json()
       : {};
 
-  } catch (e) {
+  }catch(e){
 
     dados = {};
 
@@ -78,9 +85,7 @@ self.addEventListener("push", event => {
   event.waitUntil(
 
     self.registration.showNotification(
-
       dados.title || "AfricanMundo",
-
       {
 
         body:
@@ -95,16 +100,13 @@ self.addEventListener("push", event => {
           dados.badge ||
           "./icon-192.png",
 
-        data: {
-
+        data:{
           url:
             dados.url ||
             "./index.html"
-
         }
 
       }
-
     )
 
   );
@@ -126,7 +128,6 @@ self.addEventListener(
       event.notification.data?.url ||
       "./index.html";
 
-
     event.waitUntil(
 
       clients.openWindow(url)
@@ -139,98 +140,24 @@ self.addEventListener(
 
 /* =========================================
    FETCH
+   NÃO INTERCEPTAR
+   HTML / CSS / JS / IMAGENS
 ========================================= */
 
 self.addEventListener(
   "fetch",
   event => {
 
-    const req = event.request;
-
-    if(req.method !== "GET") return;
-
-
-    const url = new URL(req.url);
-
-
     /*
-      SUPABASE E APIs EXTERNAS
-      NÃO ENTRAM NO CACHE
+      Deixamos o navegador buscar
+      os arquivos normalmente.
+
+      Isso evita que o Service Worker
+      altere o carregamento visual
+      do site.
     */
 
-    if(
-      url.hostname.includes("supabase.co")
-    ){
-
-      return;
-
-    }
-
-
-    /*
-      ADMIN / PAINEL
-      NÃO ENTRA NO CACHE
-    */
-
-    if(
-      url.pathname.includes("admin") ||
-      url.pathname.includes("painel")
-    ){
-
-      return;
-
-    }
-
-
-    /*
-      SOMENTE ARQUIVOS DO AFRICANMUNDO
-    */
-
-    if(
-      url.origin !== location.origin
-    ){
-
-      return;
-
-    }
-
-
-    /*
-      APP.JS / HTML / CSS / MANIFEST
-      INTERNET PRIMEIRO
-      CACHE COMO RESERVA
-    */
-
-    event.respondWith(
-
-      fetch(req)
-
-        .then(res => {
-
-          if(res && res.ok){
-
-            const copia = res.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-
-                cache.put(req, copia);
-
-              });
-
-          }
-
-          return res;
-
-        })
-
-        .catch(() => {
-
-          return caches.match(req);
-
-        })
-
-    );
+    return;
 
   }
 );
