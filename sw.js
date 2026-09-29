@@ -1,189 +1,236 @@
-const CACHE_NAME="africanmundo-v5";
+const CACHE_NAME = "africanmundo-v6";
 
-const ARQUIVOS=[
-"./index.html",
-"./manifest.json",
-"./estilo.css",
-"./app.js"
+const ARQUIVOS = [
+  "./index.html",
+  "./manifest.json",
+  "./estilo.css",
+  "./app.js"
 ];
 
+
 /* =========================================
-INSTALAR
+   INSTALAR
 ========================================= */
 
-self.addEventListener("install",event=>{
+self.addEventListener("install", event => {
 
-event.waitUntil(
+  event.waitUntil(
 
-caches.open(CACHE_NAME)  
-  .then(cache=>cache.addAll(ARQUIVOS))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(ARQUIVOS))
 
-);
+  );
 
-self.skipWaiting();
+  self.skipWaiting();
 
 });
 
+
 /* =========================================
-ACTIVAR E LIMPAR CACHE ANTIGO
+   ACTIVAR
+   LIMPA TODOS OS CACHES ANTIGOS
 ========================================= */
 
-self.addEventListener("activate",event=>{
+self.addEventListener("activate", event => {
 
-event.waitUntil(
+  event.waitUntil(
 
-caches.keys().then(chaves=>{  
+    caches.keys()
+      .then(chaves => {
 
-  return Promise.all(  
+        return Promise.all(
 
-    chaves  
-      .filter(chave=>chave!==CACHE_NAME)  
-      .map(chave=>caches.delete(chave))  
+          chaves
+            .filter(chave => chave !== CACHE_NAME)
+            .map(chave => caches.delete(chave))
 
-  );  
+        );
 
-})
+      })
+      .then(() => self.clients.claim())
 
-);
-
-self.clients.claim();
+  );
 
 });
 
+
 /* =========================================
-NOTIFICAÇÕES
+   NOTIFICAÇÕES PUSH
 ========================================= */
 
-self.addEventListener("push",event=>{
+self.addEventListener("push", event => {
 
-let dados={};
+  let dados = {};
 
-try{
+  try {
 
-dados=event.data  
-  ? event.data.json()  
-  : {};
+    dados = event.data
+      ? event.data.json()
+      : {};
 
-}catch(e){}
+  } catch (e) {
 
-event.waitUntil(
+    dados = {};
 
-self.registration.showNotification(  
-  dados.title||"AfricanMundo",  
-  {  
-    body:  
-      dados.body||  
-      "Nova notícia publicada no AfricanMundo.",  
+  }
 
-    icon:  
-      dados.icon||  
-      "./icon-192.png",  
 
-    badge:  
-      dados.badge||  
-      "./icon-192.png",  
+  event.waitUntil(
 
-    data:{  
-      url:  
-        dados.url||  
-        "./index.html"  
-    }  
-  }  
-)
+    self.registration.showNotification(
 
-);
+      dados.title || "AfricanMundo",
+
+      {
+
+        body:
+          dados.body ||
+          "Nova notícia publicada no AfricanMundo.",
+
+        icon:
+          dados.icon ||
+          "./icon-192.png",
+
+        badge:
+          dados.badge ||
+          "./icon-192.png",
+
+        data: {
+
+          url:
+            dados.url ||
+            "./index.html"
+
+        }
+
+      }
+
+    )
+
+  );
 
 });
 
+
 /* =========================================
-CLIQUE NOTIFICAÇÃO
+   CLIQUE NA NOTIFICAÇÃO
 ========================================= */
 
 self.addEventListener(
-"notificationclick",
-event=>{
+  "notificationclick",
+  event => {
 
-event.notification.close();  
+    event.notification.close();
 
-const url=  
-  event.notification.data?.url||  
-  "./index.html";  
+    const url =
+      event.notification.data?.url ||
+      "./index.html";
 
-event.waitUntil(  
 
-  clients.openWindow(url)  
+    event.waitUntil(
 
+      clients.openWindow(url)
+
+    );
+
+  }
 );
 
-}
-);
 
 /* =========================================
-FETCH
+   FETCH
 ========================================= */
 
 self.addEventListener(
-"fetch",
-event=>{
+  "fetch",
+  event => {
 
-const req=event.request;  
-const url=new URL(req.url);  
+    const req = event.request;
 
-if(req.method!=="GET")return;  
+    if(req.method !== "GET") return;
 
-/*  
-  Supabase e pedidos externos  
-  ficam fora do cache.  
-*/  
 
-if(  
-  url.hostname.includes("supabase.co")||  
-  url.pathname.includes("admin")||  
-  url.pathname.includes("painel")  
-){  
+    const url = new URL(req.url);
 
-  return;  
 
-}  
+    /*
+      SUPABASE E APIs EXTERNAS
+      NÃO ENTRAM NO CACHE
+    */
 
-/*  
-  APP.JS, HTML e CSS:  
-  Internet primeiro.  
-  Cache somente como reserva.  
-*/  
+    if(
+      url.hostname.includes("supabase.co")
+    ){
 
-if(  
-  url.origin===location.origin  
-){  
+      return;
 
-  event.respondWith(  
+    }
 
-    fetch(req)  
-      .then(res=>{  
 
-        if(res.ok){  
+    /*
+      ADMIN / PAINEL
+      NÃO ENTRA NO CACHE
+    */
 
-          const copia=res.clone();  
+    if(
+      url.pathname.includes("admin") ||
+      url.pathname.includes("painel")
+    ){
 
-          caches.open(CACHE_NAME)  
-            .then(cache=>{  
-              cache.put(req,copia);  
-            });  
+      return;
 
-        }  
+    }
 
-        return res;  
 
-      })  
-      .catch(()=>{  
+    /*
+      SOMENTE ARQUIVOS DO AFRICANMUNDO
+    */
 
-        return caches.match(req);  
+    if(
+      url.origin !== location.origin
+    ){
 
-      })  
+      return;
 
-  );  
+    }
 
-}
 
-}
+    /*
+      APP.JS / HTML / CSS / MANIFEST
+      INTERNET PRIMEIRO
+      CACHE COMO RESERVA
+    */
+
+    event.respondWith(
+
+      fetch(req)
+
+        .then(res => {
+
+          if(res && res.ok){
+
+            const copia = res.clone();
+
+            caches.open(CACHE_NAME)
+              .then(cache => {
+
+                cache.put(req, copia);
+
+              });
+
+          }
+
+          return res;
+
+        })
+
+        .catch(() => {
+
+          return caches.match(req);
+
+        })
+
+    );
+
+  }
 );
