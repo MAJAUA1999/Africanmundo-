@@ -1,12 +1,6 @@
 /* =========================================================
    AFRICANMUNDO — APP.JS
-   Versão profissional
-   Notícias + imagens + pesquisa + ferramentas + Realtime
-========================================================= */
-
-
-/* =========================================================
-   SUPABASE
+   VERSÃO CORRIGIDA
 ========================================================= */
 
 const SUPABASE_URL =
@@ -23,24 +17,17 @@ const db =
 
 
 /* =========================================================
-   ESTADO DA APLICAÇÃO
+   ESTADO
 ========================================================= */
 
 let noticias = [];
-
 let indiceDestaque = 0;
-
 let timerDestaque = null;
-
 let timerAtualizacao = null;
-
 let canalNoticias = null;
-
 let ultimaAtualizacaoRealtime = 0;
-
 let pesquisaAberta = false;
-
-let pesquisaTimer = null;
+let africanMundoIniciado = false;
 
 
 /* =========================================================
@@ -50,17 +37,12 @@ let pesquisaTimer = null;
 const FALLBACK_IMG =
   "https://images.unsplash.com/photo-1521292270410-a8c4d716d518?auto=format&fit=crop&w=1200&q=75";
 
-
-const LIMITE_ULTIMAS =
-  10;
-
-
-const LIMITE_CATEGORIA =
-  6;
+const LIMITE_ULTIMAS = 10;
+const LIMITE_CATEGORIA = 6;
 
 
 /* =========================================================
-   NORMALIZAR TEXTO
+   NORMALIZAR
 ========================================================= */
 
 function norm(valor){
@@ -80,7 +62,7 @@ function norm(valor){
 
 function esc(valor){
 
-  return String(valor || "")
+  return String(valor ?? "")
     .replace(/&/g,"&amp;")
     .replace(/</g,"&lt;")
     .replace(/>/g,"&gt;")
@@ -106,7 +88,7 @@ function titulo(noticia){
 
 
 /* =========================================================
-   TEXTO / RESUMO
+   TEXTO
 ========================================================= */
 
 function texto(noticia){
@@ -118,6 +100,7 @@ function texto(noticia){
     ""
   )
   .replace(/<[^>]*>/g," ")
+  .replace(/&nbsp;/gi," ")
   .replace(/\s+/g," ")
   .trim();
 
@@ -125,7 +108,7 @@ function texto(noticia){
 
 
 /* =========================================================
-   DATA NUMÉRICA
+   DATA
 ========================================================= */
 
 function dataNumero(noticia){
@@ -146,10 +129,6 @@ function dataNumero(noticia){
 }
 
 
-/* =========================================================
-   DATA FORMATADA
-========================================================= */
-
 function data(noticia){
 
   const valor =
@@ -158,9 +137,7 @@ function data(noticia){
     noticia?.published_at ||
     "";
 
-  if(!valor){
-    return "";
-  }
+  if(!valor) return "";
 
   const d =
     new Date(valor);
@@ -190,31 +167,20 @@ function data(noticia){
 
 
 /* =========================================================
-   IMAGEM ORIGINAL
+   IMAGEM
 ========================================================= */
 
 function imagem(noticia){
 
   const original =
     String(
-      noticia?.imagem ||
-      ""
+      noticia?.imagem || ""
     ).trim();
 
-  if(original){
-
-    return original;
-
-  }
-
-  return FALLBACK_IMG;
+  return original || FALLBACK_IMG;
 
 }
 
-
-/* =========================================================
-   VERIFICAR SE POSSUI IMAGEM ORIGINAL
-========================================================= */
 
 function possuiImagem(noticia){
 
@@ -233,14 +199,12 @@ function categoriaTexto(noticia){
 
   const sub =
     String(
-      noticia?.subcategoria ||
-      ""
+      noticia?.subcategoria || ""
     ).trim();
 
   const cat =
     String(
-      noticia?.categoria ||
-      ""
+      noticia?.categoria || ""
     ).trim();
 
   return sub || cat || "Atualidades";
@@ -252,14 +216,15 @@ function categoriaTexto(noticia){
    RESUMO
 ========================================================= */
 
-function resumo(noticia, limite = 180){
+function resumo(
+  noticia,
+  limite = 180
+){
 
-  let t =
+  const t =
     texto(noticia);
 
-  if(!t){
-    return "";
-  }
+  if(!t) return "";
 
   if(t.length <= limite){
     return t;
@@ -281,9 +246,7 @@ function resumo(noticia, limite = 180){
 
 function abrirNoticia(id){
 
-  if(!id){
-    return;
-  }
+  if(!id) return;
 
   window.location.href =
     "noticia.html?id=" +
@@ -293,14 +256,12 @@ function abrirNoticia(id){
 
 
 /* =========================================================
-   CARTÃO DE NOTÍCIA
+   CARTÃO
 ========================================================= */
 
 function card(noticia){
 
-  if(!noticia){
-    return "";
-  }
+  if(!noticia) return "";
 
   const id =
     noticia.id;
@@ -393,16 +354,23 @@ function card(noticia){
    LISTA
 ========================================================= */
 
-function lista(dados, elemento){
+function lista(
+  dados,
+  elemento
+){
 
   const grid =
-    document.getElementById(elemento);
+    document.getElementById(
+      elemento
+    );
 
-  if(!grid){
-    return;
-  }
+  if(!grid) return;
 
-  if(!Array.isArray(dados) || !dados.length){
+
+  if(
+    !Array.isArray(dados) ||
+    !dados.length
+  ){
 
     grid.innerHTML = `
       <div class="sem-noticias">
@@ -412,34 +380,28 @@ function lista(dados, elemento){
     `;
 
     return;
+
   }
 
 
   grid.innerHTML =
-    dados
-      .map(card)
-      .join("");
+    dados.map(card).join("");
 
 
-  // Evita que imagens muito grandes sejam carregadas
-  // todas ao mesmo tempo em aparelhos mais lentos.
+  grid
+    .querySelectorAll("img")
+    .forEach(function(img){
 
-  const imagens =
-    grid.querySelectorAll("img");
+      img.loading = "lazy";
+      img.decoding = "async";
 
-  imagens.forEach(function(img){
-
-    img.loading = "lazy";
-
-    img.decoding = "async";
-
-  });
+    });
 
 }
 
 
 /* =========================================================
-   MENSAGEM DE ERRO
+   ERRO
 ========================================================= */
 
 function mostrarErroNoticias(erro){
@@ -458,6 +420,7 @@ function mostrarErroNoticias(erro){
     "negocios",
     "entretenimento"
   ];
+
 
   ids.forEach(function(id){
 
@@ -497,9 +460,8 @@ function mostrarDestaque(){
       "destaque"
     );
 
-  if(!area){
-    return;
-  }
+  if(!area) return;
+
 
   if(!noticias.length){
 
@@ -510,6 +472,7 @@ function mostrarDestaque(){
     `;
 
     return;
+
   }
 
 
@@ -526,29 +489,23 @@ function mostrarDestaque(){
   const n =
     noticias[indiceDestaque];
 
-
   const img =
     imagem(n);
-
 
   const cat =
     categoriaTexto(n);
 
-
   const tit =
     titulo(n);
 
-
   const resumoNoticia =
     resumo(n,180);
-
 
   const dataNoticia =
     data(n);
 
 
   area.innerHTML = `
-
     <article
       class="destaque-card"
       onclick="abrirNoticia('${esc(n.id)}')"
@@ -593,14 +550,13 @@ function mostrarDestaque(){
       </div>
 
     </article>
-
   `;
 
 }
 
 
 /* =========================================================
-   ROTAÇÃO DO DESTAQUE
+   ROTAÇÃO
 ========================================================= */
 
 function iniciarDestaque(){
@@ -610,6 +566,8 @@ function iniciarDestaque(){
     clearInterval(
       timerDestaque
     );
+
+    timerDestaque = null;
 
   }
 
@@ -622,7 +580,18 @@ function iniciarDestaque(){
   timerDestaque =
     setInterval(function(){
 
+      if(
+        document.visibilityState !==
+        "visible"
+      ){
+
+        return;
+
+      }
+
+
       indiceDestaque++;
+
 
       if(
         indiceDestaque >=
@@ -633,6 +602,7 @@ function iniciarDestaque(){
 
       }
 
+
       mostrarDestaque();
 
     },10000);
@@ -641,7 +611,7 @@ function iniciarDestaque(){
 
 
 /* =========================================================
-   BUSCAR UMA CATEGORIA
+   BUSCAR CATEGORIA
 ========================================================= */
 
 async function buscarCategoria(
@@ -651,11 +621,11 @@ async function buscarCategoria(
 ){
 
   const grid =
-    document.getElementById(elemento);
+    document.getElementById(
+      elemento
+    );
 
-  if(!grid){
-    return [];
-  }
+  if(!grid) return [];
 
 
   try{
@@ -711,8 +681,10 @@ async function buscarCategoria(
     }
 
 
-    let dados =
-      resultado.data || [];
+    const dados =
+      Array.isArray(resultado.data)
+        ? resultado.data
+        : [];
 
 
     dados.sort(function(a,b){
@@ -745,23 +717,6 @@ async function buscarCategoria(
     );
 
 
-    const semImagem =
-      dados.filter(
-        n => !possuiImagem(n)
-      ).length;
-
-
-    if(semImagem){
-
-      console.warn(
-        `AfricanMundo — ${categoria}:`,
-        semImagem,
-        "notícia(s) sem imagem original."
-      );
-
-    }
-
-
     console.log(
       `AfricanMundo — ${categoria}:`,
       dados.length,
@@ -771,7 +726,6 @@ async function buscarCategoria(
 
     return dados;
 
-
   }catch(e){
 
     console.error(
@@ -779,16 +733,14 @@ async function buscarCategoria(
       e
     );
 
-    lista(
-      [],
-      elemento
-    );
+    lista([],elemento);
 
     return [];
 
   }
 
-     }
+}
+
 
 /* =========================================================
    CARREGAR NOTÍCIAS
@@ -854,7 +806,9 @@ async function carregarNoticias(){
 
 
     noticias =
-      todas.data || [];
+      Array.isArray(todas.data)
+        ? todas.data
+        : [];
 
 
     noticias.sort(function(a,b){
@@ -883,9 +837,7 @@ async function carregarNoticias(){
 
     indiceDestaque = 0;
 
-
     mostrarDestaque();
-
 
     iniciarDestaque();
 
@@ -898,11 +850,6 @@ async function carregarNoticias(){
       "ultimas"
     );
 
-
-    /*
-      Cada categoria é independente.
-      Se uma falhar, as outras continuam.
-    */
 
     await Promise.allSettled([
 
@@ -952,36 +899,41 @@ async function carregarNoticias(){
 
   }
 
-}
-
+      }
 
 /* =========================================================
    PESQUISA
 ========================================================= */
 
+function prepararTermoPesquisa(valor){
+
+  return String(valor || "")
+    .trim()
+    .replace(/\\/g," ")
+    .replace(/,/g," ")
+    .replace(/\(/g," ")
+    .replace(/\)/g," ")
+    .replace(/%/g," ")
+    .replace(/_/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+
+}
+
+
 async function pesquisar(){
 
   const campo =
-    document.getElementById(
-      "searchInput"
-    ) ||
-    document.getElementById(
-      "pesquisa"
-    ) ||
-    document.querySelector(
-      'input[type="search"]'
-    );
+    document.getElementById("searchInput") ||
+    document.getElementById("pesquisa") ||
+    document.querySelector('input[type="search"]');
 
 
-  if(!campo){
-    return;
-  }
+  if(!campo) return;
 
 
   const termo =
-    String(
-      campo.value || ""
-    ).trim();
+    String(campo.value || "").trim();
 
 
   if(!termo){
@@ -1011,6 +963,21 @@ async function pesquisar(){
 
   try{
 
+    const termoSeguro =
+      prepararTermoPesquisa(termo);
+
+
+    if(!termoSeguro){
+
+      mostrarMensagem(
+        "Digite um termo válido para pesquisar."
+      );
+
+      return;
+
+    }
+
+
     const resposta =
       await db
         .from("noticias")
@@ -1028,16 +995,14 @@ async function pesquisar(){
           visualizacoes,
           pais
         `)
-        .or(
-          [
-            `titulo.ilike.%${termo}%`,
-            `texto.ilike.%${termo}%`,
-            `categoria.ilike.%${termo}%`,
-            `subcategoria.ilike.%${termo}%`,
-            `pais.ilike.%${termo}%`,
-            `fonte.ilike.%${termo}%`
-          ].join(",")
-        )
+        .or([
+          `titulo.ilike.%${termoSeguro}%`,
+          `texto.ilike.%${termoSeguro}%`,
+          `categoria.ilike.%${termoSeguro}%`,
+          `subcategoria.ilike.%${termoSeguro}%`,
+          `pais.ilike.%${termoSeguro}%`,
+          `fonte.ilike.%${termoSeguro}%`
+        ].join(","))
         .order(
           "data",
           {
@@ -1061,7 +1026,9 @@ async function pesquisar(){
 
 
     let resultados =
-      resposta.data || [];
+      Array.isArray(resposta.data)
+        ? resposta.data
+        : [];
 
 
     const termoNormalizado =
@@ -1113,7 +1080,7 @@ async function pesquisar(){
 
 
 /* =========================================================
-   PESQUISA COM ENTER
+   PESQUISA — ENTER
 ========================================================= */
 
 function pesquisarTecla(event){
@@ -1133,7 +1100,7 @@ function pesquisarTecla(event){
 
 
 /* =========================================================
-   PESQUISA — ABRIR
+   ABRIR PESQUISA
 ========================================================= */
 
 function abrirPesquisa(){
@@ -1152,23 +1119,32 @@ function abrirPesquisa(){
 
   if(campo){
 
-    campo.focus();
+    window.scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
 
-    campo.select();
+
+    setTimeout(function(){
+
+      campo.focus();
+      campo.select();
+
+    },250);
+
+  }else{
+
+    mostrarMensagem(
+      "Campo de pesquisa não encontrado."
+    );
 
   }
-
-
-  window.scrollTo({
-    top:0,
-    behavior:"smooth"
-  });
 
 }
 
 
 /* =========================================================
-   MOSTRAR RESULTADOS
+   RESULTADOS DA PESQUISA
 ========================================================= */
 
 function mostrarResultadosPesquisa(
@@ -1208,6 +1184,13 @@ function mostrarResultadosPesquisa(
 
       `;
 
+
+      container.scrollIntoView({
+        behavior:"smooth",
+        block:"start"
+      });
+
+
       return;
 
     }
@@ -1230,9 +1213,11 @@ function mostrarResultadosPesquisa(
 
       <div class="search-grid">
 
-        ${resultados
-          .map(card)
-          .join("")}
+        ${
+          resultados
+            .map(card)
+            .join("")
+        }
 
       </div>
 
@@ -1250,56 +1235,60 @@ function mostrarResultadosPesquisa(
   }
 
 
-  /*
-    Se não existir uma área própria de pesquisa,
-    mostramos uma janela profissional.
-  */
+  mostrarModal(`
 
-  mostrarModal(
-    `
-      <div class="modal-header">
+    <div class="modal-header">
 
-        <h2>🔎 Pesquisa</h2>
+      <h2>
+        🔎 Pesquisa
+      </h2>
 
-        <button
-          onclick="fecharModal()"
-          aria-label="Fechar"
-        >
-          ×
-        </button>
+      <button
+        class="modal-close"
+        onclick="fecharModal()"
+        aria-label="Fechar"
+      >
+        ×
+      </button>
 
-      </div>
+    </div>
 
-      <div class="modal-body">
 
-        <p>
-          Resultados para:
-          <strong>${esc(termo)}</strong>
-        </p>
+    <div class="modal-body">
 
-        ${
-          resultados.length
-            ? `
-              <div class="search-grid">
-                ${resultados
+      <p>
+        Resultados para:
+        <strong>
+          ${esc(termo)}
+        </strong>
+      </p>
+
+
+      ${
+        resultados.length
+          ? `
+            <div class="search-grid">
+              ${
+                resultados
                   .slice(0,30)
                   .map(card)
-                  .join("")}
-              </div>
-            `
-            : `
-              <div class="sem-noticias">
-                <span>🔎</span>
-                <p>
-                  Nenhuma notícia encontrada.
-                </p>
-              </div>
-            `
-        }
+                  .join("")
+              }
+            </div>
+          `
+          : `
+            <div class="sem-noticias">
+              <span>🔎</span>
+              <p>
+                Nenhuma notícia encontrada.
+              </p>
+            </div>
+          `
+      }
 
-      </div>
-    `
-  );
+    </div>
+
+  `);
 
 }
 
@@ -1335,7 +1324,44 @@ function mostrarPesquisaCarregando(){
 
     `;
 
+    return;
+
   }
+
+
+  mostrarModal(`
+
+    <div class="modal-header">
+
+      <h2>
+        🔎 Pesquisa
+      </h2>
+
+      <button
+        class="modal-close"
+        onclick="fecharModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div class="sem-noticias">
+
+        <span>🔎</span>
+
+        <p>
+          Pesquisando notícias...
+        </p>
+
+      </div>
+
+    </div>
+
+  `);
 
 }
 
@@ -1352,15 +1378,19 @@ function mostrarMensagem(
 
     <div class="modal-header">
 
-      <h2>ℹ️ AfricanMundo</h2>
+      <h2>
+        ℹ️ AfricanMundo
+      </h2>
 
       <button
+        class="modal-close"
         onclick="fecharModal()"
       >
         ×
       </button>
 
     </div>
+
 
     <div class="modal-body">
 
@@ -1376,7 +1406,7 @@ function mostrarMensagem(
 
 
 /* =========================================================
-   ATUALIZAÇÃO AUTOMÁTICA
+   ATUALIZAÇÃO
 ========================================================= */
 
 function atualizarNoticias(){
@@ -1385,15 +1415,10 @@ function atualizarNoticias(){
     "AfricanMundo — verificando novas notícias..."
   );
 
-
   carregarNoticias();
 
 }
 
-
-/* =========================================================
-   TIMER DE ATUALIZAÇÃO
-========================================================= */
 
 function iniciarAtualizacaoAutomatica(){
 
@@ -1405,11 +1430,6 @@ function iniciarAtualizacaoAutomatica(){
 
   }
 
-
-  /*
-    Cinco minutos.
-    O Realtime atualiza antes quando disponível.
-  */
 
   timerAtualizacao =
     setInterval(
@@ -1456,6 +1476,7 @@ function iniciarRealtimeNoticias(){
         .channel(
           "africanmundo-noticias"
         )
+
         .on(
           "postgres_changes",
           {
@@ -1463,6 +1484,7 @@ function iniciarRealtimeNoticias(){
             schema:"public",
             table:"noticias"
           },
+
           function(payload){
 
             console.log(
@@ -1474,11 +1496,6 @@ function iniciarRealtimeNoticias(){
             const agora =
               Date.now();
 
-
-            /*
-              Evita várias atualizações
-              praticamente simultâneas.
-            */
 
             if(
               agora -
@@ -1506,6 +1523,7 @@ function iniciarRealtimeNoticias(){
 
           }
         )
+
         .on(
           "postgres_changes",
           {
@@ -1513,6 +1531,7 @@ function iniciarRealtimeNoticias(){
             schema:"public",
             table:"noticias"
           },
+
           function(){
 
             console.log(
@@ -1521,6 +1540,7 @@ function iniciarRealtimeNoticias(){
 
           }
         )
+
         .subscribe(
           function(status,erro){
 
@@ -1536,7 +1556,7 @@ function iniciarRealtimeNoticias(){
             ){
 
               console.warn(
-                "AfricanMundo — Realtime indisponível. O sistema continuará usando atualização automática.",
+                "AfricanMundo — Realtime indisponível.",
                 erro
               );
 
@@ -1549,19 +1569,22 @@ function iniciarRealtimeNoticias(){
   }catch(e){
 
     console.warn(
-      "AfricanMundo — não foi possível iniciar Realtime:",
+      "AfricanMundo — erro no Realtime:",
       e
     );
 
   }
 
-       }
+}
+
 
 /* =========================================================
-   MODAL PROFISSIONAL
+   MODAL
 ========================================================= */
 
-function mostrarModal(conteudo){
+function mostrarModal(
+  conteudo
+){
 
   let modal =
     document.getElementById(
@@ -1576,11 +1599,14 @@ function mostrarModal(conteudo){
         "div"
       );
 
+
     modal.id =
       "africanmundoModal";
 
+
     modal.className =
       "africanmundo-modal";
+
 
     modal.innerHTML = `
 
@@ -1596,6 +1622,7 @@ function mostrarModal(conteudo){
       ></div>
 
     `;
+
 
     document.body.appendChild(
       modal
@@ -1618,6 +1645,70 @@ function mostrarModal(conteudo){
   }
 
 
+  /*
+    Força o painel para
+    cima de toda a página.
+  */
+
+  modal.style.position =
+    "fixed";
+
+  modal.style.inset =
+    "0";
+
+  modal.style.width =
+    "100%";
+
+  modal.style.height =
+    "100%";
+
+  modal.style.zIndex =
+    "99999";
+
+  modal.style.display =
+    "block";
+
+
+  const backdrop =
+    modal.querySelector(
+      ".modal-backdrop"
+    );
+
+
+  if(backdrop){
+
+    backdrop.style.position =
+      "absolute";
+
+    backdrop.style.inset =
+      "0";
+
+  }
+
+
+  const modalContent =
+    modal.querySelector(
+      ".modal-content"
+    );
+
+
+  if(modalContent){
+
+    modalContent.style.position =
+      "relative";
+
+    modalContent.style.zIndex =
+      "2";
+
+    modalContent.style.maxHeight =
+      "90vh";
+
+    modalContent.style.overflowY =
+      "auto";
+
+  }
+
+
   modal.classList.add(
     "ativo"
   );
@@ -1635,8 +1726,11 @@ function mostrarModal(conteudo){
         "button,input"
       );
 
+
     if(primeiro){
+
       primeiro.focus();
+
     }
 
   },50);
@@ -1661,6 +1755,9 @@ function fecharModal(){
     modal.classList.remove(
       "ativo"
     );
+
+    modal.style.display =
+      "none";
 
   }
 
@@ -1693,6 +1790,7 @@ function mostrarNotificacoes(){
         </h2>
 
       </div>
+
 
       <button
         class="modal-close"
@@ -1761,13 +1859,12 @@ function mostrarNotificacoes(){
         <div>
 
           <strong>
-            Dica
+            Notificações
           </strong>
 
           <p>
-            Ative as notificações do navegador
-            quando essa função estiver disponível
-            no seu dispositivo.
+            O navegador pode solicitar
+            permissão para receber novidades.
           </p>
 
         </div>
@@ -1802,6 +1899,7 @@ function mostrarFerramentas(){
         </h2>
 
       </div>
+
 
       <button
         class="modal-close"
@@ -1932,7 +2030,7 @@ function mostrarFerramentas(){
 
 
 /* =========================================================
-   "EU"
+   EU
 ========================================================= */
 
 function mostrarEu(){
@@ -1953,6 +2051,7 @@ function mostrarEu(){
 
       </div>
 
+
       <button
         class="modal-close"
         onclick="fecharModal()"
@@ -1964,7 +2063,6 @@ function mostrarEu(){
 
 
     <div class="modal-body">
-
 
       <div class="eu-card">
 
@@ -1988,7 +2086,6 @@ function mostrarEu(){
 
 
       <div class="eu-actions">
-
 
         <button
           onclick="fecharModal();abrirPesquisa()"
@@ -2029,7 +2126,6 @@ function mostrarEu(){
           </span>
         </button>
 
-
       </div>
 
 
@@ -2041,6 +2137,250 @@ function mostrarEu(){
 
       </div>
 
+    </div>
+
+  `);
+
+       }
+
+/* =========================================================
+   TEMA
+========================================================= */
+
+function temaAtual(){
+
+  return (
+    localStorage.getItem(
+      "africanmundo-tema"
+    ) || "claro"
+  );
+
+}
+
+
+function aplicarTema(){
+
+  const tema =
+    temaAtual();
+
+
+  if(tema === "escuro"){
+
+    document.documentElement
+      .classList.add("dark");
+
+    document.body
+      .classList.add("dark");
+
+  }else{
+
+    document.documentElement
+      .classList.remove("dark");
+
+    document.body
+      .classList.remove("dark");
+
+  }
+
+}
+
+
+function alternarTema(){
+
+  const atual =
+    temaAtual();
+
+
+  const novo =
+    atual === "escuro"
+      ? "claro"
+      : "escuro";
+
+
+  localStorage.setItem(
+    "africanmundo-tema",
+    novo
+  );
+
+
+  aplicarTema();
+
+}
+
+
+/* =========================================================
+   CORES
+========================================================= */
+
+const CORES =
+  [
+    "#168a45",
+    "#1769aa",
+    "#c62828",
+    "#7b1fa2",
+    "#ef6c00"
+  ];
+
+
+function corAtual(){
+
+  return (
+    localStorage.getItem(
+      "africanmundo-cor"
+    ) || CORES[0]
+  );
+
+}
+
+
+function aplicarCor(){
+
+  const cor =
+    corAtual();
+
+
+  document.documentElement
+    .style.setProperty(
+      "--p",
+      cor
+    );
+
+
+  document.documentElement
+    .style.setProperty(
+      "--primary",
+      cor
+    );
+
+
+  document.documentElement
+    .style.setProperty(
+      "--cor-principal",
+      cor
+    );
+
+}
+
+
+function alterarCor(){
+
+  let indice =
+    CORES.indexOf(
+      corAtual()
+    );
+
+
+  indice++;
+
+
+  if(
+    indice >=
+    CORES.length
+  ){
+
+    indice = 0;
+
+  }
+
+
+  const cor =
+    CORES[indice];
+
+
+  localStorage.setItem(
+    "africanmundo-cor",
+    cor
+  );
+
+
+  aplicarCor();
+
+
+  mostrarMensagem(
+    "Cor principal alterada."
+  );
+
+}
+
+
+/* =========================================================
+   PAINEL DE CORES
+========================================================= */
+
+function mostrarCores(){
+
+  const botoes =
+    CORES.map(function(cor){
+
+      const ativa =
+        cor === corAtual();
+
+
+      return `
+
+        <button
+          type="button"
+          class="cor-opcao"
+          title="Escolher cor"
+          aria-label="Escolher cor"
+          style="
+            background:${esc(cor)};
+          "
+          onclick="
+            escolherCor('${esc(cor)}')
+          "
+        >
+          ${
+            ativa
+              ? "✓"
+              : ""
+          }
+        </button>
+
+      `;
+
+    }).join("");
+
+
+  mostrarModal(`
+
+    <div class="modal-header">
+
+      <div>
+
+        <span class="modal-kicker">
+          PERSONALIZAÇÃO
+        </span>
+
+        <h2>
+          🎨 Cor do AfricanMundo
+        </h2>
+
+      </div>
+
+
+      <button
+        class="modal-close"
+        onclick="fecharModal()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <p>
+        Escolha a cor principal do site.
+      </p>
+
+
+      <div class="cores-lista">
+
+        ${botoes}
+
+      </div>
 
     </div>
 
@@ -2049,55 +2389,21 @@ function mostrarEu(){
 }
 
 
-/* =========================================================
-   ATALHOS
-========================================================= */
+function escolherCor(cor){
 
-function mostrarAtalhos(){
+  if(!cor) return;
 
-  mostrarModal(`
 
-    <div class="modal-header">
+  localStorage.setItem(
+    "africanmundo-cor",
+    cor
+  );
 
-      <h2>
-        ⌨️ Atalhos
-      </h2>
 
-      <button
-        onclick="fecharModal()"
-      >
-        ×
-      </button>
+  aplicarCor();
 
-    </div>
 
-    <div class="modal-body">
-
-      <div class="atalho">
-        <kbd>Ctrl</kbd>
-        +
-        <kbd>K</kbd>
-        <span>Pesquisar</span>
-      </div>
-
-      <div class="atalho">
-        <kbd>/</kbd>
-        <span>Pesquisar</span>
-      </div>
-
-      <div class="atalho">
-        <kbd>T</kbd>
-        <span>Alternar tema</span>
-      </div>
-
-      <div class="atalho">
-        <kbd>Esc</kbd>
-        <span>Fechar janela</span>
-      </div>
-
-    </div>
-
-  `);
+  fecharModal();
 
 }
 
@@ -2117,50 +2423,88 @@ async function partilharSite(){
       "A informação que liga África ao mundo.",
 
     url:
-      window.location.origin +
-      window.location.pathname
+      window.location.href
 
   };
 
 
-  if(
-    navigator.share
-  ){
+  try{
 
-    try{
+    if(
+      navigator.share
+    ){
 
       await navigator.share(
         dados
       );
 
-    }catch(e){
-
-      // Cancelamento pelo utilizador
-      // não precisa mostrar erro.
+      return;
 
     }
 
-    return;
 
-  }
+    if(
+      navigator.clipboard &&
+      window.isSecureContext
+    ){
+
+      await navigator.clipboard.writeText(
+        window.location.href
+      );
 
 
-  try{
-
-    await navigator.clipboard.writeText(
-      dados.url
-    );
+      mostrarMensagem(
+        "Link do AfricanMundo copiado."
+      );
 
 
-    mostrarMensagem(
-      "Link do AfricanMundo copiado."
-    );
+      return;
+
+    }
+
+
+    mostrarModal(`
+
+      <div class="modal-header">
+
+        <h2>
+          📤 Partilhar
+        </h2>
+
+        <button
+          class="modal-close"
+          onclick="fecharModal()"
+        >
+          ×
+        </button>
+
+      </div>
+
+
+      <div class="modal-body">
+
+        <p>
+          Copie o endereço abaixo:
+        </p>
+
+
+        <input
+          type="text"
+          value="${esc(window.location.href)}"
+          readonly
+          onclick="this.select()"
+        >
+
+      </div>
+
+    `);
 
 
   }catch(e){
 
-    mostrarMensagem(
-      dados.url
+    console.log(
+      "Partilha cancelada:",
+      e
     );
 
   }
@@ -2169,266 +2513,132 @@ async function partilharSite(){
 
 
 /* =========================================================
-   PARTILHAR NOTÍCIA
+   REDES SOCIAIS
 ========================================================= */
 
-async function partilharNoticia(noticia){
+const REDES = {
 
-  if(!noticia){
+  google:
+    "https://www.google.com/search?q=AfricanMundo",
+
+  facebook:
+    "https://www.facebook.com/",
+
+  youtube:
+    "https://www.youtube.com/",
+
+  whatsapp:
+    "https://wa.me/?text=",
+
+  instagram:
+    "https://www.instagram.com/",
+
+  tiktok:
+    "https://www.tiktok.com/"
+
+};
+
+
+function abrirRede(
+  rede
+){
+
+  const nome =
+    norm(rede);
+
+
+  if(
+    nome === "whatsapp"
+  ){
+
+    const texto =
+      encodeURIComponent(
+        "AfricanMundo — Notícias de África " +
+        window.location.href
+      );
+
+
+    window.open(
+      REDES.whatsapp +
+      texto,
+      "_blank",
+      "noopener,noreferrer"
+    );
+
+
     return;
+
   }
 
 
   const url =
-    window.location.origin +
-    "/noticia.html?id=" +
+    REDES[nome];
+
+
+  if(!url){
+
+    console.warn(
+      "Rede desconhecida:",
+      rede
+    );
+
+    return;
+
+  }
+
+
+  window.open(
+    url,
+    "_blank",
+    "noopener,noreferrer"
+  );
+
+}
+
+
+/* =========================================================
+   GOOGLE
+========================================================= */
+
+function abrirGoogle(){
+
+  window.open(
+    "https://www.google.com/search?q=" +
     encodeURIComponent(
-      noticia.id
-    );
-
-
-  const dados = {
-
-    title:
-      titulo(noticia),
-
-    text:
-      titulo(noticia),
-
-    url:url
-
-  };
-
-
-  if(navigator.share){
-
-    try{
-
-      await navigator.share(
-        dados
-      );
-
-    }catch(e){}
-
-    return;
-
-  }
-
-
-  try{
-
-    await navigator.clipboard.writeText(
-      url
-    );
-
-
-    mostrarMensagem(
-      "Link da notícia copiado."
-    );
-
-
-  }catch(e){
-
-    mostrarMensagem(
-      url
-    );
-
-  }
+      "AfricanMundo"
+    ),
+    "_blank",
+    "noopener,noreferrer"
+  );
 
 }
 
 
 /* =========================================================
-   TEMA
+   ATALHOS
 ========================================================= */
 
-function iniciarTema(){
-
-  const salvo =
-    localStorage.getItem(
-      "africanmundo-tema"
-    );
-
-
-  if(
-    salvo === "dark"
-  ){
-
-    document.documentElement
-      .classList.add("dark");
-
-    document.body
-      .classList.add("dark");
-
-    return;
-
-  }
-
-
-  if(
-    salvo === "light"
-  ){
-
-    document.documentElement
-      .classList.remove("dark");
-
-    document.body
-      .classList.remove("dark");
-
-    return;
-
-  }
-
-
-  /*
-    Segue a preferência do aparelho
-    apenas quando o utilizador ainda
-    não escolheu manualmente.
-  */
-
-  if(
-    window.matchMedia &&
-    window.matchMedia(
-      "(prefers-color-scheme: dark)"
-    ).matches
-  ){
-
-    document.documentElement
-      .classList.add("dark");
-
-    document.body
-      .classList.add("dark");
-
-  }
-
-}
-
-
-/* =========================================================
-   ALTERNAR TEMA
-========================================================= */
-
-function alternarTema(){
-
-  const html =
-    document.documentElement;
-
-  const body =
-    document.body;
-
-
-  const ativo =
-    html.classList.contains(
-      "dark"
-    );
-
-
-  if(ativo){
-
-    html.classList.remove(
-      "dark"
-    );
-
-    body.classList.remove(
-      "dark"
-    );
-
-    localStorage.setItem(
-      "africanmundo-tema",
-      "light"
-    );
-
-  }else{
-
-    html.classList.add(
-      "dark"
-    );
-
-    body.classList.add(
-      "dark"
-    );
-
-    localStorage.setItem(
-      "africanmundo-tema",
-      "dark"
-    );
-
-  }
-
-}
-
-
-/* =========================================================
-   CORES
-========================================================= */
-
-function restaurarCor(){
-
-  const cor =
-    localStorage.getItem(
-      "africanmundo-cor"
-    );
-
-
-  if(cor){
-
-    document.documentElement
-      .style
-      .setProperty(
-        "--p",
-        cor
-      );
-
-  }
-
-}
-
-
-/* =========================================================
-   ALTERAR COR
-========================================================= */
-
-function alterarCor(){
-
-  const cores = [
-
-    {
-      nome:"Verde",
-      valor:"#168a45"
-    },
-
-    {
-      nome:"Azul",
-      valor:"#1565c0"
-    },
-
-    {
-      nome:"Vermelho",
-      valor:"#c62828"
-    },
-
-    {
-      nome:"Roxo",
-      valor:"#7b1fa2"
-    },
-
-    {
-      nome:"Laranja",
-      valor:"#ef6c00"
-    }
-
-  ];
-
+function mostrarAtalhos(){
 
   mostrarModal(`
 
     <div class="modal-header">
 
-      <h2>
-        🎨 Cor do AfricanMundo
-      </h2>
+      <div>
+
+        <span class="modal-kicker">
+          AFRICANMUNDO
+        </span>
+
+        <h2>
+          ⌨️ Atalhos
+        </h2>
+
+      </div>
+
 
       <button
+        class="modal-close"
         onclick="fecharModal()"
       >
         ×
@@ -2437,35 +2647,48 @@ function alterarCor(){
     </div>
 
 
-    <div class="modal-body">
+    <div class="modal-body atalhos-lista">
 
-      <div class="cores-grid">
+      <div>
 
-        ${
-          cores.map(function(cor){
+        <kbd>/</kbd>
 
-            return `
+        <span>
+          Abrir pesquisa
+        </span>
 
-              <button
-                class="cor-opcao"
-                style="--cor:${cor.valor}"
-                onclick="selecionarCor('${cor.valor}')"
-              >
+      </div>
 
-                <span
-                  style="
-                    background:${cor.valor};
-                  "
-                ></span>
 
-                ${cor.nome}
+      <div>
 
-              </button>
+        <kbd>Esc</kbd>
 
-            `;
+        <span>
+          Fechar painel
+        </span>
 
-          }).join("")
-        }
+      </div>
+
+
+      <div>
+
+        <kbd>T</kbd>
+
+        <span>
+          Alternar tema
+        </span>
+
+      </div>
+
+
+      <div>
+
+        <kbd>R</kbd>
+
+        <span>
+          Atualizar notícias
+        </span>
 
       </div>
 
@@ -2477,220 +2700,10 @@ function alterarCor(){
 
 
 /* =========================================================
-   SELECIONAR COR
+   TECLADO
 ========================================================= */
 
-function selecionarCor(cor){
-
-  document.documentElement
-    .style
-    .setProperty(
-      "--p",
-      cor
-    );
-
-
-  localStorage.setItem(
-    "africanmundo-cor",
-    cor
-  );
-
-
-  fecharModal();
-
-}
-
-
-/* =========================================================
-   BOTÕES
-========================================================= */
-
-function iniciarBotoes(){
-
-  const notificationBtn =
-    document.getElementById(
-      "notificationBtn"
-    );
-
-  if(notificationBtn){
-
-    notificationBtn.onclick =
-      mostrarNotificacoes;
-
-  }
-
-
-  const toolsBtn =
-    document.getElementById(
-      "toolsBtn"
-    );
-
-  if(toolsBtn){
-
-    toolsBtn.onclick =
-      mostrarFerramentas;
-
-  }
-
-
-  const themeBtn =
-    document.getElementById(
-      "themeBtn"
-    );
-
-  if(themeBtn){
-
-    themeBtn.onclick =
-      alternarTema;
-
-  }
-
-
-  const colorBtn =
-    document.getElementById(
-      "colorBtn"
-    );
-
-  if(colorBtn){
-
-    colorBtn.onclick =
-      alterarCor;
-
-  }
-
-
-  [
-    "userBtn",
-    "euBtn",
-    "perfilBtn",
-    "profileBtn"
-  ].forEach(function(id){
-
-    const btn =
-      document.getElementById(id);
-
-    if(btn){
-
-      btn.onclick =
-        mostrarEu;
-
-    }
-
-  });
-
-
-  const campo =
-    document.getElementById(
-      "searchInput"
-    ) ||
-    document.querySelector(
-      'input[type="search"]'
-    );
-
-
-  if(campo){
-
-    campo.addEventListener(
-      "keydown",
-      pesquisarTecla
-    );
-
-  }
-
-
-  const form =
-    document.getElementById(
-      "searchForm"
-    );
-
-
-  if(form){
-
-    form.addEventListener(
-      "submit",
-      function(e){
-
-        e.preventDefault();
-
-        pesquisar();
-
-      }
-    );
-
-  }
-
-}
-
-/* =========================================================
-   MENU ATIVO
-========================================================= */
-
-function marcarMenuAtivo(){
-
-  const pagina =
-    window.location.pathname
-      .split("/")
-      .pop()
-      .toLowerCase();
-
-
-  const links =
-    document.querySelectorAll(
-      "nav a, .menu a, .bottom-menu a, .nav-link"
-    );
-
-
-  links.forEach(function(link){
-
-    const href =
-      String(
-        link.getAttribute("href") || ""
-      )
-      .split("?")[0]
-      .split("#")[0]
-      .toLowerCase();
-
-
-    link.classList.remove(
-      "ativo",
-      "active"
-    );
-
-
-    if(
-      href &&
-      (
-        href === pagina ||
-        (
-          pagina === "" &&
-          (
-            href === "/" ||
-            href === "index.html"
-          )
-        )
-      )
-    ){
-
-      link.classList.add(
-        "ativo"
-      );
-
-      link.classList.add(
-        "active"
-      );
-
-    }
-
-  });
-
-}
-
-
-/* =========================================================
-   ATALHOS DO TECLADO
-========================================================= */
-
-function iniciarAtalhos(){
+function configurarTeclado(){
 
   document.addEventListener(
     "keydown",
@@ -2709,8 +2722,6 @@ function iniciarAtalhos(){
         );
 
 
-      /* ESC */
-
       if(
         event.key === "Escape"
       ){
@@ -2722,14 +2733,18 @@ function iniciarAtalhos(){
       }
 
 
-      /* CTRL + K */
+      if(
+        digitando
+      ){
+
+        return;
+
+      }
+
 
       if(
-        (
-          event.ctrlKey ||
-          event.metaKey
-        ) &&
-        event.key.toLowerCase() === "k"
+        event.key === "/" ||
+        event.key === "?"
       ){
 
         event.preventDefault();
@@ -2741,27 +2756,8 @@ function iniciarAtalhos(){
       }
 
 
-      /* "/" */
-
       if(
-        event.key === "/" &&
-        !digitando
-      ){
-
-        event.preventDefault();
-
-        abrirPesquisa();
-
-        return;
-
-      }
-
-
-      /* T */
-
-      if(
-        event.key.toLowerCase() === "t" &&
-        !digitando
+        event.key.toLowerCase() === "t"
       ){
 
         alternarTema();
@@ -2770,6 +2766,17 @@ function iniciarAtalhos(){
 
       }
 
+
+      if(
+        event.key.toLowerCase() === "r"
+      ){
+
+        atualizarNoticias();
+
+        return;
+
+      }
+
     }
   );
 
@@ -2777,77 +2784,126 @@ function iniciarAtalhos(){
 
 
 /* =========================================================
-   CLIQUE FORA / MODAL
+   BOTÕES DO CABEÇALHO
 ========================================================= */
 
-function iniciarModal(){
+function configurarBotoesTopo(){
 
-  document.addEventListener(
-    "click",
-    function(event){
+  /*
+    Usamos vários seletores para funcionar
+    mesmo que o index.html tenha nomes
+    diferentes nos botões.
+  */
 
-      const modal =
+
+  const mapa = [
+
+    {
+      ids:[
+        "btnNotificacao",
+        "notificacaoBtn",
+        "notificationBtn",
+        "btn-notificacao"
+      ],
+      acao:
+        mostrarNotificacoes
+    },
+
+    {
+      ids:[
+        "btnFerramentas",
+        "ferramentasBtn",
+        "toolsBtn",
+        "btn-ferramentas"
+      ],
+      acao:
+        mostrarFerramentas
+    },
+
+    {
+      ids:[
+        "btnEu",
+        "euBtn",
+        "userBtn",
+        "btn-user"
+      ],
+      acao:
+        mostrarEu
+    },
+
+    {
+      ids:[
+        "btnTema",
+        "temaBtn",
+        "themeBtn",
+        "btn-tema"
+      ],
+      acao:
+        alternarTema
+    },
+
+    {
+      ids:[
+        "btnCor",
+        "corBtn",
+        "colorBtn",
+        "btn-cor"
+      ],
+      acao:
+        mostrarCores
+    },
+
+    {
+      ids:[
+        "btnPesquisa",
+        "pesquisaBtn",
+        "searchBtn",
+        "btn-pesquisa"
+      ],
+      acao:
+        abrirPesquisa
+    }
+
+  ];
+
+
+  mapa.forEach(function(item){
+
+    item.ids.forEach(function(id){
+
+      const elemento =
         document.getElementById(
-          "africanmundoModal"
+          id
         );
 
 
-      if(!modal){
-        return;
-      }
-
-
       if(
-        event.target === modal
+        !elemento ||
+        elemento.dataset.amConfigurado === "1"
       ){
 
-        fecharModal();
+        return;
 
       }
 
-    }
-  );
 
-}
-
-
-/* =========================================================
-   BOTÃO DE PESQUISA
-========================================================= */
-
-function iniciarPesquisa(){
-
-  const botoes =
-    document.querySelectorAll(
-      "[data-pesquisar], .search-btn, #searchBtn"
-    );
+      elemento.dataset.amConfigurado =
+        "1";
 
 
-  botoes.forEach(function(btn){
-
-    btn.addEventListener(
-      "click",
-      function(event){
-
-        /*
-          Só impede comportamento
-          padrão se o botão não for
-          um link de navegação.
-        */
-
-        if(
-          btn.tagName !== "A"
-        ){
+      elemento.addEventListener(
+        "click",
+        function(event){
 
           event.preventDefault();
+          event.stopPropagation();
+
+          item.acao();
 
         }
+      );
 
-
-        abrirPesquisa();
-
-      }
-    );
+    });
 
   });
 
@@ -2855,10 +2911,674 @@ function iniciarPesquisa(){
 
 
 /* =========================================================
-   CORREÇÃO DE IMAGENS
+   BOTÕES POR CLASSE / DATA
 ========================================================= */
 
-function prepararImagens(){
+function configurarBotoesData(){
+
+  const elementos =
+    document.querySelectorAll(
+      "[data-am-action]"
+    );
+
+
+  elementos.forEach(function(el){
+
+    if(
+      el.dataset.amConfigurado === "1"
+    ){
+
+      return;
+
+    }
+
+
+    const acao =
+      norm(
+        el.dataset.amAction
+      );
+
+
+    let funcao =
+      null;
+
+
+    if(
+      acao === "notificacao" ||
+      acao === "notificacoes"
+    ){
+
+      funcao =
+        mostrarNotificacoes;
+
+    }
+
+    else if(
+      acao === "ferramenta" ||
+      acao === "ferramentas"
+    ){
+
+      funcao =
+        mostrarFerramentas;
+
+    }
+
+    else if(
+      acao === "eu" ||
+      acao === "usuario" ||
+      acao === "user"
+    ){
+
+      funcao =
+        mostrarEu;
+
+    }
+
+    else if(
+      acao === "tema" ||
+      acao === "theme"
+    ){
+
+      funcao =
+        alternarTema;
+
+    }
+
+    else if(
+      acao === "cor" ||
+      acao === "color"
+    ){
+
+      funcao =
+        mostrarCores;
+
+    }
+
+    else if(
+      acao === "pesquisa" ||
+      acao === "search"
+    ){
+
+      funcao =
+        abrirPesquisa;
+
+    }
+
+
+    if(funcao){
+
+      el.dataset.amConfigurado =
+        "1";
+
+
+      el.addEventListener(
+        "click",
+        function(event){
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          funcao();
+
+        }
+      );
+
+    }
+
+  });
+
+}
+
+
+/* =========================================================
+   FORMULÁRIO DE PESQUISA
+========================================================= */
+
+function configurarPesquisa(){
+
+  const campos =
+    document.querySelectorAll(
+      'input[type="search"],' +
+      '#searchInput,' +
+      '#pesquisa'
+    );
+
+
+  campos.forEach(function(campo){
+
+    if(
+      campo.dataset.amPesquisa === "1"
+    ){
+
+      return;
+
+    }
+
+
+    campo.dataset.amPesquisa =
+      "1";
+
+
+    campo.addEventListener(
+      "keydown",
+      pesquisarTecla
+    );
+
+
+    const formulario =
+      campo.closest(
+        "form"
+      );
+
+
+    if(formulario){
+
+      formulario.addEventListener(
+        "submit",
+        function(event){
+
+          event.preventDefault();
+
+          pesquisar();
+
+        }
+      );
+
+    }
+
+  });
+
+
+  const botoes =
+    document.querySelectorAll(
+      ".search-btn," +
+      ".btn-search," +
+      "[data-search-button]"
+    );
+
+
+  botoes.forEach(function(botao){
+
+    if(
+      botao.dataset.amPesquisaBotao === "1"
+    ){
+
+      return;
+
+    }
+
+
+    botao.dataset.amPesquisaBotao =
+      "1";
+
+
+    botao.addEventListener(
+      "click",
+      function(event){
+
+        event.preventDefault();
+
+        pesquisar();
+
+      }
+    );
+
+  });
+
+   }
+
+/* =========================================================
+   ANÚNCIOS ATIVOS
+========================================================= */
+
+async function carregarAnuncios(){
+
+  const secao =
+    document.getElementById(
+      "anunciosAtivosSection"
+    );
+
+  const container =
+    document.getElementById(
+      "anunciosAtivos"
+    );
+
+
+  if(
+    !secao ||
+    !container ||
+    !db
+  ){
+
+    return;
+
+  }
+
+
+  try{
+
+    const agora =
+      new Date().toISOString();
+
+
+    const resposta =
+      await db
+        .from("pedidos_anuncios")
+        .select("*")
+        .eq(
+          "status",
+          "aprovado"
+        )
+        .lte(
+          "data_inicio",
+          agora
+        )
+        .gte(
+          "data_fim",
+          agora
+        )
+        .order(
+          "id",
+          {
+            ascending:false
+          }
+        )
+        .limit(20);
+
+
+    if(resposta.error){
+
+      console.warn(
+        "AfricanMundo — anúncios:",
+        resposta.error
+      );
+
+      return;
+
+    }
+
+
+    const anuncios =
+      Array.isArray(
+        resposta.data
+      )
+        ? resposta.data
+        : [];
+
+
+    if(!anuncios.length){
+
+      container.innerHTML = "";
+
+      secao.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    secao.style.display =
+      "";
+
+
+    container.innerHTML =
+      anuncios
+        .map(
+          anuncioCard
+        )
+        .join("");
+
+
+  }catch(e){
+
+    console.warn(
+      "AfricanMundo — erro nos anúncios:",
+      e
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   CARTÃO DE ANÚNCIO
+========================================================= */
+
+function anuncioCard(
+  anuncio
+){
+
+  if(!anuncio) return "";
+
+
+  const empresa =
+    String(
+      anuncio.empresa ||
+      anuncio.responsavel ||
+      "Anunciante"
+    ).trim();
+
+
+  const tipo =
+    norm(
+      anuncio.tipo ||
+      anuncio.tipo_anuncio ||
+      ""
+    );
+
+
+  const descricao =
+    String(
+      anuncio.descricao ||
+      ""
+    ).trim();
+
+
+  const imagem =
+    String(
+      anuncio.imagem ||
+      anuncio.imagem_url ||
+      ""
+    ).trim();
+
+
+  const video =
+    String(
+      anuncio.video ||
+      anuncio.video_url ||
+      ""
+    ).trim();
+
+
+  const link =
+    String(
+      anuncio.url ||
+      anuncio.link ||
+      anuncio.url_destino ||
+      ""
+    ).trim();
+
+
+  let conteudo =
+    "";
+
+
+  if(
+    video
+  ){
+
+    conteudo = `
+
+      <video
+        class="anuncio-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      >
+
+        <source
+          src="${esc(video)}"
+        >
+
+      </video>
+
+    `;
+
+  }
+
+  else if(
+    imagem
+  ){
+
+    conteudo = `
+
+      <img
+        class="anuncio-imagem"
+        src="${esc(imagem)}"
+        alt="${esc(empresa)}"
+        loading="lazy"
+        decoding="async"
+        referrerpolicy="no-referrer"
+      >
+
+    `;
+
+  }
+
+  else{
+
+    conteudo = `
+
+      <div class="anuncio-sem-imagem">
+        📢
+      </div>
+
+    `;
+
+  }
+
+
+  const corpo = `
+
+    <div class="anuncio-media">
+
+      ${conteudo}
+
+    </div>
+
+
+    <div class="anuncio-corpo">
+
+      <small>
+        PUBLICIDADE
+      </small>
+
+      <h3>
+        ${esc(empresa)}
+      </h3>
+
+      ${
+        descricao
+          ? `
+            <p>
+              ${esc(
+                resumo(
+                  {
+                    texto:
+                      descricao
+                  },
+                  120
+                )
+              )}
+            </p>
+          `
+          : ""
+      }
+
+      ${
+        tipo
+          ? `
+            <span class="anuncio-tipo">
+              ${esc(tipo)}
+            </span>
+          `
+          : ""
+      }
+
+    </div>
+
+  `;
+
+
+  if(link){
+
+    return `
+
+      <a
+        class="anuncio-card"
+        href="${esc(link)}"
+        target="_blank"
+        rel="noopener noreferrer sponsored"
+      >
+
+        ${corpo}
+
+      </a>
+
+    `;
+
+  }
+
+
+  return `
+
+    <article
+      class="anuncio-card"
+    >
+
+      ${corpo}
+
+    </article>
+
+  `;
+
+}
+
+
+/* =========================================================
+   PWA
+========================================================= */
+
+function iniciarPWA(){
+
+  if(
+    !("serviceWorker" in navigator)
+  ){
+
+    return;
+
+  }
+
+
+  window.addEventListener(
+    "load",
+    function(){
+
+      navigator.serviceWorker
+        .register(
+          "./sw.js"
+        )
+        .then(
+          function(registro){
+
+            console.log(
+              "AfricanMundo — Service Worker ativo:",
+              registro.scope
+            );
+
+          }
+        )
+        .catch(
+          function(erro){
+
+            console.warn(
+              "AfricanMundo — Service Worker:",
+              erro
+            );
+
+          }
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   LINK DO MANIFEST
+========================================================= */
+
+function garantirManifest(){
+
+  if(
+    document.querySelector(
+      'link[rel="manifest"]'
+    )
+  ){
+
+    return;
+
+  }
+
+
+  const link =
+    document.createElement(
+      "link"
+    );
+
+
+  link.rel =
+    "manifest";
+
+
+  link.href =
+    "./manifest.json";
+
+
+  document.head.appendChild(
+    link
+  );
+
+}
+
+
+/* =========================================================
+   META THEME COLOR
+========================================================= */
+
+function garantirThemeColor(){
+
+  let meta =
+    document.querySelector(
+      'meta[name="theme-color"]'
+    );
+
+
+  if(!meta){
+
+    meta =
+      document.createElement(
+        "meta"
+      );
+
+
+    meta.name =
+      "theme-color";
+
+
+    document.head.appendChild(
+      meta
+    );
+
+  }
+
+
+  meta.content =
+    corAtual();
+
+}
+
+
+/* =========================================================
+   CORRIGIR IMAGENS
+========================================================= */
+
+function protegerImagens(){
 
   document
     .querySelectorAll(
@@ -2866,65 +3586,39 @@ function prepararImagens(){
     )
     .forEach(function(img){
 
-      /*
-        Não altera imagens que já
-        possuem tratamento próprio.
-      */
-
       if(
-        !img.getAttribute(
-          "loading"
-        )
+        img.dataset.amProtegida === "1"
       ){
 
-        img.setAttribute(
-          "loading",
-          "lazy"
-        );
+        return;
 
       }
 
 
-      if(
-        !img.getAttribute(
-          "decoding"
-        )
-      ){
-
-        img.setAttribute(
-          "decoding",
-          "async"
-        );
-
-      }
+      img.dataset.amProtegida =
+        "1";
 
 
       img.addEventListener(
         "error",
         function(){
 
-          /*
-            Não substitui imediatamente
-            imagens externas do site.
-            Apenas impede erro visual.
-          */
-
           if(
-            !img.dataset.fallback &&
-            img.src !== FALLBACK_IMG
+            this.dataset.amFallback === "1"
           ){
 
-            img.dataset.fallback =
-              "1";
-
-            img.src =
-              FALLBACK_IMG;
+            return;
 
           }
 
-        },
-        {
-          once:true
+
+          this.dataset.amFallback =
+            "1";
+
+
+          this.src =
+            FALLBACK_IMG;
+
         }
       );
 
@@ -2934,18 +3628,123 @@ function prepararImagens(){
 
 
 /* =========================================================
-   ATUALIZAÇÃO QUANDO VOLTA PARA A ABA
+   LIMPAR TEXTO SOLTO DA PÁGINA
 ========================================================= */
 
-function iniciarAtualizacaoAoVoltar(){
+function protegerEstrutura(){
+
+  /*
+    Não removemos elementos do index.html.
+    Apenas impedimos que textos soltos sejam
+    transformados em blocos inesperados.
+  */
+
+
+  const corpo =
+    document.body;
+
+
+  if(!corpo){
+
+    return;
+
+  }
+
+
+  corpo.classList.add(
+    "africanmundo-app"
+  );
+
+}
+
+
+/* =========================================================
+   MENU MOBILE
+========================================================= */
+
+function configurarMenuMobile(){
+
+  const botoes =
+    document.querySelectorAll(
+      "[data-menu-toggle]," +
+      ".menu-toggle," +
+      ".hamburger"
+    );
+
+
+  botoes.forEach(function(botao){
+
+    if(
+      botao.dataset.amMenu === "1"
+    ){
+
+      return;
+
+    }
+
+
+    botao.dataset.amMenu =
+      "1";
+
+
+    botao.addEventListener(
+      "click",
+      function(event){
+
+        event.preventDefault();
+
+
+        document.body.classList.toggle(
+          "menu-aberto"
+        );
+
+
+        botao.classList.toggle(
+          "ativo"
+        );
+
+      }
+    );
+
+  });
+
+
+  document
+    .querySelectorAll(
+      "nav a, .menu a"
+    )
+    .forEach(function(link){
+
+      link.addEventListener(
+        "click",
+        function(){
+
+          document.body.classList.remove(
+            "menu-aberto"
+          );
+
+        }
+      );
+
+    });
+
+}
+
+
+/* =========================================================
+   FECHAR MENUS AO CLICAR FORA
+========================================================= */
+
+function configurarCliqueFora(){
 
   document.addEventListener(
-    "visibilitychange",
-    function(){
+    "click",
+    function(event){
 
       if(
-        document.visibilityState !==
-        "visible"
+        !document.body.classList.contains(
+          "menu-aberto"
+        )
       ){
 
         return;
@@ -2953,23 +3752,29 @@ function iniciarAtualizacaoAoVoltar(){
       }
 
 
-      /*
-        Quando o utilizador volta
-        ao AfricanMundo depois de
-        algum tempo, verifica notícias.
-      */
+      const menu =
+        document.querySelector(
+          "nav,.menu"
+        );
 
-      const agora =
-        Date.now();
+
+      const botao =
+        event.target.closest(
+          ".menu-toggle," +
+          ".hamburger," +
+          "[data-menu-toggle]"
+        );
 
 
       if(
-        agora -
-        ultimaAtualizacaoRealtime
-        > 60000
+        menu &&
+        !menu.contains(event.target) &&
+        !botao
       ){
 
-        carregarNoticias();
+        document.body.classList.remove(
+          "menu-aberto"
+        );
 
       }
 
@@ -2980,10 +3785,60 @@ function iniciarAtualizacaoAoVoltar(){
 
 
 /* =========================================================
-   DESTAQUE — PAUSAR QUANDO SAI DA ABA
+   DESTAQUE — PAUSA AO PASSAR O DEDO/MOUSE
 ========================================================= */
 
-function controlarDestaque(){
+function configurarDestaque(){
+
+  const area =
+    document.getElementById(
+      "destaque"
+    );
+
+
+  if(!area){
+
+    return;
+
+  }
+
+
+  area.addEventListener(
+    "mouseenter",
+    function(){
+
+      if(timerDestaque){
+
+        clearInterval(
+          timerDestaque
+        );
+
+        timerDestaque =
+          null;
+
+      }
+
+    }
+  );
+
+
+  area.addEventListener(
+    "mouseleave",
+    function(){
+
+      iniciarDestaque();
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   VISIBILIDADE DA PÁGINA
+========================================================= */
+
+function configurarVisibilidade(){
 
   document.addEventListener(
     "visibilitychange",
@@ -2991,8 +3846,19 @@ function controlarDestaque(){
 
       if(
         document.visibilityState ===
-        "hidden"
+        "visible"
       ){
+
+        if(
+          noticias.length &&
+          !timerDestaque
+        ){
+
+          iniciarDestaque();
+
+        }
+
+      }else{
 
         if(timerDestaque){
 
@@ -3005,10 +3871,6 @@ function controlarDestaque(){
 
         }
 
-      }else{
-
-        iniciarDestaque();
-
       }
 
     }
@@ -3018,122 +3880,269 @@ function controlarDestaque(){
 
 
 /* =========================================================
-   DESTRUIR REALTIME
+   BOTÃO VOLTAR AO TOPO
 ========================================================= */
 
-function pararRealtime(){
+function configurarTopo(){
 
-  if(
-    canalNoticias &&
-    db
-  ){
+  let botao =
+    document.getElementById(
+      "voltarTopo"
+    );
 
-    try{
 
-      db.removeChannel(
-        canalNoticias
+  if(!botao){
+
+    botao =
+      document.createElement(
+        "button"
       );
 
-    }catch(e){}
 
-    canalNoticias =
-      null;
+    botao.id =
+      "voltarTopo";
+
+
+    botao.type =
+      "button";
+
+
+    botao.setAttribute(
+      "aria-label",
+      "Voltar ao topo"
+    );
+
+
+    botao.textContent =
+      "↑";
+
+
+    botao.style.position =
+      "fixed";
+
+
+    botao.style.right =
+      "18px";
+
+
+    botao.style.bottom =
+      "80px";
+
+
+    botao.style.zIndex =
+      "9990";
+
+
+    botao.style.display =
+      "none";
+
+
+    botao.style.width =
+      "42px";
+
+
+    botao.style.height =
+      "42px";
+
+
+    botao.style.borderRadius =
+      "50%";
+
+
+    botao.style.border =
+      "0";
+
+
+    botao.style.cursor =
+      "pointer";
+
+
+    botao.style.fontSize =
+      "22px";
+
+
+    botao.style.background =
+      "var(--p,#168a45)";
+
+
+    botao.style.color =
+      "#fff";
+
+
+    document.body.appendChild(
+      botao
+    );
 
   }
+
+
+  botao.onclick =
+    function(){
+
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
+
+    };
+
+
+  window.addEventListener(
+    "scroll",
+    function(){
+
+      botao.style.display =
+        window.scrollY > 500
+          ? "block"
+          : "none";
+
+    },
+    {
+      passive:true
+    }
+  );
 
 }
 
 
 /* =========================================================
-   RECARREGAR MANUALMENTE
+   LINKS DE CATEGORIA
 ========================================================= */
 
-window.recarregarAfricanMundo =
-  function(){
+function configurarCategorias(){
 
-    carregarNoticias();
+  document
+    .querySelectorAll(
+      "[data-categoria]"
+    )
+    .forEach(function(link){
 
-  };
+      if(
+        link.dataset.amCategoria === "1"
+      ){
+
+        return;
+
+      }
+
+
+      link.dataset.amCategoria =
+        "1";
+
+
+      link.addEventListener(
+        "click",
+        function(){
+
+          const categoria =
+            this.dataset.categoria;
+
+
+          if(
+            categoria
+          ){
+
+            localStorage.setItem(
+              "africanmundo-categoria",
+              categoria
+            );
+
+          }
+
+        }
+      );
+
+    });
+
+}
 
 
 /* =========================================================
-   INICIALIZAÇÃO PRINCIPAL
+   INICIALIZAÇÃO
 ========================================================= */
 
 async function iniciarAfricanMundo(){
 
-  try{
+  if(
+    africanMundoIniciado
+  ){
 
-    console.log(
-      "🌍 AfricanMundo — iniciando..."
-    );
-
-
-    restaurarCor();
-
-    iniciarTema();
-
-    iniciarBotoes();
-
-    iniciarAtalhos();
-
-    iniciarModal();
-
-    iniciarPesquisa();
-
-    iniciarAtualizacaoAoVoltar();
-
-    controlarDestaque();
-
-    marcarMenuAtivo();
-
-    prepararImagens();
-
-
-    /*
-      Realtime é iniciado antes
-      do carregamento inicial.
-    */
-
-    iniciarRealtimeNoticias();
-
-
-    /*
-      Primeiro carregamento.
-    */
-
-    await carregarNoticias();
-
-
-    /*
-      Segurança:
-      mesmo que Realtime não esteja
-      disponível, a página continua
-      atualizando.
-    */
-
-    iniciarAtualizacaoAutomatica();
-
-
-    console.log(
-      "✅ AfricanMundo iniciado com sucesso."
-    );
-
-
-  }catch(e){
-
-    console.error(
-      "❌ Erro ao iniciar AfricanMundo:",
-      e
-    );
+    return;
 
   }
+
+
+  africanMundoIniciado =
+    true;
+
+
+  console.log(
+    "🌍 AfricanMundo — iniciando..."
+  );
+
+
+  aplicarTema();
+
+  aplicarCor();
+
+  garantirManifest();
+
+  garantirThemeColor();
+
+  protegerEstrutura();
+
+  configurarTeclado();
+
+  configurarBotoesTopo();
+
+  configurarBotoesData();
+
+  configurarPesquisa();
+
+  configurarMenuMobile();
+
+  configurarCliqueFora();
+
+  configurarVisibilidade();
+
+  configurarTopo();
+
+  configurarCategorias();
+
+  iniciarPWA();
+
+  protegerImagens();
+
+
+  await carregarNoticias();
+
+
+  await carregarAnuncios();
+
+
+  iniciarAtualizacaoAutomatica();
+
+  iniciarRealtimeNoticias();
+
+
+  configurarDestaque();
+
+
+  setTimeout(
+    protegerImagens,
+    1500
+  );
+
+
+  console.log(
+    "🌍 AfricanMundo — pronto."
+  );
 
 }
 
 
 /* =========================================================
-   INICIAR UMA ÚNICA VEZ
+   EVENTOS INICIAIS
 ========================================================= */
 
 if(
@@ -3157,29 +4166,60 @@ if(
 
 
 /* =========================================================
-   LIMPEZA AO SAIR
+   EXPORTAR FUNÇÕES
 ========================================================= */
 
-window.addEventListener(
-  "beforeunload",
-  function(){
+window.abrirNoticia =
+  abrirNoticia;
 
-    if(timerDestaque){
+window.carregarNoticias =
+  carregarNoticias;
 
-      clearInterval(
-        timerDestaque
-      );
+window.pesquisar =
+  pesquisar;
 
-    }
+window.pesquisarTecla =
+  pesquisarTecla;
 
+window.abrirPesquisa =
+  abrirPesquisa;
 
-    if(timerAtualizacao){
+window.mostrarNotificacoes =
+  mostrarNotificacoes;
 
-      clearInterval(
-        timerAtualizacao
-      );
+window.mostrarFerramentas =
+  mostrarFerramentas;
 
-    }
+window.mostrarEu =
+  mostrarEu;
 
-  }
+window.alternarTema =
+  alternarTema;
+
+window.mostrarCores =
+  mostrarCores;
+
+window.alterarCor =
+  alterarCor;
+
+window.escolherCor =
+  escolherCor;
+
+window.partilharSite =
+  partilharSite;
+
+window.abrirRede =
+  abrirRede;
+
+window.abrirGoogle =
+  abrirGoogle;
+
+window.fecharModal =
+  fecharModal;
+
+window.mostrarAtalhos =
+  mostrarAtalhos;
+
+console.log(
+  "AFRICANMUNDO APP.JS FOI CARREGADO"
 );
