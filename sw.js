@@ -1,195 +1,189 @@
 const CACHE_NAME="africanmundo-v5";
 
 const ARQUIVOS=[
-  "./index.html",
-  "./manifest.json",
-  "./estilo.css",
-  "./app.js"
+"./index.html",
+"./manifest.json",
+"./estilo.css",
+"./app.js"
 ];
 
-
 /* =========================================
-   INSTALAR
+INSTALAR
 ========================================= */
 
 self.addEventListener("install",event=>{
 
-  event.waitUntil(
+event.waitUntil(
 
-    caches.open(CACHE_NAME)
-      .then(cache=>cache.addAll(ARQUIVOS))
+caches.open(CACHE_NAME)  
+  .then(cache=>cache.addAll(ARQUIVOS))
 
-  );
+);
 
-  self.skipWaiting();
+self.skipWaiting();
 
 });
 
-
 /* =========================================
-   ACTIVAR E LIMPAR CACHE ANTIGO
+ACTIVAR E LIMPAR CACHE ANTIGO
 ========================================= */
 
 self.addEventListener("activate",event=>{
 
-  event.waitUntil(
+event.waitUntil(
 
-    caches.keys().then(chaves=>{
+caches.keys().then(chaves=>{  
 
-      return Promise.all(
+  return Promise.all(  
 
-        chaves
-          .filter(chave=>chave!==CACHE_NAME)
-          .map(chave=>caches.delete(chave))
+    chaves  
+      .filter(chave=>chave!==CACHE_NAME)  
+      .map(chave=>caches.delete(chave))  
 
-      );
+  );  
 
-    })
+})
 
-  );
+);
 
-  self.clients.claim();
+self.clients.claim();
 
 });
 
-
 /* =========================================
-   NOTIFICAÇÕES
+NOTIFICAÇÕES
 ========================================= */
 
 self.addEventListener("push",event=>{
 
-  let dados={};
+let dados={};
 
-  try{
+try{
 
-    dados=event.data
-      ? event.data.json()
-      : {};
+dados=event.data  
+  ? event.data.json()  
+  : {};
 
-  }catch(e){}
+}catch(e){}
 
+event.waitUntil(
 
-  event.waitUntil(
+self.registration.showNotification(  
+  dados.title||"AfricanMundo",  
+  {  
+    body:  
+      dados.body||  
+      "Nova notícia publicada no AfricanMundo.",  
 
-    self.registration.showNotification(
-      dados.title||"AfricanMundo",
-      {
-        body:
-          dados.body||
-          "Nova notícia publicada no AfricanMundo.",
+    icon:  
+      dados.icon||  
+      "./icon-192.png",  
 
-        icon:
-          dados.icon||
-          "./icon-192.png",
+    badge:  
+      dados.badge||  
+      "./icon-192.png",  
 
-        badge:
-          dados.badge||
-          "./icon-192.png",
+    data:{  
+      url:  
+        dados.url||  
+        "./index.html"  
+    }  
+  }  
+)
 
-        data:{
-          url:
-            dados.url||
-            "./index.html"
-        }
-      }
-    )
-
-  );
+);
 
 });
 
-
 /* =========================================
-   CLIQUE NOTIFICAÇÃO
+CLIQUE NOTIFICAÇÃO
 ========================================= */
 
 self.addEventListener(
-  "notificationclick",
-  event=>{
+"notificationclick",
+event=>{
 
-    event.notification.close();
+event.notification.close();  
 
-    const url=
-      event.notification.data?.url||
-      "./index.html";
+const url=  
+  event.notification.data?.url||  
+  "./index.html";  
 
-    event.waitUntil(
+event.waitUntil(  
 
-      clients.openWindow(url)
+  clients.openWindow(url)  
 
-    );
-
-  }
 );
 
+}
+);
 
 /* =========================================
-   FETCH
+FETCH
 ========================================= */
 
 self.addEventListener(
-  "fetch",
-  event=>{
+"fetch",
+event=>{
 
-    const req=event.request;
-    const url=new URL(req.url);
+const req=event.request;  
+const url=new URL(req.url);  
 
-    if(req.method!=="GET")return;
+if(req.method!=="GET")return;  
 
-    /*
-      Supabase e pedidos externos
-      ficam fora do cache.
-    */
+/*  
+  Supabase e pedidos externos  
+  ficam fora do cache.  
+*/  
 
-    if(
-      url.hostname.includes("supabase.co")||
-      url.pathname.includes("admin")||
-      url.pathname.includes("painel")
-    ){
+if(  
+  url.hostname.includes("supabase.co")||  
+  url.pathname.includes("admin")||  
+  url.pathname.includes("painel")  
+){  
 
-      return;
+  return;  
 
-    }
+}  
 
-    /*
-      APP.JS, HTML e CSS:
-      Internet primeiro.
-      Cache somente como reserva.
-    */
+/*  
+  APP.JS, HTML e CSS:  
+  Internet primeiro.  
+  Cache somente como reserva.  
+*/  
 
-    if(
-      url.origin===location.origin
-    ){
+if(  
+  url.origin===location.origin  
+){  
 
-      event.respondWith(
+  event.respondWith(  
 
-        fetch(req)
-          .then(res=>{
+    fetch(req)  
+      .then(res=>{  
 
-            if(res.ok){
+        if(res.ok){  
 
-              const copia=res.clone();
+          const copia=res.clone();  
 
-              caches.open(CACHE_NAME)
-                .then(cache=>{
-                  cache.put(req,copia);
-                });
+          caches.open(CACHE_NAME)  
+            .then(cache=>{  
+              cache.put(req,copia);  
+            });  
 
-            }
+        }  
 
-            return res;
+        return res;  
 
-          })
-          .catch(()=>{
+      })  
+      .catch(()=>{  
 
-            return caches.match(req);
+        return caches.match(req);  
 
-          })
+      })  
 
-      );
+  );  
 
-    }
+}
 
-  }
+}
 );
