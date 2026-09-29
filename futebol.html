@@ -1,42 +1,248 @@
 <!doctype html>
-<html lang="pt">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>Futebol — AfricanMundo</title>
+<html lang="pt"><head><meta charset="utf-8"><meta name="viewport"
+content="width=device-width, initial-scale=1">
 
-  <link rel="stylesheet" href="style.css">
+<title>Futebol — AfricanMundo</title><link rel="stylesheet"
+      href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
+/* ==========================================
+   PÁGINA FUTEBOL
+========================================== */
 
-<body>
+body{
+  margin:0;
+  background:#f5f6f7;
+  color:#222;
+  font-family:Arial,Helvetica,sans-serif;
+}
 
-<header>
-  <div class="top">
+
+/* ==========================================
+   CABEÇALHO
+========================================== */
+
+header{
+  background:#fff;
+  border-bottom:1px solid #e5e5e5;
+}
+
+.top{
+  max-width:1000px;
+  margin:auto;
+  padding:15px;
+  font-size:20px;
+  font-weight:800;
+  color:#168a45;
+}
+
+
+/* ==========================================
+   CONTEÚDO
+========================================== */
+
+main{
+  max-width:900px;
+  margin:auto;
+  padding:15px;
+}
+
+
+/* ==========================================
+   TÍTULO
+========================================== */
+
+.section-title{
+  background:#fff;
+  border-radius:12px;
+  padding:14px 16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.section-title h1{
+  margin:0 0 8px;
+  font-size:22px;
+  color:#168a45;
+}
+
+.section-title a{
+  color:#168a45;
+  text-decoration:none;
+  font-weight:700;
+  font-size:14px;
+}
+
+
+/* ==========================================
+   NOTÍCIA
+========================================== */
+
+.news-item{
+  background:#fff;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:12px;
+  box-shadow:0 2px 8px rgba(0,0,0,.06);
+}
+
+.news-category{
+  color:#168a45;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:7px;
+}
+
+.news-title{
+  margin:0 0 8px;
+  font-size:21px;
+  line-height:1.35;
+  color:#222;
+}
+
+.news-date{
+  color:#777;
+  font-size:12px;
+  margin-bottom:12px;
+}
+
+.news-text{
+  color:#444;
+  font-size:15px;
+  line-height:1.65;
+  white-space:pre-line;
+}
+
+
+/* ==========================================
+   CARREGAR MAIS
+========================================== */
+
+#carregarMais{
+  display:block;
+  margin:22px auto 30px;
+  padding:12px 24px;
+  border:0;
+  border-radius:9px;
+  background:#168a45;
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+#carregarMais:hover{
+  opacity:.9;
+}
+
+
+/* ==========================================
+   SEM NOTÍCIAS
+========================================== */
+
+.empty-news{
+  background:#fff;
+  border-radius:12px;
+  padding:30px 15px;
+  text-align:center;
+  color:#666;
+}
+
+
+/* ==========================================
+   MOBILE
+========================================== */
+
+@media(max-width:600px){
+
+  main{
+    padding:10px;
+  }
+
+  .top{
+    padding:13px;
+    font-size:18px;
+  }
+
+  .section-title{
+    padding:13px;
+  }
+
+  .section-title h1{
+    font-size:20px;
+  }
+
+  .news-item{
+    padding:14px;
+    margin-bottom:10px;
+  }
+
+  .news-title{
+    font-size:18px;
+  }
+
+  .news-text{
+    font-size:14px;
+    line-height:1.6;
+  }
+
+}
+
+
+/* ==========================================
+   MODO ESCURO
+========================================== */
+
+@media(prefers-color-scheme:dark){
+
+  body{
+    background:#111;
+  }
+
+  .section-title,
+  .news-item,
+  .empty-news{
+    background:#1b1b1b;
+  }
+
+  .news-title{
+    color:#fff;
+  }
+
+  .news-text{
+    color:#ccc;
+  }
+
+  .news-date{
+    color:#aaa;
+  }
+
+}
+
+</style></head><body><header>  <div class="top">
     🌍 AfricanMundo
-  </div>
-</header>
+  </div></header><main><section class="news-section">  <div class="section-title"><h1>
+  ⚽ Futebol
+</h1>
 
-<main>
+<a href="index.html">
+  ← Voltar
+</a>
 
-  <section class="news-section">
+  </div>  <div id="newsGrid"><p class="empty-news">
+  🔄 A carregar notícias de Futebol...
+</p>
 
-    <div class="section-title">
-      <h1>⚽ Futebol</h1>
-      <a href="index.html">← Voltar</a>
-    </div>
+  </div><button
+id="carregarMais"
+style="display:none">
 
-    <div id="newsGrid" class="news-grid">
-      <p>🔄 A carregar notícias de Futebol...</p>
-    </div>
+Carregar mais notícias
 
-  </section>
+  </button></section></main><script>
 
-</main>
-
-<script>
+/* ==========================================
+   SUPABASE
+========================================== */
 
 const SUPABASE_URL =
   "https://sonzwfhepjfvzltuxxne.supabase.co";
@@ -51,22 +257,38 @@ const supabaseClient =
   );
 
 
-/* =========================
-   PROTEGER HTML
-========================= */
+const grid =
+  document.getElementById("newsGrid");
 
-function esc(valor) {
+const botao =
+  document.getElementById("carregarMais");
 
-  return String(valor ?? "").replace(
+
+let noticias = [];
+
+let pagina = 0;
+
+const POR_PAGINA = 15;
+
+
+/* ==========================================
+   ESCAPAR HTML
+========================================== */
+
+function esc(valor){
+
+  return String(
+    valor ?? ""
+  ).replace(
     /[&<>"']/g,
-    function(m) {
+    function(m){
 
       return {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#039;"
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#039;"
       }[m];
 
     }
@@ -75,229 +297,494 @@ function esc(valor) {
 }
 
 
-/* =========================
-   CARREGAR NOTÍCIAS
-========================= */
+/* ==========================================
+   NORMALIZAR
+========================================== */
 
-async function carregarNoticias() {
+function normalizar(valor){
 
-  const grid =
-    document.getElementById("newsGrid");
+  return String(
+    valor ?? ""
+  )
+  .trim()
+  .toLowerCase()
+  .normalize("NFD")
+  .replace(
+    /[\u0300-\u036f]/g,
+    ""
+  );
 
-  try {
-
-    const { data, error } =
-      await supabaseClient
-        .from("noticias")
-        .select("*")
-        .order("id", { ascending: false });
+}
 
 
-    if (error) {
+/* ==========================================
+   DATA
+========================================== */
 
-      console.error(
-        "Erro Supabase:",
-        error
-      );
+function dataNoticia(valor){
 
-      grid.innerHTML =
-        "<p>❌ Não foi possível carregar as notícias.</p>";
+  if(!valor)
+    return "";
 
-      return;
+  const data =
+    new Date(valor);
+
+  if(
+    isNaN(
+      data.getTime()
+    )
+  )
+    return "";
+
+  return data.toLocaleDateString(
+    "pt-PT",
+    {
+      day:"2-digit",
+      month:"2-digit",
+      year:"numeric"
     }
+  );
+
+}
 
 
-    /* =========================
-       FILTRAR FUTEBOL
-    ========================= */
+/* ==========================================
+   LIMPAR TEXTO
+========================================== */
 
-    const futebol =
-      (data || []).filter(function(noticia) {
+function limparTexto(valor){
 
-        const categoria =
-          String(
-            noticia.categoria ?? ""
-          )
-          .trim()
-          .toLowerCase()
-          .normalize("NFD")
-          .replace(
-            /[\u0300-\u036f]/g,
-            ""
-          );
-
-        return categoria === "futebol";
-
-      });
+  let texto =
+    String(valor ?? "");
 
 
-    /* =========================
-       NENHUMA NOTÍCIA
-    ========================= */
-
-    if (futebol.length === 0) {
-
-      grid.innerHTML = `
-        <div class="empty-news">
-          <p>⚽ Ainda não existem notícias de Futebol publicadas.</p>
-        </div>
-      `;
-
-      return;
-    }
-
-
-    /* =========================
-       MOSTRAR NOTÍCIAS
-    ========================= */
-
-    grid.innerHTML =
-      futebol.map(function(noticia) {
-
-        /*
-          Aceita "imagem" ou "Imagem"
-        */
-        const imagem =
-          String(
-            noticia.imagem ??
-            noticia.Imagem ??
-            ""
-          ).trim();
-
-
-        const titulo =
-          noticia.titulo ||
-          "Sem título";
-
-
-        const texto =
-          noticia.texto ||
-          noticia.descricao ||
-          "";
-
-
-        return `
-
-          <article class="news">
-
-            <div class="thumb">
-
-              ${
-                imagem
-
-                ? `
-                  <img
-                    src="${esc(imagem)}"
-                    alt="${esc(titulo)}"
-                    style="
-                      width:100%;
-                      height:180px;
-                      object-fit:cover;
-                      border-radius:10px;
-                      display:block;
-                    "
-                    onerror="
-                      this.style.display='none';
-                      this.parentElement.innerHTML='⚽';
-                    "
-                  >
-                `
-
-                : `
-                  <div
-                    style="
-                      width:100%;
-                      height:180px;
-                      display:flex;
-                      align-items:center;
-                      justify-content:center;
-                      font-size:55px;
-                    "
-                  >
-                    ⚽
-                  </div>
-                `
-              }
-
-            </div>
-
-
-            <small>
-              ⚽ ${esc(
-                noticia.categoria ||
-                "Futebol"
-              )}
-            </small>
-
-
-            <h3>
-              ${esc(titulo)}
-            </h3>
-
-
-            <p>
-              ${esc(texto)}
-            </p>
-
-
-            ${
-  noticia.id !== null &&
-  noticia.id !== undefined &&
-  String(noticia.id).trim() !== "" &&
-  String(noticia.id).trim() !== "null"
-  ? `
-    <a
-      href="noticia.html?id=${encodeURIComponent(noticia.id)}"
-      style="
-        display:inline-block;
-        margin-top:14px;
-        padding:11px 16px;
-        background:#111;
-        color:#fff;
-        text-decoration:none;
-        border-radius:8px;
-        font-weight:700;
-      "
-    >
-      📖 Ler notícia completa →
-    </a>
-  `
-  : `
-    <p style="color:#c00;font-weight:700;">
-      ⚠️ Esta notícia não possui um ID válido.
-    </p>
-  `
-            }
-
-          </article>
-
-        `;
-
-      }).join("");
-
-
-  } catch (erro) {
-
-    console.error(
-      "Erro:",
-      erro
+  texto =
+    texto.replace(
+      /<script[\s\S]*?<\/script>/gi,
+      ""
     );
 
-    grid.innerHTML =
-      "<p>❌ Ocorreu um erro ao carregar as notícias.</p>";
+
+  texto =
+    texto.replace(
+      /<style[\s\S]*?<\/style>/gi,
+      ""
+    );
+
+
+  texto =
+    texto.replace(
+      /<[^>]*>/g,
+      " "
+    );
+
+
+  texto =
+    texto.replace(
+      /&nbsp;/gi,
+      " "
+    );
+
+
+  texto =
+    texto.replace(
+      /&amp;/gi,
+      "&"
+    );
+
+
+  texto =
+    texto.replace(
+      /&quot;/gi,
+      '"'
+    );
+
+
+  texto =
+    texto.replace(
+      /&#039;/gi,
+      "'"
+    );
+
+
+  texto =
+    texto.replace(
+      /\s+/g,
+      " "
+    );
+
+
+  return texto.trim();
+
+}
+
+
+/* ==========================================
+   TEXTO DA NOTÍCIA
+========================================== */
+
+function textoNoticia(noticia){
+
+  const campos = [
+
+    noticia.texto,
+    noticia.descricao,
+    noticia.resumo,
+    noticia.conteudo
+
+  ];
+
+
+  for(
+    const valor of campos
+  ){
+
+    const texto =
+      limparTexto(valor);
+
+    if(texto)
+      return texto;
+
+  }
+
+
+  return "";
+
+}
+
+
+/* ==========================================
+   TEXTO MOSTRADO
+========================================== */
+
+function textoParaMostrar(noticia){
+
+  const texto =
+    textoNoticia(noticia);
+
+
+  /*
+    Mantemos bastante conteúdo
+    visível na página da categoria.
+  */
+
+  if(
+    texto.length <= 1200
+  ){
+
+    return texto;
+
+  }
+
+
+  return texto
+    .substring(0,1200)
+    .trim() + "...";
+
+}
+
+
+/* ==========================================
+   CRIAR NOTÍCIA
+========================================== */
+
+function criarNoticia(noticia){
+
+  const item =
+    document.createElement("article");
+
+
+  item.className =
+    "news-item";
+
+
+  const titulo =
+    noticia.titulo ||
+    "Sem título";
+
+
+  const categoria =
+    noticia.subcategoria ||
+    "Futebol";
+
+
+  const data =
+    dataNoticia(
+      noticia.data
+    );
+
+
+  const texto =
+    textoParaMostrar(
+      noticia
+    );
+
+
+  item.innerHTML = `
+
+    <div class="news-category">
+
+      ⚽ ${esc(categoria)}
+
+    </div>
+
+
+    <h2 class="news-title">
+
+      ${esc(titulo)}
+
+    </h2>
+
+
+    <div class="news-date">
+
+      ${esc(data)}
+
+    </div>
+
+
+    ${
+      texto
+
+      ?
+
+      `
+
+        <div class="news-text">
+
+          ${esc(texto)}
+
+        </div>
+
+      `
+
+      :
+
+      `
+
+        <div class="news-text">
+
+          Conteúdo da notícia
+          disponível na página completa.
+
+        </div>
+
+      `
+    }
+
+  `;
+
+
+  return item;
+
+}
+
+
+/* ==========================================
+   MOSTRAR NOTÍCIAS
+========================================== */
+
+function mostrarNoticias(){
+
+  const inicio =
+    pagina *
+    POR_PAGINA;
+
+
+  const fim =
+    inicio +
+    POR_PAGINA;
+
+
+  const lista =
+    noticias.slice(
+      inicio,
+      fim
+    );
+
+
+  if(
+    pagina === 0
+  ){
+
+    grid.innerHTML = "";
+
+  }
+
+
+  lista.forEach(
+    function(noticia){
+
+      grid.appendChild(
+        criarNoticia(
+          noticia
+        )
+      );
+
+    }
+  );
+
+
+  pagina++;
+
+
+  if(
+    pagina *
+    POR_PAGINA
+    <
+    noticias.length
+  ){
+
+    botao.style.display =
+      "block";
+
+  }else{
+
+    botao.style.display =
+      "none";
 
   }
 
 }
 
 
-/* =========================
+/* ==========================================
+   BOTÃO CARREGAR MAIS
+========================================== */
+
+botao.addEventListener(
+  "click",
+  mostrarNoticias
+);
+
+
+/* ==========================================
+   CARREGAR NOTÍCIAS
+========================================== */
+
+async function carregarNoticias(){
+
+  try{
+
+    grid.innerHTML = `
+
+      <p class="empty-news">
+
+        🔄 A carregar notícias de Futebol...
+
+      </p>
+
+    `;
+
+
+    const resposta =
+      await supabaseClient
+        .from("noticias")
+        .select(`
+          id,
+          titulo,
+          categoria,
+          subcategoria,
+          texto,
+          descricao,
+          resumo,
+          conteudo,
+          data,
+          fonte
+        `)
+        .order(
+          "data",
+          {
+            ascending:false
+          }
+        )
+        .limit(500);
+
+
+    if(
+      resposta.error
+    ){
+
+      throw resposta.error;
+
+    }
+
+
+    noticias =
+      (resposta.data || [])
+      .filter(
+        function(noticia){
+
+          return (
+            normalizar(
+              noticia.categoria
+            ) === "futebol"
+          );
+
+        }
+      );
+
+
+    if(
+      noticias.length === 0
+    ){
+
+      grid.innerHTML = `
+
+        <div class="empty-news">
+
+          ⚽ Ainda não existem
+          notícias de Futebol publicadas.
+
+        </div>
+
+      `;
+
+      botao.style.display =
+        "none";
+
+      return;
+
+    }
+
+
+    pagina = 0;
+
+    mostrarNoticias();
+
+
+  }catch(erro){
+
+    console.error(
+      "Erro ao carregar Futebol:",
+      erro
+    );
+
+
+    grid.innerHTML = `
+
+      <div class="empty-news">
+
+        ❌ Não foi possível
+        carregar as notícias de Futebol.
+
+      </div>
+
+    `;
+
+
+    botao.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* ==========================================
    INICIAR
-========================= */
+========================================== */
 
 carregarNoticias();
 
-</script>
-
-</body>
-</html>
+</script></body></html>
