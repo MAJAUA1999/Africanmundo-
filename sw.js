@@ -1,6 +1,6 @@
-const CACHE_NAME = "africanmundo-v6";
+const CACHE_NAME="africanmundo-v5";
 
-const ARQUIVOS = [
+const ARQUIVOS=[
   "./index.html",
   "./manifest.json",
   "./estilo.css",
@@ -12,12 +12,12 @@ const ARQUIVOS = [
    INSTALAR
 ========================================= */
 
-self.addEventListener("install", event => {
+self.addEventListener("install",event=>{
 
   event.waitUntil(
 
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(ARQUIVOS))
+      .then(cache=>cache.addAll(ARQUIVOS))
 
   );
 
@@ -27,84 +27,72 @@ self.addEventListener("install", event => {
 
 
 /* =========================================
-   ACTIVAR
-   LIMPA TODOS OS CACHES ANTIGOS
+   ACTIVAR E LIMPAR CACHE ANTIGO
 ========================================= */
 
-self.addEventListener("activate", event => {
+self.addEventListener("activate",event=>{
 
   event.waitUntil(
 
-    caches.keys()
-      .then(chaves => {
+    caches.keys().then(chaves=>{
 
-        return Promise.all(
+      return Promise.all(
 
-          chaves
-            .filter(chave => chave !== CACHE_NAME)
-            .map(chave => caches.delete(chave))
+        chaves
+          .filter(chave=>chave!==CACHE_NAME)
+          .map(chave=>caches.delete(chave))
 
-        );
+      );
 
-      })
-      .then(() => self.clients.claim())
+    })
 
   );
+
+  self.clients.claim();
 
 });
 
 
 /* =========================================
-   NOTIFICAÇÕES PUSH
+   NOTIFICAÇÕES
 ========================================= */
 
-self.addEventListener("push", event => {
+self.addEventListener("push",event=>{
 
-  let dados = {};
+  let dados={};
 
-  try {
+  try{
 
-    dados = event.data
+    dados=event.data
       ? event.data.json()
       : {};
 
-  } catch (e) {
-
-    dados = {};
-
-  }
+  }catch(e){}
 
 
   event.waitUntil(
 
     self.registration.showNotification(
-
-      dados.title || "AfricanMundo",
-
+      dados.title||"AfricanMundo",
       {
-
         body:
-          dados.body ||
+          dados.body||
           "Nova notícia publicada no AfricanMundo.",
 
         icon:
-          dados.icon ||
+          dados.icon||
           "./icon-192.png",
 
         badge:
-          dados.badge ||
+          dados.badge||
           "./icon-192.png",
 
-        data: {
-
+        data:{
           url:
-            dados.url ||
+            dados.url||
             "./index.html"
-
         }
-
       }
-
     )
 
   );
@@ -113,19 +101,18 @@ self.addEventListener("push", event => {
 
 
 /* =========================================
-   CLIQUE NA NOTIFICAÇÃO
+   CLIQUE NOTIFICAÇÃO
 ========================================= */
 
 self.addEventListener(
   "notificationclick",
-  event => {
+  event=>{
 
     event.notification.close();
 
-    const url =
-      event.notification.data?.url ||
+    const url=
+      event.notification.data?.url||
       "./index.html";
-
 
     event.waitUntil(
 
@@ -143,37 +130,21 @@ self.addEventListener(
 
 self.addEventListener(
   "fetch",
-  event => {
+  event=>{
 
-    const req = event.request;
+    const req=event.request;
+    const url=new URL(req.url);
 
-    if(req.method !== "GET") return;
-
-
-    const url = new URL(req.url);
-
+    if(req.method!=="GET")return;
 
     /*
-      SUPABASE E APIs EXTERNAS
-      NÃO ENTRAM NO CACHE
+      Supabase e pedidos externos
+      ficam fora do cache.
     */
 
     if(
-      url.hostname.includes("supabase.co")
-    ){
-
-      return;
-
-    }
-
-
-    /*
-      ADMIN / PAINEL
-      NÃO ENTRA NO CACHE
-    */
-
-    if(
-      url.pathname.includes("admin") ||
+      url.hostname.includes("supabase.co")||
+      url.pathname.includes("admin")||
       url.pathname.includes("painel")
     ){
 
@@ -181,56 +152,44 @@ self.addEventListener(
 
     }
 
-
     /*
-      SOMENTE ARQUIVOS DO AFRICANMUNDO
+      APP.JS, HTML e CSS:
+      Internet primeiro.
+      Cache somente como reserva.
     */
 
     if(
-      url.origin !== location.origin
+      url.origin===location.origin
     ){
 
-      return;
+      event.respondWith(
+
+        fetch(req)
+          .then(res=>{
+
+            if(res.ok){
+
+              const copia=res.clone();
+
+              caches.open(CACHE_NAME)
+                .then(cache=>{
+                  cache.put(req,copia);
+                });
+
+            }
+
+            return res;
+
+          })
+          .catch(()=>{
+
+            return caches.match(req);
+
+          })
+
+      );
 
     }
-
-
-    /*
-      APP.JS / HTML / CSS / MANIFEST
-      INTERNET PRIMEIRO
-      CACHE COMO RESERVA
-    */
-
-    event.respondWith(
-
-      fetch(req)
-
-        .then(res => {
-
-          if(res && res.ok){
-
-            const copia = res.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-
-                cache.put(req, copia);
-
-              });
-
-          }
-
-          return res;
-
-        })
-
-        .catch(() => {
-
-          return caches.match(req);
-
-        })
-
-    );
 
   }
 );
