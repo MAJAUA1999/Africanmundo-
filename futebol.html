@@ -6,21 +6,12 @@ content="width=device-width, initial-scale=1">
 <title>Futebol — AfricanMundo</title><link rel="stylesheet"
       href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
-/* ==========================================
-   PÁGINA FUTEBOL
-========================================== */
-
 body{
   margin:0;
   background:#f5f6f7;
   color:#222;
   font-family:Arial,Helvetica,sans-serif;
 }
-
-
-/* ==========================================
-   CABEÇALHO
-========================================== */
 
 header{
   background:#fff;
@@ -36,21 +27,11 @@ header{
   color:#168a45;
 }
 
-
-/* ==========================================
-   CONTEÚDO
-========================================== */
-
 main{
   max-width:900px;
   margin:auto;
   padding:15px;
 }
-
-
-/* ==========================================
-   TÍTULO
-========================================== */
 
 .section-title{
   background:#fff;
@@ -72,11 +53,6 @@ main{
   font-weight:700;
   font-size:14px;
 }
-
-
-/* ==========================================
-   NOTÍCIA
-========================================== */
 
 .news-item{
   background:#fff;
@@ -113,11 +89,6 @@ main{
   white-space:pre-line;
 }
 
-
-/* ==========================================
-   CARREGAR MAIS
-========================================== */
-
 #carregarMais{
   display:block;
   margin:22px auto 30px;
@@ -134,11 +105,6 @@ main{
   opacity:.9;
 }
 
-
-/* ==========================================
-   SEM NOTÍCIAS
-========================================== */
-
 .empty-news{
   background:#fff;
   border-radius:12px;
@@ -146,11 +112,6 @@ main{
   text-align:center;
   color:#666;
 }
-
-
-/* ==========================================
-   MOBILE
-========================================== */
 
 @media(max-width:600px){
 
@@ -186,11 +147,6 @@ main{
   }
 
 }
-
-
-/* ==========================================
-   MODO ESCURO
-========================================== */
 
 @media(prefers-color-scheme:dark){
 
@@ -330,9 +286,7 @@ function dataNoticia(valor){
     new Date(valor);
 
   if(
-    isNaN(
-      data.getTime()
-    )
+    isNaN(data.getTime())
   )
     return "";
 
@@ -357,13 +311,11 @@ function limparTexto(valor){
   let texto =
     String(valor ?? "");
 
-
   texto =
     texto.replace(
       /<script[\s\S]*?<\/script>/gi,
       ""
     );
-
 
   texto =
     texto.replace(
@@ -371,13 +323,11 @@ function limparTexto(valor){
       ""
     );
 
-
   texto =
     texto.replace(
       /<[^>]*>/g,
       " "
     );
-
 
   texto =
     texto.replace(
@@ -385,13 +335,11 @@ function limparTexto(valor){
       " "
     );
 
-
   texto =
     texto.replace(
       /&amp;/gi,
       "&"
     );
-
 
   texto =
     texto.replace(
@@ -399,20 +347,17 @@ function limparTexto(valor){
       '"'
     );
 
-
   texto =
     texto.replace(
       /&#039;/gi,
       "'"
     );
 
-
   texto =
     texto.replace(
       /\s+/g,
       " "
     );
-
 
   return texto.trim();
 
@@ -425,30 +370,9 @@ function limparTexto(valor){
 
 function textoNoticia(noticia){
 
-  const campos = [
-
-    noticia.texto,
-    noticia.descricao,
-    noticia.resumo,
-    noticia.conteudo
-
-  ];
-
-
-  for(
-    const valor of campos
-  ){
-
-    const texto =
-      limparTexto(valor);
-
-    if(texto)
-      return texto;
-
-  }
-
-
-  return "";
+  return limparTexto(
+    noticia.texto
+  );
 
 }
 
@@ -462,11 +386,11 @@ function textoParaMostrar(noticia){
   const texto =
     textoNoticia(noticia);
 
+  if(!texto){
 
-  /*
-    Mantemos bastante conteúdo
-    visível na página da categoria.
-  */
+    return "Conteúdo da notícia disponível na página completa.";
+
+  }
 
   if(
     texto.length <= 1200
@@ -475,7 +399,6 @@ function textoParaMostrar(noticia){
     return texto;
 
   }
-
 
   return texto
     .substring(0,1200)
@@ -493,7 +416,6 @@ function criarNoticia(noticia){
   const item =
     document.createElement("article");
 
-
   item.className =
     "news-item";
 
@@ -503,7 +425,7 @@ function criarNoticia(noticia){
     "Sem título";
 
 
-  const categoria =
+  const subcategoria =
     noticia.subcategoria ||
     "Futebol";
 
@@ -524,7 +446,7 @@ function criarNoticia(noticia){
 
     <div class="news-category">
 
-      ⚽ ${esc(categoria)}
+      ⚽ ${esc(subcategoria)}
 
     </div>
 
@@ -543,34 +465,11 @@ function criarNoticia(noticia){
     </div>
 
 
-    ${
-      texto
+    <div class="news-text">
 
-      ?
+      ${esc(texto)}
 
-      `
-
-        <div class="news-text">
-
-          ${esc(texto)}
-
-        </div>
-
-      `
-
-      :
-
-      `
-
-        <div class="news-text">
-
-          Conteúdo da notícia
-          disponível na página completa.
-
-        </div>
-
-      `
-    }
+    </div>
 
   `;
 
@@ -590,11 +489,9 @@ function mostrarNoticias(){
     pagina *
     POR_PAGINA;
 
-
   const fim =
     inicio +
     POR_PAGINA;
-
 
   const lista =
     noticias.slice(
@@ -649,7 +546,7 @@ function mostrarNoticias(){
 
 
 /* ==========================================
-   BOTÃO CARREGAR MAIS
+   CARREGAR MAIS
 ========================================== */
 
 botao.addEventListener(
@@ -659,7 +556,7 @@ botao.addEventListener(
 
 
 /* ==========================================
-   CARREGAR NOTÍCIAS
+   CARREGAR FUTEBOL
 ========================================== */
 
 async function carregarNoticias(){
@@ -677,6 +574,12 @@ async function carregarNoticias(){
     `;
 
 
+    /*
+      IMPORTANTE:
+      usamos somente colunas
+      existentes na tabela noticias.
+    */
+
     const resposta =
       await supabaseClient
         .from("noticias")
@@ -686,12 +589,15 @@ async function carregarNoticias(){
           categoria,
           subcategoria,
           texto,
-          descricao,
-          resumo,
-          conteudo,
           data,
-          fonte
+          fonte,
+          imagem,
+          pais
         `)
+        .eq(
+          "categoria",
+          "Futebol"
+        )
         .order(
           "data",
           {
@@ -705,14 +611,28 @@ async function carregarNoticias(){
       resposta.error
     ){
 
+      console.error(
+        "Erro Supabase:",
+        resposta.error
+      );
+
       throw resposta.error;
 
     }
 
 
     noticias =
-      (resposta.data || [])
-      .filter(
+      resposta.data || [];
+
+
+    /*
+      Segurança adicional:
+      garante que só Futebol
+      seja mostrado.
+    */
+
+    noticias =
+      noticias.filter(
         function(noticia){
 
           return (
@@ -772,7 +692,6 @@ async function carregarNoticias(){
 
     `;
 
-
     botao.style.display =
       "none";
 
@@ -787,4 +706,6 @@ async function carregarNoticias(){
 
 carregarNoticias();
 
-</script></body></html>
+</script>
+</body>
+</html>
