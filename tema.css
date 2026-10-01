@@ -1,431 +1,628 @@
 /* =========================================================
-   AFRICANMUNDO — TEMA GLOBAL
+   AFRICANMUNDO — TEMA ESCURO PERMANENTE
+   Não altera o layout. Apenas adapta as cores.
    ========================================================= */
 
-
-/* =========================================================
-   VARIÁVEIS DO MODO CLARO
-   ========================================================= */
-
-:root {
-
-  --am-fundo: #f4f6f7;
-  --am-fundo-2: #ffffff;
-
-  --am-card: #ffffff;
-  --am-card-2: #f8fafb;
-
-  --am-texto: #182027;
-  --am-texto-2: #3f4a50;
-  --am-texto-fraco: #7b858b;
-
-  --am-borda: rgba(0,0,0,.08);
-
-  --am-verde: #168a45;
-  --am-verde-claro: #25b965;
-
-  --am-sombra: 0 2px 8px rgba(0,0,0,.08);
-
-  --am-input: #ffffff;
-
+html{
+  color-scheme:dark;
+  background:#0d1113;
 }
-
-
-/* =========================================================
-   MODO ESCURO
-   ========================================================= */
-
-html.tema-escuro {
-
-  --am-fundo: #0d1113;
-  --am-fundo-2: #111719;
-
-  --am-card: #171d20;
-  --am-card-2: #1c2326;
-
-  --am-texto: #f1f4f5;
-  --am-texto-2: #c5cdd1;
-  --am-texto-fraco: #929da3;
-
-  --am-borda: rgba(255,255,255,.09);
-
-  --am-verde: #25b965;
-  --am-verde-claro: #35d477;
-
-  --am-sombra: 0 2px 10px rgba(0,0,0,.40);
-
-  --am-input: #1b2225;
-
-}
-
-
-/* =========================================================
-   BASE DO SITE
-   ========================================================= */
 
 html,
-body {
-
-  background-color: var(--am-fundo) !important;
-  color: var(--am-texto) !important;
-
-  transition:
-    background-color .20s ease,
-    color .20s ease;
-
+body{
+  background:#0d1113 !important;
+  color:#f1f4f5 !important;
 }
 
+/* Variáveis do tema */
+:root{
+  --bg:#0d1113;
+  --card:#171d20;
+  --card2:#1c2428;
+  --txt:#f1f4f5;
+  --muted:#929da3;
+  --border:#303a3e;
+  --shadow:0 5px 22px rgba(0,0,0,.38);
+  --p:#168a45;
+}
 
 /* =========================================================
-   TEXTOS
+   BASE
    ========================================================= */
 
-body,
-p,
-span,
-small,
-strong,
-label,
-li,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-
-  color: var(--am-texto);
-
+body{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
 }
 
+main,
+section,
+article,
+aside{
+  color:var(--txt);
+}
+
+a{
+  color:inherit;
+}
+
+hr{
+  border-color:var(--border) !important;
+}
 
 /* =========================================================
-   LINKS
+   CABEÇALHO
    ========================================================= */
 
-a {
-
-  color: var(--am-verde);
-
+header{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
-html.tema-escuro a {
-
-  color: var(--am-verde-claro);
-
+.header-actions button,
+header button{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
-
 
 /* =========================================================
-   HEADER
+   NAVEGAÇÃO
    ========================================================= */
 
-header,
-.topo,
-.header,
-.site-header,
-.navbar {
-
-  transition:
-    background-color .20s ease,
-    color .20s ease,
-    border-color .20s ease;
-
+nav{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
+nav a{
+  color:var(--txt) !important;
+}
+
+nav a:hover,
+nav a.active{
+  color:#fff !important;
+}
 
 /* =========================================================
-   CARDS
+   PESQUISA
+   ========================================================= */
+
+.search-box{
+  background:transparent;
+  color:var(--txt);
+}
+
+.search-box input{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+.search-box input::placeholder{
+  color:var(--muted) !important;
+}
+
+.search-box button{
+  color:var(--txt) !important;
+}
+
+/* =========================================================
+   CARTÕES
    ========================================================= */
 
 .card,
-.news,
-.noticia,
-.news-card,
-.article-card,
-.post,
-.item-noticia,
-.bloco-noticia {
-
-  background-color: var(--am-card) !important;
-
-  color: var(--am-texto) !important;
-
-  border-color: var(--am-borda) !important;
-
-  box-shadow: var(--am-sombra);
-
+.news-card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+  box-shadow:var(--shadow);
 }
 
+.card-title,
+.news-card h3{
+  color:var(--txt) !important;
+}
+
+.card p,
+.news-card p{
+  color:var(--muted) !important;
+}
+
+.card-date,
+.news-card-footer{
+  color:var(--muted) !important;
+}
 
 /* =========================================================
-   ÁREAS / SEÇÕES
+   DESTAQUE
    ========================================================= */
 
-section,
-article,
-aside,
-main,
-.content,
-.container,
-.news-section {
-
-  transition:
-    background-color .20s ease,
-    color .20s ease,
-    border-color .20s ease;
-
+.destaque,
+#destaque,
+.destaque-card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
+.destaque h1,
+.destaque h2,
+.destaque h3,
+#destaque h1,
+#destaque h2,
+#destaque h3{
+  color:#fff !important;
+}
 
 /* =========================================================
-   CAMPOS DE PESQUISA E FORMULÁRIOS
+   PAINÉIS
+   ========================================================= */
+
+.top-panel,
+#notificationPanel,
+#toolsPanel,
+#userPanel,
+#colorPanel{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+  box-shadow:var(--shadow);
+}
+
+.top-panel button,
+#notificationPanel button,
+#toolsPanel button,
+#userPanel button,
+#colorPanel button{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   MODAIS
+   ========================================================= */
+
+.modal,
+.modal-box{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+.modal-box h1,
+.modal-box h2,
+.modal-box h3,
+.modal-box h4{
+  color:var(--txt) !important;
+}
+
+.modal-box p{
+  color:var(--muted) !important;
+}
+
+/* =========================================================
+   CAMPOS
    ========================================================= */
 
 input,
 textarea,
-select {
-
-  background-color: var(--am-input) !important;
-
-  color: var(--am-texto) !important;
-
-  border-color: var(--am-borda) !important;
-
+select{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
 input::placeholder,
-textarea::placeholder {
-
-  color: var(--am-texto-fraco) !important;
-
+textarea::placeholder{
+  color:var(--muted) !important;
 }
 
+option{
+  background:var(--card);
+  color:var(--txt);
+}
 
 /* =========================================================
    BOTÕES
    ========================================================= */
 
-button {
-
-  color: inherit;
-
+button{
+  color:var(--txt);
 }
 
-
-/* Botões que não têm cor própria */
+button:not(.btn-primary):not(.primary){
+  border-color:var(--border);
+}
 
 .btn,
-.button,
-.botao {
-
+button{
   transition:
-    background-color .20s ease,
-    color .20s ease,
-    border-color .20s ease;
-
+    background-color .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
-
-
-/* =========================================================
-   MENUS
-   ========================================================= */
-
-.menu,
-nav,
-.dropdown,
-.menu-mobile,
-.mobile-menu,
-.bottom-menu,
-.menu-inferior {
-
-  color: var(--am-texto);
-
-}
-
-
-/* =========================================================
-   MODAIS / JANELAS
-   ========================================================= */
-
-.modal,
-.dialog,
-.popup,
-.menu-popup,
-.viewer,
-.image-viewer {
-
-  background-color: var(--am-card) !important;
-
-  color: var(--am-texto) !important;
-
-  border-color: var(--am-borda) !important;
-
-  box-shadow: var(--am-sombra);
-
-}
-
-
-/* =========================================================
-   RODAPÉ
-   ========================================================= */
-
-footer {
-
-  background-color: var(--am-card) !important;
-
-  color: var(--am-texto) !important;
-
-  border-top-color: var(--am-borda) !important;
-
-}
-
-
-/* =========================================================
-   TEXTO SECUNDÁRIO
-   ========================================================= */
-
-.date,
-.data,
-.news-date,
-.meta,
-.info,
-.muted,
-.text-muted,
-.descricao {
-
-  color: var(--am-texto-fraco) !important;
-
-}
-
-
-/* =========================================================
-   DIVISORES
-   ========================================================= */
-
-hr {
-
-  border-color: var(--am-borda) !important;
-
-}
-
-
-/* =========================================================
-   IMAGENS
-   ========================================================= */
-
-html.tema-escuro img {
-
-  background-color: #20272b;
-
-}
-
-
-/* =========================================================
-   ÁREA DE PESQUISA
-   ========================================================= */
-
-.search,
-.search-box,
-.pesquisa {
-
-  background-color: var(--am-card) !important;
-
-  color: var(--am-texto) !important;
-
-  border-color: var(--am-borda) !important;
-
-}
-
-
-/* =========================================================
-   ANÚNCIOS
-   ========================================================= */
-
-.anuncio,
-.anuncios,
-.ad,
-.ads,
-#anunciosAtivos,
-#anunciosAtivosSection {
-
-  background-color: var(--am-card) !important;
-
-  color: var(--am-texto) !important;
-
-  border-color: var(--am-borda) !important;
-
-}
-
-
-/* =========================================================
-   PÁGINA DE NOTÍCIA
-   ========================================================= */
-
-.noticia-conteudo,
-.article,
-.article-content,
-.news-content {
-
-  color: var(--am-texto) !important;
-
-}
-
-
-.noticia-conteudo p,
-.article p,
-.article-content p,
-.news-content p {
-
-  color: var(--am-texto-2) !important;
-
-}
-
 
 /* =========================================================
    TABELAS
    ========================================================= */
 
-table {
-
-  color: var(--am-texto) !important;
-
-  background-color: var(--am-card) !important;
-
+table{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
 th,
-td {
-
-  border-color: var(--am-borda) !important;
-
+td{
+  background:transparent !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
 }
 
-
 /* =========================================================
-   SELEÇÃO DE TEXTO
+   AFRICANMUNDO — TEMA ESCURO PERMANENTE
+   PARTE 2/2
    ========================================================= */
 
-html.tema-escuro ::selection {
+/* =========================================================
+   TEXTOS E ELEMENTOS SECUNDÁRIOS
+   ========================================================= */
 
-  background: #25b965;
-
-  color: #07130c;
-
+.muted,
+.text-muted,
+.info,
+.descricao,
+.card-date,
+.data,
+.data-noticia,
+.fonte,
+.meta,
+small{
+  color:var(--muted) !important;
 }
 
+h1,
+h2,
+h3,
+h4,
+h5,
+h6{
+  color:var(--txt);
+}
 
 /* =========================================================
-   TRANSIÇÃO
+   PÁGINA DE NOTÍCIA
    ========================================================= */
 
-body *,
-body *::before,
-body *::after {
+.noticia,
+.article,
+.article-content,
+.news-content,
+.news-article,
+.conteudo-noticia{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
 
+.noticia h1,
+.article h1,
+.article-content h1,
+.news-content h1,
+.news-article h1{
+  color:#fff !important;
+}
+
+.noticia p,
+.article p,
+.article-content p,
+.news-content p,
+.news-article p{
+  color:#d5dcdf !important;
+}
+
+.noticia .fonte,
+.article .fonte,
+.noticia .data{
+  color:var(--muted) !important;
+}
+
+/* =========================================================
+   CATEGORIAS
+   ========================================================= */
+
+.categoria,
+.categoria-page,
+.category-page{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
+
+.categoria h1,
+.categoria h2,
+.category-page h1,
+.category-page h2{
+  color:var(--txt) !important;
+}
+
+/* =========================================================
+   FUTEBOL
+   ========================================================= */
+
+.futebol,
+.futebol-page{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
+
+.futebol .card,
+.futebol-page .card,
+.futebol .news-card,
+.futebol-page .news-card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   MOÇAMBIQUE
+   ========================================================= */
+
+.mocambique,
+.mocambique-page{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
+
+/* =========================================================
+   MENU MOBILE / MENU INFERIOR
+   ========================================================= */
+
+.bottom-nav,
+.bottom-menu,
+.mobile-nav,
+.mobile-menu{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+.bottom-nav a,
+.bottom-menu a,
+.mobile-nav a,
+.mobile-menu a{
+  color:var(--txt) !important;
+}
+
+.bottom-nav a.active,
+.bottom-menu a.active,
+.mobile-nav a.active,
+.mobile-menu a.active{
+  color:#168a45 !important;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer{
+  background:#080c0d !important;
+  color:#dce5e1 !important;
+  border-color:var(--border) !important;
+}
+
+footer a{
+  color:#dce5e1 !important;
+}
+
+footer p,
+footer small{
+  color:#aeb9b5 !important;
+}
+
+/* =========================================================
+   ANÚNCIOS
+   ========================================================= */
+
+#anunciosAtivosSection{
+  background:transparent !important;
+  color:var(--txt) !important;
+}
+
+#anunciosAtivos{
+  background:transparent !important;
+  color:var(--txt) !important;
+}
+
+#anunciosAtivos .card,
+#anunciosAtivos .news-card,
+.anuncio-card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   RESULTADOS DE PESQUISA
+   ========================================================= */
+
+#resultadosPesquisa,
+.resultados-pesquisa,
+.search-results{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
+
+#resultadosPesquisa .card,
+.search-results .card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   ADMIN
+   ========================================================= */
+
+.admin,
+.admin-page,
+#admin{
+  background:var(--bg) !important;
+  color:var(--txt) !important;
+}
+
+.admin .card,
+.admin-page .card,
+#admin .card{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+.admin table{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+}
+
+/* =========================================================
+   LOGIN
+   ========================================================= */
+
+.login,
+.login-container,
+.login-box{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   ALERTAS / MENSAGENS
+   ========================================================= */
+
+.alert,
+.aviso,
+.mensagem,
+.toast{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   LOADING
+   ========================================================= */
+
+.loading,
+.loader,
+.carregando{
+  color:var(--txt) !important;
+}
+
+/* =========================================================
+   LINKS
+   ========================================================= */
+
+a{
+  color:inherit;
+}
+
+a:hover{
+  color:#168a45;
+}
+
+/* =========================================================
+   IMAGENS
+   ========================================================= */
+
+img{
+  border-color:var(--border);
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+html{
+  scrollbar-color:#394348 #0d1113;
+}
+
+::-webkit-scrollbar{
+  width:9px;
+  height:9px;
+}
+
+::-webkit-scrollbar-track{
+  background:#0d1113;
+}
+
+::-webkit-scrollbar-thumb{
+  background:#394348;
+  border-radius:10px;
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background:#4a555b;
+}
+
+/* =========================================================
+   SEPARADORES
+   ========================================================= */
+
+.border,
+.divider,
+.separador{
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   ELEMENTOS BRANCOS QUE POSSAM EXISTIR NO SITE
+   ========================================================= */
+
+.box,
+.panel,
+.container-box,
+.content-box{
+  background:var(--card) !important;
+  color:var(--txt) !important;
+  border-color:var(--border) !important;
+}
+
+/* =========================================================
+   GARANTIA FINAL — FUNDO ESCURO GLOBAL
+   ========================================================= */
+
+html body,
+body main,
+body section{
+  background-color:var(--bg);
+  color:var(--txt);
+}
+
+/* =========================================================
+   TRANSIÇÃO SUAVE
+   ========================================================= */
+
+body,
+header,
+nav,
+main,
+section,
+article,
+.card,
+.news-card,
+.top-panel,
+.modal-box,
+input,
+textarea,
+select,
+button,
+footer{
   transition:
-    background-color .15s ease,
-    color .15s ease,
-    border-color .15s ease;
-
+    background-color .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
