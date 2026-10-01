@@ -1,126 +1,122 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt">
+
 <head>
-<meta charset="UTF-8">
+
+<meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>Futebol — AfricanMundo</title>
-<meta name="description" content="Últimas notícias de futebol em Moçambique e África — AfricanMundo">
-<link rel="icon" href="favicon.ico">
+
+<meta
+name="description"
+content="Últimas notícias de Futebol no AfricanMundo."
+>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-:root{
-  --p:#168a45;
-  --bg:#f5f7f8;
-  --card:#fff;
-  --txt:#182026;
-  --muted:#707980;
-  --border:#e5e8eb;
-}
 
-*{box-sizing:border-box}
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
-  background:var(--bg);
-  color:var(--txt);
+  background:#f4f6f7;
+  color:#182027;
   font-family:Arial,Helvetica,sans-serif;
 }
 
 header{
-  position:sticky;
-  top:0;
-  z-index:20;
-  background:var(--card);
-  border-bottom:1px solid var(--border);
-  height:58px;
-  display:flex;
-  align-items:center;
-  padding:0 14px;
+  background:#168a45;
+  color:#fff;
 }
 
-.logo{
+.top{
+  max-width:1100px;
+  margin:auto;
+  padding:9px 12px;
   font-size:18px;
   font-weight:800;
-  color:var(--p);
 }
 
 main{
-  width:100%;
-  max-width:900px;
+  max-width:850px;
   margin:auto;
-  padding:10px;
+  padding:8px 7px 60px;
 }
 
-.topo{
+.section-title{
   display:flex;
   align-items:center;
-  gap:10px;
-  margin-bottom:10px;
+  justify-content:space-between;
+  margin-bottom:5px;
 }
 
-.voltar{
-  border:0;
-  background:var(--card);
-  color:var(--txt);
-  padding:8px 12px;
-  border-radius:9px;
-  font-weight:700;
-  cursor:pointer;
-  box-shadow:0 1px 4px #00000012;
+.section-title h1{
+  margin:0;
+  font-size:19px;
 }
 
-.titulo-pagina{
-  font-size:18px;
-  font-weight:800;
-}
-
-.estado{
-  display:flex;
-  align-items:center;
-  gap:6px;
-  color:var(--p);
+.section-title a{
+  color:#168a45;
+  text-decoration:none;
   font-size:12px;
   font-weight:700;
-  margin:2px 0 10px;
 }
 
-/* ESTEIRA */
+#estado{
+  margin:0 0 9px;
+  text-align:center;
+  color:#7b858b;
+  font-size:10px;
+}
 
-.lista{
+/* =========================
+   ESTEIRA DE NOTÍCIAS
+========================= */
+
+.news-list{
   display:flex;
   flex-direction:column;
-  gap:7px;
+  gap:9px;
 }
 
-.noticia{
-  display:flex;
+/* CARTÃO */
+
+.news{
   width:100%;
-  min-height:88px;
-  background:var(--card);
-  border:1px solid var(--border);
-  border-radius:11px;
   overflow:hidden;
-  cursor:pointer;
-  transition:.15s;
+  background:#fff;
+  border:1px solid rgba(0,0,0,.07);
+  border-radius:10px;
+  box-shadow:0 1px 5px rgba(0,0,0,.07);
 }
 
-.noticia:active{
-  transform:scale(.99);
+.news-link{
+  display:block;
+  color:inherit;
+  text-decoration:none;
 }
 
-.imagem{
-  width:115px;
-  min-width:115px;
-  height:88px;
-  background:#e9edef;
+/* IMAGEM EM CIMA */
+
+.thumb{
+  width:100%;
+  height:210px;
   overflow:hidden;
+  background:#e8ecee;
 }
 
-.imagem img{
+.thumb img{
   width:100%;
   height:100%;
-  object-fit:cover;
   display:block;
+  object-fit:cover;
 }
 
 .sem-imagem{
@@ -129,397 +125,587 @@ main{
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:25px;
+  background:#168a45;
+  color:#fff;
+  font-size:45px;
 }
 
-.info{
-  padding:8px 10px;
-  min-width:0;
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+/* TEXTO EMBAIXO */
+
+.news-info{
+  padding:9px 11px 10px;
 }
 
-.tag{
-  color:var(--p);
-  font-size:10px;
+.news-category{
+  display:block;
+  color:#168a45;
+  font-size:9px;
   font-weight:800;
-  text-transform:uppercase;
-  margin-bottom:3px;
+  margin-bottom:4px;
 }
 
-.ntitulo{
-  font-size:14px;
+.news h2{
+  margin:0;
+  font-size:16px;
   line-height:1.25;
-  font-weight:750;
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+  font-weight:800;
 }
 
-.data{
-  color:var(--muted);
+.news-date{
+  display:block;
+  margin-top:6px;
+  color:#7b858b;
   font-size:10px;
-  margin-top:5px;
 }
 
-.loader{
-  text-align:center;
-  padding:18px;
-  color:var(--muted);
-  font-size:12px;
+/* INDICA QUE É CLICÁVEL */
+
+.news-link:active .news{
+  transform:scale(.99);
 }
 
-.fim{
+/* CARREGANDO */
+
+.loading{
   text-align:center;
-  padding:18px 5px 30px;
-  color:var(--muted);
+  padding:20px;
+  color:#7b858b;
   font-size:12px;
 }
 
 .erro{
+  text-align:center;
+  padding:20px;
+  color:#c62828;
   background:#fff;
-  border:1px solid #f0d2d2;
-  color:#a33;
-  padding:15px;
-  border-radius:10px;
-  font-size:13px;
+  border-radius:9px;
 }
 
+/* =========================
+   CELULAR
+========================= */
+
 @media(max-width:600px){
+
   main{
-    padding:8px;
+    padding:6px 5px 60px;
   }
 
-  header{
-    height:52px;
-  }
-
-  .logo{
+  .top{
+    padding:8px 10px;
     font-size:17px;
   }
 
-  .imagem{
-    width:105px;
-    min-width:105px;
-    height:82px;
+  .section-title h1{
+    font-size:18px;
   }
 
-  .noticia{
-    min-height:82px;
-    border-radius:9px;
+  .section-title a{
+    font-size:11px;
   }
 
-  .ntitulo{
+  .news-list{
+    gap:7px;
+  }
+
+  .news{
+    border-radius:8px;
+  }
+
+  .thumb{
+    height:165px;
+  }
+
+  .news-info{
+    padding:8px 9px 9px;
+  }
+
+  .news-category{
+    font-size:8px;
+    margin-bottom:3px;
+  }
+
+  .news h2{
+    font-size:14px;
+    line-height:1.22;
+  }
+
+  .news-date{
+    margin-top:5px;
+    font-size:9px;
+  }
+
+  .sem-imagem{
+    font-size:35px;
+  }
+
+}
+
+/* =========================
+   CELULARES PEQUENOS
+========================= */
+
+@media(max-width:380px){
+
+  .thumb{
+    height:145px;
+  }
+
+  .news h2{
     font-size:13px;
   }
 
-  .info{
-    padding:7px 8px;
-  }
 }
 
-@media(min-width:700px){
-  .noticia{
-    min-height:92px;
+/* =========================
+   MODO ESCURO
+========================= */
+
+@media(prefers-color-scheme:dark){
+
+  body{
+    background:#101315;
+    color:#f1f3f4;
   }
 
-  .imagem{
-    width:130px;
-    min-width:130px;
-    height:92px;
+  .news{
+    background:#181d20;
+    border-color:#293136;
+    box-shadow:0 1px 6px rgba(0,0,0,.3);
   }
 
-  .ntitulo{
-    font-size:15px;
+  .thumb{
+    background:#20272b;
   }
+
+  .news h2{
+    color:#f5f7f8;
+  }
+
+  .news-date,
+  #estado{
+    color:#9ca7ad;
+  }
+
+  .section-title a,
+  .news-category{
+    color:#25b965;
+  }
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
-  <div class="logo">🌍 AfricanMundo</div>
+
+<div class="top">
+🌍 AfricanMundo
+</div>
+
 </header>
 
 <main>
 
-  <div class="topo">
-    <button class="voltar" onclick="history.back()">← Voltar</button>
-    <div class="titulo-pagina">⚽ Futebol</div>
-  </div>
+<section class="news-section">
 
-  <div class="estado" id="estado">
-    ✓ Atualizado
-  </div>
+<div class="section-title">
 
-  <section id="lista" class="lista"></section>
+<h1>⚽ Futebol</h1>
 
-  <div id="loader" class="loader">
-    Carregando notícias...
-  </div>
+<a href="index.html">← Voltar</a>
 
-  <div id="fim" class="fim" style="display:none">
-    ✓ Todas as notícias foram carregadas
-  </div>
+</div>
+
+<div id="estado">
+🔄 A carregar...
+</div>
+
+<div id="newsList" class="news-list">
+
+<div class="loading">
+🔄 A carregar notícias...
+</div>
+
+</div>
+
+</section>
 
 </main>
 
-<script type="module">
+<script>
 
-import { createClient }
-from "https://esm.sh/@supabase/supabase-js@2";
+/* =========================
+   SUPABASE
+========================= */
 
 const SUPABASE_URL =
-  "https://sonzwfhepjfvzltuxxne.supabase.co";
+"https://sonzwfhepjfvzltuxxne.supabase.co";
 
-const SUPABASE_ANON_KEY =
-  "COLOQUE_AQUI_A_SUA_ANON_KEY";
+const SUPABASE_KEY =
+"sb_publishable_aGutLscN7IAKVqH9onnnkw_22Tl8PZf";
 
-const supabase = createClient(
-  SUPABASE_URL,
-  SUPABASE_ANON_KEY
+const supabaseClient =
+window.supabase.createClient(
+SUPABASE_URL,
+SUPABASE_KEY
 );
 
-const lista = document.getElementById("lista");
-const loader = document.getElementById("loader");
-const fim = document.getElementById("fim");
-const estado = document.getElementById("estado");
 
-let pagina = 0;
-const LIMITE = 20;
-let carregando = false;
-let terminou = false;
+/* =========================
+   ELEMENTOS
+========================= */
+
+const list =
+document.getElementById("newsList");
+
+const estado =
+document.getElementById("estado");
 
 
-/* Corrige entidades HTML */
-function limparTexto(texto){
-  if(!texto) return "";
+/* =========================
+   SEGURANÇA
+========================= */
 
-  const el = document.createElement("textarea");
-  el.innerHTML = texto;
+function esc(valor){
 
-  return el.value
-    .replace(/\s+/g," ")
-    .trim();
+return String(valor ?? "").replace(
+/[&<>"']/g,
+m=>({
+"&":"&amp;",
+"<":"&lt;",
+">":"&gt;",
+'"':"&quot;",
+"'":"&#039;"
+}[m])
+);
+
 }
 
 
-/* Data */
+/* =========================
+   NORMALIZAR
+========================= */
+
+function normalizar(valor){
+
+return String(valor ?? "")
+.trim()
+.toLowerCase()
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"");
+
+}
+
+
+/* =========================
+   DATA
+========================= */
+
 function formatarData(data){
-  if(!data) return "";
 
-  const d = new Date(data);
+if(!data)return "";
 
-  if(isNaN(d.getTime())) return "";
+const d=new Date(data);
 
-  return d.toLocaleDateString("pt-PT",{
-    day:"2-digit",
-    month:"2-digit",
-    year:"numeric"
-  });
+if(Number.isNaN(d.getTime()))return "";
+
+return d.toLocaleDateString(
+"pt-PT",
+{
+day:"2-digit",
+month:"2-digit",
+year:"numeric"
 }
-
-
-/* Abrir notícia */
-function abrirNoticia(id){
-  if(!id) return;
-
-  window.location.href =
-    "noticia.html?id=" +
-    encodeURIComponent(id);
-}
-
-
-/* Criar cartão */
-function criarCard(n){
-
-  const card = document.createElement("article");
-
-  card.className = "noticia";
-
-  card.onclick = () => abrirNoticia(n.id);
-
-  const imagem =
-    limparTexto(n.imagem || "");
-
-  const titulo =
-    limparTexto(n.titulo || "Sem título");
-
-  const categoria =
-    limparTexto(n.categoria || "Futebol");
-
-  card.innerHTML = `
-
-    <div class="imagem">
-
-      ${
-        imagem
-        ?
-        `<img
-          src="${imagem}"
-          alt=""
-          loading="lazy"
-          onerror="this.style.display='none';this.parentElement.innerHTML='<div class=&quot;sem-imagem&quot;>⚽</div>'"
-        >`
-        :
-        `<div class="sem-imagem">⚽</div>`
-      }
-
-    </div>
-
-    <div class="info">
-
-      <div class="tag">
-        ⚽ ${categoria}
-      </div>
-
-      <div class="ntitulo">
-        ${titulo}
-      </div>
-
-      <div class="data">
-        ${formatarData(n.data)}
-      </div>
-
-    </div>
-
-  `;
-
-  return card;
-}
-
-
-/* Carregar notícias */
-async function carregar(){
-
-  if(carregando || terminou) return;
-
-  carregando = true;
-
-  loader.style.display = "block";
-
-  const inicio = pagina * LIMITE;
-  const fimRange = inicio + LIMITE - 1;
-
-  try{
-
-    const { data, error } = await supabase
-      .from("noticias")
-      .select(`
-        id,
-        titulo,
-        imagem,
-        categoria,
-        data
-      `)
-      .eq("categoria","Futebol")
-      .order("data",{ascending:false})
-      .range(inicio,fimRange);
-
-    if(error){
-      throw error;
-    }
-
-    if(!data || data.length === 0){
-
-      terminou = true;
-
-      loader.style.display = "none";
-
-      if(pagina === 0){
-        lista.innerHTML = `
-          <div class="erro">
-            Nenhuma notícia de futebol encontrada.
-          </div>
-        `;
-      }else{
-        fim.style.display = "block";
-      }
-
-      return;
-    }
-
-
-    data.forEach(n => {
-
-      /*
-       * IMPORTANTE:
-       * Apenas titulo, imagem, categoria e data
-       * são usados aqui.
-       *
-       * O campo "texto" NÃO aparece na listagem.
-       */
-
-      lista.appendChild(criarCard(n));
-
-    });
-
-
-    pagina++;
-
-    if(data.length < LIMITE){
-
-      terminou = true;
-
-      loader.style.display = "none";
-      fim.style.display = "block";
-
-    }else{
-
-      loader.style.display = "block";
-
-    }
-
-  }catch(error){
-
-    console.error("Erro ao carregar Futebol:",error);
-
-    loader.innerHTML =
-      "Não foi possível carregar as notícias. Tente novamente.";
-
-    estado.textContent = "⚠ Erro ao atualizar";
-
-  }finally{
-
-    carregando = false;
-
-  }
+);
 
 }
 
 
-/* Primeira carga */
-carregar();
+/* =========================
+   CRIAR NOTÍCIA
+========================= */
+
+function criarNoticia(n){
+
+const titulo =
+n.titulo || "Sem título";
+
+const imagem =
+String(
+n.imagem ?? n.Imagem ?? ""
+).trim();
+
+
+let imagemHTML="";
+
+
+if(imagem){
+
+imagemHTML=`
+
+<img
+src="${esc(imagem)}"
+alt="${esc(titulo)}"
+loading="lazy"
+decoding="async"
+onerror="
+this.style.display='none';
+this.parentElement.innerHTML='<div class=&quot;sem-imagem&quot;>⚽</div>';
+"
+>
+
+`;
+
+}else{
+
+imagemHTML=`
+
+<div class="sem-imagem">
+⚽
+</div>
+
+`;
+
+}
 
 
 /*
- * ESTEIRA INFINITA
- *
- * Quando o utilizador chega perto
- * do fim da página, busca mais 20 notícias.
- */
+   IMPORTANTE:
+   Aqui NÃO usamos n.texto.
 
-window.addEventListener("scroll",()=>{
+   A listagem mostra somente:
+   imagem
+   título
+   categoria
+   data
+*/
 
-  if(terminou || carregando) return;
+return `
 
-  const distancia =
-    document.documentElement.scrollHeight -
-    (window.innerHeight + window.scrollY);
+<article class="news">
 
-  if(distancia < 700){
+<a
+class="news-link"
+href="noticia.html?id=${encodeURIComponent(n.id)}"
+aria-label="${esc(titulo)}"
+>
 
-    carregar();
+<div class="thumb">
 
-  }
+${imagemHTML}
+
+</div>
+
+<div class="news-info">
+
+<span class="news-category">
+⚽ Futebol
+</span>
+
+<h2>
+${esc(titulo)}
+</h2>
+
+<span class="news-date">
+${formatarData(n.data)}
+</span>
+
+</div>
+
+</a>
+
+</article>
+
+`;
+
+}
+
+
+/* =========================
+   CARREGAR NOTÍCIAS
+========================= */
+
+async function carregarNoticias(){
+
+try{
+
+estado.textContent =
+"🔄 A carregar...";
+
+
+const {data,error} =
+await supabaseClient
+
+.from("noticias")
+
+.select(
+"id,titulo,categoria,data,imagem,fonte,pais"
+)
+
+.order(
+"data",
+{
+ascending:false
+}
+)
+
+.order(
+"id",
+{
+ascending:false
+}
+)
+
+.limit(500);
+
+
+/* ERRO */
+
+if(error){
+
+console.error(
+"Erro Supabase:",
+error
+);
+
+estado.textContent =
+"❌ Erro ao carregar notícias.";
+
+list.innerHTML = `
+
+<div class="erro">
+
+Não foi possível carregar as notícias.
+<br>
+Tente novamente.
+
+</div>
+
+`;
+
+return;
+
+}
+
+
+/* =========================
+   FILTRAR FUTEBOL
+========================= */
+
+const futebol =
+(data || []).filter(n => {
+
+return normalizar(n.categoria)
+===
+"futebol";
 
 });
+
+
+/* NENHUMA NOTÍCIA */
+
+if(!futebol.length){
+
+list.innerHTML = `
+
+<div class="erro">
+
+⚽ Ainda não existem notícias de Futebol.
+
+</div>
+
+`;
+
+estado.textContent="";
+
+return;
+
+}
+
+
+/* =========================
+   MOSTRAR ESTEIRA
+========================= */
+
+list.innerHTML =
+futebol
+.map(criarNoticia)
+.join("");
+
+
+estado.textContent =
+"✓ Atualizado";
+
+
+}catch(e){
+
+console.error(
+"Erro geral:",
+e
+);
+
+estado.textContent =
+"❌ Erro ao carregar notícias.";
+
+list.innerHTML = `
+
+<div class="erro">
+
+Não foi possível carregar as notícias.
+<br>
+Tente novamente.
+
+</div>
+
+`;
+
+}
+
+}
+
+
+/* =========================
+   PRIMEIRA CARGA
+========================= */
+
+carregarNoticias();
+
+
+/* =========================
+   ATUALIZAR A CADA 1 HORA
+========================= */
+
+setInterval(
+carregarNoticias,
+60*60*1000
+);
+
+
+/* =========================
+   QUANDO VOLTAR À PÁGINA
+========================= */
+
+document.addEventListener(
+"visibilitychange",
+()=>{
+
+if(
+document.visibilityState==="visible"
+){
+
+carregarNoticias();
+
+}
+
+}
+);
 
 </script>
 
 </body>
+
 </html>
