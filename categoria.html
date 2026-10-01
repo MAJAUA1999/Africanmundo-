@@ -339,14 +339,6 @@ A informação que liga África ao mundo
 👤
 </button>
 
-<button id="themeBtn">
-🌙
-</button>
-
-<button id="colorBtn">
-🎨
-</button>
-
 </div>
 
 </div>
@@ -1561,12 +1553,15 @@ async function buscarPagina(primeiraPagina){
       break;
 
     case "entretenimento":
-      consulta =
-        consulta.eq(
-          "subcategoria",
-          "Cultura"
-        );
-      break;
+
+  consulta =
+    consulta.or(
+      "categoria.eq.Entretenimento," +
+      "subcategoria.eq.Entretenimento," +
+      "subcategoria.eq.Cultura"
+    );
+
+  break;
 
     case "negocios":
       consulta =
