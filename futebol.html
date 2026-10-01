@@ -24,16 +24,20 @@ content="Últimas notícias de Futebol no AfricanMundo."
   box-sizing:border-box;
 }
 
+html{
+  color-scheme:light;
+}
+
 body{
   margin:0;
-  background:#f4f6f7;
-  color:#182027;
+  background:#f4f6f7 !important;
+  color:#182027 !important;
   font-family:Arial,Helvetica,sans-serif;
 }
 
 header{
-  background:#168a45;
-  color:#fff;
+  background:#168a45 !important;
+  color:#fff !important;
 }
 
 .top{
@@ -60,10 +64,11 @@ main{
 .section-title h1{
   margin:0;
   font-size:19px;
+  color:#182027 !important;
 }
 
 .section-title a{
-  color:#168a45;
+  color:#168a45 !important;
   text-decoration:none;
   font-size:12px;
   font-weight:700;
@@ -72,13 +77,11 @@ main{
 #estado{
   margin:0 0 9px;
   text-align:center;
-  color:#7b858b;
+  color:#7b858b !important;
   font-size:10px;
 }
 
-/* =========================
-   ESTEIRA DE NOTÍCIAS
-========================= */
+/* ESTEIRA */
 
 .news-list{
   display:flex;
@@ -91,7 +94,8 @@ main{
 .news{
   width:100%;
   overflow:hidden;
-  background:#fff;
+  background:#fff !important;
+  color:#182027 !important;
   border:1px solid rgba(0,0,0,.07);
   border-radius:10px;
   box-shadow:0 1px 5px rgba(0,0,0,.07);
@@ -99,7 +103,7 @@ main{
 
 .news-link{
   display:block;
-  color:inherit;
+  color:inherit !important;
   text-decoration:none;
 }
 
@@ -130,15 +134,16 @@ main{
   font-size:45px;
 }
 
-/* TEXTO EMBAIXO */
+/* TEXTO */
 
 .news-info{
   padding:9px 11px 10px;
+  background:#fff !important;
 }
 
 .news-category{
   display:block;
-  color:#168a45;
+  color:#168a45 !important;
   font-size:9px;
   font-weight:800;
   margin-bottom:4px;
@@ -146,6 +151,7 @@ main{
 
 .news h2{
   margin:0;
+  color:#182027 !important;
   font-size:16px;
   line-height:1.25;
   font-weight:800;
@@ -154,36 +160,30 @@ main{
 .news-date{
   display:block;
   margin-top:6px;
-  color:#7b858b;
+  color:#7b858b !important;
   font-size:10px;
 }
 
-/* INDICA QUE É CLICÁVEL */
-
-.news-link:active .news{
+.news-link:active{
   transform:scale(.99);
 }
-
-/* CARREGANDO */
 
 .loading{
   text-align:center;
   padding:20px;
-  color:#7b858b;
+  color:#7b858b !important;
   font-size:12px;
 }
 
 .erro{
   text-align:center;
   padding:20px;
-  color:#c62828;
-  background:#fff;
+  color:#c62828 !important;
+  background:#fff !important;
   border-radius:9px;
 }
 
-/* =========================
-   CELULAR
-========================= */
+/* CELULAR */
 
 @media(max-width:600px){
 
@@ -222,7 +222,6 @@ main{
 
   .news-category{
     font-size:8px;
-    margin-bottom:3px;
   }
 
   .news h2{
@@ -241,9 +240,7 @@ main{
 
 }
 
-/* =========================
-   CELULARES PEQUENOS
-========================= */
+/* CELULARES PEQUENOS */
 
 @media(max-width:380px){
 
@@ -253,43 +250,6 @@ main{
 
   .news h2{
     font-size:13px;
-  }
-
-}
-
-/* =========================
-   MODO ESCURO
-========================= */
-
-@media(prefers-color-scheme:dark){
-
-  body{
-    background:#101315;
-    color:#f1f3f4;
-  }
-
-  .news{
-    background:#181d20;
-    border-color:#293136;
-    box-shadow:0 1px 6px rgba(0,0,0,.3);
-  }
-
-  .thumb{
-    background:#20272b;
-  }
-
-  .news h2{
-    color:#f5f7f8;
-  }
-
-  .news-date,
-  #estado{
-    color:#9ca7ad;
-  }
-
-  .section-title a,
-  .news-category{
-    color:#25b965;
   }
 
 }
@@ -338,10 +298,6 @@ main{
 
 <script>
 
-/* =========================
-   SUPABASE
-========================= */
-
 const SUPABASE_URL =
 "https://sonzwfhepjfvzltuxxne.supabase.co";
 
@@ -354,21 +310,11 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-
-/* =========================
-   ELEMENTOS
-========================= */
-
 const list =
 document.getElementById("newsList");
 
 const estado =
 document.getElementById("estado");
-
-
-/* =========================
-   SEGURANÇA
-========================= */
 
 function esc(valor){
 
@@ -385,11 +331,6 @@ m=>({
 
 }
 
-
-/* =========================
-   NORMALIZAR
-========================= */
-
 function normalizar(valor){
 
 return String(valor ?? "")
@@ -399,11 +340,6 @@ return String(valor ?? "")
 .replace(/[\u0300-\u036f]/g,"");
 
 }
-
-
-/* =========================
-   DATA
-========================= */
 
 function formatarData(data){
 
@@ -424,11 +360,6 @@ year:"numeric"
 
 }
 
-
-/* =========================
-   CRIAR NOTÍCIA
-========================= */
-
 function criarNoticia(n){
 
 const titulo =
@@ -439,9 +370,7 @@ String(
 n.imagem ?? n.Imagem ?? ""
 ).trim();
 
-
 let imagemHTML="";
-
 
 if(imagem){
 
@@ -471,18 +400,6 @@ imagemHTML=`
 `;
 
 }
-
-
-/*
-   IMPORTANTE:
-   Aqui NÃO usamos n.texto.
-
-   A listagem mostra somente:
-   imagem
-   título
-   categoria
-   data
-*/
 
 return `
 
@@ -524,18 +441,11 @@ ${formatarData(n.data)}
 
 }
 
-
-/* =========================
-   CARREGAR NOTÍCIAS
-========================= */
-
 async function carregarNoticias(){
 
 try{
 
-estado.textContent =
-"🔄 A carregar...";
-
+estado.textContent="🔄 A carregar...";
 
 const {data,error} =
 await supabaseClient
@@ -562,9 +472,6 @@ ascending:false
 
 .limit(500);
 
-
-/* ERRO */
-
 if(error){
 
 console.error(
@@ -575,14 +482,12 @@ error
 estado.textContent =
 "❌ Erro ao carregar notícias.";
 
-list.innerHTML = `
+list.innerHTML=`
 
 <div class="erro">
-
 Não foi possível carregar as notícias.
 <br>
 Tente novamente.
-
 </div>
 
 `;
@@ -591,31 +496,20 @@ return;
 
 }
 
-
-/* =========================
-   FILTRAR FUTEBOL
-========================= */
-
 const futebol =
-(data || []).filter(n => {
+(data || []).filter(n=>{
 
 return normalizar(n.categoria)
-===
-"futebol";
+==="futebol";
 
 });
 
-
-/* NENHUMA NOTÍCIA */
-
 if(!futebol.length){
 
-list.innerHTML = `
+list.innerHTML=`
 
 <div class="erro">
-
 ⚽ Ainda não existem notícias de Futebol.
-
 </div>
 
 `;
@@ -626,20 +520,13 @@ return;
 
 }
 
-
-/* =========================
-   MOSTRAR ESTEIRA
-========================= */
-
 list.innerHTML =
 futebol
 .map(criarNoticia)
 .join("");
 
-
 estado.textContent =
 "✓ Atualizado";
-
 
 }catch(e){
 
@@ -651,14 +538,12 @@ e
 estado.textContent =
 "❌ Erro ao carregar notícias.";
 
-list.innerHTML = `
+list.innerHTML=`
 
 <div class="erro">
-
 Não foi possível carregar as notícias.
 <br>
 Tente novamente.
-
 </div>
 
 `;
@@ -667,27 +552,12 @@ Tente novamente.
 
 }
 
-
-/* =========================
-   PRIMEIRA CARGA
-========================= */
-
 carregarNoticias();
-
-
-/* =========================
-   ATUALIZAR A CADA 1 HORA
-========================= */
 
 setInterval(
 carregarNoticias,
 60*60*1000
 );
-
-
-/* =========================
-   QUANDO VOLTAR À PÁGINA
-========================= */
 
 document.addEventListener(
 "visibilitychange",
