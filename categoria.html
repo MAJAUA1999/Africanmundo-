@@ -1341,146 +1341,297 @@ function filtrarNoticias(
 
       <script>
 
+             /* ==========================================
+    CARREGAR CATEGORIA
+ ========================================== */
+
+ async function carregarCategoria(){
+
+   const grid =
+     document.getElementById("newsGrid");
+
+   const titulo =
+     document.getElementById("categoryTitle");
+
+   const descricao =
+     document.getElementById(
+       "categoryDescription"
+     );
+
+
+   /* GRID NÃO EXISTE */
+
+   if(!grid){
+
+     console.warn(
+       "⚠️ newsGrid não encontrado."
+     );
+
+     return;
+
+   }
+
+
+   /* ================================
+      OBTER CATEGORIA DA URL
+   ================================= */
+
+   const parametros =
+     new URLSearchParams(
+       window.location.search
+     );
+
+
+   let categoria =
+     parametros.get("categoria");
+
+
+   categoria =
+     normalizarTexto(
+       categoria || "noticias"
+     );
+
+
+   /* Evitar categoria vazia */
+
+   if(!categoria){
+
+     categoria = "noticias";
+
+   }
+
+
+   categoriaAtual =
+     categoria;
+
+
+   /* ================================
+      RESET DA PAGINAÇÃO
+   ================================= */
+
+   paginaAtual = 0;
+
+   naoHaMaisNoticias = false;
+
+   carregandoMais = false;
+
+
+   /* ================================
+      TÍTULO DA CATEGORIA
+   ================================= */
+
+   if(titulo){
+
+     titulo.textContent =
+       nomeBonitoCategoria(
+         categoria
+       );
+
+   }
+
+
+   /* ================================
+      DESCRIÇÃO
+   ================================= */
+
+   if(descricao){
+
+     descricao.textContent =
+       descricaoCategoria(
+         categoria
+       );
+
+   }
+
+
+   /* ================================
+      LOADING
+   ================================= */
+
+   grid.innerHTML = `
+     <div class="loading">
+
+       ⏳ A preparar as notícias...
+
+       <br><br>
+
+       🔎 A procurar notícias...
+
+     </div>
+   `;
+
+
+   try{
+
+     /* ==============================
+        INICIAR SUPABASE
+     ============================== */
+
+     if(!iniciarSupabase()){
+
+       throw new Error(
+         "Supabase não inicializado."
+       );
+
+     }
+
+
+     /* ==============================
+        BUSCAR PRIMEIRA PÁGINA
+     ============================== */
+
+     await buscarPagina(true);
+
+
+     /* ==============================
+        ATUALIZAÇÃO AUTOMÁTICA
+        SOMENTE ENTRETENIMENTO
+     ============================== */
+
+     iniciarAtualizacaoEntretenimento();
+
+
+   }
+
+   catch(erro){
+
+     console.error(
+       "❌ Erro ao carregar categoria:",
+       erro
+     );
+
+
+     /* ==============================
+        MENSAGEM DE ERRO
+     ============================== */
+
+     const mensagem =
+       erro &&
+       erro.message
+         ? erro.message
+         : "Erro desconhecido.";
+
+
+     grid.innerHTML = `
+
+       <div class="error">
+
+         ❌ Ocorreu um erro ao
+         carregar as notícias.
+
+         <br><br>
+
+         <small>
+           ${escaparHTML(
+             mensagem
+           )}
+         </small>
+
+         <br><br>
+
+         <button
+           type="button"
+           onclick="carregarCategoria()"
+           style="
+             padding:10px 18px;
+             border:0;
+             border-radius:8px;
+             background:var(--p);
+             color:#fff;
+             font-weight:bold;
+             cursor:pointer;
+           "
+         >
+           🔄 Tentar novamente
+         </button>
+
+       </div>
+
+     `;
+
+   }
+
+ }
+
 /* ==========================================
-   CARREGAR CATEGORIA
+   🔄 ATUALIZAÇÃO AUTOMÁTICA
+   SOMENTE ENTREtenimento
+   A cada 10 minutos
 ========================================== */
 
-async function carregarCategoria(){
+let intervaloEntretenimento = null;
 
-  const grid =
-    document.getElementById("newsGrid");
+function iniciarAtualizacaoEntretenimento(){
 
-  const titulo =
-    document.getElementById("categoryTitle");
+  /* Evitar vários intervalos */
 
-  const descricao =
-    document.getElementById(
-      "categoryDescription"
+  if(intervaloEntretenimento){
+    clearInterval(
+      intervaloEntretenimento
     );
-
-
-  if(!grid) return;
-
+  }
 
   const parametros =
     new URLSearchParams(
       window.location.search
     );
 
-
   const categoria =
     normalizarTexto(
-      parametros.get("categoria") ||
-      "noticias"
+      parametros.get("categoria") || ""
     );
 
+  /* Só funciona em Entretenimento */
 
-  categoriaAtual =
-    categoria;
-
-
-  paginaAtual = 0;
-
-  naoHaMaisNoticias = false;
-
-  carregandoMais = false;
-
-
-  if(titulo){
-
-    titulo.textContent =
-      nomeBonitoCategoria(
-        categoria
-      );
-
+  if(categoria !== "entretenimento"){
+    return;
   }
 
+  console.log(
+    "🎭 Atualização automática de Entretenimento ativada."
+  );
 
-  if(descricao){
+  intervaloEntretenimento =
+    setInterval(
+      async function(){
 
-    descricao.textContent =
-      descricaoCategoria(
-        categoria
-      );
+        console.log(
+          "🔄 Verificando novas notícias de Entretenimento..."
+        );
 
-  }
+        try{
 
+          /*
+           * Voltar para a primeira página
+           * para mostrar as notícias mais recentes
+           */
 
-  grid.innerHTML = `
-    <div class="loading">
-      ⏳ A preparar as notícias...
-      <br><br>
-      🔎 A procurar notícias...
-    </div>
-  `;
+          paginaAtual = 0;
 
+          naoHaMaisNoticias = false;
 
-  try{
+          carregandoMais = false;
 
-    if(!iniciarSupabase()){
+          await carregarCategoria();
 
-      throw new Error(
-        "Supabase não inicializado."
-      );
+          console.log(
+            "✅ Entretenimento atualizado."
+          );
 
-    }
+        }catch(erro){
 
+          console.error(
+            "❌ Erro na atualização automática:",
+            erro
+          );
 
-    await buscarPagina(
-      true
+        }
+
+      },
+      10 * 60 * 1000
     );
-
-  }
-
-  catch(erro){
-
-    console.error(
-      "Erro categoria:",
-      erro
-    );
-
-
-    grid.innerHTML = `
-      <div class="error">
-
-        ❌ Ocorreu um erro ao
-        carregar as notícias.
-
-        <br><br>
-
-        <small>
-          ${escaparHTML(
-            erro.message ||
-            "Erro desconhecido."
-          )}
-        </small>
-
-        <br><br>
-
-        <button
-          type="button"
-          onclick="carregarCategoria()"
-          style="
-            padding:10px 18px;
-            border:0;
-            border-radius:8px;
-            background:var(--p);
-            color:#fff;
-            font-weight:bold;
-            cursor:pointer;
-          "
-        >
-          🔄 Tentar novamente
-        </button>
-
-      </div>
-    `;
-
-  }
-
 }
-
-
+            
 /* ==========================================
    BUSCAR PÁGINA
 ========================================== */
