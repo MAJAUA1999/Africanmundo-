@@ -1067,36 +1067,73 @@ onclick="fecharModal()"
 `);
 }
 
+
 /* =========================================================
-ATUALIZAÇÃO
+ATUALIZAÇÃO AUTOMÁTICA
 ========================================================= */
 
-function atualizarNoticias(){
+async function atualizarNoticias(){
 
 console.log(
 "AfricanMundo — verificando novas notícias..."
 );
 
-carregarNoticias();
+try{
+
+/*
+Atualiza as notícias exibidas
+*/
+await carregarNoticias();
+
+/*
+Atualiza os anúncios ativos
+*/
+await carregarAnuncios();
+
+console.log(
+"AfricanMundo — conteúdo atualizado."
+);
+
+}catch(e){
+
+console.warn(
+"AfricanMundo — erro na atualização automática:",
+e
+);
+
 }
+}
+
+/* =========================================================
+INICIAR ATUALIZAÇÃO AUTOMÁTICA
+========================================================= */
 
 function iniciarAtualizacaoAutomatica(){
 
 if(timerAtualizacao){
 
-clearInterval(timerAtualizacao);
+clearInterval(
+timerAtualizacao
+);
+
 }
 
 timerAtualizacao =
 setInterval(
-atualizarNoticias,
-300000
+function(){
+
+atualizarNoticias();
+
+},
+5 * 60 * 1000
 );
 
 console.log(
-"AfricanMundo — atualização automática ativa."
+"AfricanMundo — atualização automática ativa a cada 5 minutos."
 );
+
 }
+
 
 /* =========================================================
 REALTIME
@@ -2398,8 +2435,21 @@ new Date().toISOString();
 const resposta =
 await db
 .from("pedidos_anuncios")
-.select("*")
-.eq("status","aprovado")
+.select(`
+id,
+empresa,
+responsavel,
+tipo_anuncio,
+local_anuncio,
+data_inicio,
+data_fim,
+descricao,
+arquivo_url,
+arquivo_tipo,
+link_destino,
+estado
+`)
+.eq("estado","aprovado")
 .lte("data_inicio",agora)
 .gte("data_fim",agora)
 .order("id",{ascending:false})
@@ -2408,9 +2458,15 @@ await db
 if(resposta.error){
 
 console.warn(
-"AfricanMundo — anúncios:",
+"AfricanMundo — erro ao carregar anúncios:",
 resposta.error
 );
+
+secao.style.display =
+"none";
+
+container.innerHTML =
+"";
 
 return;
 }
@@ -2422,7 +2478,8 @@ Array.isArray(resposta.data)
 
 if(!anuncios.length){
 
-container.innerHTML = "";
+container.innerHTML =
+"";
 
 secao.style.display =
 "none";
@@ -2438,12 +2495,68 @@ anuncios
 .map(anuncioCard)
 .join("");
 
+/*
+Protege imagens dos anúncios
+*/
+container
+.querySelectorAll("img")
+.forEach(function(img){
+
+img.addEventListener(
+"error",
+function(){
+
+this.style.display =
+"none";
+
+}
+);
+
+});
+
+/*
+Garante reprodução dos vídeos
+*/
+container
+.querySelectorAll("video")
+.forEach(function(video){
+
+video.muted = true;
+video.autoplay = true;
+video.loop = true;
+video.playsInline = true;
+
+const promessa =
+video.play();
+
+if(
+promessa &&
+typeof promessa.catch ===
+"function"
+){
+
+promessa.catch(function(){
+
+console.log(
+"AfricanMundo — reprodução automática bloqueada."
+);
+
+});
+
+}
+
+});
+
 }catch(e){
 
 console.warn(
 "AfricanMundo — erro nos anúncios:",
 e
 );
+
+secao.style.display =
+"none";
+
 }
 }
 
@@ -2454,7 +2567,10 @@ CARTÃO DE ANÚNCIO
 
 function anuncioCard(anuncio){
 
-if(!anuncio) return "";
+if(!anuncio){
+
+return "";
+}
 
 const empresa =
 String(
@@ -2464,11 +2580,10 @@ anuncio.responsavel ||
 ).trim();
 
 const tipo =
-norm(
-anuncio.tipo ||
+String(
 anuncio.tipo_anuncio ||
 ""
-);
+).trim();
 
 const descricao =
 String(
@@ -2476,31 +2591,42 @@ anuncio.descricao ||
 ""
 ).trim();
 
-const imagem =
+const arquivo =
 String(
-anuncio.imagem ||
-anuncio.imagem_url ||
+anuncio.arquivo_url ||
 ""
 ).trim();
 
-const video =
-String(
-anuncio.video ||
-anuncio.video_url ||
+const tipoArquivo =
+norm(
+anuncio.arquivo_tipo ||
 ""
-).trim();
+);
 
 const link =
 String(
-anuncio.url ||
-anuncio.link ||
-anuncio.url_destino ||
+anuncio.link_destino ||
 ""
 ).trim();
 
-let conteudo = "";
+let conteudo =
+"";
 
-if(video){
+/*
+=========================================================
+VÍDEO
+=========================================================
+*/
+
+if(
+arquivo &&
+(
+tipoArquivo.includes("video") ||
+arquivo.match(
+/\.(mp4|webm|ogg|mov)(\?|$)/i
+)
+)
+){
 
 conteudo = `
 
@@ -2511,20 +2637,31 @@ muted
 loop
 playsinline
 preload="metadata"
+aria-label="Publicidade de ${esc(empresa)}"
 >
-<source src="${esc(video)}">
+<source
+src="${esc(arquivo)}"
+>
 </video>
 
 `;
 
-}else if(imagem){
+}
+
+/*
+=========================================================
+IMAGEM
+=========================================================
+*/
+
+else if(arquivo){
 
 conteudo = `
 
 <img
 class="anuncio-imagem"
-src="${esc(imagem)}"
-alt="${esc(empresa)}"
+src="${esc(arquivo)}"
+alt="Publicidade de ${esc(empresa)}"
 loading="lazy"
 decoding="async"
 referrerpolicy="no-referrer"
@@ -2532,28 +2669,46 @@ referrerpolicy="no-referrer"
 
 `;
 
-}else{
+}
+
+/*
+=========================================================
+SEM FICHEIRO
+=========================================================
+*/
+
+else{
 
 conteudo = `
 
-<div class="anuncio-sem-imagem">
+<div
+class="anuncio-sem-imagem"
+aria-hidden="true"
+>
 📢
 </div>
 
 `;
+
 }
 
 const corpo = `
 
 <div class="anuncio-media">
+
 ${conteudo}
+
 </div>
 
 <div class="anuncio-corpo">
 
-<small>PUBLICIDADE</small>
+<small>
+PUBLICIDADE
+</small>
 
-<h3>${esc(empresa)}</h3>
+<h3>
+${esc(empresa)}
+</h3>
 
 ${
 descricao
@@ -2602,15 +2757,19 @@ ${corpo}
 </a>
 
 `;
+
 }
 
 return `
 
-<article class="anuncio-card">
+<article
+class="anuncio-card"
+>
 ${corpo}
 </article>
 
 `;
+
 }
 
 /* =========================================================
