@@ -461,15 +461,24 @@ async function carregarNoticias() {
   }
 }
 
-/* MOSTRAR NOTÍCIA EM DESTAQUE */
+
+/* DESTAQUE PROFISSIONAL — AFRICANMUNDO */
+
 function mostrarDestaque() {
   const area = document.getElementById("destaque");
-  if (!area || !noticias.length) return;
+
+  if (timerDestaque) {
+    clearTimeout(timerDestaque);
+    timerDestaque = null;
+  }
+
+  if (!area || !noticias || !noticias.length) return;
 
   const lista = ordenarPorData(noticias).slice(0, 10);
+
   if (!lista.length) return;
 
-  if (indiceDestaque >= lista.length) {
+  if (indiceDestaque >= lista.length || indiceDestaque < 0) {
     indiceDestaque = 0;
   }
 
@@ -478,59 +487,173 @@ function mostrarDestaque() {
   const imagem = esc(obterImagem(noticia));
   const categoria = esc(obterCategoria(noticia));
   const data = esc(formatarData(obterData(noticia)));
-  const id = esc(noticia.id ?? "");
-  const textoResumo = resumo(noticia, 160);
+  const id = String(noticia.id ?? "");
+  const textoResumo = esc(resumo(noticia, 150));
+  const urlNoticia =
+    "noticia.html?id=" + encodeURIComponent(id);
+
+  /* Estilo da imagem e do texto */
+  area.style.width = "100%";
+  area.style.maxWidth = "100%";
+
+  /* Animação suave, criada apenas uma vez */
+  if (!document.getElementById("am-estilo-destaque")) {
+    const estilo = document.createElement("style");
+    estilo.id = "am-estilo-destaque";
+    estilo.textContent = `
+      #destaque .am-destaque-imagem {
+        display:block;
+        width:100%;
+        height:340px;
+        object-fit:cover;
+        object-position:center;
+        transition:transform .4s ease;
+      }
+
+      #destaque .am-destaque-card {
+        position:relative;
+        display:block;
+        width:100%;
+        overflow:hidden;
+        border-radius:16px;
+        background:#17201c;
+        box-shadow:0 5px 20px rgba(0,0,0,.14);
+      }
+
+      #destaque .am-destaque-card:hover .am-destaque-imagem {
+        transform:scale(1.025);
+      }
+
+      #destaque .am-destaque-overlay {
+        position:absolute;
+        inset:0;
+        display:flex;
+        flex-direction:column;
+        justify-content:flex-end;
+        box-sizing:border-box;
+        padding:clamp(16px,3vw,30px);
+        color:#fff;
+        background:linear-gradient(
+          to bottom,
+          rgba(0,0,0,0) 15%,
+          rgba(0,0,0,.22) 40%,
+          rgba(0,0,0,.88) 100%
+        );
+      }
+
+      #destaque .am-destaque-categoria {
+        display:inline-block;
+        align-self:flex-start;
+        margin-bottom:10px;
+        padding:5px 10px;
+        border-radius:4px;
+        background:#168a45;
+        color:#fff;
+        font-size:12px;
+        font-weight:800;
+        text-transform:uppercase;
+        letter-spacing:.5px;
+      }
+
+      #destaque .am-destaque-titulo {
+        margin:0 0 9px;
+        color:#fff;
+        font-size:clamp(23px,3.4vw,36px);
+        line-height:1.17;
+        font-weight:800;
+        text-shadow:0 2px 5px rgba(0,0,0,.35);
+      }
+
+      #destaque .am-destaque-resumo {
+        margin:0 0 10px;
+        max-width:760px;
+        color:#f4f4f4;
+        font-size:14px;
+        line-height:1.5;
+      }
+
+      #destaque .am-destaque-data {
+        color:#e5e5e5;
+        font-size:12px;
+      }
+
+      @media(max-width:700px) {
+        #destaque .am-destaque-card {
+          border-radius:12px;
+        }
+
+        #destaque .am-destaque-imagem {
+          height:250px;
+        }
+
+        #destaque .am-destaque-overlay {
+          padding:16px;
+        }
+
+        #destaque .am-destaque-titulo {
+          font-size:23px;
+          line-height:1.2;
+        }
+
+        #destaque .am-destaque-resumo {
+          font-size:13px;
+          line-height:1.4;
+        }
+      }
+
+      @media(max-width:380px) {
+        #destaque .am-destaque-imagem {
+          height:230px;
+        }
+
+        #destaque .am-destaque-titulo {
+          font-size:20px;
+        }
+      }
+    `;
+    document.head.appendChild(estilo);
+  }
 
   area.innerHTML = `
-    <article
-      class="destaque-card"
-      data-noticia-id="${id}"
-      style="
-        position:relative;
-        width:100%;
-        max-width:100%;
-        overflow:hidden;
-      "
-    >
+    <article class="am-destaque-card">
       <a
-        href="noticia.html?id=${encodeURIComponent(String(noticia.id ?? ""))}"
+        href="${urlNoticia}"
         aria-label="${titulo}"
-        style="display:block;position:relative;"
+        style="display:block;position:relative;color:inherit;text-decoration:none"
       >
         <img
+          class="am-destaque-imagem"
           src="${imagem}"
           alt="${titulo}"
           loading="eager"
           decoding="async"
-          style="
-            display:block;
-            width:100%;
-            height:330px;
-            object-fit:cover;
-          "
           onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
         >
 
-        <div class="destaque-overlay">
-          <span>${categoria}</span>
-          <h2>${titulo}</h2>
+        <div class="am-destaque-overlay">
+          <span class="am-destaque-categoria">${categoria}</span>
+
+          <h2 class="am-destaque-titulo">${titulo}</h2>
+
           ${
             textoResumo
-              ? `<p>${esc(textoResumo)}</p>`
+              ? `<p class="am-destaque-resumo">${textoResumo}</p>`
               : ""
           }
-          <small>${data}</small>
+
+          <small class="am-destaque-data">${data} · AfricanMundo</small>
         </div>
       </a>
     </article>
   `;
 
-  const imagemDestaque = area.querySelector("img");
-
-  if (imagemDestaque && window.matchMedia("(max-width: 700px)").matches) {
-    imagemDestaque.style.height = "210px";
-  }
+  /* Passar automaticamente para a próxima notícia */
+  timerDestaque = setTimeout(function () {
+    indiceDestaque = (indiceDestaque + 1) % lista.length;
+    mostrarDestaque();
+  }, 15000);
 }
+
 
 /* INICIAR ROTAÇÃO DO DESTAQUE */
 function iniciarDestaque() {
@@ -811,48 +934,124 @@ function anuncioCard(anuncio) {
   return `<article class="anuncio-card">${corpo}</article>`;
 }
 
-/* NOTIFICAÇÕES */
+
+/* PAINÉIS PROFISSIONAIS — AFRICANMUNDO */
+
 function mostrarNotificacoes() {
   abrirPainel("notificationPanel", "Notificações");
 }
 
-/* FERRAMENTAS */
 function mostrarFerramentas() {
   abrirPainel("toolsPanel", "Ferramentas");
 }
 
-/* PAINEL DO UTILIZADOR */
 function mostrarEu() {
-  abrirPainel("userPanel", "Utilizador");
+  abrirPainel("userPanel", "Eu");
 }
 
-/* MOSTRAR UM PAINEL EXISTENTE OU CRIAR UM SIMPLES */
+function fecharPainel(id) {
+  const painel = document.getElementById(id);
+  if (painel) {
+    painel.hidden = true;
+    painel.style.display = "none";
+  }
+}
+
 function abrirPainel(id, titulo) {
+  const ids = [
+    "notificationPanel",
+    "toolsPanel",
+    "userPanel"
+  ];
+
   let painel = document.getElementById(id);
 
-  if (painel) {
-    painel.hidden = !painel.hidden;
-    painel.style.display = painel.hidden ? "none" : "block";
+  /* Fechar os outros painéis */
+  ids.forEach(function (outroId) {
+    if (outroId !== id) {
+      fecharPainel(outroId);
+    }
+  });
+
+  /* Alternar o painel selecionado */
+  if (painel && !painel.hidden &&
+      painel.style.display !== "none") {
+    fecharPainel(id);
     return;
   }
 
-  painel = document.createElement("div");
-  painel.id = id;
-  painel.className = "am-painel";
-  painel.style.cssText =
-    "position:fixed;right:12px;top:70px;z-index:10000;" +
-    "width:min(320px,calc(100vw - 24px));padding:16px;" +
-    "background:var(--card,#fff);color:var(--txt,#222);" +
-    "border:1px solid var(--border,#ddd);border-radius:12px;" +
-    "box-shadow:0 8px 28px #0002";
+  if (!painel) {
+    painel = document.createElement("section");
+    painel.id = id;
+    painel.className = "am-painel";
+    painel.setAttribute("role", "dialog");
+    painel.setAttribute("aria-label", titulo);
+
+    painel.style.cssText =
+      "position:fixed;right:12px;top:70px;z-index:10000;" +
+      "width:min(360px,calc(100vw - 24px));" +
+      "max-height:calc(100vh - 90px);overflow:auto;" +
+      "box-sizing:border-box;padding:18px;" +
+      "background:var(--card,#fff);color:var(--txt,#222);" +
+      "border:1px solid var(--border,#ddd);border-radius:16px;" +
+      "box-shadow:0 12px 36px #0003;";
+
+    document.body.appendChild(painel);
+  }
+
+  let conteudo = "";
+
+  if (id === "notificationPanel") {
+    conteudo = `
+      <p>Fique a par das novidades do AfricanMundo.</p>
+      <div id="amListaNotificacoes">
+        <p>Consulte as últimas notícias abaixo.</p>
+      </div>
+      <button type="button" class="am-acao-painel"
+        onclick="if(typeof carregarNoticias==='function'){carregarNoticias()}">
+        Atualizar notícias
+      </button>`;
+  } else if (id === "toolsPanel") {
+    conteudo = `
+      <p>Acesso rápido às funcionalidades do portal.</p>
+      <button type="button" class="am-acao-painel"
+        onclick="if(typeof abrirPesquisa==='function'){abrirPesquisa()}else{document.getElementById('pesquisa')?.focus()}">
+        🔎 Pesquisar notícias
+      </button>
+      <button type="button" class="am-acao-painel"
+        onclick="if(navigator.share){navigator.share({title:document.title,url:location.href}).catch(()=>{})}else if(navigator.clipboard){navigator.clipboard.writeText(location.href).then(()=>alert('Link copiado.')).catch(()=>{})}">
+        🔗 Partilhar AfricanMundo
+      </button>
+      <button type="button" class="am-acao-painel"
+        onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        ⬆ Voltar ao topo
+      </button>`;
+  } else {
+    conteudo = `
+      <p>Bem-vindo ao AfricanMundo.</p>
+      <button type="button" class="am-acao-painel"
+        onclick="if(typeof mostrarFavoritos==='function'){mostrarFavoritos()}else{alert('Os favoritos ainda precisam de ser ligados a esta área.')}">
+        ★ Os meus favoritos
+      </button>
+      <p class="am-nota-painel">
+        As opções de conta e perfil serão ligadas às funções
+        de autenticação existentes no site.
+      </p>`;
+  }
 
   painel.innerHTML = `
-    <button type="button" aria-label="Fechar"
-      style="float:right" onclick="this.parentElement.remove()">✕</button>
-    <h3>${esc(titulo)}</h3>
-    <p>Consulte as notícias mais recentes do AfricanMundo.</p>`;
+    <div style="display:flex;align-items:center;
+      justify-content:space-between;gap:12px">
+      <h3 style="margin:0;font-size:19px">${esc(titulo)}</h3>
+      <button type="button" aria-label="Fechar painel"
+        onclick="fecharPainel('${id}')"
+        style="border:0;background:transparent;color:inherit;
+        font-size:22px;cursor:pointer">×</button>
+    </div>
+    <div style="margin-top:12px">${conteudo}</div>`;
 
-  document.body.appendChild(painel);
+  painel.hidden = false;
+  painel.style.display = "block";
 }
 
 /* CORES DO SITE */
