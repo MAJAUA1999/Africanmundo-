@@ -1341,3 +1341,173 @@ table{
     font-size: 12px;
   }
 }
+
+
+
+/* =====================================
+   AFRICANMUNDO — PESQUISA MODELO 1
+   Lista vertical compacta para telemóvel
+===================================== */
+
+#resultadosPesquisa.am-busca-compacta {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 12px 0 20px;
+  padding: 0;
+  overflow: hidden;
+  background: var(--card, #ffffff);
+  color: var(--txt, #202722);
+  border: 1px solid var(--border, #e1e7e3);
+  border-radius: 12px;
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
+}
+
+#resultadosPesquisa[hidden] {
+  display: none !important;
+}
+
+#resultadosPesquisa .am-busca-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 14px;
+  border-bottom: 2px solid var(--p, #168a45);
+}
+
+#resultadosPesquisa .am-busca-topo h2 {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+#resultadosPesquisa .am-busca-topo p {
+  margin: 4px 0 0;
+  font-size: 12px;
+  line-height: 1.4;
+  opacity: 0.75;
+}
+
+#resultadosPesquisa #fecharResultadosPesquisa {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid var(--border, #e1e7e3);
+  border-radius: 50%;
+  background: transparent;
+  color: inherit;
+  font-size: 23px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+#resultadosPesquisa .am-busca-lista {
+  display: block;
+  width: 100%;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+#resultadosPesquisa a.am-busca-linha {
+  display: flex !important;
+  align-items: center;
+  gap: 9px;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 11px 2px;
+  margin: 0;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--border, #e1e7e3);
+  border-radius: 0;
+  text-decoration: none;
+  box-shadow: none;
+  white-space: normal;
+}
+
+#resultadosPesquisa a.am-busca-linha:last-child {
+  border-bottom: 0;
+}
+
+#resultadosPesquisa .am-busca-ponto {
+  display: none !important;
+}
+
+#resultadosPesquisa .am-busca-conteudo {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#resultadosPesquisa .am-busca-conteudo strong {
+  display: block;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  font-weight: 600;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+#resultadosPesquisa .am-busca-conteudo small {
+  display: block;
+  margin-top: 4px;
+  color: var(--p, #168a45);
+  font-size: 12px;
+  line-height: 1.4;
+  white-space: normal;
+}
+
+#resultadosPesquisa .am-busca-seta {
+  display: block;
+  flex: 0 0 auto;
+  color: var(--p, #168a45);
+  font-size: 23px;
+  line-height: 1;
+}
+
+#resultadosPesquisa .am-busca-vazio {
+  margin: 0;
+  padding: 18px 6px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 600px) {
+  #resultadosPesquisa.am-busca-compacta {
+    margin-top: 8px;
+    border-radius: 10px;
+  }
+
+  #resultadosPesquisa .am-busca-topo {
+    padding: 11px 10px;
+  }
+
+  #resultadosPesquisa .am-busca-topo h2 {
+    font-size: 16px;
+  }
+
+  #resultadosPesquisa .am-busca-lista {
+    padding: 0 10px;
+  }
+
+  #resultadosPesquisa a.am-busca-linha {
+    gap: 7px;
+    padding: 10px 1px;
+  }
+
+  #resultadosPesquisa .am-busca-conteudo strong {
+    font-size: 13px;
+  }
+
+  #resultadosPesquisa .am-busca-conteudo small {
+    font-size: 11px;
+  }
+}
