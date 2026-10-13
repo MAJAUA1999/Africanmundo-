@@ -757,43 +757,46 @@ function pesquisar(termoRecebido) {
     container.className = "am-busca-compacta";
   }
 
-  container.innerHTML = `
-    <div class="am-busca-topo">
-      <div>
-        <h2>Resultados da pesquisa</h2>
-        <p>${lista.length} resultado(s) para “${esc(termo)}”</p>
-      </div>
-      <button type="button" aria-label="Fechar resultados"
-        id="fecharResultadosPesquisa">×</button>
+  
+container.innerHTML = `
+  <div class="am-busca-topo">
+    <div>
+      <h2>Resultados da pesquisa</h2>
+      <p>${lista.length} resultado(s) para “${esc(termo)}”</p>
     </div>
+    <button type="button"
+      aria-label="Fechar resultados"
+      id="fecharResultadosPesquisa">×</button>
+  </div>
 
-    <div class="am-busca-lista">
-      ${
-        lista.length
-          ? lista.map(function (n) {
-              const titulo = esc(obterTitulo(n));
-              const categoria = esc(obterCategoria(n));
-              const data = esc(formatarData(obterData(n)));
-              const link = "noticia.html?id=" +
-                encodeURIComponent(String(n.id ?? ""));
+  <div class="am-busca-lista">
+    ${
+      lista.length
+        ? lista.map(function (n) {
+            const titulo = esc(obterTitulo(n));
+            const categoria = esc(obterCategoria(n));
+            const data = esc(formatarData(obterData(n)));
+            const link = "noticia.html?id=" +
+              encodeURIComponent(String(n.id ?? ""));
 
-              return `
-                <a class="am-busca-linha" href="${link}">
-                  <span class="am-busca-ponto">›</span>
-                  <span class="am-busca-conteudo">
-                    <strong>${titulo}</strong>
-                    <small>${categoria}${data ? " · " + data : ""}</small>
-                  </span>
-                  <span class="am-busca-seta">›</span>
-                </a>`;
-            }).join("")
-          : `<p class="am-busca-vazio">
-               Não foram encontradas notícias com “${esc(termo)}”.
-               Experimenta outro título ou palavra.
-             </p>`
-      }
-    </div>
-  `;
+            return `
+              <a class="am-busca-linha" href="${link}">
+                <span class="am-busca-conteudo">
+                  <strong>${titulo}</strong>
+                  <small>${categoria}${data ? " · " + data : ""}</small>
+                </span>
+                <span class="am-busca-seta" aria-hidden="true">›</span>
+              </a>
+            `;
+          }).join("")
+        : `<p class="am-busca-vazio">
+             Não foram encontradas notícias com “${esc(termo)}”.
+             Experimenta outra palavra.
+           </p>`
+    }
+  </div>
+`;
+   
 
   container.hidden = false;
 
