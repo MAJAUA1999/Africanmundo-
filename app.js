@@ -1186,26 +1186,52 @@ function mostrarAtalhos() {
   alert("Atalho: pressione / para abrir a pesquisa. Pressione Esc para fechar painéis.");
 }
 
-/* BOTÕES DO TOPO */
+
+/* BOTÕES DO TOPO — AFRICANMUNDO */
 function configurarBotoesTopo() {
   const mapa = [
-    [["btnNotificacao", "notificacaoBtn"], mostrarNotificacoes],
-    [["btnFerramentas", "ferramentasBtn"], mostrarFerramentas],
-    [["btnUsuario", "userBtn"], mostrarEu],
-    [["btnCores", "colorBtn"], mostrarCores],
-    [["btnPesquisa", "searchBtn"], abrirPesquisa],
-    [["btnPartilhar", "shareBtn"], partilharSite]
+    [
+      ["btnNotificacao", "notificacaoBtn", "notificationBtn"],
+      mostrarNotificacoes
+    ],
+    [
+      ["btnFerramentas", "ferramentasBtn", "toolsBtn"],
+      mostrarFerramentas
+    ],
+    [
+      ["btnUsuario", "userBtn", "btnUser"],
+      mostrarEu
+    ],
+    [
+      ["btnCores", "colorBtn", "btnColor"],
+      mostrarCores
+    ],
+    [
+      ["btnPesquisa", "searchBtn", "btnSearch"],
+      abrirPesquisa
+    ],
+    [
+      ["btnPartilhar", "shareBtn", "btnShare"],
+      partilharSite
+    ]
   ];
 
   mapa.forEach(function (item) {
     item[0].forEach(function (id) {
       const elemento = document.getElementById(id);
-      if (!elemento || elemento.dataset.amConfigurado === "1") return;
+
+      if (!elemento || elemento.dataset.amConfigurado === "1") {
+        return;
+      }
 
       elemento.dataset.amConfigurado = "1";
+
       elemento.addEventListener("click", function (event) {
         event.preventDefault();
-        item[1]();
+
+        if (typeof item[1] === "function") {
+          item[1]();
+        }
       });
     });
   });
@@ -1217,32 +1243,47 @@ function configurarBotoesData() {
     if (el.dataset.amConfigurado === "1") return;
 
     const acao = norm(el.dataset.amAction);
+
     const funcoes = {
       notificacao: mostrarNotificacoes,
       notificacoes: mostrarNotificacoes,
+      notification: mostrarNotificacoes,
+
       ferramenta: mostrarFerramentas,
       ferramentas: mostrarFerramentas,
+      tools: mostrarFerramentas,
+
       eu: mostrarEu,
       usuario: mostrarEu,
       user: mostrarEu,
+
       cor: mostrarCores,
+      cores: mostrarCores,
       color: mostrarCores,
+
       pesquisa: abrirPesquisa,
+      pesquisar: abrirPesquisa,
       search: abrirPesquisa,
+
       partilhar: partilharSite,
-      compartilhar: partilharSite
+      compartilhar: partilharSite,
+      partilharSite: partilharSite,
+      share: partilharSite
     };
 
     const funcao = funcoes[acao];
+
     if (typeof funcao !== "function") return;
 
     el.dataset.amConfigurado = "1";
+
     el.addEventListener("click", function (event) {
       event.preventDefault();
       funcao();
     });
   });
 }
+
 
 /* PESQUISA */
 function configurarPesquisa() {
