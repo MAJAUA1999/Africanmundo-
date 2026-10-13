@@ -681,6 +681,7 @@ function pesquisarTecla(evento) {
   }
 }
 
+
 /* ABRIR A PESQUISA */
 function abrirPesquisa() {
   const campo = encontrarElemento([
@@ -693,18 +694,21 @@ function abrirPesquisa() {
     campo.focus();
     campo.scrollIntoView({
       behavior: "smooth",
-      block: "center"
+      block: "nearest"
     });
     return;
   }
 
-  const termo = window.prompt("O que deseja encontrar no AfricanMundo?");
+  const termo = window.prompt(
+    "O que deseja encontrar no AfricanMundo?"
+  );
+
   if (termo && termo.trim()) {
     pesquisar(termo.trim());
   }
 }
 
-/* EXECUTAR PESQUISA */
+/* PESQUISA PROFISSIONAL EM LISTA */
 function pesquisar(termoRecebido) {
   const campo = encontrarElemento([
     "searchInput",
@@ -713,9 +717,7 @@ function pesquisar(termoRecebido) {
   ]);
 
   const termo = String(
-    termoRecebido ??
-    campo?.value ??
-    ""
+    termoRecebido ?? campo?.value ?? ""
   ).trim();
 
   if (!termo) {
@@ -724,60 +726,95 @@ function pesquisar(termoRecebido) {
   }
 
   ultimaPesquisa = termo;
-
   const alvo = norm(termo);
 
-  const resultados = noticias.filter(function (noticia) {
-    const texto = norm([
-      noticia.titulo,
-      noticia.texto,
-      noticia.categoria,
-      noticia.subcategoria,
-      noticia.pais,
-      noticia.fonte
-    ].join(" "));
+  const resultados = (Array.isArray(noticias) ? noticias : [])
+    .filter(function (noticia) {
+      const texto = norm([
+        noticia.titulo,
+        noticia.texto,
+        noticia.categoria,
+        noticia.subcategoria,
+        noticia.pais,
+        noticia.fonte
+      ].join(" "));
 
-    return texto.includes(alvo);
-  });
+      return texto.includes(alvo);
+    })
+    .slice(0, 50);
 
-  let container = encontrarElemento([
-    "resultadosPesquisa",
-    "resultados-pesquisa",
-    "pesquisaResultados",
-    "listaResultados"
-  ]);
+  let container = document.getElementById("resultadosPesquisa");
 
   if (!container) {
     container = document.createElement("section");
     container.id = "resultadosPesquisa";
-    container.className = "section";
+    container.className = "am-pesquisa-resultados";
 
-    const principal = document.querySelector("main") || document.body;
-    principal.prepend(container);
+    const areaPesquisa = campo
+      ? campo.closest("form, .search-container, .pesquisa-container, .search-box, .busca-container")
+      : null;
+
+    if (areaPesquisa && areaPesquisa.parentNode) {
+      areaPesquisa.insertAdjacentElement("afterend", container);
+    } else if (campo && campo.parentNode) {
+      campo.insertAdjacentElement("afterend", container);
+    } else {
+      const principal = document.querySelector("main") || document.body;
+      principal.prepend(container);
+    }
   }
 
   container.innerHTML = `
-    <div class="section-header">
-      <h2>Resultados da pesquisa</h2>
-      <p>
-        ${resultados.length}
-        resultado(s) para “${esc(termo)}”
-      </p>
+    <div class="am-pesquisa-cabecalho">
+      <div>
+        <h2>Resultados da pesquisa</h2>
+        <p>${resultados.length} notícia(s) encontrada(s) para “${esc(termo)}”</p>
+      </div>
+      <button type="button" class="am-pesquisa-fechar"
+        aria-label="Fechar resultados"
+        onclick="document.getElementById('resultadosPesquisa').hidden=true">
+        ×
+      </button>
     </div>
-    <div class="grid">
+
+    <div class="am-pesquisa-lista">
       ${
         resultados.length
-          ? resultados.slice(0, 50).map(criarCard).join("")
-          : '<p class="sem-noticias">Não foram encontradas notícias com esse termo.</p>'
+          ? resultados.map(function (noticia) {
+              const titulo = esc(obterTitulo(noticia));
+              const imagem = esc(obterImagem(noticia));
+              const categoria = esc(obterCategoria(noticia));
+              const data = esc(formatarData(obterData(noticia)));
+              const descricao = esc(resumo(noticia, 120));
+              const url = "noticia.html?id=" +
+                encodeURIComponent(String(noticia.id ?? ""));
+
+              return `
+                <a class="am-pesquisa-item" href="${url}">
+                  <img class="am-pesquisa-imagem"
+                    src="${imagem}" alt=""
+                    loading="lazy"
+                    onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
+
+                  <div class="am-pesquisa-texto">
+                    <span class="am-pesquisa-categoria">${categoria}</span>
+                    <h3>${titulo}</h3>
+                    ${descricao ? `<p>${descricao}</p>` : ""}
+                    <small>${data} · AfricanMundo</small>
+                  </div>
+                </a>`;
+            }).join("")
+          : '<p class="am-pesquisa-vazio">Não foram encontradas notícias com esse termo. Experimenta outras palavras.</p>'
       }
     </div>
   `;
 
+  container.hidden = false;
   container.scrollIntoView({
     behavior: "smooth",
-    block: "start"
+    block: "nearest"
   });
-     }
+}
 
 
 
