@@ -708,7 +708,8 @@ function abrirPesquisa() {
   }
 }
 
-/* PESQUISA PROFISSIONAL EM LISTA */
+
+/* PESQUISA COMPACTA — AFRICANMUNDO */
 function pesquisar(termoRecebido) {
   const campo = encontrarElemento([
     "searchInput",
@@ -728,18 +729,22 @@ function pesquisar(termoRecebido) {
   ultimaPesquisa = termo;
   const alvo = norm(termo);
 
-  const resultados = (Array.isArray(noticias) ? noticias : [])
-    .filter(function (noticia) {
+  const lista = (Array.isArray(noticias) ? noticias : [])
+    .filter(function (n) {
       const texto = norm([
-        noticia.titulo,
-        noticia.texto,
-        noticia.categoria,
-        noticia.subcategoria,
-        noticia.pais,
-        noticia.fonte
+        obterTitulo(n),
+        n.texto,
+        obterCategoria(n),
+        n.subcategoria,
+        n.pais,
+        n.fonte
       ].join(" "));
 
       return texto.includes(alvo);
+    })
+    .sort(function (a, b) {
+      return new Date(obterData(b) || 0) -
+             new Date(obterData(a) || 0);
     })
     .slice(0, 50);
 
@@ -748,73 +753,68 @@ function pesquisar(termoRecebido) {
   if (!container) {
     container = document.createElement("section");
     container.id = "resultadosPesquisa";
-    container.className = "am-pesquisa-resultados";
 
-    const areaPesquisa = campo
-      ? campo.closest("form, .search-container, .pesquisa-container, .search-box, .busca-container")
-      : null;
-
-    if (areaPesquisa && areaPesquisa.parentNode) {
-      areaPesquisa.insertAdjacentElement("afterend", container);
-    } else if (campo && campo.parentNode) {
-      campo.insertAdjacentElement("afterend", container);
-    } else {
-      const principal = document.querySelector("main") || document.body;
-      principal.prepend(container);
-    }
+    const principal = document.querySelector("main") || document.body;
+    principal.prepend(container);
   }
 
+  container.className = "am-busca-compacta";
   container.innerHTML = `
-    <div class="am-pesquisa-cabecalho">
+    <div class="am-busca-topo">
       <div>
         <h2>Resultados da pesquisa</h2>
-        <p>${resultados.length} notícia(s) encontrada(s) para “${esc(termo)}”</p>
+        <p>${lista.length} resultado(s) para “${esc(termo)}”</p>
       </div>
-      <button type="button" class="am-pesquisa-fechar"
-        aria-label="Fechar resultados"
-        onclick="document.getElementById('resultadosPesquisa').hidden=true">
-        ×
-      </button>
+      <button type="button" aria-label="Fechar resultados"
+        onclick="document.getElementById('resultadosPesquisa').hidden=true">×</button>
     </div>
 
-    <div class="am-pesquisa-lista">
+    <div class="am-busca-lista">
       ${
-        resultados.length
-          ? resultados.map(function (noticia) {
-              const titulo = esc(obterTitulo(noticia));
-              const imagem = esc(obterImagem(noticia));
-              const categoria = esc(obterCategoria(noticia));
-              const data = esc(formatarData(obterData(noticia)));
-              const descricao = esc(resumo(noticia, 120));
-              const url = "noticia.html?id=" +
-                encodeURIComponent(String(noticia.id ?? ""));
+        lista.length
+          ? lista.map(function (n) {
+              const titulo = esc(obterTitulo(n));
+              const categoria = esc(obterCategoria(n));
+              const data = esc(formatarData(obterData(n)));
+              const link = "noticia.html?id=" +
+                encodeURIComponent(String(n.id ?? ""));
 
               return `
-                <a class="am-pesquisa-item" href="${url}">
-                  <img class="am-pesquisa-imagem"
-                    src="${imagem}" alt=""
-                    loading="lazy"
-                    onerror="this.onerror=null;this.src='${FALLBACK_IMG}'">
-
-                  <div class="am-pesquisa-texto">
-                    <span class="am-pesquisa-categoria">${categoria}</span>
-                    <h3>${titulo}</h3>
-                    ${descricao ? `<p>${descricao}</p>` : ""}
-                    <small>${data} · AfricanMundo</small>
-                  </div>
+                <a class="am-busca-linha" href="${link}">
+                  <span class="am-busca-ponto">›</span>
+                  <span class="am-busca-conteudo">
+                    <strong>${titulo}</strong>
+                    <small>${categoria}${data ? " · " + data : ""}</small>
+                  </span>
+                  <span class="am-busca-seta">›</span>
                 </a>`;
             }).join("")
-          : '<p class="am-pesquisa-vazio">Não foram encontradas notícias com esse termo. Experimenta outras palavras.</p>'
+          : `<p class="am-busca-vazio">
+               Não foram encontradas notícias com “${esc(termo)}”.
+               Experimenta outro título ou palavra.
+             </p>`
       }
     </div>
   `;
 
   container.hidden = false;
+
+  /* Colocar a lista por baixo da área de pesquisa */
+  const areaPesquisa = campo?.closest(
+    "form, .search-container, .pesquisa-container, .search-box, .busca-container"
+  );
+
+  if (areaPesquisa) {
+    areaPesquisa.insertAdjacentElement("afterend", container);
+  } else if (campo?.parentElement) {
+    campo.parentElement.insertAdjacentElement("afterend", container);
+  }
+
   container.scrollIntoView({
     behavior: "smooth",
     block: "nearest"
   });
-}
+                                  }
 
 
 
