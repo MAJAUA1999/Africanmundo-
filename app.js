@@ -709,6 +709,7 @@ function abrirPesquisa() {
 }
 
 
+
 /* PESQUISA COMPACTA — AFRICANMUNDO */
 function pesquisar(termoRecebido) {
   const campo = encontrarElemento([
@@ -753,12 +754,9 @@ function pesquisar(termoRecebido) {
   if (!container) {
     container = document.createElement("section");
     container.id = "resultadosPesquisa";
-
-    const principal = document.querySelector("main") || document.body;
-    principal.prepend(container);
+    container.className = "am-busca-compacta";
   }
 
-  container.className = "am-busca-compacta";
   container.innerHTML = `
     <div class="am-busca-topo">
       <div>
@@ -766,7 +764,7 @@ function pesquisar(termoRecebido) {
         <p>${lista.length} resultado(s) para “${esc(termo)}”</p>
       </div>
       <button type="button" aria-label="Fechar resultados"
-        onclick="document.getElementById('resultadosPesquisa').hidden=true">×</button>
+        id="fecharResultadosPesquisa">×</button>
     </div>
 
     <div class="am-busca-lista">
@@ -799,23 +797,31 @@ function pesquisar(termoRecebido) {
 
   container.hidden = false;
 
-  /* Colocar a lista por baixo da área de pesquisa */
+  /* Procurar a área real da pesquisa */
   const areaPesquisa = campo?.closest(
-    "form, .search-container, .pesquisa-container, .search-box, .busca-container"
+    "form, .search, .search-container, .pesquisa-container, .busca-container"
   );
 
   if (areaPesquisa) {
     areaPesquisa.insertAdjacentElement("afterend", container);
   } else if (campo?.parentElement) {
     campo.parentElement.insertAdjacentElement("afterend", container);
+  } else {
+    const principal = document.querySelector("main") || document.body;
+    principal.prepend(container);
   }
+
+  /* Fechar resultados */
+  document.getElementById("fecharResultadosPesquisa")
+    ?.addEventListener("click", function () {
+      container.hidden = true;
+    });
 
   container.scrollIntoView({
     behavior: "smooth",
     block: "nearest"
   });
-                                  }
-
+}
 
 
 /* =========================================================
