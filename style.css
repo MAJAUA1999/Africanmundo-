@@ -1,1606 +1,1225 @@
-/* =========================================
-   AFRICANMUNDO — ESTILO PRINCIPAL
-   PARTE 1/2
-========================================= */
-
-*{
-  box-sizing:border-box;
-}
-
-html{
-  width:100%;
-  min-width:0;
-  overflow-x:hidden;
-  scroll-behavior:smooth;
-}
-
-body{
-  margin:0;
-  width:100%;
-  min-width:0;
-  overflow-x:hidden;
-  font-family:Arial,sans-serif;
-  background:#f5f6f4;
-  color:#151515;
-}
-
-img,
-video,
-iframe,
-canvas{
-  max-width:100%;
-}
-
-a{
-  color:inherit;
-  text-decoration:none;
-}
-
-button,
-a{
-  -webkit-tap-highlight-color:transparent;
-}
-
 
 /* =========================================
-   TOPO
+   AFRICANMUNDO — DESIGN EDITORIAL
+   Inspirado em portais profissionais de notícias
 ========================================= */
 
-.top{
-  width:100%;
-  background:#0b0d0c;
-  color:#ddd;
-  padding:7px 4%;
-  font-size:12px;
+:root {
+  --p: #168a45;
+  --p2: #0f6d36;
+  --bg: #f3f6f5;
+  --card: #ffffff;
+  --txt: #17221d;
+  --muted: #69766f;
+  --border: #e1e8e3;
+  --radius: 13px;
+  --shadow: 0 3px 14px rgba(20, 45, 30, .06);
+  --max: 1200px;
 }
 
-.top span{
-  float:right;
+* {
+  box-sizing: border-box;
 }
 
-.brand{
-  width:100%;
-  background:#101311;
-  color:#fff;
-  padding:14px 4%;
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 100px;
 }
 
-.logo{
-  font-size:30px;
-  font-weight:800;
-  line-height:1.1;
+body {
+  margin: 0;
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  background: var(--bg);
+  color: var(--txt);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
 }
 
-.logo span{
-  color:#59b52f;
+body, button, input {
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-.tag{
-  margin-top:4px;
-  color:#ccc;
-  font-size:12px;
+button, input, a {
+  -webkit-tap-highlight-color: transparent;
 }
 
+button, input {
+  font-size: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+.container {
+  width: min(calc(100% - 32px), var(--max));
+  margin-inline: auto;
+}
 
 /* =========================================
-   MENU
+   CABEÇALHO
 ========================================= */
 
-nav{
-  display:flex;
-  align-items:center;
-  gap:2px;
-  flex-wrap:wrap;
-  width:100%;
-  background:#171a18;
-  padding:0 4%;
-  overflow:hidden;
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--card);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .035);
 }
 
-nav a{
-  color:#fff;
-  padding:11px 9px;
-  font-size:13px;
-  white-space:nowrap;
+.header-main {
+  min-height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
 }
 
-nav a:hover,
-nav a.active,
-nav a.ativo{
-  background:#58b52d;
-  color:#fff;
+.brand {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.admin{
-  margin-left:auto;
+.logo {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  border-radius: 12px;
+  background: #e6f5eb;
+  font-size: 28px;
 }
 
+.brand-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  color: var(--p);
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: -.8px;
+  line-height: 1.15;
+}
+
+.brand-tag {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.3;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+
+.header-actions button {
+  width: 39px;
+  height: 39px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--txt);
+  font-size: 17px;
+  transition: background .2s, transform .2s;
+}
+
+.header-actions button:hover {
+  background: #e4f3e9;
+  transform: translateY(-1px);
+}
 
 /* =========================================
-   BOTÕES
+   MENU DE NAVEGAÇÃO
 ========================================= */
 
-.btn,
-button{
-  display:inline-block;
-  border:0;
-  background:#168a45;
-  color:#fff;
-  padding:10px 15px;
-  border-radius:6px;
-  cursor:pointer;
-  font-weight:bold;
+.main-nav {
+  background: var(--p);
+  color: #fff;
 }
 
-button:active,
-.btn:active{
-  transform:scale(.98);
+.nav-inner {
+  display: flex;
+  align-items: stretch;
+  gap: 3px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,.35) transparent;
 }
 
+.nav-link {
+  min-height: 43px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0 12px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  transition: background .2s;
+}
+
+.nav-link:hover,
+.nav-link:focus-visible {
+  background: var(--p2);
+}
+
+.nav-advertise {
+  margin-left: auto;
+  background: rgba(0, 0, 0, .13);
+}
 
 /* =========================================
    ÁREA PRINCIPAL
 ========================================= */
 
-main,
-header,
-footer,
-section,
-.container,
-.content,
-#app,
-#root{
-  width:100%;
-  max-width:100%;
-  min-width:0;
+main.container {
+  padding-top: 22px;
+  padding-bottom: 36px;
 }
 
-
-/* =========================================
-   DESTAQUE — NOTÍCIA PRINCIPAL
-========================================= */
-
-#destaque{
-  width:94%;
-  max-width:1100px;
-  margin:14px auto;
-}
-
-#destaque .destaque-card{
-  position:relative;
-  width:100%;
-  aspect-ratio:16 / 9;
-  overflow:hidden;
-  border-radius:14px;
-  background:#111;
-  cursor:pointer;
-}
-
-#destaque .destaque-card img{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  max-width:none;
-  object-fit:cover;
-  display:block;
-}
-
-#destaque .destaque-overlay{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  z-index:2;
-  padding:120px 28px 24px;
-  color:#fff;
-  background:
-    linear-gradient(
-      to bottom,
-      transparent 0%,
-      rgba(0,0,0,.25) 25%,
-      rgba(0,0,0,.95) 100%
-    );
-}
-
-#destaque .destaque-categoria{
-  font-size:13px;
-  font-weight:bold;
-  margin-bottom:7px;
-  text-transform:uppercase;
-}
-
-#destaque .destaque-overlay h2{
-  margin:0 0 8px;
-  font-size:28px;
-  line-height:1.15;
-  color:#fff;
-}
-
-#destaque .destaque-overlay p{
-  display:block;
-  margin:0 0 8px;
-  max-width:850px;
-  font-size:15px;
-  line-height:1.4;
-  color:#fff;
-}
-
-#destaque .destaque-data{
-  font-size:12px;
-  color:#ddd;
-}
-
-
-/* =========================================
-   SEÇÕES
-========================================= */
-
-.section{
-  width:auto;
-  margin:18px 4%;
-}
-
-.section-title{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  border-bottom:2px solid #168a45;
-  margin-bottom:9px;
-}
-
-.section-title h2{
-  margin:0 0 6px;
-  font-size:19px;
-  line-height:1.2;
-}
-
-.section-title a{
-  color:#168a45;
-  font-size:11px;
-  font-weight:bold;
-}
-
-
-/* =========================================
-   GRID
-========================================= */
-
-.grid{
-  display:grid;
-  grid-template-columns:
-    repeat(4,minmax(0,1fr));
-  gap:10px;
-  width:100%;
-  min-width:0;
-}
-
-
-/* =========================================
-   CARTÃO PRINCIPAL
-========================================= */
-
-.card{
-  min-width:0;
-  width:100%;
-  overflow:hidden;
-  background:#fff;
-  border:1px solid #e4e7e5;
-  border-radius:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.07);
-  cursor:pointer;
-  transition:transform .2s,box-shadow .2s;
-}
-
-.card:hover{
-  transform:translateY(-2px);
-  box-shadow:0 5px 15px rgba(0,0,0,.12);
-}
-
-.card img{
-  width:100%;
-  height:125px;
-  display:block;
-  object-fit:cover;
-  background:#17391e;
-}
-
-.card-body{
-  min-width:0;
-  padding:9px;
-}
-
-.card-category{
-  display:block;
-  margin-bottom:4px;
-  color:#168a45;
-  font-size:9px;
-  font-weight:bold;
-  text-transform:uppercase;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-
-.card-title{
-  margin:0;
-  color:#151515;
-  font-size:14px;
-  line-height:1.25;
-  font-weight:700;
-
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
-}
-
-.card-date{
-  margin-top:5px;
-  color:#777;
-  font-size:8px;
-}
-
-
-/* =========================================
-   ÚLTIMAS NOTÍCIAS
-========================================= */
-
-#ultimas{
-  width:100%;
-}
-
-
-/* =========================================
-   ANÚNCIOS
-========================================= */
-
-#anunciosAtivosSection{
-  width:auto;
-  margin:15px 4%;
-}
-
-#anunciosAtivos{
-  display:grid;
-  grid-template-columns:
-    repeat(auto-fit,minmax(200px,1fr));
-  gap:10px;
-}
-
-.anuncie,
-.anuncie-aqui{
-  cursor:pointer;
-  transition:transform .2s;
-}
-
-.anuncie:hover,
-.anuncie-aqui:hover{
-  transform:translateY(-2px);
-}
-
-
-/* =========================================
-   FOOTER
-========================================= */
-
-footer{
-  width:100%;
-  margin-top:30px;
-  background:#101311;
-  color:#fff;
-  padding:25px 4%;
-}
-
-footer a{
-  color:#fff;
-}
-
-
-/* =========================================
-   ADMIN
-========================================= */
-
-.admin-wrap{
-  max-width:1100px;
-  margin:25px auto;
-  padding:0 15px;
-}
-
-.panel{
-  background:#fff;
-  padding:18px;
-  border-radius:10px;
-  box-shadow:0 2px 8px rgba(0,0,0,.08);
-}
-
-.hidden{
-  display:none !important;
-}
-
-.admin-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:15px;
-}
-
-input,
-select,
-textarea{
-  width:100%;
-  padding:10px;
-  margin:5px 0;
-  border:1px solid #ccc;
-  border-radius:6px;
-  font:inherit;
-}
-
-textarea{
-  min-height:140px;
-}
-
-.post-item{
-  border-bottom:1px solid #ddd;
-  padding:10px 0;
-}
-
-
-/* =========================================
-   MODAIS
-========================================= */
-
-.afm-modal,
-.modal-africanmundo,
-.notification-panel,
-.tools-panel,
-.user-panel,
-.color-panel{
-  position:fixed !important;
-  top:70px !important;
-  right:12px !important;
-  width:min(380px,calc(100% - 24px)) !important;
-  max-height:calc(100vh - 90px) !important;
-  overflow-y:auto !important;
-  background:#fff !important;
-  color:#151515 !important;
-  border-radius:14px !important;
-  padding:16px !important;
-  box-shadow:0 10px 35px rgba(0,0,0,.25) !important;
-  z-index:99999 !important;
-}
-
-.afm-overlay,
-.modal-overlay,
-.notification-overlay{
-  position:fixed !important;
-  inset:0 !important;
-  background:rgba(0,0,0,.45) !important;
-  z-index:99998 !important;
-}
-
-
-/* =========================================
-   MODAL PRINCIPAL
-========================================= */
-
-#amModal{
-  position:fixed !important;
-  inset:0 !important;
-  z-index:2147483647 !important;
-  display:flex !important;
-  align-items:center !important;
-  justify-content:center !important;
-  padding:12px !important;
-}
-
-#amModal .am-back{
-  position:fixed !important;
-  inset:0 !important;
-  background:rgba(0,0,0,.65) !important;
-}
-
-#amModal .am-box{
-  position:relative !important;
-  width:min(430px,100%) !important;
-  max-height:85vh !important;
-  overflow-y:auto !important;
-  background:#fff !important;
-  border-radius:14px !important;
-  box-shadow:0 15px 50px rgba(0,0,0,.4) !important;
-}
-
-#amModal .am-head{
-  display:flex !important;
-  align-items:center !important;
-  justify-content:space-between !important;
-  padding:14px 16px !important;
-  border-bottom:1px solid #ddd !important;
-}
-
-#amModal #amBody{
-  padding:16px !important;
-  line-height:1.5 !important;
-}
-
-#amModal #amClose{
-  width:34px !important;
-  height:34px !important;
-  padding:0 !important;
-  border:0 !important;
-  border-radius:50% !important;
-  background:#eee !important;
-  cursor:pointer !important;
-}
-
-#amModal .am-action,
-#amModal .am-color{
-  display:block !important;
-  width:100% !important;
-  margin:8px 0 !important;
-  padding:11px !important;
-  border:0 !important;
-  border-radius:7px !important;
-  background:#168a45 !important;
-  color:#fff !important;
-  cursor:pointer !important;
-  font-weight:bold !important;
-}
-
-
-/* =========================================
-   LOADING
-========================================= */
-
-.loading{
-  padding:15px;
-  text-align:center;
-  color:#777;
-  font-size:13px;
-}
-
-
-/* =========================================
-   FIM DA PARTE 1
-========================================= */
-
-/* =========================================
-   AFRICANMUNDO — ESTILO PRINCIPAL
-   PARTE 2/2
-========================================= */
-
-
-/* =========================================
-   CATEGORIAS — 4 NOTÍCIAS
-========================================= */
-
-.section .grid{
-  display:grid !important;
-  grid-template-columns:
-    repeat(2,minmax(0,1fr)) !important;
-  gap:8px !important;
-}
-
-
-/* =========================================
-   CARDS DAS CATEGORIAS
-========================================= */
-
-.section .card{
-  display:block !important;
-  width:100% !important;
-  min-width:0 !important;
-  height:auto !important;
-  margin:0 !important;
-  padding:0 !important;
-  overflow:hidden !important;
-  border-radius:9px !important;
-}
-
-.section .card img{
-  width:100% !important;
-  height:85px !important;
-  min-height:85px !important;
-  max-height:85px !important;
-  display:block !important;
-  object-fit:cover !important;
-}
-
-.section .card .card-body{
-  width:100% !important;
-  min-width:0 !important;
-  padding:7px !important;
-}
-
-.section .card .card-category{
-  margin:0 0 3px !important;
-  font-size:8px !important;
-  line-height:1.1 !important;
-}
-
-.section .card .card-title{
-  margin:0 !important;
-  font-size:11px !important;
-  line-height:1.2 !important;
-
-  display:-webkit-box !important;
-  -webkit-line-clamp:2 !important;
-  -webkit-box-orient:vertical !important;
-  overflow:hidden !important;
-}
-
-.section .card .card-date{
-  margin-top:4px !important;
-  font-size:7px !important;
-}
-
-
-/* =========================================
-   APENAS 4 NOTÍCIAS
-========================================= */
-
-.section .grid .card:nth-child(n+5){
-  display:none !important;
-}
-
-
-/* =========================================
-   MODO ESCURO
-========================================= */
-
-body.dark{
-  background:#101417;
-  color:#f2f5f6;
-}
-
-body.dark .card,
-body.dark .panel{
-  background:#171d21 !important;
-  color:#f2f5f6 !important;
-  border-color:#293238 !important;
-  box-shadow:none !important;
-}
-
-body.dark .card-title{
-  color:#f2f5f6 !important;
-}
-
-body.dark .card-date{
-  color:#aeb8bd !important;
-}
-
-body.dark input,
-body.dark select,
-body.dark textarea{
-  background:#171d21 !important;
-  color:#f2f5f6 !important;
-  border-color:#293238 !important;
-}
-
-body.dark .afm-modal,
-body.dark .modal-africanmundo,
-body.dark .notification-panel,
-body.dark .tools-panel,
-body.dark .user-panel,
-body.dark .color-panel{
-  background:#171d21 !important;
-  color:#f2f5f6 !important;
-}
-
-body.dark #amModal .am-box{
-  background:#171d21 !important;
-  color:#f2f5f6 !important;
-}
-
-body.dark #amModal .am-head{
-  border-color:#293238 !important;
-}
-
-body.dark #amModal #amClose{
-  background:#293238 !important;
-  color:#fff !important;
-}
-
-
-/* =========================================
-   IMAGEM DE FALLBACK
-========================================= */
-
-.card img{
-  background:
-    linear-gradient(
-      135deg,
-      #17391e,
-      #168a45
-    );
-}
-
-
-/* =========================================
-   DESTAQUE — IMAGEM COMPLETA
-========================================= */
-
-#destaque{
-  width:94% !important;
-  max-width:1100px !important;
-  margin:14px auto !important;
-}
-
-#destaque .destaque-card{
-  position:relative !important;
-  width:100% !important;
-  height:330px !important;
-  overflow:hidden !important;
-  border-radius:14px !important;
-  background:#111 !important;
-  cursor:pointer !important;
-}
-
-#destaque .destaque-card img{
-  position:absolute !important;
-  inset:0 !important;
-  width:100% !important;
-  height:100% !important;
-  max-width:none !important;
-  object-fit:cover !important;
-  display:block !important;
-}
-
-#destaque .destaque-overlay{
-  position:absolute !important;
-  left:0 !important;
-  right:0 !important;
-  bottom:0 !important;
-  z-index:2 !important;
-  padding:60px 22px 18px !important;
-  color:#fff !important;
-
-  background:
-    linear-gradient(
-      transparent,
-      rgba(0,0,0,.92)
-    ) !important;
-}
-
-#destaque .destaque-categoria{
-  font-size:12px !important;
-  font-weight:bold !important;
-  margin-bottom:5px !important;
-  color:#fff !important;
-}
-
-#destaque .destaque-overlay h2{
-  margin:0 0 6px !important;
-  font-size:25px !important;
-  line-height:1.15 !important;
-  color:#fff !important;
-}
-
-#destaque .destaque-overlay p{
-  margin:0 0 6px !important;
-  max-width:800px !important;
-  font-size:13px !important;
-  line-height:1.35 !important;
-  color:#fff !important;
-}
-
-#destaque .destaque-data{
-  font-size:11px !important;
-  color:#ddd !important;
-}
-
-
-/* =========================================
-   RESPONSIVO
-========================================= */
-
-@media(max-width:900px){
-
-  .grid{
-    grid-template-columns:
-      repeat(3,minmax(0,1fr));
-  }
-
-}
-
-
-/* =========================================
-   CELULAR
-========================================= */
-
-@media(max-width:600px){
-
-  .top{
-    padding:7px 3%;
-  }
-
-  .top span{
-    display:none;
-  }
-
-  .brand{
-    padding:12px 3%;
-  }
-
-  .logo{
-    font-size:26px;
-  }
-
-  .tag{
-    font-size:11px;
-  }
-
-  nav{
-    padding:0 2%;
-    gap:1px;
-  }
-
-  nav a{
-    padding:9px 7px;
-    font-size:11px;
-  }
-
-  .admin{
-    margin-left:0;
-  }
-
-
-  /* DESTAQUE */
-
-  #destaque{
-    width:94% !important;
-    margin:9px auto !important;
-  }
-
-  #destaque .destaque-card{
-    height:210px !important;
-    border-radius:10px !important;
-  }
-
-  #destaque .destaque-overlay{
-    padding:40px 12px 11px !important;
-  }
-
-  #destaque .destaque-categoria{
-    font-size:9px !important;
-    margin-bottom:3px !important;
-  }
-
-  #destaque .destaque-overlay h2{
-    font-size:17px !important;
-    line-height:1.15 !important;
-    margin-bottom:4px !important;
-  }
-
-  #destaque .destaque-overlay p{
-    font-size:10px !important;
-    line-height:1.25 !important;
-    max-height:27px !important;
-    overflow:hidden !important;
-  }
-
-  #destaque .destaque-data{
-    font-size:8px !important;
-  }
-
-
-  /* SEÇÕES */
-
-  .section{
-    margin:10px 3% !important;
-  }
-
-  .section-title{
-    margin-bottom:6px !important;
-    border-width:1px;
-  }
-
-  .section-title h2{
-    font-size:15px !important;
-  }
-
-
-  /* GRID 2x2 */
-
-  .section .grid{
-    grid-template-columns:
-      repeat(2,minmax(0,1fr)) !important;
-    gap:6px !important;
-  }
-
-
-  /* CARDS */
-
-  .section .card{
-    border-radius:8px !important;
-  }
-
-  .section .card img{
-    height:72px !important;
-    min-height:72px !important;
-    max-height:72px !important;
-  }
-
-  .section .card .card-body{
-    padding:6px !important;
-  }
-
-  .section .card .card-category{
-    font-size:7px !important;
-    margin-bottom:2px !important;
-  }
-
-  .section .card .card-title{
-    font-size:10px !important;
-    line-height:1.2 !important;
-  }
-
-  .section .card .card-date{
-    font-size:7px !important;
-    margin-top:3px !important;
-  }
-
-
-  /* ANÚNCIOS */
-
-  #anunciosAtivosSection{
-    margin:12px 3%;
-  }
-
-
-  /* FOOTER */
-
-  footer{
-    padding:22px 3%;
-  }
-
-
-  /* ADMIN */
-
-  .admin-grid{
-    grid-template-columns:1fr;
-  }
-
-}
-
-
-/* =========================================
-   TELAS MUITO PEQUENAS
-========================================= */
-
-@media(max-width:380px){
-
-  .logo{
-    font-size:23px;
-  }
-
-  nav a{
-    padding:8px 5px;
-    font-size:10px;
-  }
-
-  #destaque .destaque-card{
-    height:190px !important;
-  }
-
-  #destaque .destaque-overlay h2{
-    font-size:15px !important;
-  }
-
-  .section .card img{
-    height:65px !important;
-    min-height:65px !important;
-    max-height:65px !important;
-  }
-
-  .section .card .card-title{
-    font-size:9px !important;
-  }
-
-}
-
-
-/* =========================================
-   SEGURANÇA DE LAYOUT
-========================================= */
-
-.card,
-.card-body,
-.section,
-.grid,
-.destaque-card{
-  min-width:0;
-  max-width:100%;
-}
-
-table{
-  max-width:100%;
-  overflow-x:auto;
-}
-
-
-/* =========================================
-   ESTADO VAZIO
-========================================= */
-
-.sem-noticias{
-  width:100%;
-  padding:15px;
-  margin:0;
-  text-align:center;
-  color:#777;
-  font-size:12px;
-}
-
-
-/* =========================================
-   FIM DO CSS
-========================================= */
-
-
-/* PESQUISA COMPACTA — REDMI E COMPUTADOR */
-.am-busca-compacta {
-  display: block;
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 8px 0 18px;
-  padding: 12px;
-  overflow: hidden;
-  background: var(--card, #fff);
-  color: var(--txt, #222);
-  border: 1px solid var(--border, #ddd);
-  border-radius: 10px;
-}
-
-.am-busca-compacta[hidden] {
-  display: none !important;
-}
-
-.am-busca-topo {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding-bottom: 9px;
-  border-bottom: 2px solid var(--p, #168a45);
-}
-
-.am-busca-topo h2 {
-  margin: 0;
-  font-size: 16px;
-  line-height: 1.35;
-}
-
-.am-busca-topo p {
-  margin: 3px 0 0;
-  font-size: 11px;
-  opacity: .7;
-}
-
-.am-busca-topo button {
-  flex: 0 0 30px;
-  width: 30px;
-  height: 30px;
-  border: 1px solid var(--border, #ddd);
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  font-size: 20px;
-}
-
-.am-busca-lista {
-  display: flex;
-  flex-direction: column;
-}
-
-.am-busca-linha {
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 11px 2px;
-  border-bottom: 1px solid var(--border, #e5e5e5);
-  color: inherit;
-  text-decoration: none;
-}
-
-.am-busca-linha:last-child {
-  border-bottom: 0;
-}
-
-.am-busca-ponto {
-  flex: 0 0 16px;
-  color: var(--p, #168a45);
-  font-size: 20px;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.am-busca-conteudo {
-  flex: 1;
+.news-section {
+  margin-top: 30px;
   min-width: 0;
 }
 
-.am-busca-conteudo strong {
-  display: block;
-  font-size: 13px;
-  font-weight: 700;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+.section-heading {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 15px;
+  padding-bottom: 11px;
+  border-bottom: 2px solid var(--border);
 }
 
-.am-busca-conteudo small {
+.section-heading > div {
+  min-width: 0;
+}
+
+.section-kicker {
   display: block;
-  margin-top: 4px;
-  color: var(--p, #168a45);
+  margin-bottom: 3px;
+  color: var(--p);
   font-size: 10px;
-  line-height: 1.4;
+  font-weight: 800;
+  letter-spacing: 1.1px;
 }
 
-.am-busca-seta {
-  flex: 0 0 12px;
-  color: var(--p, #168a45);
-  font-size: 18px;
+.section-heading h2 {
+  margin: 0;
+  color: var(--txt);
+  font-size: 21px;
+  font-weight: 800;
+  line-height: 1.25;
+  letter-spacing: -.35px;
 }
 
-.am-busca-linha:hover {
-  background: rgba(22, 138, 69, .06);
-}
-
-.am-busca-vazio {
-  margin: 12px 0 4px;
+.view-all {
+  flex-shrink: 0;
+  padding-bottom: 2px;
+  color: var(--p);
   font-size: 12px;
-  line-height: 1.6;
+  font-weight: 800;
 }
 
-@media (max-width: 380px) {
-  .am-busca-compacta {
-    padding: 9px;
-    border-radius: 8px;
-  }
-
-  .am-busca-topo h2 {
-    font-size: 14px;
-  }
-
-  .am-busca-conteudo strong {
-    font-size: 12px;
-  }
-
-  .am-busca-linha {
-    gap: 6px;
-    padding: 10px 0;
-  }
+.view-all:hover {
+  color: var(--p2);
+  text-decoration: underline;
 }
 
+/* =========================================
+   PESQUISA
+========================================= */
 
-/* AFRICANMUNDO — PESQUISA COMPACTA */
-.search {
-  position: relative;
-  width: 100%;
-  max-width: 100%;
-  margin-bottom: 12px;
-  box-sizing: border-box;
+.search-section {
+  margin-bottom: 18px;
 }
 
 .search-box {
-  display: flex;
-  align-items: center;
-  gap: 6px;
   width: 100%;
-  box-sizing: border-box;
+  min-height: 49px;
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.search-box:focus-within {
+  border-color: var(--p);
+  box-shadow: 0 0 0 3px rgba(22, 138, 69, .10);
 }
 
 .search-box input {
-  flex: 1;
   width: 100%;
   min-width: 0;
-  height: 42px;
-  box-sizing: border-box;
-  padding: 0 12px;
-  border: 1px solid var(--border);
-  border-radius: 9px;
-  background: var(--card);
+  padding: 12px 15px;
+  border: 0;
+  outline: none;
+  background: transparent;
   color: var(--txt);
   font-size: 14px;
-  outline: none;
 }
 
-.search-box input:focus {
-  border-color: var(--p);
-  box-shadow: 0 0 0 2px rgba(22,138,69,.12);
+.search-box input::placeholder {
+  color: var(--muted);
 }
 
 .search-box button {
-  flex: 0 0 42px;
-  width: 42px;
-  height: 42px;
+  width: 55px;
+  flex-shrink: 0;
   border: 0;
-  border-radius: 9px;
   background: var(--p);
   color: #fff;
-  font-size: 17px;
-  cursor: pointer;
+  font-size: 20px;
 }
 
-/* LISTA DE RESULTADOS */
-#searchResults,
-#resultadosPesquisa {
-  width: 100%;
-  max-width: 100%;
-  box-sizing: border-box;
-  margin: 6px 0 14px;
-  padding: 10px;
+.search-box button:hover {
+  background: var(--p2);
+}
+
+.search-results,
+#resultadosPesquisa,
+#searchResults {
+  margin-top: 12px;
+}
+
+.am-busca-compacta {
+  padding: 15px;
   border: 1px solid var(--border);
-  border-radius: 9px;
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+.am-busca-compacta h2,
+.am-busca-compacta h3 {
+  margin-top: 0;
+}
+
+.am-busca-compacta a {
+  color: var(--p);
+}
+
+/* =========================================
+   REDES SOCIAIS
+========================================= */
+
+.social-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 15px 0;
+}
+
+.social-bar a {
+  min-height: 35px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 11px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
   background: var(--card);
   color: var(--txt);
-  overflow: hidden;
+  font-size: 12px;
+  font-weight: 700;
+  transition: border-color .2s, transform .2s;
 }
 
-#searchResults[hidden],
-#resultadosPesquisa[hidden] {
-  display: none !important;
+.social-bar a:hover {
+  border-color: var(--p);
+  transform: translateY(-1px);
 }
 
-.am-busca-topo {
+/* =========================================
+   FAIXA DE PUBLICIDADE
+========================================= */
+
+.advertise-banner {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 8px;
-  padding-bottom: 8px;
-  border-bottom: 2px solid var(--p);
+  gap: 13px;
+  padding: 15px 17px;
+  border: 1px solid #cbe8d4;
+  border-left: 5px solid var(--p);
+  border-radius: 10px;
+  background: #eaf7ee;
+  color: #174b2b;
 }
 
-.am-busca-topo h2 {
-  margin: 0;
-  font-size: 15px;
-  line-height: 1.35;
+.advertise-banner > span:first-child {
+  font-size: 25px;
 }
 
-.am-busca-topo p {
-  margin: 3px 0 0;
-  font-size: 11px;
-  opacity: .75;
-}
-
-.am-busca-lista {
+.advertise-banner > span:nth-child(2) {
+  min-width: 0;
   display: flex;
+  flex: 1;
   flex-direction: column;
 }
 
-.am-busca-linha {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  padding: 10px 1px;
-  border-bottom: 1px solid var(--border);
-  color: var(--txt);
-  text-decoration: none;
+.advertise-banner strong {
+  font-size: 14px;
 }
 
-.am-busca-linha:last-child {
-  border-bottom: 0;
+.advertise-banner small {
+  margin-top: 3px;
+  color: #477457;
+  font-size: 11px;
 }
 
-.am-busca-ponto {
-  flex: 0 0 13px;
-  color: var(--p);
-  font-size: 18px;
-  line-height: 1.25;
+.advertise-arrow {
+  flex-shrink: 0;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.am-busca-conteudo {
-  flex: 1;
+/* =========================================
+   NOTÍCIA EM DESTAQUE
+========================================= */
+
+.featured-news {
   min-width: 0;
 }
 
-.am-busca-conteudo strong {
-  display: block;
-  font-size: 13px;
-  line-height: 1.45;
-  overflow-wrap: anywhere;
+#destaque {
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: var(--card);
 }
 
-.am-busca-conteudo small {
+#destaque .am-destaque-card,
+#destaque .destaque-card {
+  position: relative;
+  min-height: 350px;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background: #16271c;
+}
+
+#destaque .am-destaque-card > a,
+#destaque .destaque-card > a {
+  position: absolute;
+  inset: 0;
   display: block;
-  margin-top: 3px;
-  color: var(--p);
+  color: #fff;
+}
+
+#destaque .am-destaque-imagem,
+#destaque .destaque-imagem,
+#destaque .destaque-card img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+#destaque .am-destaque-overlay,
+#destaque .destaque-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 95px 30px 26px;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,.02) 5%,
+    rgba(0,0,0,.20) 35%,
+    rgba(0,0,0,.91) 100%
+  );
+  color: #fff;
+}
+
+#destaque .am-destaque-categoria,
+#destaque .destaque-categoria {
+  align-self: flex-start;
+  margin-bottom: 10px;
+  padding: 5px 9px;
+  border-radius: 4px;
+  background: var(--p);
+  color: #fff;
   font-size: 10px;
+  font-weight: 800;
+  text-transform: uppercase;
 }
 
-.am-busca-seta {
-  color: var(--p);
-  font-size: 17px;
+#destaque .am-destaque-titulo,
+#destaque .destaque-overlay h2 {
+  max-width: 850px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(24px, 3.2vw, 37px);
+  font-weight: 900;
+  line-height: 1.18;
+  letter-spacing: -.6px;
 }
 
-.am-busca-vazio {
-  margin: 10px 0 3px;
-  font-size: 12px;
+#destaque .am-destaque-resumo,
+#destaque .destaque-resumo,
+#destaque .destaque-overlay p {
+  max-width: 760px;
+  margin: 10px 0 0;
+  color: rgba(255,255,255,.91);
+  font-size: 14px;
   line-height: 1.5;
 }
 
-@media (max-width: 380px) {
-  .search-box input {
-    height: 40px;
-    padding: 0 10px;
-    font-size: 13px;
-  }
-
-  .search-box button {
-    flex-basis: 40px;
-    width: 40px;
-    height: 40px;
-  }
-
-  #searchResults,
-  #resultadosPesquisa {
-    padding: 8px;
-  }
-
-  .am-busca-conteudo strong {
-    font-size: 12px;
-  }
+#destaque .am-destaque-data,
+#destaque .destaque-data {
+  margin-top: 11px;
+  color: rgba(255,255,255,.78);
+  font-size: 11px;
 }
 
+.loading-message,
+.sem-noticias {
+  padding: 24px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+  color: var(--muted);
+  text-align: center;
+  font-size: 13px;
+}
 
+/* =========================================
+   GRELHA DE NOTÍCIAS
+========================================= */
 
-/* =====================================
-   AFRICANMUNDO — PESQUISA MODELO 1
-   Lista vertical compacta para telemóvel
-===================================== */
+.news-grid,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  min-width: 0;
+}
 
-#resultadosPesquisa.am-busca-compacta {
+.card,
+.news-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--card);
+  box-shadow: var(--shadow);
+  transition: transform .2s, box-shadow .2s;
+}
+
+.card:hover,
+.news-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 22px rgba(20, 45, 30, .11);
+}
+
+.card-link {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  color: inherit;
+}
+
+.card > img,
+.card .card-link > img,
+.news-card > img,
+.news-card .news-card-image {
+  width: 100%;
+  height: 165px;
+  flex-shrink: 0;
+  object-fit: cover;
+  background: #e7ece8;
+}
+
+.card-body,
+.news-card-body {
+  min-width: 0;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 12px;
+}
+
+.card-category {
+  align-self: flex-start;
+  margin-bottom: 7px;
+  color: var(--p);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .35px;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.card-title,
+.news-card h3 {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 0;
+  color: var(--txt);
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.card-text,
+.news-card p {
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 8px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
+.card-date,
+.news-card-meta,
+.news-card-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+.card-date {
+  overflow-wrap: anywhere;
+}
+
+.card a:focus-visible,
+.nav-link:focus-visible,
+.view-all:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--p);
+  outline-offset: 3px;
+}
+
+/* =========================================
+   PUBLICIDADE ATIVA
+========================================= */
+
+.ads-grid,
+#anunciosAtivos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+#anunciosAtivos > * {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--card);
+}
+
+#anunciosAtivos img,
+#anunciosAtivos video {
   display: block;
   width: 100%;
+  max-height: 300px;
+  object-fit: cover;
+}
+
+#anunciosAtivos a {
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   PAINÉIS CRIADOS PELO APP.JS
+========================================= */
+
+.am-painel,
+.top-panel,
+#notificationPanel,
+#toolsPanel,
+#userPanel,
+#colorPanel,
+#painelCores {
+  color: var(--txt);
+}
+
+.am-painel,
+.top-panel,
+#notificationPanel,
+#toolsPanel,
+#userPanel,
+#colorPanel {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--card);
+  box-shadow: 0 12px 35px rgba(0,0,0,.18);
+}
+
+.am-painel button,
+.top-panel button,
+#notificationPanel button,
+#toolsPanel button,
+#userPanel button,
+#colorPanel button,
+#painelCores button {
   max-width: 100%;
-  box-sizing: border-box;
-  margin: 12px 0 20px;
-  padding: 0;
-  overflow: hidden;
-  background: var(--card, #ffffff);
-  color: var(--txt, #202722);
-  border: 1px solid var(--border, #e1e7e3);
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05);
 }
 
-#resultadosPesquisa[hidden] {
-  display: none !important;
+#colorPanel,
+#painelCores {
+  z-index: 1200;
 }
 
-#resultadosPesquisa .am-busca-topo {
+/* =========================================
+   MODAL
+========================================= */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.65);
+}
+
+.modal-box {
+  position: relative;
+  width: min(100%, 520px);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 25px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--card);
+  color: var(--txt);
+  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+}
+
+.modal-box h2 {
+  margin: 0 35px 15px 0;
+  font-size: 21px;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bg);
+  color: var(--txt);
+  font-size: 26px;
+}
+
+/* =========================================
+   VOLTAR AO TOPO
+========================================= */
+
+#voltarTopo {
+  position: fixed;
+  right: 18px;
+  bottom: 22px;
+  z-index: 900;
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--p);
+  color: #fff;
+  font-size: 23px;
+  font-weight: 800;
+  box-shadow: 0 4px 15px rgba(0,0,0,.2);
+}
+
+#voltarTopo:hover {
+  background: var(--p2);
+}
+
+/* =========================================
+   RODAPÉ
+========================================= */
+
+.site-footer {
+  margin-top: 25px;
+  border-top: 4px solid var(--p);
+  background: var(--card);
+}
+
+.footer-main {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 35px;
+  padding-top: 35px;
+  padding-bottom: 30px;
+}
+
+.footer-brand {
+  min-width: 0;
+}
+
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--p);
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.footer-logo span:first-child {
+  font-size: 29px;
+}
+
+.footer-brand p {
+  max-width: 320px;
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+.footer-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 9px;
+}
+
+.footer-column h3 {
+  margin: 0 0 7px;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.footer-column a {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.footer-column a:hover {
+  color: var(--p);
+}
+
+.footer-social {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  padding: 13px 14px;
-  border-bottom: 2px solid var(--p, #168a45);
-}
-
-#resultadosPesquisa .am-busca-topo h2 {
-  margin: 0;
-  font-size: 17px;
-  line-height: 1.35;
-  font-weight: 700;
-}
-
-#resultadosPesquisa .am-busca-topo p {
-  margin: 4px 0 0;
+  gap: 15px;
+  padding-top: 17px;
+  padding-bottom: 17px;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
   font-size: 12px;
-  line-height: 1.4;
-  opacity: 0.75;
 }
 
-#resultadosPesquisa #fecharResultadosPesquisa {
-  flex: 0 0 34px;
+.footer-social-links {
+  display: flex;
+  gap: 8px;
+}
+
+.footer-social-links a {
   width: 34px;
   height: 34px;
-  padding: 0;
-  border: 1px solid var(--border, #e1e7e3);
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--border);
   border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  font-size: 23px;
-  line-height: 1;
-  cursor: pointer;
+  background: var(--bg);
+  color: var(--p);
+  font-weight: 800;
 }
 
-#resultadosPesquisa .am-busca-lista {
-  display: block;
-  width: 100%;
-  padding: 0 12px;
-  box-sizing: border-box;
+.footer-social-links a:hover {
+  background: var(--p);
+  color: #fff;
 }
 
-#resultadosPesquisa a.am-busca-linha {
-  display: flex !important;
+.footer-bottom {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+}
+
+.footer-bottom-inner {
+  display: flex;
   align-items: center;
-  gap: 9px;
-  width: 100%;
-  min-width: 0;
-  box-sizing: border-box;
-  padding: 11px 2px;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.footer-bottom p {
   margin: 0;
-  color: inherit;
-  background: transparent;
-  border: 0;
-  border-bottom: 1px solid var(--border, #e1e7e3);
-  border-radius: 0;
-  text-decoration: none;
-  box-shadow: none;
-  white-space: normal;
+  color: var(--muted);
+  font-size: 10px;
 }
 
-#resultadosPesquisa a.am-busca-linha:last-child {
-  border-bottom: 0;
+/* =========================================
+   TABLETS
+========================================= */
+
+@media (max-width: 1000px) {
+  .news-grid,
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 13px;
+  }
+
+  .footer-main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 25px;
+  }
+
+  .nav-link {
+    padding-inline: 10px;
+  }
 }
 
-#resultadosPesquisa .am-busca-ponto {
-  display: none !important;
-}
+/* =========================================
+   TELEMÓVEIS
+========================================= */
 
-#resultadosPesquisa .am-busca-conteudo {
-  display: block;
-  flex: 1 1 auto;
-  min-width: 0;
-  overflow-wrap: anywhere;
-}
+@media (max-width: 650px) {
+  .container {
+    width: calc(100% - 22px);
+  }
 
-#resultadosPesquisa .am-busca-conteudo strong {
-  display: block;
-  margin: 0;
-  font-size: 14px;
-  line-height: 1.45;
-  font-weight: 600;
-  white-space: normal;
-  overflow-wrap: anywhere;
-}
+  .header-main {
+    min-height: 61px;
+    gap: 8px;
+  }
 
-#resultadosPesquisa .am-busca-conteudo small {
-  display: block;
-  margin-top: 4px;
-  color: var(--p, #168a45);
-  font-size: 12px;
-  line-height: 1.4;
-  white-space: normal;
-}
+  .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    font-size: 23px;
+  }
 
-#resultadosPesquisa .am-busca-seta {
-  display: block;
-  flex: 0 0 auto;
-  color: var(--p, #168a45);
-  font-size: 23px;
-  line-height: 1;
-}
+  .brand {
+    gap: 7px;
+  }
 
-#resultadosPesquisa .am-busca-vazio {
-  margin: 0;
-  padding: 18px 6px;
-  font-size: 14px;
-  line-height: 1.6;
-}
+  .brand-name {
+    font-size: 19px;
+    letter-spacing: -.5px;
+  }
 
-@media (max-width: 600px) {
-  #resultadosPesquisa.am-busca-compacta {
-    margin-top: 8px;
+  .brand-tag {
+    max-width: 180px;
+    font-size: 9px;
+  }
+
+  .header-actions {
+    gap: 5px;
+  }
+
+  .header-actions button {
+    width: 33px;
+    height: 33px;
+    font-size: 14px;
+  }
+
+  .nav-link {
+    min-height: 39px;
+    padding-inline: 11px;
+    font-size: 11px;
+  }
+
+  main.container {
+    padding-top: 14px;
+    padding-bottom: 25px;
+  }
+
+  .section-heading {
+    margin-bottom: 11px;
+    padding-bottom: 9px;
+  }
+
+  .section-heading h2 {
+    font-size: 18px;
+  }
+
+  .section-kicker {
+    font-size: 9px;
+  }
+
+  .view-all {
+    font-size: 11px;
+  }
+
+  .news-section {
+    margin-top: 23px;
+  }
+
+  .news-grid,
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .card,
+  .news-card {
     border-radius: 10px;
   }
 
-  #resultadosPesquisa .am-busca-topo {
-    padding: 11px 10px;
+  .card > img,
+  .card .card-link > img,
+  .news-card > img,
+  .news-card .news-card-image {
+    height: 118px;
   }
 
-  #resultadosPesquisa .am-busca-topo h2 {
-    font-size: 16px;
+  .card-body,
+  .news-card-body {
+    padding: 9px;
   }
 
-  #resultadosPesquisa .am-busca-lista {
-    padding: 0 10px;
+  .card-category {
+    margin-bottom: 5px;
+    font-size: 9px;
   }
 
-  #resultadosPesquisa a.am-busca-linha {
-    gap: 7px;
-    padding: 10px 1px;
+  .card-title,
+  .news-card h3 {
+    font-size: 12px;
+    line-height: 1.38;
+    -webkit-line-clamp: 3;
   }
 
-  #resultadosPesquisa .am-busca-conteudo strong {
+  .card-text,
+  .news-card p {
+    font-size: 11px;
+  }
+
+  .card-date,
+  .news-card-meta,
+  .news-card-footer {
+    padding-top: 7px;
+    font-size: 9px;
+  }
+
+  #destaque .am-destaque-card,
+  #destaque .destaque-card {
+    min-height: 300px;
+    border-radius: 11px;
+  }
+
+  #destaque .am-destaque-overlay,
+  #destaque .destaque-overlay {
+    padding: 75px 16px 17px;
+  }
+
+  #destaque .am-destaque-titulo,
+  #destaque .destaque-overlay h2 {
+    font-size: 23px;
+    line-height: 1.22;
+  }
+
+  #destaque .am-destaque-resumo,
+  #destaque .destaque-resumo,
+  #destaque .destaque-overlay p {
+    margin-top: 7px;
+    font-size: 12px;
+  }
+
+  #destaque .am-destaque-categoria,
+  #destaque .destaque-categoria {
+    margin-bottom: 7px;
+    font-size: 9px;
+  }
+
+  .social-bar {
+    gap: 6px;
+  }
+
+  .social-bar a {
+    min-height: 32px;
+    padding: 6px 8px;
+    font-size: 10px;
+  }
+
+  .advertise-banner {
+    gap: 9px;
+    padding: 12px 10px;
+  }
+
+  .advertise-banner > span:first-child {
+    font-size: 21px;
+  }
+
+  .advertise-banner strong {
+    font-size: 12px;
+  }
+
+  .advertise-banner small {
+    font-size: 10px;
+  }
+
+  .advertise-arrow {
+    font-size: 10px;
+  }
+
+  .ads-grid,
+  #anunciosAtivos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 9px;
+  }
+
+  .footer-main {
+    gap: 23px 16px;
+    padding-top: 26px;
+    padding-bottom: 24px;
+  }
+
+  .footer-logo {
+    font-size: 19px;
+  }
+
+  .footer-brand p {
+    font-size: 11px;
+  }
+
+  .footer-column h3 {
     font-size: 13px;
   }
 
-  #resultadosPesquisa .am-busca-conteudo small {
+  .footer-column a {
     font-size: 11px;
+  }
+
+  .footer-social {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .footer-bottom-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .modal-box {
+    padding: 21px 16px;
   }
 }
 
 
+/* =========================================
+   REDMI A5 E ECRÃS MUITO PEQUENOS
+========================================= */
 
-/* AFRICANMUNDO — FORÇAR LISTA VERTICAL DA PESQUISA */
+@media (max-width: 380px) {
+  .container {
+    width: calc(100% - 16px);
+  }
 
-#resultadosPesquisa.am-busca-compacta {
-  display: block !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-  overflow: hidden !important;
-}
+  .brand-tag {
+    display: none;
+  }
 
-#resultadosPesquisa .am-busca-lista {
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  width: 100% !important;
-}
+  .brand-name {
+    font-size: 18px;
+  }
 
-#resultadosPesquisa a.am-busca-linha {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  box-sizing: border-box !important;
-  padding: 12px 4px !important;
-  margin: 0 !important;
-  gap: 10px !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--border, #e1e7e3) !important;
-  border-radius: 0 !important;
-  background: transparent !important;
-  text-decoration: none !important;
-  white-space: normal !important;
-  box-shadow: none !important;
-}
+  .header-actions button {
+    width: 30px;
+    height: 30px;
+    font-size: 13px;
+  }
 
-#resultadosPesquisa .am-busca-conteudo {
-  display: flex !important;
-  flex-direction: column !important;
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  gap: 4px !important;
-}
+  .header-actions {
+    gap: 4px;
+  }
 
-#resultadosPesquisa .am-busca-conteudo strong {
-  display: block !important;
-  width: 100% !important;
-  font-size: 14px !important;
-  line-height: 1.5 !important;
-  white-space: normal !important;
-  overflow-wrap: anywhere !important;
-}
+  .news-grid,
+  .grid {
+    gap: 7px;
+  }
 
-#resultadosPesquisa .am-busca-conteudo small {
-  display: block !important;
-  font-size: 12px !important;
-  line-height: 1.4 !important;
-  white-space: normal !important;
-}
+  .card > img,
+  .card .card-link > img,
+  .news-card > img,
+  .news-card .news-card-image {
+    height: 105px;
+  }
 
-#resultadosPesquisa .am-busca-ponto {
-  display: none !important;
-}
+  .card-body,
+  .news-card-body {
+    padding: 7px;
+  }
 
-#resultadosPesquisa .am-busca-seta {
-  display: block !important;
-  flex: 0 0 14px !important;
-  font-size: 22px !important;
-  line-height: 1 !important;
-}
+  .card-title,
+  .news-card h3 {
+    font-size: 11px;
+  }
 
-#resultadosPesquisa .am-busca-topo {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  gap: 10px !important;
-}
+  #destaque .am-destaque-card,
+  #destaque .destaque-card {
+    min-height: 280px;
+  }
 
-#resultadosPesquisa .am-busca-topo h2,
-#resultadosPesquisa .am-busca-topo p {
-  display: block !important;
-}
+  #destaque .am-destaque-overlay,
+  #destaque .destaque-overlay {
+    padding: 65px 13px 14px;
+  }
 
-#resultadosPesquisa .am-busca-topo h2 {
-  margin: 0 !important;
-}
+  #destaque .am-destaque-titulo,
+  #destaque .destaque-overlay h2 {
+    font-size: 20px;
+  }
 
-#resultadosPesquisa .am-busca-topo p {
-  margin: 4px 0 0 !important;
-}
+  #destaque .am-destaque-resumo,
+  #destaque .destaque-resumo,
+  #destaque .destaque-overlay p {
+    font-size: 11px;
+  }
+
+  .advertise-arrow {
+    display: none;
+  }
+   }
