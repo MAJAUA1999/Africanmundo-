@@ -300,43 +300,67 @@ async function carregarNoticias() {
 /* =========================================
    DESTAQUE AUTOMÁTICO
 ========================================= */
-
 function mostrarDestaque() {
   const area = document.getElementById("destaque");
   if (!area || !noticias.length) return;
 
-  indiceDestaque = indiceDestaque % noticias.length;
+  indiceDestaque =
+    ((indiceDestaque % noticias.length) + noticias.length) %
+    noticias.length;
+
   const noticia = noticias[indiceDestaque];
+  const id = encodeURIComponent(noticia.id);
+  const titulo = esc(obterTitulo(noticia));
+  const imagem = esc(obterImagem(noticia));
+  const categoria = esc(obterCategoria(noticia));
+  const data = esc(formatarData(noticia));
+  const descricao = esc(resumo(obterTexto(noticia), 180));
+  const link = `noticia.html?id=${id}`;
 
   area.innerHTML = `
     <article class="am-destaque-card destaque-card">
-      <img
-        src="${esc(obterImagem(noticia))}"
-        alt="${esc(obterTitulo(noticia))}"
-        loading="eager"
-        onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
-      >
+
+      <a class="am-destaque-imagem-link"
+         href="${link}"
+         aria-label="Ler notícia: ${titulo}">
+        <img
+          class="am-destaque-imagem"
+          src="${imagem}"
+          alt="${titulo}"
+          loading="eager"
+          decoding="async"
+          onerror="this.onerror=null;this.src='${FALLBACK_IMG}'"
+        >
+      </a>
+
       <div class="am-destaque-overlay destaque-overlay">
-        <span class="card-category">${esc(obterCategoria(noticia))}</span>
+
+        <span class="card-category">${categoria}</span>
+
         <h2 class="am-destaque-titulo">
-          <a href="noticia.html?id=${encodeURIComponent(noticia.id)}">
-            ${esc(obterTitulo(noticia))}
-          </a>
+          <a href="${link}">${titulo}</a>
         </h2>
+
         <p class="am-destaque-resumo destaque-resumo">
-          ${esc(resumo(obterTexto(noticia), 180))}
+          ${descricao}
         </p>
-        <time>${esc(formatarData(noticia))}</time>
-        <a class="am-destaque-link"
-           href="noticia.html?id=${encodeURIComponent(noticia.id)}">
-          Ler notícia →
-        </a>
+
+        <div class="am-destaque-meta">
+          <time>${data}</time>
+          <a class="am-destaque-link" href="${link}">
+            Ler notícia completa →
+          </a>
+        </div>
+
       </div>
     </article>`;
 }
 
 function iniciarDestaque() {
-  if (timerDestaque) clearInterval(timerDestaque);
+  if (timerDestaque) {
+    clearInterval(timerDestaque);
+  }
+
   timerDestaque = null;
 
   if (noticias.length < 2) return;
@@ -345,7 +369,7 @@ function iniciarDestaque() {
   timerDestaque = setInterval(function () {
     indiceDestaque = (indiceDestaque + 1) % noticias.length;
     mostrarDestaque();
-  }, INTERVALO_DESTAQUE);
+  }, 15000);
 }
 
 /* =========================================
