@@ -1,31 +1,44 @@
 
-/* =========================================
-   AFRICANMUNDO — DESIGN EDITORIAL
-   Base, cabeçalho e navegação
-========================================= */
+/* ==================================================
+   AFRICANMUNDO — DESIGN EDITORIAL PROFISSIONAL
+   PARTE 1/6 — BASE, CABEÇALHO E NAVEGAÇÃO
+================================================== */
 
 :root {
-  --p: #168a45;
-  --p2: #0f6d36;
-  --bg: #f3f6f5;
+  --p: #087b45;
+  --p2: #065f37;
+  --p-dark: #064b32;
+  --p-light: #e8f5ed;
+
+  --bg: #f4f6f5;
   --card: #ffffff;
-  --txt: #17221d;
-  --muted: #69766f;
-  --border: #e1e8e3;
-  --radius: 13px;
-  --shadow: 0 3px 14px rgba(20, 45, 30, .06);
+  --txt: #17231c;
+  --muted: #68766e;
+  --border: #e1e7e3;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 3px 12px rgba(20, 45, 30, .055);
+  --shadow-hover: 0 8px 22px rgba(20, 45, 30, .10);
+
   --max: 1200px;
+  --header-height: 64px;
+  --bottom-nav-height: 64px;
 }
 
-* {
+/* RESET E CONFIGURAÇÃO GLOBAL */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
 html {
-  scroll-behavior: smooth;
-  scroll-padding-top: 100px;
   width: 100%;
   max-width: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: 110px;
   overflow-x: clip;
 }
 
@@ -35,11 +48,14 @@ body {
   min-width: 0;
   max-width: 100%;
   overflow-x: clip;
+
   background: var(--bg);
   color: var(--txt);
+
   font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   line-height: 1.55;
+
   -webkit-text-size-adjust: 100%;
 }
 
@@ -54,25 +70,20 @@ select {
 button,
 input,
 textarea,
-select,
-a {
-  -webkit-tap-highlight-color: transparent;
-}
-
-button,
-input,
-textarea,
 select {
+  max-width: 100%;
   font-size: inherit;
 }
 
 button {
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 img,
@@ -85,6 +96,22 @@ video {
   display: none !important;
 }
 
+:focus-visible {
+  outline: 2px solid var(--p);
+  outline-offset: 3px;
+}
+
+pre,
+code {
+  overflow-wrap: anywhere;
+}
+
+table {
+  max-width: 100%;
+}
+
+/* CONTENTOR PRINCIPAL */
+
 .container {
   width: min(calc(100% - 32px), var(--max));
   max-width: 100%;
@@ -92,24 +119,38 @@ video {
   margin-inline: auto;
 }
 
-/* CABEÇALHO */
+main,
+section,
+article,
+aside {
+  min-width: 0;
+}
+
+/* ==================================================
+   CABEÇALHO
+================================================== */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 1000;
+
+  width: 100%;
   background: var(--card);
   border-bottom: 1px solid var(--border);
   box-shadow: 0 2px 8px rgba(0, 0, 0, .035);
 }
 
 .header-main {
-  min-height: 66px;
+  min-height: var(--header-height);
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
+
+/* MARCA E LOGÓTIPO */
 
 .brand {
   min-width: 0;
@@ -119,13 +160,17 @@ video {
 }
 
 .logo {
-  width: 40px;
-  height: 40px;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+
   display: grid;
   place-items: center;
-  flex-shrink: 0;
+
   border-radius: 11px;
-  background: #e6f5eb;
+  background: var(--p-light);
+  color: var(--p);
+
   font-size: 25px;
 }
 
@@ -136,6 +181,7 @@ video {
 }
 
 .brand-name {
+  margin: 0;
   color: var(--p);
   font-size: 23px;
   font-weight: 900;
@@ -150,9 +196,12 @@ video {
   line-height: 1.3;
 }
 
+/* BOTÕES DO CABEÇALHO */
+
 .header-actions {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 7px;
   flex-shrink: 0;
 }
@@ -160,87 +209,110 @@ video {
 .header-actions button {
   width: 37px;
   height: 37px;
+  flex: 0 0 37px;
+
   display: grid;
   place-items: center;
+
   padding: 0;
   border: 1px solid var(--border);
   border-radius: 50%;
+
   background: var(--bg);
   color: var(--txt);
   font-size: 16px;
-  transition: background .2s, transform .2s;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    transform .2s ease;
 }
 
 .header-actions button:hover {
-  background: #e4f3e9;
+  background: var(--p-light);
+  color: var(--p);
   transform: translateY(-1px);
 }
 
-/* NAVEGAÇÃO */
+/* ==================================================
+   NAVEGAÇÃO PRINCIPAL
+================================================== */
 
 .main-nav {
-  background: var(--p);
-  color: #fff;
+  width: 100%;
+  background: var(--p-dark);
+  color: #ffffff;
 }
 
 .nav-inner {
   display: flex;
   align-items: stretch;
-  gap: 3px;
+  gap: 2px;
+
+  min-width: 0;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+
   scrollbar-width: thin;
   scrollbar-color: rgba(255,255,255,.35) transparent;
 }
 
 .nav-link {
   min-height: 42px;
+  flex: 0 0 auto;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  padding: 0 11px;
-  color: #fff;
+
+  padding: 0 12px;
+  border-bottom: 3px solid transparent;
+
+  color: #ffffff;
   font-size: 12px;
   font-weight: 700;
   white-space: nowrap;
-  transition: background .2s;
+
+  transition:
+    background .2s ease,
+    border-color .2s ease;
 }
 
 .nav-link:hover,
 .nav-link:focus-visible {
-  background: var(--p2);
+  background: rgba(255,255,255,.10);
+  border-bottom-color: #a7e5bd;
 }
 
 .nav-advertise {
   margin-left: auto;
-  background: rgba(0, 0, 0, .13);
+  background: rgba(0,0,0,.14);
 }
 
-/* ÁREA PRINCIPAL */
+/* ==================================================
+   ÁREA PRINCIPAL E TÍTULOS DAS SECÇÕES
+================================================== */
 
 main.container {
   padding-top: 20px;
   padding-bottom: 35px;
 }
 
-main,
-section {
-  min-width: 0;
-}
-
 .news-section {
   min-width: 0;
-  margin-top: 28px;
+  margin-top: 26px;
 }
 
 .section-heading {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
   justify-content: space-between;
   gap: 12px;
+
   margin-bottom: 14px;
   padding-bottom: 10px;
-  border-bottom: 2px solid var(--border);
+
+  border-bottom: 1px solid var(--border);
 }
 
 .section-heading > div {
@@ -250,24 +322,28 @@ section {
 .section-kicker {
   display: block;
   margin-bottom: 3px;
+
   color: var(--p);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .section-heading h2 {
   margin: 0;
   color: var(--txt);
+
   font-size: 21px;
   font-weight: 800;
   line-height: 1.25;
-  letter-spacing: -.3px;
+  letter-spacing: -.35px;
 }
 
 .view-all {
   flex-shrink: 0;
   padding-bottom: 2px;
+
   color: var(--p);
   font-size: 12px;
   font-weight: 800;
@@ -276,41 +352,65 @@ section {
 .view-all:hover {
   color: var(--p2);
   text-decoration: underline;
-   }
+}
+
+/* ==================================================
+   FIM DA PARTE 1/6
+   As regras seguintes serão acrescentadas nas
+   próximas partes do mesmo ficheiro.
+================================================== */
 
 
 
-/* =========================================
+/* ==================================================
+   AFRICANMUNDO — PARTE 2/6
+   PESQUISA, REDES SOCIAIS E PUBLICIDADE
+================================================== */
+
+/* ==================================================
    PESQUISA
-========================================= */
+================================================== */
 
 .search-section {
+  width: 100%;
+  min-width: 0;
   margin-bottom: 18px;
 }
 
 .search-box {
   width: 100%;
+  min-width: 0;
   min-height: 48px;
+
   display: flex;
   align-items: stretch;
+
   overflow: hidden;
   border: 1px solid var(--border);
-  border-radius: 11px;
+  border-radius: var(--radius);
+
   background: var(--card);
   box-shadow: var(--shadow);
+
+  transition:
+    border-color .2s ease,
+    box-shadow .2s ease;
 }
 
 .search-box:focus-within {
   border-color: var(--p);
-  box-shadow: 0 0 0 3px rgba(22, 138, 69, .10);
+  box-shadow: 0 0 0 3px rgba(8, 123, 69, .10);
 }
 
 .search-box input {
   width: 100%;
   min-width: 0;
+  min-height: 46px;
+
   padding: 12px 14px;
   border: 0;
   outline: none;
+
   background: transparent;
   color: var(--txt);
   font-size: 14px;
@@ -318,31 +418,48 @@ section {
 
 .search-box input::placeholder {
   color: var(--muted);
+  opacity: 1;
 }
 
 .search-box button {
   width: 52px;
-  flex-shrink: 0;
+  min-width: 52px;
+  flex: 0 0 52px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
   border: 0;
+
   background: var(--p);
-  color: #fff;
+  color: #ffffff;
   font-size: 20px;
+
+  transition: background .2s ease;
 }
 
 .search-box button:hover {
   background: var(--p2);
 }
 
+/* RESULTADOS DA PESQUISA */
+
 .search-results,
 #resultadosPesquisa,
 #searchResults {
+  width: 100%;
+  min-width: 0;
   margin-top: 12px;
 }
 
 .am-busca-compacta {
-  padding: 14px;
+  min-width: 0;
+  padding: 15px;
+
   border: 1px solid var(--border);
   border-radius: var(--radius);
+
   background: var(--card);
   box-shadow: var(--shadow);
 }
@@ -350,62 +467,92 @@ section {
 .am-busca-compacta h2,
 .am-busca-compacta h3 {
   margin-top: 0;
+  line-height: 1.35;
 }
 
 .am-busca-compacta a {
   color: var(--p);
+  overflow-wrap: anywhere;
 }
 
-/* REDES SOCIAIS */
+/* ==================================================
+   REDES SOCIAIS
+================================================== */
 
 .social-bar {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
+
   margin: 15px 0;
 }
 
 .social-bar a {
-  min-height: 34px;
+  min-height: 35px;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 7px 10px;
+  gap: 6px;
+
+  padding: 7px 11px;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius-sm);
+
   background: var(--card);
   color: var(--txt);
+
   font-size: 12px;
   font-weight: 700;
-  transition: border-color .2s, transform .2s;
+
+  transition:
+    border-color .2s ease,
+    background .2s ease,
+    transform .2s ease;
 }
 
 .social-bar a:hover {
   border-color: var(--p);
+  background: var(--p-light);
   transform: translateY(-1px);
 }
 
-/* FAIXA DE PUBLICIDADE */
+/* ==================================================
+   FAIXA DE PUBLICIDADE
+================================================== */
 
 .advertise-banner {
+  min-width: 0;
+
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 15px;
-  border: 1px solid #cbe8d4;
-  border-left: 5px solid var(--p);
-  border-radius: 10px;
-  background: #eaf7ee;
+
+  padding: 14px 16px;
+
+  border: 1px solid #cbe6d4;
+  border-left: 4px solid var(--p);
+  border-radius: var(--radius);
+
+  background: #edf7f0;
   color: #174b2b;
+
+  transition: box-shadow .2s ease;
+}
+
+.advertise-banner:hover {
+  box-shadow: var(--shadow);
 }
 
 .advertise-banner > span:first-child {
-  flex-shrink: 0;
-  font-size: 24px;
+  flex: 0 0 auto;
+  font-size: 25px;
 }
 
 .advertise-banner > span:nth-child(2) {
   min-width: 0;
+
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -413,135 +560,265 @@ section {
 
 .advertise-banner strong {
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .advertise-banner small {
   margin-top: 3px;
   color: #477457;
   font-size: 11px;
+  line-height: 1.5;
 }
 
 .advertise-arrow {
-  flex-shrink: 0;
+  flex: 0 0 auto;
   font-size: 12px;
   font-weight: 800;
 }
 
-/* NOTÍCIA EM DESTAQUE */
+/* ==================================================
+   GRELHA DE ANÚNCIOS
+================================================== */
+
+.ads-grid,
+#anunciosAtivos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 14px;
+
+  width: 100%;
+  min-width: 0;
+}
+
+#anunciosAtivos > * {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  background: var(--card);
+  box-shadow: var(--shadow);
+}
+
+#anunciosAtivos img,
+#anunciosAtivos video {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  max-height: 280px;
+  object-fit: cover;
+}
+
+#anunciosAtivos a {
+  overflow-wrap: anywhere;
+}
+
+/* ==================================================
+   FIM DA PARTE 2/6
+================================================== */
+
+
+
+/* ==================================================
+   AFRICANMUNDO — PARTE 3/6
+   NOTÍCIA PRINCIPAL E CARTÕES DE NOTÍCIAS
+================================================== */
+
+/* ==================================================
+   SECÇÃO DE DESTAQUE
+================================================== */
 
 .featured-news {
+  width: 100%;
   min-width: 0;
+  margin-bottom: 24px;
 }
 
 #destaque {
+  width: 100%;
   min-width: 0;
   overflow: hidden;
+
+  border: 1px solid var(--border);
   border-radius: var(--radius);
+
   background: var(--card);
+  box-shadow: var(--shadow);
 }
+
+/* CARTÃO PRINCIPAL */
 
 #destaque .am-destaque-card,
 #destaque .destaque-card {
   position: relative;
-  min-height: 350px;
+
+  width: 100%;
+  height: 290px;
+  min-height: 0;
+  max-height: 290px;
+
   overflow: hidden;
+  isolation: isolate;
+
   border-radius: var(--radius);
-  background: #16271c;
+  background: #20352a;
 }
+
+/* LIGAÇÃO QUE COBRE O CARTÃO */
 
 #destaque .am-destaque-card > a,
 #destaque .destaque-card > a {
   position: absolute;
   inset: 0;
+  z-index: 1;
+
   display: block;
-  color: #fff;
+  overflow: hidden;
+
+  color: #ffffff;
 }
+
+/* IMAGEM DE DESTAQUE */
 
 #destaque .am-destaque-imagem,
 #destaque .destaque-imagem,
 #destaque .destaque-card img {
   position: absolute;
   inset: 0;
+
+  display: block;
   width: 100%;
   height: 100%;
   max-width: 100%;
+
   object-fit: cover;
   object-position: center;
+
+  background: #e7ece8;
 }
+
+/* SOBREPOSIÇÃO PARA FACILITAR A LEITURA */
 
 #destaque .am-destaque-overlay,
 #destaque .destaque-overlay {
   position: absolute;
   inset: 0;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 90px 28px 25px;
+  align-items: flex-start;
+
+  padding: 65px 24px 22px;
+
   background: linear-gradient(
     to bottom,
-    rgba(0,0,0,.02) 5%,
-    rgba(0,0,0,.22) 38%,
-    rgba(0,0,0,.92) 100%
+    rgba(0, 0, 0, .02) 0%,
+    rgba(0, 0, 0, .15) 32%,
+    rgba(0, 0, 0, .86) 100%
   );
-  color: #fff;
+
+  color: #ffffff;
 }
+
+/* CATEGORIA DA NOTÍCIA */
 
 #destaque .am-destaque-categoria,
 #destaque .destaque-categoria {
+  display: inline-block;
   align-self: flex-start;
-  margin-bottom: 9px;
+
+  margin-bottom: 8px;
   padding: 5px 9px;
+
   border-radius: 4px;
   background: var(--p);
-  color: #fff;
+  color: #ffffff;
+
   font-size: 10px;
   font-weight: 800;
+  line-height: 1.4;
   text-transform: uppercase;
 }
 
+/* TÍTULO DA NOTÍCIA PRINCIPAL */
+
 #destaque .am-destaque-titulo,
 #destaque .destaque-overlay h2 {
-  max-width: 850px;
-  margin: 0;
-  color: #fff;
-  font-size: clamp(24px, 3.2vw, 37px);
-  font-weight: 900;
-  line-height: 1.18;
-  letter-spacing: -.5px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
+  max-width: 780px;
+  overflow: hidden;
   overflow-wrap: anywhere;
+
+  margin: 0;
+
+  color: #ffffff;
+  font-size: clamp(22px, 2.6vw, 32px);
+  font-weight: 900;
+  line-height: 1.2;
+  letter-spacing: -.35px;
 }
+
+/* RESUMO */
 
 #destaque .am-destaque-resumo,
 #destaque .destaque-resumo,
 #destaque .destaque-overlay p {
-  max-width: 760px;
-  margin: 10px 0 0;
-  color: rgba(255,255,255,.93);
-  font-size: 14px;
-  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+
+  max-width: 680px;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+
+  margin: 8px 0 0;
+
+  color: rgba(255, 255, 255, .94);
+  font-size: 13px;
+  line-height: 1.45;
 }
+
+/* DATA */
 
 #destaque .am-destaque-data,
 #destaque .destaque-data {
-  margin-top: 10px;
-  color: rgba(255,255,255,.8);
+  margin-top: 8px;
+  color: rgba(255, 255, 255, .82);
   font-size: 11px;
+  line-height: 1.4;
 }
 
-/* MENSAGENS DE CARREGAMENTO */
+/* ==================================================
+   MENSAGENS DE CARREGAMENTO E AUSÊNCIA DE NOTÍCIAS
+================================================== */
 
 .loading-message,
 .sem-noticias {
-  padding: 23px 14px;
+  width: 100%;
+  min-width: 0;
+
+  padding: 22px 14px;
+
   border: 1px solid var(--border);
-  border-radius: 10px;
+  border-radius: var(--radius);
+
   background: var(--card);
   color: var(--muted);
+
   text-align: center;
   font-size: 13px;
 }
 
-/* GRELHA DE NOTÍCIAS */
+/* ==================================================
+   GRELHA DE NOTÍCIAS
+================================================== */
 
 .news-grid,
 .grid,
@@ -549,11 +826,13 @@ section {
 .news-list,
 .lista-noticias {
   display: grid;
+
   grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
   gap: 14px;
+
   width: 100%;
   min-width: 0;
-  align-items: stretch;
 }
 
 .news-grid > *,
@@ -565,148 +844,162 @@ section {
   max-width: 100%;
 }
 
+/* CARTÕES */
+
 .card,
 .news-card {
   min-width: 0;
+  max-width: 100%;
   overflow: hidden;
+
   border: 1px solid var(--border);
   border-radius: var(--radius);
+
   background: var(--card);
   box-shadow: var(--shadow);
-  transition: transform .2s, box-shadow .2s;
+
+  transition:
+    transform .2s ease,
+    box-shadow .2s ease;
 }
 
 .card:hover,
 .news-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 22px rgba(20, 45, 30, .10);
+  box-shadow: var(--shadow-hover);
 }
+
+/* LIGAÇÃO INTERNA DO CARTÃO */
 
 .card-link {
   display: flex;
+  flex-direction: column;
+
+  width: 100%;
   height: 100%;
   min-width: 0;
-  flex-direction: column;
+
   color: inherit;
 }
+
+/* IMAGENS DOS CARTÕES */
 
 .card > img,
 .card .card-link > img,
 .news-card > img,
 .news-card .news-card-image {
   display: block;
+
   width: 100%;
-  height: 155px;
+  height: 145px;
+  max-width: 100%;
   flex-shrink: 0;
+
   object-fit: cover;
+  object-position: center;
+
   background: #e7ece8;
 }
 
+/* CORPO DOS CARTÕES */
+
 .card-body,
 .news-card-body {
-  min-width: 0;
   display: flex;
   flex: 1;
   flex-direction: column;
+
+  min-width: 0;
   padding: 11px;
 }
 
+/* CATEGORIA */
+
 .card-category {
   align-self: flex-start;
+
   margin-bottom: 6px;
+
   color: var(--p);
   font-size: 10px;
   font-weight: 800;
-  letter-spacing: .3px;
   line-height: 1.4;
+  letter-spacing: .25px;
   text-transform: uppercase;
 }
+
+/* TÍTULOS DOS CARTÕES */
 
 .card-title,
 .news-card h3 {
   display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
   overflow: hidden;
+  overflow-wrap: anywhere;
+
   margin: 0;
+
   color: var(--txt);
   font-size: 14px;
   font-weight: 800;
   line-height: 1.4;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
+
+/* RESUMO DOS CARTÕES */
 
 .card-text,
 .news-card p {
   display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+
   overflow: hidden;
-  margin: 8px 0 0;
+  overflow-wrap: anywhere;
+
+  margin: 7px 0 0;
+
   color: var(--muted);
   font-size: 12px;
   line-height: 1.5;
-  overflow-wrap: anywhere;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3;
 }
+
+/* DATA E METADADOS */
 
 .card-date,
 .news-card-meta,
 .news-card-footer {
   margin-top: auto;
   padding-top: 9px;
+
   color: var(--muted);
   font-size: 10px;
   line-height: 1.5;
-}
-
-.card-date {
   overflow-wrap: anywhere;
 }
+
+/* ACESSIBILIDADE DOS CARTÕES */
 
 .card a:focus-visible,
-.nav-link:focus-visible,
-.view-all:focus-visible,
-button:focus-visible {
+.news-card a:focus-visible {
   outline: 2px solid var(--p);
-  outline-offset: 3px;
-   }
-
-
-
-/* =========================================
-   AFRICANMUNDO — PUBLICIDADE
-========================================= */
-
-.ads-grid,
-#anunciosAtivos {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
-  min-width: 0;
+  outline-offset: -3px;
 }
 
-#anunciosAtivos > * {
-  min-width: 0;
-  max-width: 100%;
-  overflow: hidden;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--card);
-}
+/* ==================================================
+   FIM DA PARTE 3/6
+================================================== */
 
-#anunciosAtivos img,
-#anunciosAtivos video {
-  display: block;
-  width: 100%;
-  max-height: 300px;
-  object-fit: cover;
-}
 
-#anunciosAtivos a {
-  overflow-wrap: anywhere;
-}
+/* ==================================================
+   AFRICANMUNDO — PARTE 4/6
+   PAINÉIS, MODAL, TOPO E RODAPÉ
+================================================== */
 
-/* PAINÉIS DO SITE */
+/* ==================================================
+   PAINÉIS E MENUS FLUTUANTES
+================================================== */
 
 .am-painel,
 .top-panel,
@@ -715,6 +1008,9 @@ button:focus-visible {
 #userPanel,
 #colorPanel,
 #painelCores {
+  max-width: min(100%, 420px);
+  min-width: 0;
+
   color: var(--txt);
 }
 
@@ -723,12 +1019,13 @@ button:focus-visible {
 #notificationPanel,
 #toolsPanel,
 #userPanel,
-#colorPanel {
-  max-width: 100%;
+#colorPanel,
+#painelCores {
   border: 1px solid var(--border);
   border-radius: 14px;
+
   background: var(--card);
-  box-shadow: 0 12px 35px rgba(0,0,0,.18);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, .16);
 }
 
 .am-painel button,
@@ -746,86 +1043,152 @@ button:focus-visible {
   z-index: 1200;
 }
 
-/* MODAL */
+/* ==================================================
+   JANELA MODAL
+================================================== */
 
 .modal {
   position: fixed;
   inset: 0;
   z-index: 2000;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   padding: 16px;
-  background: rgba(0,0,0,.65);
+  overflow-y: auto;
+
+  background: rgba(12, 24, 17, .66);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
 }
 
 .modal-box {
   position: relative;
-  width: min(100%, 520px);
+
+  width: min(100%, 540px);
+  min-width: 0;
   max-width: 100%;
   max-height: 85vh;
+
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
+
   padding: 24px;
+
   border: 1px solid var(--border);
   border-radius: 16px;
+
   background: var(--card);
   color: var(--txt);
-  box-shadow: 0 20px 60px rgba(0,0,0,.25);
+
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .25);
 }
 
 .modal-box h2 {
-  margin: 0 35px 15px 0;
+  margin: 0 40px 15px 0;
+
+  color: var(--txt);
   font-size: 21px;
+  line-height: 1.3;
+}
+
+#modalBody {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+#modalBody img,
+#modalBody video {
+  max-width: 100%;
+  height: auto;
 }
 
 .modal-close {
   position: absolute;
   top: 10px;
   right: 12px;
+
   width: 36px;
   height: 36px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
   border: 0;
   border-radius: 50%;
+
   background: var(--bg);
   color: var(--txt);
+
   font-size: 26px;
 }
 
-/* VOLTAR AO TOPO */
+.modal-close:hover {
+  background: var(--p-light);
+  color: var(--p);
+}
+
+/* ==================================================
+   BOTÃO VOLTAR AO TOPO
+================================================== */
 
 #voltarTopo {
   position: fixed;
   right: 18px;
   bottom: 22px;
   z-index: 900;
+
   width: 43px;
   height: 43px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 0;
   border: 0;
   border-radius: 50%;
+
   background: var(--p);
-  color: #fff;
+  color: #ffffff;
+
   font-size: 23px;
   font-weight: 800;
-  box-shadow: 0 4px 15px rgba(0,0,0,.2);
+
+  box-shadow: 0 4px 15px rgba(0, 0, 0, .20);
+
+  transition:
+    background .2s ease,
+    transform .2s ease;
 }
 
 #voltarTopo:hover {
   background: var(--p2);
+  transform: translateY(-2px);
 }
 
-/* RODAPÉ */
+/* ==================================================
+   RODAPÉ
+================================================== */
 
 .site-footer {
-  margin-top: 25px;
+  margin-top: 28px;
+
   border-top: 4px solid var(--p);
   background: var(--card);
 }
 
+/* COLUNAS DO RODAPÉ */
+
 .footer-main {
   display: grid;
   grid-template-columns: 1.5fr 1fr 1fr 1fr;
-  gap: 28px;
+  align-items: start;
+  gap: 26px;
+
   padding-top: 32px;
   padding-bottom: 28px;
 }
@@ -838,6 +1201,7 @@ button:focus-visible {
   display: inline-flex;
   align-items: center;
   gap: 9px;
+
   color: var(--p);
   font-size: 22px;
   font-weight: 900;
@@ -850,13 +1214,17 @@ button:focus-visible {
 .footer-brand p {
   max-width: 320px;
   margin: 12px 0 0;
+
   color: var(--muted);
   font-size: 12px;
   line-height: 1.8;
 }
 
+/* LIGAÇÕES DO RODAPÉ */
+
 .footer-column {
   min-width: 0;
+
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -865,6 +1233,8 @@ button:focus-visible {
 
 .footer-column h3 {
   margin: 0 0 7px;
+
+  color: var(--txt);
   font-size: 14px;
   font-weight: 800;
 }
@@ -873,19 +1243,25 @@ button:focus-visible {
   color: var(--muted);
   font-size: 12px;
   overflow-wrap: anywhere;
+
+  transition: color .2s ease;
 }
 
 .footer-column a:hover {
   color: var(--p);
 }
 
+/* REDES SOCIAIS NO RODAPÉ */
+
 .footer-social {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 15px;
+
   padding-top: 17px;
   padding-bottom: 17px;
+
   border-top: 1px solid var(--border);
   color: var(--muted);
   font-size: 12px;
@@ -894,29 +1270,42 @@ button:focus-visible {
 .footer-social-links {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
 }
 
 .footer-social-links a {
-  width: 34px;
-  height: 34px;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 35px;
+
   display: grid;
   place-items: center;
+
   border: 1px solid var(--border);
   border-radius: 50%;
+
   background: var(--bg);
   color: var(--p);
   font-weight: 800;
+
+  transition:
+    background .2s ease,
+    color .2s ease,
+    border-color .2s ease;
 }
 
 .footer-social-links a:hover {
+  border-color: var(--p);
   background: var(--p);
-  color: #fff;
+  color: #ffffff;
 }
 
+/* BARRA INFERIOR DO RODAPÉ */
+
 .footer-bottom {
-  background: var(--bg);
   border-top: 1px solid var(--border);
+  background: var(--bg);
 }
 
 .footer-bottom-inner {
@@ -924,45 +1313,33 @@ button:focus-visible {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
+
   padding-top: 13px;
   padding-bottom: 13px;
 }
 
 .footer-bottom p {
   margin: 0;
+
   color: var(--muted);
   font-size: 10px;
+  line-height: 1.6;
 }
 
-/* ACESSIBILIDADE E CONTEÚDO */
-
-:focus-visible {
-  scroll-margin-top: 110px;
-}
-
-input,
-textarea,
-select,
-button {
-  max-width: 100%;
-}
-
-pre,
-code {
-  overflow-wrap: anywhere;
-}
-
-table {
-  max-width: 100%;
-}
+/* ==================================================
+   FIM DA PARTE 4/6
+================================================== */
 
 
 
-/* =========================================
-   AFRICANMUNDO — RESPONSIVIDADE FINAL
-========================================= */
+/* ==================================================
+   AFRICANMUNDO — PARTE 5/6
+   COMPUTADORES, TABLETS E TELEMÓVEIS
+================================================== */
 
-/* COMPUTADORES E ECRÃS GRANDES */
+/* ==================================================
+   COMPUTADORES E ECRÃS GRANDES
+================================================== */
 
 @media (min-width: 1201px) {
   .container {
@@ -977,9 +1354,17 @@ table {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
   }
+
+  #destaque .am-destaque-card,
+  #destaque .destaque-card {
+    height: 320px;
+    max-height: 320px;
+  }
 }
 
-/* PORTÁTEIS E TABLETS */
+/* ==================================================
+   PORTÁTEIS E TABLETS
+================================================== */
 
 @media (max-width: 1000px) {
   .news-grid,
@@ -997,12 +1382,23 @@ table {
   }
 
   .nav-link {
-    padding-inline: 9px;
+    padding-inline: 10px;
   }
 
   #destaque .am-destaque-card,
   #destaque .destaque-card {
-    min-height: 320px;
+    height: 270px;
+    max-height: 270px;
+  }
+
+  #destaque .am-destaque-overlay,
+  #destaque .destaque-overlay {
+    padding: 55px 20px 20px;
+  }
+
+  #destaque .am-destaque-titulo,
+  #destaque .destaque-overlay h2 {
+    font-size: 28px;
   }
 
   .ads-grid,
@@ -1011,23 +1407,32 @@ table {
   }
 }
 
-/* TELEMÓVEIS */
+/* ==================================================
+   TELEMÓVEIS
+================================================== */
 
 @media (max-width: 650px) {
+  html {
+    scroll-padding-top: 90px;
+  }
+
   .container {
     width: calc(100% - 22px);
   }
 
+  /* CABEÇALHO */
+
   .header-main {
-    min-height: 59px;
+    min-height: 57px;
     gap: 7px;
   }
 
   .logo {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
+    flex-basis: 34px;
     border-radius: 9px;
-    font-size: 22px;
+    font-size: 21px;
   }
 
   .brand {
@@ -1051,22 +1456,27 @@ table {
   .header-actions button {
     width: 31px;
     height: 31px;
+    flex-basis: 31px;
     font-size: 13px;
   }
 
+  /* NAVEGAÇÃO SUPERIOR */
+
   .nav-link {
-    min-height: 38px;
-    padding-inline: 10px;
+    min-height: 37px;
+    padding-inline: 9px;
     font-size: 11px;
   }
 
+  /* CONTEÚDO */
+
   main.container {
-    padding-top: 14px;
-    padding-bottom: 25px;
+    padding-top: 13px;
+    padding-bottom: 22px;
   }
 
   .news-section {
-    margin-top: 22px;
+    margin-top: 20px;
   }
 
   .section-heading {
@@ -1087,6 +1497,8 @@ table {
     font-size: 11px;
   }
 
+  /* NOTÍCIAS EM DUAS COLUNAS */
+
   .news-grid,
   .grid,
   .am-lista-noticias,
@@ -1101,11 +1513,13 @@ table {
     border-radius: 10px;
   }
 
+  /* IMAGENS COMPACTAS */
+
   .card > img,
   .card .card-link > img,
   .news-card > img,
   .news-card .news-card-image {
-    height: 115px;
+    height: 105px;
   }
 
   .card-body,
@@ -1128,6 +1542,7 @@ table {
   .news-card p {
     margin-top: 6px;
     font-size: 11px;
+    line-height: 1.45;
   }
 
   .card-date,
@@ -1137,50 +1552,70 @@ table {
     font-size: 9px;
   }
 
+  /* DESTAQUE PRINCIPAL COMPACTO */
+
   #destaque .am-destaque-card,
   #destaque .destaque-card {
-    min-height: 290px;
+    height: 220px;
+    min-height: 0;
+    max-height: 220px;
   }
 
   #destaque .am-destaque-overlay,
   #destaque .destaque-overlay {
-    padding: 65px 15px 16px;
+    padding: 45px 13px 13px;
   }
 
   #destaque .am-destaque-titulo,
   #destaque .destaque-overlay h2 {
-    font-size: clamp(21px, 5.5vw, 27px);
-    line-height: 1.22;
+    font-size: clamp(19px, 5vw, 24px);
+    line-height: 1.2;
   }
 
   #destaque .am-destaque-resumo,
   #destaque .destaque-resumo,
   #destaque .destaque-overlay p {
-    margin-top: 7px;
-    font-size: 12px;
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
   #destaque .am-destaque-categoria,
   #destaque .destaque-categoria {
-    margin-bottom: 7px;
+    margin-bottom: 6px;
+    padding: 4px 7px;
     font-size: 9px;
   }
 
+  #destaque .am-destaque-data,
+  #destaque .destaque-data {
+    margin-top: 6px;
+    font-size: 10px;
+  }
+
+  /* PESQUISA */
+
   .search-box {
-    min-height: 44px;
+    min-height: 43px;
   }
 
   .search-box input {
-    padding: 10px;
+    min-height: 41px;
+    padding: 9px 10px;
     font-size: 13px;
   }
 
   .search-box button {
-    width: 45px;
+    width: 44px;
+    min-width: 44px;
+    flex-basis: 44px;
   }
+
+  /* REDES SOCIAIS */
 
   .social-bar {
     gap: 6px;
+    margin: 12px 0;
   }
 
   .social-bar a {
@@ -1188,6 +1623,8 @@ table {
     padding: 6px 8px;
     font-size: 10px;
   }
+
+  /* PUBLICIDADE */
 
   .advertise-banner {
     gap: 8px;
@@ -1216,10 +1653,13 @@ table {
     gap: 9px;
   }
 
+  /* RODAPÉ */
+
   .footer-main {
-    gap: 22px 14px;
-    padding-top: 25px;
-    padding-bottom: 23px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 21px 14px;
+    padding-top: 24px;
+    padding-bottom: 22px;
   }
 
   .footer-logo {
@@ -1250,6 +1690,8 @@ table {
     gap: 6px;
   }
 
+  /* JANELA MODAL */
+
   .modal {
     padding: 10px;
   }
@@ -1258,16 +1700,20 @@ table {
     padding: 20px 14px;
   }
 
+  /* BOTÃO VOLTAR AO TOPO */
+
   #voltarTopo {
     right: 12px;
-    bottom: 15px;
-    width: 39px;
-    height: 39px;
-    font-size: 21px;
+    bottom: 75px;
+    width: 38px;
+    height: 38px;
+    font-size: 20px;
   }
 }
 
-/* REDMI A5 E ECRÃS ESTREITOS */
+/* ==================================================
+   REDMI A5 E ECRÃS ESTREITOS
+================================================== */
 
 @media (max-width: 380px) {
   .container {
@@ -1289,6 +1735,7 @@ table {
   .header-actions button {
     width: 29px;
     height: 29px;
+    flex-basis: 29px;
     font-size: 12px;
   }
 
@@ -1304,7 +1751,7 @@ table {
   .card .card-link > img,
   .news-card > img,
   .news-card .news-card-image {
-    height: 100px;
+    height: 92px;
   }
 
   .card-body,
@@ -1319,23 +1766,24 @@ table {
 
   #destaque .am-destaque-card,
   #destaque .destaque-card {
-    min-height: 270px;
+    height: 205px;
+    max-height: 205px;
   }
 
   #destaque .am-destaque-overlay,
   #destaque .destaque-overlay {
-    padding: 55px 12px 13px;
+    padding: 36px 11px 11px;
   }
 
   #destaque .am-destaque-titulo,
   #destaque .destaque-overlay h2 {
-    font-size: 20px;
+    font-size: 19px;
   }
 
   #destaque .am-destaque-resumo,
   #destaque .destaque-resumo,
   #destaque .destaque-overlay p {
-    font-size: 11px;
+    font-size: 10px;
   }
 
   .advertise-arrow {
@@ -1361,10 +1809,13 @@ table {
   .header-actions button {
     width: 27px;
     height: 27px;
+    flex-basis: 27px;
   }
 }
 
-/* MOVIMENTO REDUZIDO */
+/* ==================================================
+   ACESSIBILIDADE — MOVIMENTO REDUZIDO
+================================================== */
 
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -1377,58 +1828,248 @@ table {
   }
 }
 
+/* ==================================================
+   FIM DA PARTE 5/6
+================================================== */
 
-/* MENU INFERIOR COMPACTO PARA TELEFONES */
+
+
+/* ==================================================
+   AFRICANMUNDO — PARTE 6/6
+   MENU INFERIOR E ACABAMENTOS FINAIS
+================================================== */
+
+/* ==================================================
+   MENU INFERIOR PARA TELEMÓVEIS
+================================================== */
+
 .mobile-bottom-nav {
   display: none;
 }
 
 @media (max-width: 650px) {
-  body {
-    padding-bottom: 68px;
-  }
-
   .mobile-bottom-nav {
     position: fixed;
-    z-index: 9999;
-    left: 0;
+    z-index: 1000;
     right: 0;
     bottom: 0;
+    left: 0;
+
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
-    align-items: center;
-    min-height: 64px;
-    padding: 5px 2px;
-    background: #004b3b;
-    border-top: 1px solid rgba(255,255,255,.15);
-    box-shadow: 0 -3px 15px rgba(0,0,0,.12);
+    align-items: stretch;
+
+    min-height: 62px;
+    padding: 5px 4px;
+    padding-bottom: max(5px, env(safe-area-inset-bottom));
+
+    background: #fff;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 18px rgb(20 40 30 / 8%);
   }
 
   .mobile-bottom-nav a {
     display: flex;
+    min-width: 0;
+    min-height: 48px;
+
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 3px;
-    min-width: 0;
-    color: #fff;
+
+    padding: 4px 2px;
+    border-radius: 9px;
+
+    color: var(--muted);
     text-decoration: none;
-    font-size: 23px;
+    text-align: center;
+
+    transition:
+      color .18s ease,
+      background-color .18s ease;
+  }
+
+  .mobile-bottom-nav a span {
+    display: block;
+    font-size: 21px;
     line-height: 1.1;
   }
 
-  .mobile-bottom-nav small {
-    font-size: 10px;
+  .mobile-bottom-nav a small {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+
+    font-size: 9px;
     font-weight: 600;
+    line-height: 1.2;
+    text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  #searchInput {
-    scroll-margin-top: 90px;
+  .mobile-bottom-nav a:hover,
+  .mobile-bottom-nav a:focus-visible {
+    color: var(--p);
+    background: var(--p-light);
   }
 
-  #siteFooter {
-    scroll-margin-bottom: 75px;
+  .mobile-bottom-nav a:active {
+    background: #dcefe3;
   }
-     }
 
+  /* Espaço para o menu não tapar o fim da página */
+  body {
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  /* Mantém o botão de topo acima do menu */
+  #voltarTopo {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+
+  /* Evita que as últimas secções fiquem escondidas */
+  #siteFooter,
+  .site-footer {
+    scroll-margin-bottom: 85px;
+  }
+}
+
+/* ==================================================
+   ESTADOS DE FOCO E ACESSIBILIDADE
+================================================== */
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid rgb(8 123 69 / 45%);
+  outline-offset: 3px;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+}
+
+/* ==================================================
+   CORREÇÕES DE LARGURA E TRANSBORDAMENTO
+================================================== */
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.container,
+.news-section,
+.news-grid,
+.grid,
+.am-lista-noticias,
+.news-list,
+.lista-noticias {
+  min-width: 0;
+}
+
+.card,
+.news-card,
+.card-body,
+.news-card-body {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.card img,
+.news-card img {
+  max-width: 100%;
+}
+
+/* ==================================================
+   CONSISTÊNCIA DOS BOTÕES
+================================================== */
+
+button,
+.button,
+.btn {
+  cursor: pointer;
+}
+
+button:disabled,
+.button:disabled,
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: .6;
+}
+
+/* ==================================================
+   CAMPOS DE PESQUISA E FORMULÁRIOS
+================================================== */
+
+input,
+select,
+textarea {
+  max-width: 100%;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #7b8981;
+  opacity: 1;
+}
+
+/* ==================================================
+   IMPRESSÃO
+================================================== */
+
+@media print {
+  .mobile-bottom-nav,
+  .main-nav,
+  .header-actions,
+  .social-bar,
+  .advertise-banner,
+  #voltarTopo {
+    display: none !important;
+  }
+
+  body {
+    padding: 0 !important;
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .container {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .news-grid,
+  .grid,
+  .am-lista-noticias,
+  .news-list,
+  .lista-noticias {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+
+  .card,
+  .news-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+  }
+}
+
+/* ==================================================
+   FIM DA PARTE 6/6
+   AFRICANMUNDO — STYLE.CSS COMPLETO
+================================================== */
