@@ -2428,3 +2428,173 @@ main.container > .news-section {
     display: none;
   }
    }
+
+
+/* AFRICANMUNDO — DESTAQUE EDITORIAL */
+
+#destaque .am-destaque-card {
+  position: relative;
+  height: 390px;
+  max-height: 390px;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #151515;
+  isolation: isolate;
+}
+
+#destaque .am-destaque-imagem-link {
+  position: absolute;
+  inset: 0;
+  display: block;
+  z-index: 0;
+}
+
+#destaque .am-destaque-imagem {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.5s ease;
+}
+
+#destaque .am-destaque-card:hover .am-destaque-imagem {
+  transform: scale(1.035);
+}
+
+#destaque .am-destaque-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 28px;
+  color: #fff;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.94) 0%,
+    rgba(0, 0, 0, 0.72) 38%,
+    rgba(0, 0, 0, 0.12) 100%
+  );
+}
+
+#destaque .am-destaque-overlay .card-category {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 5px;
+  background: #e53935;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+#destaque .am-destaque-titulo {
+  max-width: 850px;
+  margin: 0;
+  font-size: clamp(23px, 3.5vw, 36px);
+  font-weight: 800;
+  line-height: 1.2;
+  text-wrap: pretty;
+}
+
+#destaque .am-destaque-titulo a {
+  color: #fff;
+  text-decoration: none;
+}
+
+#destaque .am-destaque-titulo a:hover {
+  text-decoration: underline;
+}
+
+#destaque .am-destaque-resumo {
+  max-width: 760px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+#destaque .am-destaque-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  width: 100%;
+  margin-top: 4px;
+  font-size: 13px;
+}
+
+#destaque .am-destaque-meta time {
+  color: #fff;
+  opacity: 0.85;
+}
+
+#destaque .am-destaque-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 8px;
+  background: #e53935;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+#destaque .am-destaque-link:hover {
+  background: #c62828;
+}
+
+@media (max-width: 650px) {
+  #destaque .am-destaque-card {
+    height: 300px;
+    max-height: 300px;
+    border-radius: 13px;
+  }
+
+  #destaque .am-destaque-overlay {
+    gap: 8px;
+    padding: 16px;
+  }
+
+  #destaque .am-destaque-titulo {
+    font-size: 22px;
+    line-height: 1.25;
+  }
+
+  #destaque .am-destaque-resumo {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  #destaque .am-destaque-meta {
+    font-size: 12px;
+  }
+
+  #destaque .am-destaque-link {
+    padding: 9px 11px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 380px) {
+  #destaque .am-destaque-card {
+    height: 280px;
+    max-height: 280px;
+  }
+
+  #destaque .am-destaque-overlay {
+    padding: 12px;
+  }
+
+  #destaque .am-destaque-titulo {
+    font-size: 19px;
+  }
+
+  #destaque .am-destaque-resumo {
+    font-size: 11px;
+  }
+   }
