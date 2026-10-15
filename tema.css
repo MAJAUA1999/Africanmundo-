@@ -626,3 +626,65 @@ footer{
     color .2s ease,
     border-color .2s ease;
 }
+
+
+/* ==================================================
+AFRICANMUNDO — CORREÇÃO FINAL DAS IMAGENS
+================================================== */
+
+/* Cartões de notícias */
+.news-grid .card img,
+.news-grid .news-card img,
+.grid .card img,
+.grid .news-card img,
+.am-lista-noticias .card img,
+.am-lista-noticias .news-card img,
+.news-list .card img,
+.news-list .news-card img,
+.lista-noticias .card img,
+.lista-noticias .news-card img {
+display: block;
+width: 100%;
+height: 145px;
+max-width: 100%;
+object-fit: cover;
+}
+
+/* Telemóveis */
+@media (max-width: 650px) {
+.news-grid .card img,
+.news-grid .news-card img,
+.grid .card img,
+.grid .news-card img,
+.am-lista-noticias .card img,
+.am-lista-noticias .news-card img,
+.news-list .card img,
+.news-list .news-card img,
+.lista-noticias .card img,
+.lista-noticias .news-card img {
+height: 105px;
+}
+}
+
+/* Notícia principal */
+#destaque .am-destaque-card,
+#destaque .destaque-card {
+height: 290px;
+max-height: 290px;
+overflow: hidden;
+}
+
+#destaque .am-destaque-card img,
+#destaque .destaque-card img {
+width: 100%;
+height: 100%;
+object-fit: cover;
+}
+
+@media (max-width: 650px) {
+#destaque .am-destaque-card,
+#destaque .destaque-card {
+height: 220px;
+max-height: 220px;
+}
+}
