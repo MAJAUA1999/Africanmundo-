@@ -460,6 +460,82 @@ function pesquisar() {
   resultados.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+
+<!-- NOTÍCIAS POR PROVÍNCIA E PAÍS -->
+<section class="news-section am-localidades" aria-labelledby="titulo-localidades">
+  <div class="section-heading">
+    <div>
+      <span class="section-kicker">EXPLORAR POR LOCALIZAÇÃO</span>
+      <h2 id="titulo-localidades">🌍 Notícias por província e país</h2>
+    </div>
+  </div>
+
+  <h3 class="am-localidades-subtitulo">🇲🇿 Províncias de Moçambique</h3>
+
+  <div class="am-localidades-grelha">
+    <a href="categoria.html?categoria=mocambique&localidade=Maputo" class="am-localidade">
+      <span>🏙️</span><strong>Maputo</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Gaza" class="am-localidade">
+      <span>🌴</span><strong>Gaza</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Inhambane" class="am-localidade">
+      <span>🏖️</span><strong>Inhambane</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Sofala" class="am-localidade">
+      <span>⚓</span><strong>Sofala</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Manica" class="am-localidade">
+      <span>⛰️</span><strong>Manica</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Tete" class="am-localidade">
+      <span>🌄</span><strong>Tete</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Zambézia" class="am-localidade">
+      <span>🌾</span><strong>Zambézia</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Nampula" class="am-localidade">
+      <span>🏘️</span><strong>Nampula</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Cabo Delgado" class="am-localidade">
+      <span>🌊</span><strong>Cabo Delgado</strong>
+    </a>
+    <a href="categoria.html?categoria=mocambique&localidade=Niassa" class="am-localidade">
+      <span>🌳</span><strong>Niassa</strong>
+    </a>
+  </div>
+
+  <h3 class="am-localidades-subtitulo">🌍 Notícias dos países africanos</h3>
+
+  <div class="am-localidades-grelha am-paises">
+    <a href="categoria.html?categoria=africa&pais=Angola" class="am-localidade">
+      <span>🇦🇴</span><strong>Angola</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=África do Sul" class="am-localidade">
+      <span>🇿🇦</span><strong>África do Sul</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=Zimbabwe" class="am-localidade">
+      <span>🇿🇼</span><strong>Zimbabwe</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=Quénia" class="am-localidade">
+      <span>🇰🇪</span><strong>Quénia</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=Nigéria" class="am-localidade">
+      <span>🇳🇬</span><strong>Nigéria</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=RDC" class="am-localidade">
+      <span>🇨🇩</span><strong>R. Dem. do Congo</strong>
+    </a>
+    <a href="categoria.html?categoria=africa&pais=Gana" class="am-localidade">
+      <span>🇬🇭</span><strong>Gana</strong>
+    </a>
+    <a href="categoria.html?categoria=africa" class="am-localidade">
+      <span>🌍</span><strong>Todos os países</strong>
+    </a>
+  </div>
+</section>
+
+
 /* =========================================
    ANÚNCIOS
 ========================================= */
