@@ -2134,3 +2134,297 @@ height: 220px;
 max-height: 220px;
 }
 }
+
+/* ==========================================
+   AFRICANMUNDO — ORGANIZAÇÃO DA PÁGINA INICIAL
+   ========================================== */
+
+/* Espaçamento geral das secções */
+main.container {
+  padding-top: 18px;
+  padding-bottom: 36px;
+}
+
+main.container > .news-section {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  min-width: 0;
+}
+
+/* Pesquisa */
+.search-section {
+  margin: 0 0 18px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 14px;
+  background: var(--card-bg, #fff);
+}
+
+.search-box input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+}
+
+.search-box button {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* Redes sociais */
+.social-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.social-bar a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  border-radius: 20px;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+/* Banner de publicidade */
+.advertise-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+  padding: 16px;
+  border: 1px solid rgba(128, 128, 128, 0.25);
+  border-radius: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.advertise-banner > span:first-child {
+  font-size: 26px;
+}
+
+.advertise-banner > span:nth-child(2) {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.advertise-banner small {
+  opacity: 0.8;
+}
+
+.advertise-arrow {
+  font-size: 13px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+/* Títulos das secções */
+.section-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+
+.section-heading h2 {
+  margin: 5px 0 0;
+  font-size: clamp(19px, 2.5vw, 25px);
+  line-height: 1.3;
+}
+
+.section-kicker {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  opacity: 0.7;
+}
+
+.view-all {
+  flex-shrink: 0;
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Grelha de notícias */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+  align-items: stretch;
+}
+
+.news-grid .news-card {
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(128, 128, 128, 0.2);
+  border-radius: 14px;
+}
+
+/* Imagens uniformes */
+.news-grid .news-card img,
+.news-grid .card img {
+  display: block;
+  width: 100%;
+  height: 145px;
+  object-fit: cover;
+}
+
+/* Conteúdo dos cartões */
+.news-card-body {
+  padding: 12px;
+}
+
+.news-card .card-title {
+  font-size: 15px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+.news-card .card-title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.news-card .card-title a:hover {
+  text-decoration: underline;
+}
+
+.news-card p {
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.news-card time {
+  font-size: 12px;
+  opacity: 0.7;
+}
+
+/* Publicidade */
+.ads-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+/* Adaptação para tablets e telemóveis */
+@media (max-width: 900px) {
+  .news-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 14px;
+  }
+
+  .ads-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  main.container {
+    padding-top: 12px;
+  }
+
+  main.container > .news-section {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .news-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .news-grid .news-card img,
+  .news-grid .card img {
+    height: 105px;
+  }
+
+  .news-card-body {
+    padding: 9px;
+  }
+
+  .news-card .card-title {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .news-card p {
+    font-size: 12px;
+  }
+
+  .section-heading {
+    align-items: flex-end;
+  }
+
+  .section-kicker {
+    font-size: 9px;
+    letter-spacing: 0.5px;
+  }
+
+  .section-heading h2 {
+    font-size: 19px;
+  }
+
+  .view-all {
+    font-size: 12px;
+  }
+
+  .advertise-banner {
+    padding: 12px;
+    gap: 8px;
+  }
+
+  .advertise-arrow {
+    font-size: 11px;
+  }
+
+  .social-bar {
+    justify-content: flex-start;
+  }
+
+  .ads-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .news-grid {
+    gap: 8px;
+  }
+
+  .news-grid .news-card img,
+  .news-grid .card img {
+    height: 92px;
+  }
+
+  .advertise-arrow {
+    display: none;
+  }
+   }
