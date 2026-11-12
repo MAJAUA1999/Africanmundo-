@@ -1,690 +1,288 @@
-/* =========================================================
-   AFRICANMUNDO — TEMA ESCURO PERMANENTE
-   Não altera o layout. Apenas adapta as cores.
-   ========================================================= */
 
-html{
-  color-scheme:dark;
-  background:#0d1113;
+/* =====================================================
+   AFRICANMUNDO — TEMA.CSS
+   PARTE 1/2 — TEMA CLARO E TEMA ESCURO
+===================================================== */
+
+/* TEMA CLARO — PADRÃO */
+:root,
+html.tema-claro,
+html:not(.tema-escuro) {
+  color-scheme: light;
+
+  --bg: #f4f6f5;
+  --card: #ffffff;
+  --text: #202923;
+  --muted: #68756d;
+  --border: #e1e8e3;
+  --shadow: 0 3px 12px rgba(0, 0, 0, 0.07);
 }
 
-html,
-body{
-  background:#0d1113 !important;
-  color:#f1f4f5 !important;
+/* TEMA ESCURO */
+html.tema-escuro {
+  color-scheme: dark;
+
+  --bg: #0d1113;
+  --card: #171d20;
+  --text: #f1f4f5;
+  --muted: #aab5b0;
+  --border: #2b3632;
+  --p-light: #163c2a;
+  --shadow: 0 3px 12px rgba(0, 0, 0, 0.30);
 }
 
-/* Variáveis do tema */
-:root{
-  --bg:#0d1113;
-  --card:#171d20;
-  --card2:#1c2428;
-  --txt:#f1f4f5;
-  --muted:#929da3;
-  --border:#303a3e;
-  --shadow:0 5px 22px rgba(0,0,0,.38);
-  --p:#168a45;
+/* FUNDO E TEXTO */
+html.tema-escuro body {
+  background: var(--bg);
+  color: var(--text);
 }
 
-/* =========================================================
-   BASE
-   ========================================================= */
-
-body{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
+/* CABEÇALHO */
+html.tema-escuro .site-header,
+html.tema-escuro .header-main {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-main,
-section,
-article,
-aside{
-  color:var(--txt);
+/* MENU PRINCIPAL */
+html.tema-escuro .main-nav {
+  background: #064b32;
+  color: #ffffff;
 }
 
-a{
-  color:inherit;
+html.tema-escuro .main-nav a {
+  color: #ffffff;
 }
 
-hr{
-  border-color:var(--border) !important;
+/* SECÇÕES */
+html.tema-escuro main,
+html.tema-escuro main > section {
+  color: var(--text);
 }
 
-/* =========================================================
-   CABEÇALHO
-   ========================================================= */
-
-header{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* CARTÕES DE NOTÍCIAS */
+html.tema-escuro .am-news-card,
+html.tema-escuro .am-news-content,
+html.tema-escuro .am-destaque-card,
+html.tema-escuro .am-destaque-conteudo {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-.header-actions button,
-header button{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* TÍTULOS E DESCRIÇÕES */
+html.tema-escuro .am-news-title,
+html.tema-escuro .am-news-title a,
+html.tema-escuro .am-destaque-titulo,
+html.tema-escuro .am-destaque-titulo a,
+html.tema-escuro section > h2,
+html.tema-escuro .section-title {
+  color: var(--text);
 }
 
-/* =========================================================
-   NAVEGAÇÃO
-   ========================================================= */
-
-nav{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+html.tema-escuro .am-news-summary,
+html.tema-escuro .am-news-meta,
+html.tema-escuro .am-destaque-resumo {
+  color: var(--muted);
 }
 
-nav a{
-  color:var(--txt) !important;
+/* PESQUISA */
+html.tema-escuro .search-box,
+html.tema-escuro .search-results,
+html.tema-escuro .am-pesquisa-lista,
+html.tema-escuro .am-pesquisa-cabecalho {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-nav a:hover,
-nav a.active{
-  color:#fff !important;
+/* PAINÉIS */
+html.tema-escuro #notificationPanel,
+html.tema-escuro #toolsPanel,
+html.tema-escuro #userPanel,
+html.tema-escuro #colorPanel {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-/* =========================================================
-   PESQUISA
-   ========================================================= */
-
-.search-box{
-  background:transparent;
-  color:var(--txt);
+/* ANÚNCIOS */
+html.tema-escuro #anunciosAtivosSection,
+html.tema-escuro .am-anuncio-card {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-.search-box input{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* FORMULÁRIOS */
+html.tema-escuro input,
+html.tema-escuro textarea,
+html.tema-escuro select {
+  background: #111719;
+  color: var(--text);
+  border-color: var(--border);
 }
 
-.search-box input::placeholder{
-  color:var(--muted) !important;
+html.tema-escuro input::placeholder,
+html.tema-escuro textarea::placeholder {
+  color: var(--muted);
 }
 
-.search-box button{
-  color:var(--txt) !important;
+/* BOTÕES SECUNDÁRIOS */
+html.tema-escuro button,
+html.tema-escuro .btn {
+  border-color: var(--border);
 }
 
-/* =========================================================
-   CARTÕES
-   ========================================================= */
-
-.card,
-.news-card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-  box-shadow:var(--shadow);
+/* RODAPÉ */
+html.tema-escuro .site-footer {
+  background: #061f17;
+  color: #e8f1ec;
+  border-color: var(--border);
 }
 
-.card-title,
-.news-card h3{
-  color:var(--txt) !important;
+/* MODAL */
+html.tema-escuro .modal,
+html.tema-escuro .modal-content {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
 }
 
-.card p,
-.news-card p{
-  color:var(--muted) !important;
+/* BARRA INFERIOR MOBILE */
+html.tema-escuro .mobile-bottom-nav {
+  background: var(--card);
+  border-color: var(--border);
 }
 
-.card-date,
-.news-card-footer{
-  color:var(--muted) !important;
+html.tema-escuro .mobile-bottom-nav a,
+html.tema-escuro .mobile-bottom-nav button {
+  color: var(--text);
 }
 
-/* =========================================================
-   DESTAQUE
-   ========================================================= */
-
-.destaque,
-#destaque,
-.destaque-card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* LINKS */
+html.tema-escuro a {
+  color: #62c98b;
 }
 
-.destaque h1,
-.destaque h2,
-.destaque h3,
-#destaque h1,
-#destaque h2,
-#destaque h3{
-  color:#fff !important;
+/* IMAGENS */
+html.tema-escuro img {
+  color: var(--text);
 }
 
-/* =========================================================
-   PAINÉIS
-   ========================================================= */
 
-.top-panel,
+
+/* =====================================================
+   AFRICANMUNDO — TEMA.CSS
+   PARTE 2/2 — ACABAMENTOS E RESPONSIVIDADE
+===================================================== */
+
+/* BORDAS E SEPARADORES */
+html.tema-escuro hr,
+html.tema-escuro .divider {
+  border-color: var(--border);
+}
+
+/* CARTÕES E ELEMENTOS GERAIS */
+html.tema-escuro .card,
+html.tema-escuro article,
+html.tema-escuro .news-card,
+html.tema-escuro .news-item {
+  background: var(--card);
+  color: var(--text);
+  border-color: var(--border);
+}
+
+/* TEXTOS SECUNDÁRIOS */
+html.tema-escuro small,
+html.tema-escuro .muted,
+html.tema-escuro .text-muted {
+  color: var(--muted);
+}
+
+/* BOTÃO VOLTAR AO TOPO */
+html.tema-escuro #voltarTopo {
+  background: var(--p);
+  color: #ffffff;
+}
+
+/* BARRA DE ROLAGEM */
+html.tema-escuro {
+  scrollbar-color: #46564d #111719;
+}
+
+html.tema-escuro::-webkit-scrollbar {
+  width: 8px;
+}
+
+html.tema-escuro::-webkit-scrollbar-track {
+  background: #111719;
+}
+
+html.tema-escuro::-webkit-scrollbar-thumb {
+  background: #46564d;
+  border-radius: 10px;
+}
+
+/* SELEÇÃO DE TEXTO */
+html.tema-escuro ::selection {
+  background: #168a45;
+  color: #ffffff;
+}
+
+/* TRANSIÇÕES SUAVES */
+body,
+.site-header,
+.main-nav,
+.am-news-card,
+.am-destaque-card,
+.site-footer,
+.mobile-bottom-nav,
 #notificationPanel,
 #toolsPanel,
 #userPanel,
-#colorPanel{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-  box-shadow:var(--shadow);
-}
-
-.top-panel button,
-#notificationPanel button,
-#toolsPanel button,
-#userPanel button,
-#colorPanel button{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   MODAIS
-   ========================================================= */
-
-.modal,
-.modal-box{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-.modal-box h1,
-.modal-box h2,
-.modal-box h3,
-.modal-box h4{
-  color:var(--txt) !important;
-}
-
-.modal-box p{
-  color:var(--muted) !important;
-}
-
-/* =========================================================
-   CAMPOS
-   ========================================================= */
-
-input,
-textarea,
-select{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-input::placeholder,
-textarea::placeholder{
-  color:var(--muted) !important;
-}
-
-option{
-  background:var(--card);
-  color:var(--txt);
-}
-
-/* =========================================================
-   BOTÕES
-   ========================================================= */
-
-button{
-  color:var(--txt);
-}
-
-button:not(.btn-primary):not(.primary){
-  border-color:var(--border);
-}
-
-.btn,
-button{
+#colorPanel {
   transition:
-    background-color .2s ease,
-    color .2s ease,
-    border-color .2s ease;
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
 }
 
-/* =========================================================
-   TABELAS
-   ========================================================= */
-
-table{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* ELEMENTOS ESCONDIDOS */
+[hidden] {
+  display: none !important;
 }
 
-th,
-td{
-  background:transparent !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
+/* ACESSIBILIDADE */
+@media (prefers-reduced-motion: reduce) {
+  body,
+  .site-header,
+  .main-nav,
+  .am-news-card,
+  .am-destaque-card,
+  .site-footer,
+  .mobile-bottom-nav {
+    transition: none !important;
+    animation: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
-/* =========================================================
-   AFRICANMUNDO — TEMA ESCURO PERMANENTE
-   PARTE 2/2
-   ========================================================= */
+/* IMPRESSÃO */
+@media print {
+  html.tema-escuro,
+  html.tema-escuro body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
 
-/* =========================================================
-   TEXTOS E ELEMENTOS SECUNDÁRIOS
-   ========================================================= */
-
-.muted,
-.text-muted,
-.info,
-.descricao,
-.card-date,
-.data,
-.data-noticia,
-.fonte,
-.meta,
-small{
-  color:var(--muted) !important;
+  .site-header,
+  .main-nav,
+  .mobile-bottom-nav,
+  #voltarTopo {
+    display: none !important;
+  }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6{
-  color:var(--txt);
-}
-
-/* =========================================================
-   PÁGINA DE NOTÍCIA
-   ========================================================= */
-
-.noticia,
-.article,
-.article-content,
-.news-content,
-.news-article,
-.conteudo-noticia{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-.noticia h1,
-.article h1,
-.article-content h1,
-.news-content h1,
-.news-article h1{
-  color:#fff !important;
-}
-
-.noticia p,
-.article p,
-.article-content p,
-.news-content p,
-.news-article p{
-  color:#d5dcdf !important;
-}
-
-.noticia .fonte,
-.article .fonte,
-.noticia .data{
-  color:var(--muted) !important;
-}
-
-/* =========================================================
-   CATEGORIAS
-   ========================================================= */
-
-.categoria,
-.categoria-page,
-.category-page{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-.categoria h1,
-.categoria h2,
-.category-page h1,
-.category-page h2{
-  color:var(--txt) !important;
-}
-
-/* =========================================================
-   FUTEBOL
-   ========================================================= */
-
-.futebol,
-.futebol-page{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-.futebol .card,
-.futebol-page .card,
-.futebol .news-card,
-.futebol-page .news-card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   MOÇAMBIQUE
-   ========================================================= */
-
-.mocambique,
-.mocambique-page{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-/* =========================================================
-   MENU MOBILE / MENU INFERIOR
-   ========================================================= */
-
-.bottom-nav,
-.bottom-menu,
-.mobile-nav,
-.mobile-menu{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-.bottom-nav a,
-.bottom-menu a,
-.mobile-nav a,
-.mobile-menu a{
-  color:var(--txt) !important;
-}
-
-.bottom-nav a.active,
-.bottom-menu a.active,
-.mobile-nav a.active,
-.mobile-menu a.active{
-  color:#168a45 !important;
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer{
-  background:#080c0d !important;
-  color:#dce5e1 !important;
-  border-color:var(--border) !important;
-}
-
-footer a{
-  color:#dce5e1 !important;
-}
-
-footer p,
-footer small{
-  color:#aeb9b5 !important;
-}
-
-/* =========================================================
-   ANÚNCIOS
-   ========================================================= */
-
-#anunciosAtivosSection{
-  background:transparent !important;
-  color:var(--txt) !important;
-}
-
-#anunciosAtivos{
-  background:transparent !important;
-  color:var(--txt) !important;
-}
-
-#anunciosAtivos .card,
-#anunciosAtivos .news-card,
-.anuncio-card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   RESULTADOS DE PESQUISA
-   ========================================================= */
-
-#resultadosPesquisa,
-.resultados-pesquisa,
-.search-results{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-#resultadosPesquisa .card,
-.search-results .card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   ADMIN
-   ========================================================= */
-
-.admin,
-.admin-page,
-#admin{
-  background:var(--bg) !important;
-  color:var(--txt) !important;
-}
-
-.admin .card,
-.admin-page .card,
-#admin .card{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-.admin table{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-}
-
-/* =========================================================
-   LOGIN
-   ========================================================= */
-
-.login,
-.login-container,
-.login-box{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   ALERTAS / MENSAGENS
-   ========================================================= */
-
-.alert,
-.aviso,
-.mensagem,
-.toast{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-.loading,
-.loader,
-.carregando{
-  color:var(--txt) !important;
-}
-
-/* =========================================================
-   LINKS
-   ========================================================= */
-
-a{
-  color:inherit;
-}
-
-a:hover{
-  color:#168a45;
-}
-
-/* =========================================================
-   IMAGENS
-   ========================================================= */
-
-img{
-  border-color:var(--border);
-}
-
-/* =========================================================
-   SCROLLBAR
-   ========================================================= */
-
-html{
-  scrollbar-color:#394348 #0d1113;
-}
-
-::-webkit-scrollbar{
-  width:9px;
-  height:9px;
-}
-
-::-webkit-scrollbar-track{
-  background:#0d1113;
-}
-
-::-webkit-scrollbar-thumb{
-  background:#394348;
-  border-radius:10px;
-}
-
-::-webkit-scrollbar-thumb:hover{
-  background:#4a555b;
-}
-
-/* =========================================================
-   SEPARADORES
-   ========================================================= */
-
-.border,
-.divider,
-.separador{
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   ELEMENTOS BRANCOS QUE POSSAM EXISTIR NO SITE
-   ========================================================= */
-
-.box,
-.panel,
-.container-box,
-.content-box{
-  background:var(--card) !important;
-  color:var(--txt) !important;
-  border-color:var(--border) !important;
-}
-
-/* =========================================================
-   GARANTIA FINAL — FUNDO ESCURO GLOBAL
-   ========================================================= */
-
-html body,
-body main,
-body section{
-  background-color:var(--bg);
-  color:var(--txt);
-}
-
-/* =========================================================
-   TRANSIÇÃO SUAVE
-   ========================================================= */
-
-body,
-header,
-nav,
-main,
-section,
-article,
-.card,
-.news-card,
-.top-panel,
-.modal-box,
-input,
-textarea,
-select,
-button,
-footer{
-  transition:
-    background-color .2s ease,
-    color .2s ease,
-    border-color .2s ease;
-}
-
-
-/* ==================================================
-AFRICANMUNDO — CORREÇÃO FINAL DAS IMAGENS
-================================================== */
-
-/* Cartões de notícias */
-.news-grid .card img,
-.news-grid .news-card img,
-.grid .card img,
-.grid .news-card img,
-.am-lista-noticias .card img,
-.am-lista-noticias .news-card img,
-.news-list .card img,
-.news-list .news-card img,
-.lista-noticias .card img,
-.lista-noticias .news-card img {
-display: block;
-width: 100%;
-height: 145px;
-max-width: 100%;
-object-fit: cover;
-}
-
-/* Telemóveis */
-@media (max-width: 650px) {
-.news-grid .card img,
-.news-grid .news-card img,
-.grid .card img,
-.grid .news-card img,
-.am-lista-noticias .card img,
-.am-lista-noticias .news-card img,
-.news-list .card img,
-.news-list .news-card img,
-.lista-noticias .card img,
-.lista-noticias .news-card img {
-height: 105px;
-}
-}
-
-/* Notícia principal */
-#destaque .am-destaque-card,
-#destaque .destaque-card {
-height: 290px;
-max-height: 290px;
-overflow: hidden;
-}
-
-#destaque .am-destaque-card img,
-#destaque .destaque-card img {
-width: 100%;
-height: 100%;
-object-fit: cover;
-}
-
-@media (max-width: 650px) {
-#destaque .am-destaque-card,
-#destaque .destaque-card {
-height: 220px;
-max-height: 220px;
-}
-}
+/* FIM DO TEMA.CSS */
